@@ -1,0 +1,13 @@
+[ClassVersion("1.0.0.0"), FriendlyName("cDFSNamespace")]
+class HWG_cDFSNamespace : OMI_BaseResource
+{
+    [key, Description("The name of the DFS Namespace.")] String Namespace;
+    [Required, Description("If Namespace should exist."), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+    [Write, Description("The name of the computer hosting this DFS Namespace.")] String ComputerName;
+    [Write, Description("The name of the AD Domain the DFS Namespace is hosted on.")] String DomainName;
+    [Write, Description("The description of the DFS Namespace.")] String Description;
+    [Read] String Path;
+    [Read] String Type;
+    [Read] Uint32 TimeToLiveSec;
+    [Read] String State;
+};
