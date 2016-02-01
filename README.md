@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/tf23k8l44u1k3wnt/branch/master?svg=true)](https://ci.appveyor.com/project/PlagueHO/cdfs/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/8tcxkh8rtgyxlmls/branch/master?svg=true)](https://ci.appveyor.com/project/PlagueHO/cdfs/branch/master)
 
 # cDFS
 
