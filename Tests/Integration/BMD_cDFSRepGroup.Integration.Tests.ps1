@@ -10,7 +10,7 @@ If the above are available then to allow these tests to be run a
 BMD_cDFSRepGroup.config.json file must be created in the same folder as
 this file. The content should be a customized version of the following:
 {
-    "Username":  "LABBUILDER.COM\\Administrator",
+    "Username":  "CONTOSO.COM\\Administrator",
     "Folders":  [
                     "TestFolder1",
                     "TestFolder2"
@@ -23,7 +23,7 @@ this file. The content should be a customized version of the following:
                     "c:\\IntegrationTests\\TestFolder1",
                     "c:\\IntegrationTests\\TestFolder2"
                 ],
-    "Password":  "P@ssword!1"
+    "Password":  "MyPassword"
 }
 
 If the above are available and configured these integration tests will run.
