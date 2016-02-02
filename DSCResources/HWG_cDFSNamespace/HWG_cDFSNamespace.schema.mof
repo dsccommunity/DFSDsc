@@ -11,7 +11,7 @@ class HWG_cDFSNamespace : OMI_BaseResource
     [Write, Description("Indicates whether a DFS namespace uses access-based enumeration.")] Boolean EnableAccessBasedEnumeration;
     [Write, Description("Indicates whether a DFS namespace uses root scalability mode.")] Boolean EnableRootScalability;
     [Write, Description("Indicates whether a DFS namespace uses target failback.")] Boolean EnableTargetFailback;
-    [Write, Description("Specifies the target priority class for a DFS namespace root."), ValueMap{"GlobalHigh","SiteCostHigh","SiteCostNormal","SiteCostLow","GlobalLow"}, Values{"GlobalHigh","SiteCostHigh","SiteCostNormal","SiteCostLow","GlobalLow"}] String ReferralPriorityClass
+    [Write, Description("Specifies the target priority class for a DFS namespace root."), ValueMap{"GlobalHigh","SiteCostHigh","SiteCostNormal","SiteCostLow","GlobalLow"}, Values{"GlobalHigh","SiteCostHigh","SiteCostNormal","SiteCostLow","GlobalLow"}] String ReferralPriorityClass;
     [Write, Description("Specifies the priority rank, as an integer, for a root target of the DFS namespace.")] Uint32 ReferralPriorityRank;
     [Read] String Path;
     [Read] String Type;
