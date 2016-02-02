@@ -224,7 +224,7 @@ function Set-TargetResource
                 $RootChange = $true
             }
 
-            if (($EnableSiteCosting) `
+            if (($EnableSiteCosting -ne $null) `
                 -and ($Root.EnableSiteCosting -ne $EnableSiteCosting))
             {
                 $RootProperties += @{                    
@@ -233,7 +233,7 @@ function Set-TargetResource
                 $RootChange = $true
             }
 
-            if (($EnableInsiteReferrals) `
+            if (($EnableInsiteReferrals -ne $null) `
                 -and ($Root.EnableInsiteReferrals -ne $EnableInsiteReferrals))
             {
                 $RootProperties += @{                    
@@ -242,7 +242,7 @@ function Set-TargetResource
                 $RootChange = $true
             }
 
-            if (($EnableAccessBasedEnumeration) `
+            if (($EnableAccessBasedEnumeration -ne $null) `
                 -and ($Root.EnableAccessBasedEnumeration -ne $EnableAccessBasedEnumeration))
             {
                 $RootProperties += @{                    
@@ -251,7 +251,7 @@ function Set-TargetResource
                 $RootChange = $true
             }
 
-            if (($EnableRootScalability) `
+            if (($EnableRootScalability -ne $null) `
                 -and ($Root.EnableRootScalability -ne $EnableRootScalability))
             {
                 $RootProperties += @{                    
@@ -260,7 +260,7 @@ function Set-TargetResource
                 $RootChange = $true
             }
 
-            if (($EnableTargetFailback) `
+            if (($EnableTargetFailback -ne $null) `
                 -and ($Root.EnableTargetFailback -ne $EnableTargetFailback))
             {
                 $RootProperties += @{                    
@@ -341,7 +341,7 @@ function Set-TargetResource
             }
 
             # Output the target parameters that were changed/set
-            $NewRoot.GetEnumerator() | ForEach-Object -Process {                
+            $TargetProperties.GetEnumerator() | ForEach-Object -Process {                
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceUpdateParameterMessage) `
@@ -526,7 +526,7 @@ function Test-TargetResource
                 $desiredConfigurationMatch = $false
             }
                         
-            if (($EnableSiteCosting) `
+            if (($EnableSiteCosting -ne $null) `
                 -and ($Root.EnableSiteCosting -ne $EnableSiteCosting)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
@@ -536,7 +536,7 @@ function Test-TargetResource
                 $desiredConfigurationMatch = $false
             }
 
-            if (($EnableInsiteReferrals) `
+            if (($EnableInsiteReferrals -ne $null) `
                 -and ($Root.EnableInsiteReferrals -ne $EnableInsiteReferrals)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
@@ -546,7 +546,7 @@ function Test-TargetResource
                 $desiredConfigurationMatch = $false
             }
 
-            if (($EnableAccessBasedEnumeration) `
+            if (($EnableAccessBasedEnumeration -ne $null) `
                 -and ($Root.EnableAccessBasedEnumeration -ne $EnableAccessBasedEnumeration)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
@@ -556,7 +556,7 @@ function Test-TargetResource
                 $desiredConfigurationMatch = $false
             }
 
-            if (($EnableRootScalability) `
+            if (($EnableRootScalability -ne $null) `
                 -and ($Root.EnableRootScalability -ne $EnableRootScalability)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
@@ -566,7 +566,7 @@ function Test-TargetResource
                 $desiredConfigurationMatch = $false
             }
 
-            if (($EnableTargetFailback) `
+            if (($EnableTargetFailback -ne $null) `
                 -and ($Root.EnableTargetFailback -ne $EnableTargetFailback)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
