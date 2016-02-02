@@ -173,7 +173,7 @@ function Set-TargetResource
         [Boolean]
         $EnableTargetFailback,
 
-        [ValidateSet('GlobalHigh','SiteCostHigh','SiteCostNormal','SiteCostLow','GlobalLow')]
+        [ValidateSet('Global-High','SiteCost-High','SiteCost-Normal','SiteCost-Low','Global-Low')]
         [String]
         $ReferralPriorityClass,
         
@@ -453,7 +453,7 @@ function Test-TargetResource
         [Boolean]
         $EnableTargetFailback,
 
-        [ValidateSet('GlobalHigh','SiteCostHigh','SiteCostNormal','SiteCostLow','GlobalLow')]
+        [ValidateSet('Global-High','SiteCost-High','SiteCost-Normal','SiteCost-Low','Global-Low')]
         [String]
         $ReferralPriorityClass,
         
