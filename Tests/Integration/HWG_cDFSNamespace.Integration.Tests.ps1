@@ -91,7 +91,6 @@ try
             $NamespaceNew.Flags                         | Should Contain 'Site Costing'
             $NamespaceNew.Flags                         | Should Contain 'Site Referrals'
             $NamespaceNew.Flags                         | Should Contain 'AccessBased Enumeration'
-            $NamespaceNew.Flags                         | Should Not Contain 'Root Scalability'
             $NamespaceNew.Flags                         | Should Contain 'Target Failback'
             $NamespaceTargetNew = Get-DfsnRootTarget -Path $NamespacePath -TargetPath $TargetPath
             $NamespaceTargetNew.ReferralPriorityClass   | Should Be $Namespace.ReferralPriorityClass
