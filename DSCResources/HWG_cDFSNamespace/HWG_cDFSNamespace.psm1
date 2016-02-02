@@ -95,11 +95,11 @@ function Get-TargetResource
         TimeToLiveSec                = $Root.TimeToLiveSec
         State                        = $Root.State
         Description                  = $Root.Description
-        EnableSiteCosting            = $Root.EnableSiteCosting
-        EnableInsiteReferrals        = $Root.EnableInsiteReferrals
-        EnableAccessBasedEnumeration = $Root.EnableAccessBasedEnumeration
-        EnableRootScalability        = $Root.EnableRootScalability
-        EnableTargetFailback         = $Root.EnableTargetFailback
+        EnableSiteCosting            = ($Root.Flags -contains 'Site Costing')
+        EnableInsiteReferrals        = ($Root.Flags -contains 'Insite Referrals')
+        EnableAccessBasedEnumeration = ($Root.Flags -contains 'AccessBased Enumeration')
+        EnableRootScalability        = ($Root.Flags -contains 'Root Scalability')
+        EnableTargetFailback         = ($Root.Flags -contains 'Target Failback')
     }
     
     # DFS Root exists but does target exist?               
@@ -225,7 +225,7 @@ function Set-TargetResource
             }
 
             if (($EnableSiteCosting -ne $null) `
-                -and ($Root.EnableSiteCosting -ne $EnableSiteCosting))
+                -and (($Root.Flags -contains 'Site Costing') -ne $EnableSiteCosting))
             {
                 $RootProperties += @{                    
                     EnableSiteCosting = $EnableSiteCosting
@@ -234,7 +234,7 @@ function Set-TargetResource
             }
 
             if (($EnableInsiteReferrals -ne $null) `
-                -and ($Root.EnableInsiteReferrals -ne $EnableInsiteReferrals))
+                -and (($Root.Flags -contains 'Insite Referrals') -ne $EnableInsiteReferrals))
             {
                 $RootProperties += @{                    
                     EnableInsiteReferrals = $EnableInsiteReferrals
@@ -243,7 +243,7 @@ function Set-TargetResource
             }
 
             if (($EnableAccessBasedEnumeration -ne $null) `
-                -and ($Root.EnableAccessBasedEnumeration -ne $EnableAccessBasedEnumeration))
+                -and (($Root.Flags -contains 'AccessBased Enumeration') -ne $EnableAccessBasedEnumeration))
             {
                 $RootProperties += @{                    
                     EnableAccessBasedEnumeration = $EnableAccessBasedEnumeration
@@ -252,7 +252,7 @@ function Set-TargetResource
             }
 
             if (($EnableRootScalability -ne $null) `
-                -and ($Root.EnableRootScalability -ne $EnableRootScalability))
+                -and (($Root.Flags -contains 'Root Scalability') -ne $EnableRootScalability))
             {
                 $RootProperties += @{                    
                     EnableRootScalability = $EnableRootScalability
@@ -261,7 +261,7 @@ function Set-TargetResource
             }
 
             if (($EnableTargetFailback -ne $null) `
-                -and ($Root.EnableTargetFailback -ne $EnableTargetFailback))
+                -and (($Root.Flags -contains 'Target Failback') -ne $EnableTargetFailback))
             {
                 $RootProperties += @{                    
                     EnableTargetFailback = $EnableTargetFailback
@@ -527,7 +527,7 @@ function Test-TargetResource
             }
                         
             if (($EnableSiteCosting -ne $null) `
-                -and ($Root.EnableSiteCosting -ne $EnableSiteCosting)) {
+                -and (($Root.Flags -contains 'Site Costing') -ne $EnableSiteCosting)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceParameterNeedsUpdateMessage) `
@@ -537,7 +537,7 @@ function Test-TargetResource
             }
 
             if (($EnableInsiteReferrals -ne $null) `
-                -and ($Root.EnableInsiteReferrals -ne $EnableInsiteReferrals)) {
+                -and (($Root.Flags -contains 'Insite Referrals') -ne $EnableInsiteReferrals)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceParameterNeedsUpdateMessage) `
@@ -547,7 +547,7 @@ function Test-TargetResource
             }
 
             if (($EnableAccessBasedEnumeration -ne $null) `
-                -and ($Root.EnableAccessBasedEnumeration -ne $EnableAccessBasedEnumeration)) {
+                -and (($Root.Flags -contains 'AccessBased Enumeration') -ne $EnableAccessBasedEnumeration)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceParameterNeedsUpdateMessage) `
@@ -557,7 +557,7 @@ function Test-TargetResource
             }
 
             if (($EnableRootScalability -ne $null) `
-                -and ($Root.EnableRootScalability -ne $EnableRootScalability)) {
+                -and (($Root.Flags -contains 'Root Scalability') -ne $EnableRootScalability)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceParameterNeedsUpdateMessage) `
@@ -567,7 +567,7 @@ function Test-TargetResource
             }
 
             if (($EnableTargetFailback -ne $null) `
-                -and ($Root.EnableTargetFailback -ne $EnableTargetFailback)) {
+                -and (($Root.Flags -contains 'Target Failback') -ne $EnableTargetFailback)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceParameterNeedsUpdateMessage) `

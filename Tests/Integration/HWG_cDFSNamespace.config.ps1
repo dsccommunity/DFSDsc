@@ -25,7 +25,8 @@ Configuration HWG_cDFSNamespace_Config {
             EnableSiteCosting            = $Namespace.EnableSiteCosting
             EnableInsiteReferrals        = $Namespace.EnableInsiteReferrals
             EnableAccessBasedEnumeration = $Namespace.EnableAccessBasedEnumeration
-            EnableRootScalability        = $Namespace.EnableRootScalability
+            # Not supported by Standalone Namespaces
+            # EnableRootScalability        = $Namespace.EnableRootScalability
             EnableTargetFailback         = $Namespace.EnableTargetFailback
             ReferralPriorityClass        = $Namespace.ReferralPriorityClass
             ReferralPriorityRank         = $Namespace.ReferralPriorityRank

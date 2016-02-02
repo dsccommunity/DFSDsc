@@ -77,16 +77,11 @@ try
             Path                         = "\\$($Namespace.DomainName)\$($Namespace.Namespace)"
             TimeToLiveSec                = 300
             State                        = 'Online'
-            Flags                        = 'Site Costing'
+            Flags                        = @('Site Costing','Insite Referrals','AccessBased Enumeration','Root Scalability','Target Failback')
             Type                         = 'Domain V2'
             Description                  = $Namespace.Description
             NamespacePath                = "\\$($Namespace.DomainName)\$($Namespace.Namespace)"
             TimeToLive                   = 300
-            EnableSiteCosting            = $Namespace.EnableSiteCosting
-            EnableInsiteReferrals        = $Namespace.EnableInsiteReferrals
-            EnableAccessBasedEnumeration = $Namespace.EnableAccessBasedEnumeration
-            EnableRootScalability        = $Namespace.EnableRootScalability
-            EnableTargetFailback         = $Namespace.EnableTargetFailback
         }
         $NamespaceStandaloneRoot = $NamespaceRoot.Clone()
         $NamespaceStandaloneRoot.Type = 'Standalone'
@@ -129,11 +124,11 @@ try
                     $Result.TimeToLiveSec                | Should Be $NamespaceRoot.TimeToLiveSec
                     $Result.State                        | Should Be $NamespaceRoot.State
                     $Result.Description                  | Should Be $NamespaceRoot.Description
-                    $Result.EnableSiteCosting            | Should Be $NamespaceRoot.EnableSiteCosting
-                    $Result.EnableInsiteReferrals        | Should Be $NamespaceRoot.EnableInsiteReferrals
-                    $Result.EnableAccessBasedEnumeration | Should Be $NamespaceRoot.EnableAccessBasedEnumeration
-                    $Result.EnableRootScalability        | Should Be $NamespaceRoot.EnableRootScalability
-                    $Result.EnableTargetFailback         | Should Be $NamespaceRoot.EnableTargetFailback
+                    $Result.EnableSiteCosting            | Should Be ($NamespaceRoot.Flags -contains 'Site Costing')
+                    $Result.EnableInsiteReferrals        | Should Be ($NamespaceRoot.Flags -contains 'Insite Referrals')
+                    $Result.EnableAccessBasedEnumeration | Should Be ($NamespaceRoot.Flags -contains 'AccessBased Enumeration')
+                    $Result.EnableRootScalability        | Should Be ($NamespaceRoot.Flags -contains 'Root Scalability')
+                    $Result.EnableTargetFailback         | Should Be ($NamespaceRoot.Flags -contains 'Target Failback')
                     $Result.ReferralPriorityClass        | Should Be $null
                     $Result.ReferralPriorityRank         | Should Be $null
                     
@@ -157,11 +152,11 @@ try
                     $Result.TimeToLiveSec                | Should Be $NamespaceRoot.TimeToLiveSec
                     $Result.State                        | Should Be $NamespaceRoot.State
                     $Result.Description                  | Should Be $NamespaceRoot.Description
-                    $Result.EnableSiteCosting            | Should Be $NamespaceRoot.EnableSiteCosting
-                    $Result.EnableInsiteReferrals        | Should Be $NamespaceRoot.EnableInsiteReferrals
-                    $Result.EnableAccessBasedEnumeration | Should Be $NamespaceRoot.EnableAccessBasedEnumeration
-                    $Result.EnableRootScalability        | Should Be $NamespaceRoot.EnableRootScalability
-                    $Result.EnableTargetFailback         | Should Be $NamespaceRoot.EnableTargetFailback
+                    $Result.EnableSiteCosting            | Should Be ($NamespaceRoot.Flags -contains 'Site Costing')
+                    $Result.EnableInsiteReferrals        | Should Be ($NamespaceRoot.Flags -contains 'Insite Referrals')
+                    $Result.EnableAccessBasedEnumeration | Should Be ($NamespaceRoot.Flags -contains 'AccessBased Enumeration')
+                    $Result.EnableRootScalability        | Should Be ($NamespaceRoot.Flags -contains 'Root Scalability')
+                    $Result.EnableTargetFailback         | Should Be ($NamespaceRoot.Flags -contains 'Target Failback')
                     $Result.ReferralPriorityClass        | Should Be $NamespaceTarget.ReferralPriorityClass
                     $Result.ReferralPriorityRank         | Should Be $NamespaceTarget.ReferralPriorityRank
                 }
@@ -281,7 +276,7 @@ try
                 It 'should not throw error' {                        
                     { 
                         $Splat = $Namespace.Clone()
-                        $Splat.EnableSiteCosting = ! $Splat.EnableSiteCosting
+                        $Splat.Flags = @('Insite Referrals','AccessBased Enumeration','Root Scalability','Target Failback')
                         Set-TargetResource @Splat
                     } | Should Not Throw
                 }
@@ -304,7 +299,7 @@ try
                 It 'should not throw error' {                        
                     { 
                         $Splat = $Namespace.Clone()
-                        $Splat.EnableInsiteReferrals = ! $Splat.EnableInsiteReferrals
+                        $Splat.Flags = @('Site Costing','AccessBased Enumeration','Root Scalability','Target Failback')
                         Set-TargetResource @Splat
                     } | Should Not Throw
                 }
@@ -327,7 +322,7 @@ try
                 It 'should not throw error' {                        
                     { 
                         $Splat = $Namespace.Clone()
-                        $Splat.EnableAccessBasedEnumeration = ! $Splat.EnableAccessBasedEnumeration
+                        $Splat.Flags = @('Site Costing','Insite Referrals','Root Scalability','Target Failback')
                         Set-TargetResource @Splat
                     } | Should Not Throw
                 }
@@ -350,7 +345,7 @@ try
                 It 'should not throw error' {                        
                     { 
                         $Splat = $Namespace.Clone()
-                        $Splat.EnableRootScalability = ! $Splat.EnableRootScalability
+                        $Splat.Flags = @('Site Costing','Insite Referrals','AccessBased Enumeration','Target Failback')
                         Set-TargetResource @Splat
                     } | Should Not Throw
                 }
@@ -373,7 +368,7 @@ try
                 It 'should not throw error' {                        
                     { 
                         $Splat = $Namespace.Clone()
-                        $Splat.EnableTargetFailback = ! $Splat.EnableTargetFailback
+                        $Splat.Flags = @('Site Costing','Insite Referrals','AccessBased Enumeration','Root Scalability')
                         Set-TargetResource @Splat
                     } | Should Not Throw
                 }
@@ -613,7 +608,7 @@ try
     
                 It 'should return false' {                        
                     $Splat = $Namespace.Clone()
-                    $Splat.EnableSiteCosting = ! $Splat.EnableSiteCosting
+                    $Splat.Flags = @('Insite Referrals','AccessBased Enumeration','Root Scalability','Target Failback')
                     Test-TargetResource @Splat | Should Be $False
                 }
                 It 'should call expected Mocks' {
@@ -629,7 +624,7 @@ try
     
                 It 'should return false' {                        
                     $Splat = $Namespace.Clone()
-                    $Splat.EnableInsiteReferrals = ! $Splat.EnableInsiteReferrals
+                    $Splat.Flags = @('Site Costing','AccessBased Enumeration','Root Scalability','Target Failback')
                     Test-TargetResource @Splat | Should Be $False
                 }
                 It 'should call expected Mocks' {
@@ -645,7 +640,7 @@ try
     
                 It 'should return false' {                        
                     $Splat = $Namespace.Clone()
-                    $Splat.EnableAccessBasedEnumeration = ! $Splat.EnableAccessBasedEnumeration
+                    $Splat.Flags = @('Site Costing','Insite Referrals','Root Scalability','Target Failback')
                     Test-TargetResource @Splat | Should Be $False
                 }
                 It 'should call expected Mocks' {
@@ -661,7 +656,7 @@ try
     
                 It 'should return false' {                        
                     $Splat = $Namespace.Clone()
-                    $Splat.EnableRootScalability = ! $Splat.EnableRootScalability
+                    $Splat.Flags = @('Site Costing','Insite Referrals','AccessBased Enumeration','Target Failback')
                     Test-TargetResource @Splat | Should Be $False
                 }
                 It 'should call expected Mocks' {
@@ -677,7 +672,7 @@ try
     
                 It 'should return false' {                        
                     $Splat = $Namespace.Clone()
-                    $Splat.EnableTargetFailback = ! $Splat.EnableTargetFailback
+                    $Splat.Flags = @('Site Costing','Insite Referrals','AccessBased Enumeration','Root Scalability')
                     Test-TargetResource @Splat | Should Be $False
                 }
                 It 'should call expected Mocks' {
