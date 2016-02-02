@@ -426,7 +426,7 @@ Configuration DFSNamespace_Standalone_Public
   - Add support for DomainV1 namespaces
   
 ## Versions
-### Unreleased Version
+### 1.5.1.0
 * HWG_cDFSNamespace- Add parameters:
     - EnableSiteCosting
     - EnableInsiteReferrals
