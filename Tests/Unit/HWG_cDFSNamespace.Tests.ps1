@@ -276,7 +276,7 @@ try
                 It 'should not throw error' {                        
                     { 
                         $Splat = $Namespace.Clone()
-                        $Splat.Flags = @('Insite Referrals','AccessBased Enumeration','Root Scalability','Target Failback')
+                        $Splat.EnableSiteCosting = $False
                         Set-TargetResource @Splat
                     } | Should Not Throw
                 }
@@ -299,7 +299,7 @@ try
                 It 'should not throw error' {                        
                     { 
                         $Splat = $Namespace.Clone()
-                        $Splat.Flags = @('Site Costing','AccessBased Enumeration','Root Scalability','Target Failback')
+                        $Splat.EnableInsiteReferrals = $False
                         Set-TargetResource @Splat
                     } | Should Not Throw
                 }
@@ -322,7 +322,7 @@ try
                 It 'should not throw error' {                        
                     { 
                         $Splat = $Namespace.Clone()
-                        $Splat.Flags = @('Site Costing','Insite Referrals','Root Scalability','Target Failback')
+                        $Splat.EnableAccessBasedEnumeration = $False
                         Set-TargetResource @Splat
                     } | Should Not Throw
                 }
@@ -345,7 +345,7 @@ try
                 It 'should not throw error' {                        
                     { 
                         $Splat = $Namespace.Clone()
-                        $Splat.Flags = @('Site Costing','Insite Referrals','AccessBased Enumeration','Target Failback')
+                        $Splat.EnableRootScalability = $False
                         Set-TargetResource @Splat
                     } | Should Not Throw
                 }
@@ -368,7 +368,7 @@ try
                 It 'should not throw error' {                        
                     { 
                         $Splat = $Namespace.Clone()
-                        $Splat.Flags = @('Site Costing','Insite Referrals','AccessBased Enumeration','Root Scalability')
+                        $Splat.EnableTargetFailback = $False
                         Set-TargetResource @Splat
                     } | Should Not Throw
                 }
@@ -608,7 +608,7 @@ try
     
                 It 'should return false' {                        
                     $Splat = $Namespace.Clone()
-                    $Splat.Flags = @('Insite Referrals','AccessBased Enumeration','Root Scalability','Target Failback')
+                    $Splat.EnableSiteCosting = $False
                     Test-TargetResource @Splat | Should Be $False
                 }
                 It 'should call expected Mocks' {
@@ -624,7 +624,7 @@ try
     
                 It 'should return false' {                        
                     $Splat = $Namespace.Clone()
-                    $Splat.Flags = @('Site Costing','AccessBased Enumeration','Root Scalability','Target Failback')
+                    $Splat.EnableInsiteReferrals = $False
                     Test-TargetResource @Splat | Should Be $False
                 }
                 It 'should call expected Mocks' {
@@ -640,7 +640,7 @@ try
     
                 It 'should return false' {                        
                     $Splat = $Namespace.Clone()
-                    $Splat.Flags = @('Site Costing','Insite Referrals','Root Scalability','Target Failback')
+                    $Splat.EnableAccessBasedEnumeration = $False
                     Test-TargetResource @Splat | Should Be $False
                 }
                 It 'should call expected Mocks' {
@@ -656,7 +656,7 @@ try
     
                 It 'should return false' {                        
                     $Splat = $Namespace.Clone()
-                    $Splat.Flags = @('Site Costing','Insite Referrals','AccessBased Enumeration','Target Failback')
+                    $Splat.EnableRootScalability = $False
                     Test-TargetResource @Splat | Should Be $False
                 }
                 It 'should call expected Mocks' {
@@ -672,7 +672,7 @@ try
     
                 It 'should return false' {                        
                     $Splat = $Namespace.Clone()
-                    $Splat.Flags = @('Site Costing','Insite Referrals','AccessBased Enumeration','Root Scalability')
+                    $Splat.EnableTargetFailback = $False
                     Test-TargetResource @Splat | Should Be $False
                 }
                 It 'should call expected Mocks' {
