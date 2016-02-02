@@ -8,7 +8,7 @@ $Namespace = @{
     EnableAccessBasedEnumeration = $true
     EnableRootScalability        = $true
     EnableTargetFailback         = $true
-    ReferralPriorityClass        = 'GlobalLow'
+    ReferralPriorityClass        = 'Global-Low'
     ReferralPriorityRank         = 10
 }
 $NamespacePath = "\\$($Namespace.ComputerName.ToUpper())\$($Namespace.Namespace)"
@@ -28,7 +28,7 @@ Configuration HWG_cDFSNamespace_Config {
             # Not supported by Standalone Namespaces
             # EnableRootScalability        = $Namespace.EnableRootScalability
             EnableTargetFailback         = $Namespace.EnableTargetFailback
-            ReferralPriorityClass        = $Namespace.ReferralPriorityClass
+            ReferralPriorityClass        = ($Namespace.ReferralPriorityClass -replace '-','')
             ReferralPriorityRank         = $Namespace.ReferralPriorityRank
         }
     }

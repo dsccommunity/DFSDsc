@@ -754,7 +754,8 @@ Function Get-RootTarget {
             -Path $Path `
             -TargetPath $TargetPath `
             -ErrorAction Stop
-        $Target.ReferralClass = ($Target.ReferralClass -replace '-','')
+        # Convert the ReferralPriorityClass by removing the '-' from it
+        $Target.ReferralPriorityClass = ($Target.ReferralPriorityClass -replace '-','')
     }
     catch [Microsoft.Management.Infrastructure.CimException]
     {

@@ -90,7 +90,7 @@ try
             $NamespaceNew.NamespacePath                 | Should Be $NamespacePath
             $NamespaceNew.Flags                         | Should Be @('Site Costing','Insite Referrals','AccessBased Enumeration','Target Failback')
             $NamespaceTargetNew = Get-DfsnRootTarget -Path $NamespacePath -TargetPath $TargetPath
-            $NamespaceTargetNew.ReferralPriorityClass   | Should Be $Namespace.ReferralPriorityClass
+            $NamespaceTargetNew.ReferralPriorityClass   | Should Be ($Namespace.ReferralPriorityClass -replace '-','')
             $NamespaceTargetNew.ReferralPriorityRank    | Should Be $Namespace.ReferralPriorityRank
         }
         

@@ -276,7 +276,7 @@ try
                 It 'should not throw error' {                        
                     { 
                         $Splat = $Namespace.Clone()
-                        $Splat.EnableSiteCosting = $False
+                        $Splat.EnableSiteCosting = $false
                         Set-TargetResource @Splat
                     } | Should Not Throw
                 }
