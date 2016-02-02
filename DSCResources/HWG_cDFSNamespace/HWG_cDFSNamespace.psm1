@@ -371,7 +371,12 @@ function Set-TargetResource
             if (! $Description)
             {
                 $PSBoundParameters += @{ Description = "DFS of Namespace $Namespace" }
-            }                    
+            } 
+            
+            if ($ReferralPriorityClass)
+            { 
+                $PSBoundParameters.ReferralPriorityClass = ($ReferralPriorityClass -replace '-','')
+            }
 
             # Create New-DfsnRoot
             $null = New-DfsnRoot `
