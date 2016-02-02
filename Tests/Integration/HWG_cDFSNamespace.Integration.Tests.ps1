@@ -88,10 +88,7 @@ try
             $NamespaceNew.State                         | Should Be 'Online'
             $NamespaceNew.Description                   | Should Be $Namespace.Description
             $NamespaceNew.NamespacePath                 | Should Be $NamespacePath
-            $NamespaceNew.Flags                         | Should Contain 'Site Costing'
-            $NamespaceNew.Flags                         | Should Contain 'Site Referrals'
-            $NamespaceNew.Flags                         | Should Contain 'AccessBased Enumeration'
-            $NamespaceNew.Flags                         | Should Contain 'Target Failback'
+            $NamespaceNew.Flags                         | Should Be @('Site Costing','Insite Referrals','AccessBased Enumeration','Target Failback')
             $NamespaceTargetNew = Get-DfsnRootTarget -Path $NamespacePath -TargetPath $TargetPath
             $NamespaceTargetNew.ReferralPriorityClass   | Should Be $Namespace.ReferralPriorityClass
             $NamespaceTargetNew.ReferralPriorityRank    | Should Be $Namespace.ReferralPriorityRank

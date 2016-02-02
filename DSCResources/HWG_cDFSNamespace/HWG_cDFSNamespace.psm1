@@ -754,6 +754,7 @@ Function Get-RootTarget {
             -Path $Path `
             -TargetPath $TargetPath `
             -ErrorAction Stop
+        $Target.ReferralClass = ($Target.ReferralClass -replace '-','')
     }
     catch [Microsoft.Management.Infrastructure.CimException]
     {
