@@ -271,12 +271,19 @@ configuration Sample_cDFSRepGroup_FullMesh
  This resource is used to create, edit or remove standalone or domain based DFS namespaces.  When the server is the last server in the namespace, the namespace itself will be removed. 
 
 #### Parameters
-* **Namespace**: The name of the namespace. Required.
-* **Ensure**: Ensures that namespace is either Absent or Present. Required.
-* **ComputerName**: The computer name of the namespace member. Default: Node Computer Name. Optional. 
-* **DomainName**: The AD domain the namespace should created in. If not provided a standalone namespace will be created. Optional.
-* **Description**: A description for the namespace. Optional.
-
+* **Namespace**: The name of the namespace. String. Required.
+* **Ensure**: Ensures that namespace is either Absent or Present. { Absent | Present }. String. Required.
+* **ComputerName**: The computer name of the namespace member. Default: Node Computer Name. String. Optional. 
+* **DomainName**: The AD domain the namespace should created in. If not provided a standalone namespace will be created. String. Optional.
+* **Description**: A description for the namespace. String. Optional.
+* **EnableSiteCosting**: Indicates whether a DFS namespace uses cost-based selection. Boolean. Optional.
+* **EnableInsiteReferrals**: Indicates whether a DFS namespace server provides a client only with referrals that are in the same site as the client. Boolean. Optional.
+* **EnableAccessBasedEnumeration**: Indicates whether a DFS namespace uses access-based enumeration. Boolean. Optional.
+* **EnableRootScalability**: Indicates whether a DFS namespace uses root scalability mode. Boolean. Optional.
+* **EnableTargetFailback**: Indicates whether a DFS namespace uses target failback. Boolean. Optional
+* **ReferralPriorityClass**: Specifies the target priority class for a DFS namespace root. { GlobalHigh | SiteCostHigh | SiteCostNormal | SiteCostLow | GlobalLow }. Optional.
+* **ReferralPriorityRank**: Specifies the priority rank, as an integer, for a root target of the DFS namespace. Uint32. Optional
+    
 ### Examples
 Create an AD Domain based DFS namespace called departments in the domain contoso.com with a single target on the computer fs_1.
 ```powershell
@@ -416,7 +423,11 @@ Configuration DFSNamespace_Standalone_Public
 ## Future Features
 * Add BMD_cDFSNamespaceFolder resource
 * HWG_cDFSNamespace-
-  - Add parameters:
+  - Add support for DomainV1 namespaces
+  
+## Versions
+### Unreleased Version
+* HWG_cDFSNamespace- Add parameters:
     - EnableSiteCosting
     - EnableInsiteReferrals
     - EnableAccessBasedEnumeration
@@ -424,9 +435,6 @@ Configuration DFSNamespace_Standalone_Public
     - EnableTargetFailback
     - ReferralPriorityClass
     - ReferralPriorityRank
-  - Add support for DomainV1 namespaces
-  
-## Versions
 
 ### 1.5.0.0
 * HWG_cDFSNamespace- New sample files added.

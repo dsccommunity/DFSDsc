@@ -82,18 +82,26 @@ try
         It 'Should have set the resource and all the parameters should match' {
             # Get the Rule details
             $NamespaceNew = Get-DfsnRoot -Path $NamespacePath
-            $NamespaceNew.Path                 | Should Be $NamespacePath
-            $NamespaceNew.Type                 | Should Be 'Standalone'
-            $NamespaceNew.TimeToLiveSec        | Should Be 300
-            $NamespaceNew.State                | Should Be 'Online'
-            $NamespaceNew.Description          | Should Be $Namespace.Description
-            $NamespaceNew.NamespacePath        | Should Be $NamespacePath
+            $NamespaceNew.Path                          | Should Be $NamespacePath
+            $NamespaceNew.Type                          | Should Be 'Standalone'
+            $NamespaceNew.TimeToLiveSec                 | Should Be 300
+            $NamespaceNew.State                         | Should Be 'Online'
+            $NamespaceNew.Description                   | Should Be $Namespace.Description
+            $NamespaceNew.NamespacePath                 | Should Be $NamespacePath
+            $NamespaceNew.EnableSiteCosting             | Should Be $Namespace.EnableSiteCosting
+            $NamespaceNew.EnableInsiteReferrals         | Should Be $Namespace.EnableInsiteReferrals
+            $NamespaceNew.EnableAccessBasedEnumeration  | Should Be $Namespace.EnableAccessBasedEnumeration
+            $NamespaceNew.EnableRootScalability         | Should Be $Namespace.EnableRootScalability
+            $NamespaceNew.EnableTargetFailback          | Should Be $Namespace.EnableTargetFailback
+            $NamespaceTargetNew = Get-DfsnRootTarget -Path $NamespacePath -TargetPath $TargetPath
+            $NamespaceTargetNew.ReferralPriorityClass   | Should Be $Namespace.ReferralPriorityClass
+            $NamespaceTargetNew.ReferralPriorityRank    | Should Be $Namespace.ReferralPriorityRank
         }
         
         # Clean up
         Remove-DFSNRootTarget `
             -Path $NamespacePath `
-            -TargetPath $NamespacePath `
+            -TargetPath $TargetPath `
             -Confirm:$false
         Remove-SMBShare `
             -Name $Namespace.Namespace `
