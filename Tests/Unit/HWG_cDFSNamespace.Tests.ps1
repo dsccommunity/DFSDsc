@@ -88,6 +88,8 @@ try
             EnableRootScalability        = $Namespace.EnableRootScalability
             EnableTargetFailback         = $Namespace.EnableTargetFailback
         }
+        $NamespaceStandaloneRoot = $NamespaceRoot.Clone()
+        $NamespaceStandaloneRoot.Type = 'Standalone'
         $NamespaceTarget = [PSObject]@{
             Path                         = "\\$($Namespace.DomainName)\$($Namespace.Namespace)"
             State                        = 'Online'
@@ -563,7 +565,7 @@ try
 
             Context 'Standalone Namespace exists and should but domain target is added' {
                 
-                Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
+                Mock Get-DFSNRoot -MockWith { $NamespaceStandaloneRoot }
                 Mock Get-DFSNRootTarget
     
                 It 'should throw exception' {                        

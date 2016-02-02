@@ -218,7 +218,7 @@ function Set-TargetResource
             if (($Description) `
                 -and ($Root.Description -ne $Description))
             {
-                $RootPropertiest += @{                    
+                $RootProperties += @{
                     Description = $Description
                 }
                 $RootChange = $true
@@ -295,8 +295,7 @@ function Set-TargetResource
             [boolean] $TargetChange = $false
 
             # The Target properties that will be updated
-            $TargetProperties = @{
-            }
+            $TargetProperties = @{}
 
             # Check the target properties
             if (($ReferralPriorityClass) `
