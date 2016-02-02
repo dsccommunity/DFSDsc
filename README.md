@@ -281,7 +281,7 @@ configuration Sample_cDFSRepGroup_FullMesh
 * **EnableAccessBasedEnumeration**: Indicates whether a DFS namespace uses access-based enumeration. Boolean. Optional.
 * **EnableRootScalability**: Indicates whether a DFS namespace uses root scalability mode. Boolean. Optional.
 * **EnableTargetFailback**: Indicates whether a DFS namespace uses target failback. Boolean. Optional
-* **ReferralPriorityClass**: Specifies the target priority class for a DFS namespace root. { GlobalHigh | SiteCostHigh | SiteCostNormal | SiteCostLow | GlobalLow }. Optional.
+* **ReferralPriorityClass**: Specifies the target priority class for a DFS namespace root. { Global-High | SiteCost-High | SiteCost-Normal | SiteCost-Low | Global-Low }. Optional.
 * **ReferralPriorityRank**: Specifies the priority rank, as an integer, for a root target of the DFS namespace. Uint32. Optional
     
 ### Examples

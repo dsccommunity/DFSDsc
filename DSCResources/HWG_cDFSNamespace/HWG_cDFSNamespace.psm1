@@ -302,7 +302,7 @@ function Set-TargetResource
                 -and ($Target.ReferralPriorityClass -ne $ReferralPriorityClass))
             {
                 $TargetProperties += @{
-                    ReferralPriorityClass = $ReferralPriorityClass
+                    ReferralPriorityClass = ($ReferralPriorityClass -replace '-','')
                 }
                 $TargetChange = $true
             }
@@ -754,8 +754,6 @@ Function Get-RootTarget {
             -Path $Path `
             -TargetPath $TargetPath `
             -ErrorAction Stop
-        # Convert the ReferralPriorityClass by removing the '-' from it
-        $Target.ReferralPriorityClass = ($Target.ReferralPriorityClass -replace '-','')
     }
     catch [Microsoft.Management.Infrastructure.CimException]
     {

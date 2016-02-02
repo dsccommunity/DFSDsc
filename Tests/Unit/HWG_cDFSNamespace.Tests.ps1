@@ -64,7 +64,7 @@ try
             EnableAccessBasedEnumeration = $true
             EnableRootScalability        = $true
             EnableTargetFailback         = $true
-            ReferralPriorityClass        = 'GlobalLow'
+            ReferralPriorityClass        = 'Global-Low'
             ReferralPriorityRank         = 10            
         }
         $NamespaceSplat = [PSObject]@{
@@ -413,7 +413,7 @@ try
                 It 'should not throw error' {   
                     { 
                         $Splat = $Namespace.Clone()
-                        $Splat.ReferralPriorityClass = 'GlobalHigh'
+                        $Splat.ReferralPriorityClass = 'SiteCost-High'
                         Set-TargetResource @Splat
                     } | Should Not Throw
                 }
@@ -688,7 +688,7 @@ try
     
                 It 'should return false' {                        
                     $Splat = $Namespace.Clone()
-                    $Splat.ReferralPriorityClass = 'GlobalHigh'
+                    $Splat.ReferralPriorityClass = 'SiteCost-Normal'
                     Test-TargetResource @Splat | Should Be $False
                 }
                 It 'should call expected Mocks' {

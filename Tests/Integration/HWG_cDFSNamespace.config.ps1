@@ -28,7 +28,7 @@ Configuration HWG_cDFSNamespace_Config {
             # Not supported by Standalone Namespaces
             # EnableRootScalability        = $Namespace.EnableRootScalability
             EnableTargetFailback         = $Namespace.EnableTargetFailback
-            ReferralPriorityClass        = ($Namespace.ReferralPriorityClass -replace '-','')
+            ReferralPriorityClass        = $Namespace.ReferralPriorityClass
             ReferralPriorityRank         = $Namespace.ReferralPriorityRank
         }
     }
