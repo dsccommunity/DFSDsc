@@ -279,7 +279,7 @@ function Set-TargetResource
                                 
             # Get target
             $Target = Get-RootTarget `
-                -Path $NamespacePath `
+                -Path $Path `
                 -TargetPath $TargetPath
             
             # Does the target need to be updated?

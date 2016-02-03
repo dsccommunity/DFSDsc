@@ -149,7 +149,7 @@ try
                     $Result = Get-TargetResource @NamespaceSplat
                     $Result.Path                         | Should Be $Namespace.Path
                     $Result.TargetPath                   | Should Be $Namespace.TargetPath
-                    $Result.Ensure                       | Should Be 'Absent'
+                    $Result.Ensure                       | Should Be 'Present'
                     $Result.Type                         | Should Be $Namespace.Type
                     $Result.TimeToLiveSec                | Should Be $NamespaceRoot.TimeToLiveSec
                     $Result.State                        | Should Be $NamespaceRoot.State
