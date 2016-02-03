@@ -579,9 +579,9 @@ try
                    
                 Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
                 
-                It 'should return the expected root' {
+                It 'should return the expected folder' {
                         
-                    $Result = Get-Root `
+                    $Result = Get-Folder `
                         -Path $NamespaceFolder.Path
                     $Result | Should Be $NamespaceFolder
                 }
