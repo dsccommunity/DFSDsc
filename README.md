@@ -267,14 +267,14 @@ configuration Sample_cDFSRepGroup_FullMesh
 
 
 ## Namespace Resources
-### cDFSNameSpace
+### cDFSNameSpaceRoot
  This resource is used to create, edit or remove standalone or domain based DFS namespaces.  When the server is the last server in the namespace, the namespace itself will be removed. 
 
 #### Parameters
-* **Namespace**: The name of the namespace. String. Required.
-* **Ensure**: Ensures that namespace is either Absent or Present. { Absent | Present }. String. Required.
-* **ComputerName**: The computer name of the namespace member. Default: Node Computer Name. String. Optional. 
-* **DomainName**: The AD domain the namespace should created in. If not provided a standalone namespace will be created. String. Optional.
+* **Path**: Specifies a path for the root of a DFS namespace. String. Required.
+* **TargetPath**: Specifies a path for a root target of the DFS namespace. String. Required.
+* **Ensure**: Specifies if the DFS Namespace root should exist. { Absent | Present }. String. Required.
+* **Type**: Specifies the type of a DFS namespace as a Type object. { Standalone | DomainV1 | DomainV2 }. String. Required. 
 * **Description**: A description for the namespace. String. Optional.
 * **EnableSiteCosting**: Indicates whether a DFS namespace uses cost-based selection. Boolean. Optional.
 * **EnableInsiteReferrals**: Indicates whether a DFS namespace server provides a client only with referrals that are in the same site as the client. Boolean. Optional.
@@ -285,7 +285,7 @@ configuration Sample_cDFSRepGroup_FullMesh
 * **ReferralPriorityRank**: Specifies the priority rank, as an integer, for a root target of the DFS namespace. Uint32. Optional
     
 ### Examples
-Create an AD Domain based DFS namespace called departments in the domain contoso.com with a single target on the computer fs_1.
+Create an AD Domain V2 based DFS namespace called departments in the domain contoso.com with a single target on the computer fs_1.
 ```powershell
 Configuration DFSNamespace_Domain_SingleTarget
 {
@@ -312,10 +312,10 @@ Configuration DFSNamespace_Domain_SingleTarget
        # Configure the namespace
         cDFSNamespace DFSNamespace_Domain_Departments
         {
-            Namespace            = 'departments' 
-            ComputerName         = 'fs_1'           
+            Path                 = '\\contoso.com\departments' 
+            TargetPath           = '\\fs_1\departments'
             Ensure               = 'present'
-            DomainName           = 'contoso.com' 
+            Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing departmental files'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespace Resource
@@ -323,7 +323,7 @@ Configuration DFSNamespace_Domain_SingleTarget
 }
 ```
 
-Create an AD Domain based DFS namespace called software in the domain contoso.com with a three targets on the servers ca-fileserver, ma-fileserver and ny-fileserver.
+Create an AD Domain V2 based DFS namespace called software in the domain contoso.com with a three targets on the servers ca-fileserver, ma-fileserver and ny-fileserver.
 ```powershell
 Configuration DFSNamespace_Domain_MultipleTarget
 {
@@ -350,34 +350,33 @@ Configuration DFSNamespace_Domain_MultipleTarget
        # Configure the namespace
         cDFSNamespace DFSNamespace_Domain_Software_CA
         {
-            Namespace            = 'software' 
-            ComputerName         = 'ca-fileserver'           
+            Path                 = '\\contoso.com\software' 
+            TargetPath           = '\\ca-fileserver\software'           
             Ensure               = 'present'
-            DomainName           = 'contoso.com' 
+            Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespace Resource
 
         cDFSNamespace DFSNamespace_Domain_Software_MA
         {
-            Namespace            = 'software' 
-            ComputerName         = 'ma-fileserver'           
+            Path                 = '\\contoso.com\software' 
+            TargetPath           = '\\ma-fileserver\software'           
             Ensure               = 'present'
-            DomainName           = 'contoso.com' 
+            Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespace Resource
 
         cDFSNamespace DFSNamespace_Domain_Software_NY
         {
-            Namespace            = 'software' 
-            ComputerName         = 'ny-fileserver'           
+            Path                 = '\\contoso.com\software' 
+            TargetPath           = '\\ma-fileserver\software'           
             Ensure               = 'present'
-            DomainName           = 'contoso.com' 
+            Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespace Resource
-
     }
 }
 ```
@@ -409,23 +408,23 @@ Configuration DFSNamespace_Standalone_Public
        # Configure the namespace
         cDFSNamespace DFSNamespace_Standalone_Public
         {
-            Namespace            = 'public'
-            ComputerName         = 'fileserver1'
+            Path                 = '\\fileserver1\public'
+            TargetPath           = '\\fileserver1\public'
             Ensure               = 'present'
+            Type                 = 'Standalone'
             Description          = 'Standalone DFS namespace for storing public files'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespace Resource
     }
 }
-
 ```
 
-## Future Features
-* Add BMD_cDFSNamespaceFolder resource
-* HWG_cDFSNamespace-
-  - Add support for DomainV1 namespaces
-  
 ## Versions
+### 2.0.0.0
+* BMD_cDFSNamespaceRoot- resource added.
+* BMD_cDFSNamespaceFolder- resource added.
+* HWG_cDFSNamespace- deprecated - use BMD_cDFSNamespaceRoot instead.
+
 ### 1.5.1.0
 * HWG_cDFSNamespace- Add parameters:
     - EnableSiteCosting

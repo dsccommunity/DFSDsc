@@ -23,9 +23,10 @@ Configuration DFSNamespace_Standalone_Public
        # Configure the namespace
         cDFSNamespace DFSNamespace_Standalone_Public
         {
-            Namespace            = 'public' 
-            ComputerName         = 'fileserver1'
+            Path                 = '\\fileserver1\public'
+            TargetPath           = '\\fileserver1\public'
             Ensure               = 'present'
+            Type                 = 'Standalone'
             Description          = 'Standalone DFS namespace for storing public files'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespace Resource

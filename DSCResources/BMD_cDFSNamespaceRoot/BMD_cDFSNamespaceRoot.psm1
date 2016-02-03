@@ -2,23 +2,25 @@ data LocalizedData
 {
 # culture="en-US"
 ConvertFrom-StringData -StringData @'
-GettingNamespaceMessage=Getting DFS Namespace "{0}" from "{1}.{2}".
-NamespaceExistsMessage=DFS Namespace "{0}" on "{1}.{2}" exists.
-NamespaceDoesNotExistMessage=DFS Namespace "{0}" on "{1}.{2}" does not exist.
-NamespaceTargetExistsMessage=DFS Namespace "{0}" target "{3}" on "{1}.{2}" exists.
-NamespaceTargetDoesNotExistMessage=DFS Namespace "{0}" target "{3}" on "{1}.{2}" does not exist.
-SettingNamespaceMessage=Setting DFS Namespace "{0}" on "{1}.{2}".
-NamespaceUpdateParameterMessage=Setting DFS Namespace "{0}" on "{1}.{2}" parameter {3} to "{4}".
-NamespaceCreatedMessage=DFS Namespace "{0}" on "{1}.{2}" created.
-NamespaceTargetRemovedMessage=DFS Namespace "{0}" on "{1}.{2}" target "{3}" removed.
-TestingNamespaceMessage=Testing DFS Namespace "{0}" on "{1}.{2}".
-NamespaceTypeConversionError=Error- {3} DFS Namespace can not be added to non-{3} DFS Namespace "{0}" on "{1}.{2}". 
-NamespaceParameterNeedsUpdateMessage=DFS Namespace "{0}" on "{1}.{2}" {3} is different. Change required.
-NamespaceDoesNotExistButShouldMessage=DFS Namespace "{0}" on "{1}.{2}" does not exist but should. Change required.
-NamespaceTargetExistsButShouldNotMessage=DFS Namespace "{0}" target "{3}" on "{1}.{2}" exists but should not. Change required.
-NamespaceTargetDoesNotExistButShouldMessage=DFS Namespace "{0}" target "{3}" on "{1}.{2}" does not exist but should. Change required.
-NamespaceDoesNotExistAndShouldNotMessage=DFS Namespace "{0}" on "{1}.{2}" does not exists and should not. Change not required.
-NamespaceTargetDoesNotExistAndShouldNotMessage=DFS Namespace "{0}" target "{3}" on "{1}.{2}" does not exist and should not. Change not required.
+GettingNamespaceRootMessage=Getting {0} DFS Namespace Root "{1}" Target "{2}".
+NamespaceRootExistsMessage={0} DFS Namespace Root "{1}" exists.
+NamespaceRootDoesNotExistMessage={0} DFS Namespace Root "{1}" does not exist.
+NamespaceRootTargetExistsMessage={0} DFS Namespace Root "{1}" target "{2}" exists.
+NamespaceRootTargetDoesNotExistMessage={0} DFS Namespace Root "{1}" target "{2}" does not exist.
+SettingNamespaceRootMessage=Setting {0} DFS Namespace Root "{1}" Target "{2}".
+NamespaceRootUpdateParameterMessage=Setting {0} DFS Namespace Root "{1}" parameter {3} to "{4}".
+NamespaceRootTargetUpdateParameterMessage=Setting {0} DFS Namespace Root "{1}" Target "{2}" parameter {3} to "{4}".
+NamespaceRootCreatedMessage={0} DFS Namespace Root "{1}" Target "{2}" created.
+NamespaceRootTargetRemovedMessage={0} DFS Namespace Root "{1}" Target "{2}" removed.
+TestingNamespaceRootMessage=Testing {0} DFS Namespace Root "{1}" Target "{2}".
+NamespaceRootTypeConversionError=Error- {0} DFS Namespace can not be added to a {3} DFS Namespace. 
+NamespaceRootParameterNeedsUpdateMessage={0} DFS Namespace Root "{1}" {3} is different. Change required.
+NamespaceRootTargetParameterNeedsUpdateMessage={0} DFS Namespace Root "{1}" Target "{2}" {3} is different. Change required.
+NamespaceRootDoesNotExistButShouldMessage={0} DFS Namespace Root "{1}" does not exist but should. Change required.
+NamespaceRootTargetExistsButShouldNotMessage={0} DFS Namespace Root "{1}" Target "{2}" exists but should not. Change required.
+NamespaceRootTargetDoesNotExistButShouldMessage={0} DFS Namespace Root "{1}" Target "{2}" does not exist but should. Change required.
+NamespaceRootDoesNotExistAndShouldNotMessage={0} DFS Namespace Root "{1}" does not exist and should not. Change not required.
+NamespaceRootTargetDoesNotExistAndShouldNotMessage={0} DFS Namespace Root "{1}" Target "{2}" does not exist and should not. Change not required.
 '@
 }
 
@@ -30,52 +32,51 @@ function Get-TargetResource
     (
         [parameter(Mandatory = $true)]
         [String]
-        $Namespace,
+        $Path,
+
+        [parameter(Mandatory = $true)]
+        [String]
+        $TargetPath,
 
         [parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
         [String]
         $Ensure,
         
+        [parameter(Mandatory = $true)]
+        [ValidateSet('Standalone','DomainV1','DomainV2')]
         [String]
-        $ComputerName = ($ENV:COMPUTERNAME),
-
-        [String]
-        $DomainName       
+        $Type
     )       
 
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.GettingNamespaceMessage) `
-                -f $Namespace,$ComputerName,$DomainName 
+            $($LocalizedData.GettingNamespaceRootMessage) `
+                -f $Type,$Path,$TargetPath
         ) -join '' )
 
     # Generate the return object assuming absent.
     $ReturnValue = @{
-        Namespace = $Namespace
+        Path = $Path
+        TargetPath = $TargetPath
         Ensure = 'Absent'
-        ComputerName = $ComputerName
-        DomainName = $DomainName
+        Type = $Type
     }
     
     # Remove the Ensue parmeter from the bound parameters
     $null = $PSBoundParameters.Remove('Ensure')
-    
-    # Get the namespace path and target path for this namespace target
-    $NamespacePath = Get-NamespacePath @PSBoundParameters
-    $TargetPath = Get-TargetPath @PSBoundParameters
-    
+        
     # Lookup the existing Namespace root    
     $Root = Get-Root `
-        -Path $NamespacePath
+        -Path $Path
     
     if ($Root)
     {
         # The namespace exists
         Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.NamespaceExistsMessage) `
-                    -f $Namespace,$ComputerName,$DomainName 
+                $($LocalizedData.NamespaceRootExistsMessage) `
+                    -f $Type,$Path,$TargetPath
             ) -join '' )
     }
     else
@@ -83,15 +84,13 @@ function Get-TargetResource
         # The namespace does not exist
         Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.NamespaceDoesNotExistMessage) `
-                    -f $Namespace,$ComputerName,$DomainName 
+                $($LocalizedData.NamespaceRootDoesNotExistMessage) `
+                    -f $Type,$Path,$TargetPath 
             ) -join '' )
         return $ReturnValue
     }
 
     $ReturnValue += @{
-        Path                         = $Root.Path
-        Type                         = $Root.Type
         TimeToLiveSec                = $Root.TimeToLiveSec
         State                        = $Root.State
         Description                  = $Root.Description
@@ -104,7 +103,7 @@ function Get-TargetResource
     
     # DFS Root exists but does target exist?               
     $Target = Get-RootTarget `
-        -Path $NamespacePath `
+        -Path $Path `
         -TargetPath $TargetPath
 
     if ($Target)
@@ -118,8 +117,8 @@ function Get-TargetResource
         
         Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.NamespaceTargetExistsMessage) `
-                    -f $Namespace,$ComputerName,$DomainName,$TargetPath 
+                $($LocalizedData.NamespaceRootTargetExistsMessage) `
+                    -f $Type,$Path,$TargetPath
             ) -join '' )
     }
     else
@@ -127,8 +126,8 @@ function Get-TargetResource
         # The target does not exist in this namespace
         Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.NamespaceTargetDoesNotExistMessage) `
-                    -f $Namespace,$ComputerName,$DomainName,$TargetPath
+                $($LocalizedData.NamespaceRootTargetDoesNotExistMessage) `
+                    -f $Type,$Path,$TargetPath
             ) -join '' )
     }    
     
@@ -142,18 +141,21 @@ function Set-TargetResource
     (
         [parameter(Mandatory = $true)]
         [String]
-        $Namespace,
+        $Path,
+
+        [parameter(Mandatory = $true)]
+        [String]
+        $TargetPath,
 
         [parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
         [String]
         $Ensure,
         
+        [parameter(Mandatory = $true)]
+        [ValidateSet('Standalone','DomainV1','DomainV2')]
         [String]
-        $ComputerName = ($ENV:COMPUTERNAME),
-
-        [String]
-        $DomainName,
+        $Type,
 
         [String]
         $Description,
@@ -183,24 +185,13 @@ function Set-TargetResource
 
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.SettingNamespaceMessage) `
-                -f $Namespace,$ComputerName,$DomainName 
+            $($LocalizedData.SettingNamespaceRootMessage) `
+                -f $Type,$Path,$TargetPath
         ) -join '' )
-
-    # Create splat for passing to get-* functions
-    $Splat = @{
-        Namespace = $Namespace
-        ComputerName = $ComputerName
-        DomainName = $DomainName
-    }
-    
-    # Get the namespace path and target path for this namespace target
-    $NamespacePath = Get-NamespacePath @Splat
-    $TargetPath = Get-TargetPath @Splat
 
     # Lookup the existing Namespace root    
     $Root = Get-Root `
-        -Path $NamespacePath
+        -Path $Path
 
     if ($Ensure -eq 'Present')
     {
@@ -273,15 +264,15 @@ function Set-TargetResource
             {
                 # Update root settings
                 $null = Set-DfsnRoot `
-                    -Path $NamespacePath `
+                    -Path $Path `
                     @RootProperties `
                     -ErrorAction Stop
 
                 $RootProperties.GetEnumerator() | ForEach-Object -Process {                
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
-                        $($LocalizedData.NamespaceUpdateParameterMessage) `
-                            -f $Namespace,$ComputerName,$DomainName,$_.name, $_.value
+                        $($LocalizedData.NamespaceRootUpdateParameterMessage) `
+                            -f $Type,$Path,$TargetPath,$_.name, $_.value
                     ) -join '' )            
                 }
             }
@@ -324,7 +315,7 @@ function Set-TargetResource
                 {
                     # Update target settings
                     $null = Set-DfsnRootTarget `
-                        -Path $NamespacePath `
+                        -Path $Path `
                         -TargetPath $TargetPath `
                         @TargetProperties `
                         -ErrorAction Stop
@@ -334,7 +325,7 @@ function Set-TargetResource
             {
                 # Add target to Namespace
                 $null = New-DfsnRootTarget `
-                    -Path $NamespacePath `
+                    -Path $Path `
                     -TargetPath $TargetPath `
                     @TargetProperties `
                     -ErrorAction Stop
@@ -344,8 +335,8 @@ function Set-TargetResource
             $TargetProperties.GetEnumerator() | ForEach-Object -Process {                
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceUpdateParameterMessage) `
-                        -f $Namespace,$ComputerName,$DomainName,$_.name, $_.value
+                    $($LocalizedData.NamespaceRootTargetUpdateParameterMessage) `
+                        -f $Type,$Path,$TargetPath,$_.name, $_.value
                 ) -join '' )            
             }            
         }
@@ -353,26 +344,10 @@ function Set-TargetResource
         {
             # Prepare to use the PSBoundParameters as a splat to created
             # The new DFS Namespace root.
-            $null = $PSBoundParameters.Remove('Namespace')
+            $null = $PSBoundParameters.Remove('TargetPath')
             $null = $PSBoundParameters.Remove('Ensure')
-            $null = $PSBoundParameters.Remove('ComputerName')
-            $null = $PSBoundParameters.Remove('DomainName')
-            
-            $PSBoundParameters += @{
-                Type = 'Standalone'
-                TargetPath  = $TargetPath
-            }
-
-            if ($DomainName)
-            {
-                $PSBoundParameters.Type = 'DomainV2'
-            }
-
-            if (! $Description)
-            {
-                $PSBoundParameters += @{ Description = "DFS of Namespace $Namespace" }
-            } 
-            
+                        
+            # Correct the ReferralPriorityClass field
             if ($ReferralPriorityClass)
             { 
                 $PSBoundParameters.ReferralPriorityClass = ($ReferralPriorityClass -replace '-','')
@@ -386,8 +361,8 @@ function Set-TargetResource
             $PSBoundParameters.GetEnumerator() | ForEach-Object -Process {                
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceUpdateParameterMessage) `
-                        -f $Namespace,$ComputerName,$DomainName,$_.name, $_.value
+                    $($LocalizedData.NamespaceRootUpdateParameterMessage) `
+                        -f $Type,$Path,$TargetPath,$_.name, $_.value
                 ) -join '' )            
             }
         }
@@ -398,22 +373,22 @@ function Set-TargetResource
 
         # Get root target
         $Target = Get-RootTarget `
-            -Path $NamespacePath `
+            -Path $Path `
             -TargetPath $TargetPath
             
         if ($Target)                
         {
             # Remove the target from the namespace
             $null = Remove-DfsnRootTarget `
-                -Path $NamespacePath `
+                -Path $Path `
                 -TargetPath $TargetPath `
                 -Confirm:$false `
                 -ErrorAction Stop
 
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.NamespaceTargetRemovedMessage) `
-                    -f $Namespace,$ComputerName,$DomainName,$TargetPath
+                $($LocalizedData.NamespaceRootTargetRemovedMessage) `
+                    -f $Type,$Path,$TargetPath
             ) -join '' )
         }            
     }
@@ -427,18 +402,21 @@ function Test-TargetResource
     (
         [parameter(Mandatory = $true)]
         [String]
-        $Namespace,
+        $Path,
+
+        [parameter(Mandatory = $true)]
+        [String]
+        $TargetPath,
 
         [parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
         [String]
         $Ensure,
         
+        [parameter(Mandatory = $true)]
+        [ValidateSet('Standalone','DomainV1','DomainV2')]
         [String]
-        $ComputerName = ($ENV:COMPUTERNAME),
-
-        [String]
-        $DomainName,
+        $Type,
         
         [String]
         $Description,
@@ -468,27 +446,16 @@ function Test-TargetResource
    
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.TestingNamespaceMessage) `
-                -f $Namespace,$ComputerName,$DomainName 
+            $($LocalizedData.TestingNamespaceRootMessage) `
+                -f $Type,$Path,$TargetPath 
         ) -join '' )
 
     # Flag to signal whether settings are correct
     [Boolean] $DesiredConfigurationMatch = $true    
 
-    # Create splat for passing to get-* functions
-    $Splat = @{
-        Namespace = $Namespace
-        ComputerName = $ComputerName
-        DomainName = $DomainName
-    }
-
-    # Get the namespace path and target path for this namespace target
-    $NamespacePath = Get-NamespacePath @Splat
-    $TargetPath = Get-TargetPath @Splat
-
     # Lookup the existing Namespace root    
     $Root = Get-Root `
-        -Path $NamespacePath
+        -Path $Path
             
     if ($Ensure -eq 'Present')
     {
@@ -499,21 +466,12 @@ function Test-TargetResource
 
             # Changing the namespace type is not possible - the namespace
             # can only be recreated if the type should change.
-            if ((($DomainName) -and ($Root.Type -notmatch 'Domain')) -or `
-                 ((! $DomainName) -and ($Root.Type -notmatch 'Standalone')))
-            {                    
-                if ($Root.Type -eq 'Standalone')
-                {
-                    $NewType = 'Domain'
-                }
-                else
-                {
-                    $NewType = 'Standalone'
-                }
+            if (($Root.Type -replace ' ','') -ne $Type)
+            {
                 $ErrorParam = @{
                     ErrorId = 'NamespaceTypeConversionError'
-                    ErrorMessage = $($LocalizedData.NamespaceTypeConversionError) `
-                        -f $Namespace,$ComputerName,$DomainName,$NewType
+                    ErrorMessage = $($LocalizedData.NamespaceRootTypeConversionError) `
+                        -f $Type,$Path,$TargetPath,($Root.Type -replace ' ','')
                     ErrorCategory = 'InvalidOperation'
                     ErrorAction = 'Stop'
                 }
@@ -525,8 +483,8 @@ function Test-TargetResource
                 -and ($Root.Description -ne $Description)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceParameterNeedsUpdateMessage) `
-                        -f $Namespace,$ComputerName,$DomainName,'Description'
+                    $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
+                        -f $Type,$Path,$TargetPath,'Description'
                     ) -join '' )
                 $desiredConfigurationMatch = $false
             }
@@ -535,8 +493,8 @@ function Test-TargetResource
                 -and (($Root.Flags -contains 'Site Costing') -ne $EnableSiteCosting)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceParameterNeedsUpdateMessage) `
-                        -f $Namespace,$ComputerName,$DomainName,'EnableSiteCosting'
+                    $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
+                        -f $Type,$Path,$TargetPath,'EnableSiteCosting'
                     ) -join '' )
                 $desiredConfigurationMatch = $false
             }
@@ -545,8 +503,8 @@ function Test-TargetResource
                 -and (($Root.Flags -contains 'Insite Referrals') -ne $EnableInsiteReferrals)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceParameterNeedsUpdateMessage) `
-                        -f $Namespace,$ComputerName,$DomainName,'EnableInsiteReferrals'
+                    $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
+                        -f $Type,$Path,$TargetPath,'EnableInsiteReferrals'
                     ) -join '' )
                 $desiredConfigurationMatch = $false
             }
@@ -555,8 +513,8 @@ function Test-TargetResource
                 -and (($Root.Flags -contains 'AccessBased Enumeration') -ne $EnableAccessBasedEnumeration)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceParameterNeedsUpdateMessage) `
-                        -f $Namespace,$ComputerName,$DomainName,'EnableAccessBasedEnumeration'
+                    $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
+                        -f $Type,$Path,$TargetPath,'EnableAccessBasedEnumeration'
                     ) -join '' )
                 $desiredConfigurationMatch = $false
             }
@@ -565,8 +523,8 @@ function Test-TargetResource
                 -and (($Root.Flags -contains 'Root Scalability') -ne $EnableRootScalability)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceParameterNeedsUpdateMessage) `
-                        -f $Namespace,$ComputerName,$DomainName,'EnableRootScalability'
+                    $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
+                        -f $Type,$Path,$TargetPath,'EnableRootScalability'
                     ) -join '' )
                 $desiredConfigurationMatch = $false
             }
@@ -575,14 +533,14 @@ function Test-TargetResource
                 -and (($Root.Flags -contains 'Target Failback') -ne $EnableTargetFailback)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceParameterNeedsUpdateMessage) `
-                        -f $Namespace,$ComputerName,$DomainName,'EnableTargetFailback'
+                    $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
+                        -f $Type,$Path,$TargetPath,'EnableTargetFailback'
                     ) -join '' )
                 $desiredConfigurationMatch = $false
             }
 
             $Target = Get-RootTarget `
-                -Path $NamespacePath `
+                -Path $Path `
                 -TargetPath $TargetPath
 
             if ($Target)
@@ -591,8 +549,8 @@ function Test-TargetResource
                     -and ($Target.ReferralPriorityClass -ne $ReferralPriorityClass)) {
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
-                        $($LocalizedData.NamespaceParameterNeedsUpdateMessage) `
-                            -f $Namespace,$ComputerName,$DomainName,'ReferralPriorityClass'
+                        $($LocalizedData.NamespaceRootTargetParameterNeedsUpdateMessage) `
+                            -f $Type,$Path,$TargetPath,'ReferralPriorityClass'
                         ) -join '' )
                     $desiredConfigurationMatch = $false
                 }
@@ -601,8 +559,8 @@ function Test-TargetResource
                     -and ($Target.ReferralPriorityRank -ne $ReferralPriorityRank)) {
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
-                        $($LocalizedData.NamespaceParameterNeedsUpdateMessage) `
-                            -f $Namespace,$ComputerName,$DomainName,'ReferralPriorityRank'
+                        $($LocalizedData.NamespaceRootTargetParameterNeedsUpdateMessage) `
+                            -f $Type,$Path,$TargetPath,'ReferralPriorityRank'
                         ) -join '' )
                     $desiredConfigurationMatch = $false
                 }
@@ -612,8 +570,8 @@ function Test-TargetResource
                 # The Root target does not exist but should - change required
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceTargetDoesNotExistButShouldMessage) `
-                        -f $Namespace,$ComputerName,$DomainName,$TargetPath
+                    $($LocalizedData.NamespaceRootTargetDoesNotExistButShouldMessage) `
+                        -f $Type,$Path,$TargetPath
                     ) -join '' )
                 $desiredConfigurationMatch = $false                   
             }
@@ -623,8 +581,8 @@ function Test-TargetResource
             # Ths Namespace root doesn't exist but should - change required
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                 $($LocalizedData.NamespaceDoesNotExistButShouldMessage) `
-                    -f $Namespace,$ComputerName,$DomainName
+                 $($LocalizedData.NamespaceRootDoesNotExistButShouldMessage) `
+                    -f $Type,$Path,$TargetPath
                 ) -join '' )
             $desiredConfigurationMatch = $false
         }
@@ -635,7 +593,7 @@ function Test-TargetResource
         if ($Root)
         {
             $Target = Get-RootTarget `
-                -Path $NamespacePath `
+                -Path $Path `
                 -TargetPath $TargetPath
                 
             if ($Target)
@@ -643,8 +601,8 @@ function Test-TargetResource
                 # The Root target exists but should not - change required
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceTargetExistsButShouldNotMessage) `
-                        -f $Namespace,$ComputerName,$DomainName,$TargetPath
+                    $($LocalizedData.NamespaceRootTargetExistsButShouldNotMessage) `
+                        -f $Type,$Path,$TargetPath
                     ) -join '' )
                 $desiredConfigurationMatch = $false
             }
@@ -653,8 +611,8 @@ function Test-TargetResource
                 # The Namespace exists but the target doesn't - change not required
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceTargetDoesNotExistAndShouldNotMessage) `
-                        -f $Namespace,$ComputerName,$DomainName,$TargetPath
+                    $($LocalizedData.NamespaceRootTargetDoesNotExistAndShouldNotMessage) `
+                        -f $Type,$Path,$TargetPath
                     ) -join '' )
             }
         }
@@ -663,8 +621,8 @@ function Test-TargetResource
             # The Namespace does not exist (so neither does the target) - change not required
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                 $($LocalizedData.NamespaceDoesNotExistAndShouldNotMessage) `
-                    -f $Namespace,$ComputerName,$DomainName
+                 $($LocalizedData.NamespaceRootDoesNotExistAndShouldNotMessage) `
+                    -f $Type,$Path,$TargetPath
                 ) -join '' )
         }
     } # if
@@ -674,46 +632,6 @@ function Test-TargetResource
 } # Test-TargetResource
 
 # Helper Functions
-Function Get-NamespacePath {
-    param
-    (
-        [String]
-        $Namespace,
-
-        [String]
-        $ComputerName,
-
-        [String]
-        $DomainName
-    )       
-    # Determine the Namespace Path.
-    if ($DomainName)
-    {
-        $DFSRootName = $DomainName
-    }
-    else 
-    {
-        $DFSRootName = $ComputerName.ToUpper()
-    }
-    return (Join-Path -Path "\\$DFSRootName" -ChildPath $Namespace)
-}
-
-Function Get-TargetPath {
-    param
-    (
-        [String]
-        $Namespace,
-
-        [String]
-        $ComputerName,
-
-        [String]
-        $DomainName
-    )       
-    # Determine the Target Path.
-    return (Join-Path -Path "\\$($ComputerName.ToUpper())" -ChildPath $Namespace)
-}
-
 Function Get-Root {
     param
     (

@@ -1,3 +1,4 @@
+```powershell
 Configuration DFSNamespace_Domain_MultipleTarget
 {
     Import-DscResource -ModuleName 'cDFS'
@@ -23,33 +24,32 @@ Configuration DFSNamespace_Domain_MultipleTarget
        # Configure the namespace
         cDFSNamespace DFSNamespace_Domain_Software_CA
         {
-            Namespace            = 'software' 
-            ComputerName         = 'ca-fileserver'           
+            Path                 = '\\contoso.com\software' 
+            TargetPath           = '\\ca-fileserver\software'           
             Ensure               = 'present'
-            DomainName           = 'contoso.com' 
+            Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespace Resource
 
         cDFSNamespace DFSNamespace_Domain_Software_MA
         {
-            Namespace            = 'software' 
-            ComputerName         = 'ma-fileserver'           
+            Path                 = '\\contoso.com\software' 
+            TargetPath           = '\\ma-fileserver\software'           
             Ensure               = 'present'
-            DomainName           = 'contoso.com' 
+            Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespace Resource
 
         cDFSNamespace DFSNamespace_Domain_Software_NY
         {
-            Namespace            = 'software' 
-            ComputerName         = 'ny-fileserver'           
+            Path                 = '\\contoso.com\software' 
+            TargetPath           = '\\ma-fileserver\software'           
             Ensure               = 'present'
-            DomainName           = 'contoso.com' 
+            Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespace Resource
-
     }
 }
