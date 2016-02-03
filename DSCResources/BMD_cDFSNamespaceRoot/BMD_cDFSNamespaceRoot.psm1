@@ -344,7 +344,6 @@ function Set-TargetResource
         {
             # Prepare to use the PSBoundParameters as a splat to created
             # The new DFS Namespace root.
-            $null = $PSBoundParameters.Remove('TargetPath')
             $null = $PSBoundParameters.Remove('Ensure')
                         
             # Correct the ReferralPriorityClass field

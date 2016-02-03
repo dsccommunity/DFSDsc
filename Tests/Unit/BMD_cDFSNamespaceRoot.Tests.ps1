@@ -71,7 +71,7 @@ try
             Path                         = $Namespace.Path 
             TargetPath                   = $Namespace.TargetPath
             Ensure                       = $Namespace.Ensure
-            Type                         = $Namespace.Tyep
+            Type                         = $Namespace.Type
         }
         $NamespaceRoot = [PSObject]@{
             Path                         = $Namespace.Path
