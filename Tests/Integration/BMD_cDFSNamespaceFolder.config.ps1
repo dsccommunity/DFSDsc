@@ -23,7 +23,7 @@ Configuration BMD_cDFSNamespaceFolder_Config {
             TargetPath                   = $NamespaceFolder.TargetPath
             Ensure                       = $NamespaceFolder.Ensure
             Description                  = $NamespaceFolder.Description
-            EnableSiteCosting            = $NamespaceFolder.EnableSiteCosting
+            EnableInsiteReferrals        = $NamespaceFolder.EnableInsiteReferrals
             EnableTargetFailback         = $NamespaceFolder.EnableTargetFailback
             ReferralPriorityClass        = $NamespaceFolder.ReferralPriorityClass
             ReferralPriorityRank         = $NamespaceFolder.ReferralPriorityRank
