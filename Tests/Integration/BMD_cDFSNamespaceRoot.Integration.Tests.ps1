@@ -103,7 +103,7 @@ try
             -Force `
             -Confirm:$false
         Remove-SMBShare `
-            -Name $Namespace.Namespace `
+            -Name $NamespaceName `
             -Confirm:$false
         Remove-Item `
             -Path $ShareFolder `
