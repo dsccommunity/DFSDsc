@@ -1,5 +1,5 @@
-[ClassVersion("1.0.0.0"), FriendlyName("cDFSNamespace")]
-class HWG_cDFSNamespace : OMI_BaseResource
+[ClassVersion("1.0.0.0"), FriendlyName("cDFSNamespaceRoot")]
+class BMD_cDFSNamespaceRoot : OMI_BaseResource
 {
     [key, Description("Specifies a path for the root of a DFS namespace.")] String Path;
     [key, Description("Specifies a path for a root target of the DFS namespace.")] String TargetPath;
