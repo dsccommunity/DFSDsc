@@ -118,14 +118,14 @@ try
             -Force `
             -Confirm:$false
         Remove-SMBShare `
-            -Name $NamespaceRootName `
+            -Name $NamespaceFolderName `
             -Confirm:$false
         Remove-Item `
-            -Path $ShareFolderRoot `
+            -Path $ShareFolderFolder `
             -Recurse `
             -Force
         Remove-SMBShare `
-            -Name $NamespaceFolderName `
+            -Name $NamespaceRootName `
             -Confirm:$false
         Remove-Item `
             -Path $ShareFolderRoot `
