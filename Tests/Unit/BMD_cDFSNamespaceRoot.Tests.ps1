@@ -512,12 +512,12 @@ try
                 Mock Get-DFSNRootTarget
     
                 It 'should throw exception' {                        
-                    $errorId = 'NamespaceTypeConversionError'
-                    $errorMessage = $($LocalizedData.NamespaceTypeConversionError) `
+                    $errorId = 'NamespaceRootTypeConversionError'
+                    $errorMessage = $($LocalizedData.NamespaceRootTypeConversionError) `
                         -f 'Standalone',$Namespace.Path,$Namespace.TargetPath,'DomainV2'
                     $errorCategory = 'InvalidOperation'
                     $exception = New-Object `
-                        -TypeName Microsoft.Management.Infrastructure.CimException `
+                        -TypeName System.InvalidOperationException `
                         -ArgumentList $errorMessage
                     $errorRecord = New-Object `
                         -TypeName System.Management.Automation.ErrorRecord `
