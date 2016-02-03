@@ -73,7 +73,7 @@ try
             -Name $NamespaceFolderName `
             -Path $ShareFolderFolder `
             -FullAccess 'Everyone'
-        New-FSRMRoot `
+        New-DFSNRoot `
             -Path $NamespaceRoot.Path `
             -TargetPath $NamespaceRoot.TargetPath `
             -Type Standalone
