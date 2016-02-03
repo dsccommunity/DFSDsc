@@ -21,7 +21,7 @@ Configuration DFSNamespace_Domain_SingleTarget
         }
 
        # Configure the namespace
-        cDFSNamespace DFSNamespace_Domain_Departments
+        cDFSNamespaceRoot DFSNamespaceRoot_Domain_Departments
         {
             Path                 = '\\contoso.com\departments' 
             TargetPath           = '\\fs_1\departments'
@@ -29,6 +29,6 @@ Configuration DFSNamespace_Domain_SingleTarget
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing departmental files'
             PsDscRunAsCredential = $Credential
-        } # End of DFSNamespace Resource
+        } # End of DFSNamespaceRoot Resource
     }
 }

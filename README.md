@@ -267,8 +267,11 @@ configuration Sample_cDFSRepGroup_FullMesh
 
 
 ## Namespace Resources
-### cDFSNameSpaceRoot
- This resource is used to create, edit or remove standalone or domain based DFS namespaces.  When the server is the last server in the namespace, the namespace itself will be removed. 
+### cDFSNameSpace
+**This resource has been deprecated. Please use cDFSNamespaceRoot and cDFSNamespaceFolder instead.**
+
+### cDFSNamespaceRoot
+This resource is used to create, edit or remove standalone or domain based DFS namespaces.  When the server is the last server in the namespace, the namespace itself will be removed. 
 
 #### Parameters
 * **Path**: Specifies a path for the root of a DFS namespace. String. Required.
@@ -284,8 +287,8 @@ configuration Sample_cDFSRepGroup_FullMesh
 * **ReferralPriorityClass**: Specifies the target priority class for a DFS namespace root. { Global-High | SiteCost-High | SiteCost-Normal | SiteCost-Low | Global-Low }. Optional.
 * **ReferralPriorityRank**: Specifies the priority rank, as an integer, for a root target of the DFS namespace. Uint32. Optional
     
-### cDFSNameSpaceFolder
- This resource is used to create, edit or remove folders from DFS namespaces.  When a target is the last target in a namespace folder, the namespace folder itself will be removed. 
+### cDFSNamespaceFolder
+This resource is used to create, edit or remove folders from DFS namespaces.  When a target is the last target in a namespace folder, the namespace folder itself will be removed. 
 
 #### Parameters
 * **Path**: Specifies a path for the DSF folder within an existing DFS Namespace. String. Required.
@@ -323,7 +326,7 @@ Configuration DFSNamespace_Domain_SingleTarget
         }
 
        # Configure the namespace
-        cDFSNamespace DFSNamespace_Domain_Departments
+        cDFSNamespaceRoot DFSNamespace_Domain_Departments
         {
             Path                 = '\\contoso.com\departments' 
             TargetPath           = '\\fs_1\departments'
@@ -331,7 +334,7 @@ Configuration DFSNamespace_Domain_SingleTarget
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing departmental files'
             PsDscRunAsCredential = $Credential
-        } # End of DFSNamespace Resource
+        } # End of DFSNamespaceRoot Resource
     }
 }
 ```
@@ -361,7 +364,7 @@ Configuration DFSNamespace_Domain_MultipleTarget
         }
 
        # Configure the namespace
-        cDFSNamespace DFSNamespace_Domain_Software_CA
+        cDFSNamespaceRoot DFSNamespaceRoot_Domain_Software_CA
         {
             Path                 = '\\contoso.com\software' 
             TargetPath           = '\\ca-fileserver\software'           
@@ -369,9 +372,9 @@ Configuration DFSNamespace_Domain_MultipleTarget
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
             PsDscRunAsCredential = $Credential
-        } # End of DFSNamespace Resource
+        } # End of DFSNamespaceRoot Resource
 
-        cDFSNamespace DFSNamespace_Domain_Software_MA
+        cDFSNamespaceRoot DFSNamespaceRoot_Domain_Software_MA
         {
             Path                 = '\\contoso.com\software' 
             TargetPath           = '\\ma-fileserver\software'           
@@ -379,9 +382,9 @@ Configuration DFSNamespace_Domain_MultipleTarget
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
             PsDscRunAsCredential = $Credential
-        } # End of DFSNamespace Resource
+        } # End of DFSNamespaceRoot Resource
 
-        cDFSNamespace DFSNamespace_Domain_Software_NY
+        cDFSNamespaceRoot DFSNamespaceRoot_Domain_Software_NY
         {
             Path                 = '\\contoso.com\software' 
             TargetPath           = '\\ma-fileserver\software'           
@@ -389,7 +392,7 @@ Configuration DFSNamespace_Domain_MultipleTarget
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
             PsDscRunAsCredential = $Credential
-        } # End of DFSNamespace Resource
+        } # End of DFSNamespaceRoot Resource
     }
 }
 ```
@@ -419,7 +422,7 @@ Configuration DFSNamespace_Standalone_Public
         }
 
        # Configure the namespace
-        cDFSNamespace DFSNamespace_Standalone_Public
+        cDFSNamespaceRoot DFSNamespaceRoot_Standalone_Public
         {
             Path                 = '\\fileserver1\public'
             TargetPath           = '\\fileserver1\public'
@@ -427,7 +430,7 @@ Configuration DFSNamespace_Standalone_Public
             Type                 = 'Standalone'
             Description          = 'Standalone DFS namespace for storing public files'
             PsDscRunAsCredential = $Credential
-        } # End of DFSNamespace Resource
+        } # End of DFSNamespaceRoot Resource
     }
 }
 ```
