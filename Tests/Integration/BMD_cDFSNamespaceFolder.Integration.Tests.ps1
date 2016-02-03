@@ -100,7 +100,7 @@ try
             $NamespaceFolderNew.Description                   | Should Be $NamespaceFolder.Description
             $NamespaceFolderNew.NamespacePath                 | Should Be $NamespaceFolder.Path
             $NamespaceFolderNew.Flags                         | Should Be @('Insite Referrals','Target Failback')
-            $NamespaceFolderTargetNew = Get-DfsnRootTarget -Path $NamespaceFolder.Path -TargetPath $NamespaceFolder.TargetPath
+            $NamespaceFolderTargetNew = Get-DfsnFolderTarget -Path $NamespaceFolder.Path -TargetPath $NamespaceFolder.TargetPath
             $NamespaceFolderTargetNew.Path                    | Should Be $NamespaceFolder.Path
             $NamespaceFolderTargetNew.NamespacePath           | Should Be $NamespaceFolder.Path
             $NamespaceFolderTargetNew.TargetPath              | Should Be $NamespaceFolder.TargetPath
@@ -109,6 +109,10 @@ try
         }
         
         # Clean up
+        Remove-DFSNFolder `
+            -Path $NamespaceFolder.Path `
+            -Force `
+            -Confirm:$false
         Remove-DFSNRoot `
             -Path $NamespaceRoot.Path `
             -Force `
