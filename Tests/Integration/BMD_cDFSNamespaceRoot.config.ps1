@@ -14,7 +14,7 @@ $Namespace = @{
     ReferralPriorityRank         = 10
 }
 
-Configuration HWG_cDFSNamespaceRoot_Config {
+Configuration BMD_cDFSNamespaceRoot_Config {
     Import-DscResource -ModuleName cDFS
     node localhost {
         cDFSNamespaceRoot Integration_Test {
