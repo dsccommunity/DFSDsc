@@ -1,7 +1,7 @@
-$NamespaceName = 'IntegrationTestNamespace'
-$Namespace = @{
-    Path                         = "\\$($ENV:ComputerName)\$NamespaceName"
-    TargetPath                   = "\\$($ENV:ComputerName)\$NamespaceName" 
+$NamespaceRootName = 'IntegrationTestNamespace'
+$NamespaceRoot = @{
+    Path                         = "\\$($ENV:ComputerName)\$NamespaceRootName"
+    TargetPath                   = "\\$($ENV:ComputerName)\$NamespaceRootName" 
     Ensure                       = 'Present'
     Type                         = 'Standalone'
     Description                  = 'Integration test namespace'
@@ -18,19 +18,19 @@ Configuration BMD_cDFSNamespaceRoot_Config {
     Import-DscResource -ModuleName cDFS
     node localhost {
         cDFSNamespaceRoot Integration_Test {
-            Path                         = $Namespace.Path 
-            TargetPath                   = $Namespace.TargetPath
-            Ensure                       = $Namespace.Ensure
-            Type                         = $Namespace.Type
-            Description                  = $Namespace.Description
-            EnableSiteCosting            = $Namespace.EnableSiteCosting
-            EnableInsiteReferrals        = $Namespace.EnableInsiteReferrals
-            EnableAccessBasedEnumeration = $Namespace.EnableAccessBasedEnumeration
+            Path                         = $NamespaceRoot.Path 
+            TargetPath                   = $NamespaceRoot.TargetPath
+            Ensure                       = $NamespaceRoot.Ensure
+            Type                         = $NamespaceRoot.Type
+            Description                  = $NamespaceRoot.Description
+            EnableSiteCosting            = $NamespaceRoot.EnableSiteCosting
+            EnableInsiteReferrals        = $NamespaceRoot.EnableInsiteReferrals
+            EnableAccessBasedEnumeration = $NamespaceRoot.EnableAccessBasedEnumeration
             # Not supported by Standalone Namespaces
-            # EnableRootScalability        = $Namespace.EnableRootScalability
-            EnableTargetFailback         = $Namespace.EnableTargetFailback
-            ReferralPriorityClass        = $Namespace.ReferralPriorityClass
-            ReferralPriorityRank         = $Namespace.ReferralPriorityRank
+            # EnableRootScalability        = $NamespaceRoot.EnableRootScalability
+            EnableTargetFailback         = $NamespaceRoot.EnableTargetFailback
+            ReferralPriorityClass        = $NamespaceRoot.ReferralPriorityClass
+            ReferralPriorityRank         = $NamespaceRoot.ReferralPriorityRank
         }
     }
 }

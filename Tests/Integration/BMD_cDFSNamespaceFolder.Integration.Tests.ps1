@@ -1,5 +1,5 @@
 $Global:DSCModuleName   = 'cDFS'
-$Global:DSCResourceName = 'BMD_cDFSNamespaceRoot'
+$Global:DSCResourceName = 'BMD_cDFSNamespaceFolder'
 
 #region HEADER
 [String] $moduleRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))
@@ -64,6 +64,19 @@ try
             -Name $NamespaceRootName `
             -Path $ShareFolderRoot `
             -FullAccess 'Everyone'
+        [String] $RandomFileName = [System.IO.Path]::GetRandomFileName()
+        [String] $ShareFolderFolder = Join-Path -Path $env:Temp -ChildPath "$($Global:DSCResourceName)_$RandomFileName" 
+        New-Item `
+            -Path $ShareFolderFolder `
+            -Type Directory
+        New-SMBShare `
+            -Name $NamespaceFolderName `
+            -Path $ShareFolderFolder `
+            -FullAccess 'Everyone'
+        New-FSRMRoot `
+            -Path $NamespaceRoot.Path `
+            -TargetPath $NamespaceRoot.TargetPath `
+            -Type Standalone
             
         #region DEFAULT TESTS
         It 'Should compile without throwing' {
@@ -80,20 +93,19 @@ try
 
         It 'Should have set the resource and all the parameters should match' {
             # Get the Rule details
-            $NamespaceRootNew = Get-DfsnRoot -Path $NamespaceRoot.Path
-            $NamespaceRootNew.Path                          | Should Be $NamespaceRoot.Path
-            $NamespaceRootNew.Type                          | Should Be $NamespaceRoot.Type
-            $NamespaceRootNew.TimeToLiveSec                 | Should Be 300
-            $NamespaceRootNew.State                         | Should Be 'Online'
-            $NamespaceRootNew.Description                   | Should Be $NamespaceRoot.Description
-            $NamespaceRootNew.NamespacePath                 | Should Be $NamespaceRoot.Path
-            $NamespaceRootNew.Flags                         | Should Be @('Site Costing','Insite Referrals','AccessBased Enumeration','Target Failback')
-            $NamespaceRootTargetNew = Get-DfsnRootTarget -Path $NamespaceRoot.Path -TargetPath $NamespaceRoot.TargetPath
-            $NamespaceRootTargetNew.Path                    | Should Be $NamespaceRoot.Path
-            $NamespaceRootTargetNew.NamespacePath           | Should Be $NamespaceRoot.Path
-            $NamespaceRootTargetNew.TargetPath              | Should Be $NamespaceRoot.TargetPath
-            $NamespaceRootTargetNew.ReferralPriorityClass   | Should Be $NamespaceRoot.ReferralPriorityClass
-            $NamespaceRootTargetNew.ReferralPriorityRank    | Should Be $NamespaceRoot.ReferralPriorityRank
+            $NamespaceFolderNew = Get-DfsnFolder -Path $NamespaceFolder.Path
+            $NamespaceFolderNew.Path                          | Should Be $NamespaceFolder.Path
+            $NamespaceFolderNew.TimeToLiveSec                 | Should Be 300
+            $NamespaceFolderNew.State                         | Should Be 'Online'
+            $NamespaceFolderNew.Description                   | Should Be $NamespaceFolder.Description
+            $NamespaceFolderNew.NamespacePath                 | Should Be $NamespaceFolder.Path
+            $NamespaceFolderNew.Flags                         | Should Be @('Insite Referrals','Target Failback')
+            $NamespaceFolderTargetNew = Get-DfsnRootTarget -Path $NamespaceFolder.Path -TargetPath $NamespaceFolder.TargetPath
+            $NamespaceFolderTargetNew.Path                    | Should Be $NamespaceFolder.Path
+            $NamespaceFolderTargetNew.NamespacePath           | Should Be $NamespaceFolder.Path
+            $NamespaceFolderTargetNew.TargetPath              | Should Be $NamespaceFolder.TargetPath
+            $NamespaceFolderTargetNew.ReferralPriorityClass   | Should Be $NamespaceFolder.ReferralPriorityClass
+            $NamespaceFolderTargetNew.ReferralPriorityRank    | Should Be $NamespaceFolder.ReferralPriorityRank
         }
         
         # Clean up
@@ -103,6 +115,13 @@ try
             -Confirm:$false
         Remove-SMBShare `
             -Name $NamespaceRootName `
+            -Confirm:$false
+        Remove-Item `
+            -Path $ShareFolderRoot `
+            -Recurse `
+            -Force
+        Remove-SMBShare `
+            -Name $NamespaceFolderName `
             -Confirm:$false
         Remove-Item `
             -Path $ShareFolderRoot `
