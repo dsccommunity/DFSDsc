@@ -301,7 +301,7 @@ This resource is used to create, edit or remove folders from DFS namespaces.  Wh
 * **ReferralPriorityRank**: Specifies the priority rank, as an integer, for a target in the DFS namespace. Uint32. Optional
 
 ### Examples
-Create an AD Domain V2 based DFS namespace called departments in the domain contoso.com with a single target on the computer fs_1.
+Create an AD Domain V2 based DFS namespace called departments in the domain contoso.com with a single root target on the computer fs_1. Two subfolders are defined with targets that direct to shares on servers fs_3 and fs_8.
 ```powershell
 Configuration DFSNamespace_Domain_SingleTarget
 {
@@ -326,7 +326,7 @@ Configuration DFSNamespace_Domain_SingleTarget
         }
 
        # Configure the namespace
-        cDFSNamespaceRoot DFSNamespace_Domain_Departments
+        cDFSNamespaceRoot DFSNamespaceRoot_Domain_Departments
         {
             Path                 = '\\contoso.com\departments' 
             TargetPath           = '\\fs_1\departments'
@@ -335,11 +335,30 @@ Configuration DFSNamespace_Domain_SingleTarget
             Description          = 'AD Domain based DFS namespace for storing departmental files'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceRoot Resource
+
+       # Configure the namespace folders
+        cDFSNamespaceFolder DFSNamespaceFolder_Domain_Finance
+        {
+            Path                 = '\\contoso.com\departments\finance' 
+            TargetPath           = '\\fs_3\Finance'
+            Ensure               = 'present'
+            Description          = 'AD Domain based DFS namespace folder for storing finance files'
+            PsDscRunAsCredential = $Credential
+        } # End of cDFSNamespaceFolder Resource
+
+        cDFSNamespaceFolder DFSNamespaceFolder_Domain_Management
+        {
+            Path                 = '\\contoso.com\departments\management' 
+            TargetPath           = '\\fs_8\Management'
+            Ensure               = 'present'
+            Description          = 'AD Domain based DFS namespace folder for storing management files'
+            PsDscRunAsCredential = $Credential
+        } # End of cDFSNamespaceFolder Resource
     }
 }
 ```
 
-Create an AD Domain V2 based DFS namespace called software in the domain contoso.com with a three targets on the servers ca-fileserver, ma-fileserver and ny-fileserver.
+Create an AD Domain V2 based DFS namespace called software in the domain contoso.com with a three targets on the servers ca-fileserver, ma-fileserver and ny-fileserver. It also creates a IT folder in each namespace.
 ```powershell
 Configuration DFSNamespace_Domain_MultipleTarget
 {
@@ -393,11 +412,40 @@ Configuration DFSNamespace_Domain_MultipleTarget
             Description          = 'AD Domain based DFS namespace for storing software installers'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceRoot Resource
+
+        # Configure the namespace folders
+        cDFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_CA
+        {
+            Path                 = '\\contoso.com\software\it' 
+            TargetPath           = '\\ca-fileserver\it'           
+            Ensure               = 'present'
+            Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
+            PsDscRunAsCredential = $Credential
+        } # End of cDFSNamespaceFolder Resource
+
+        cDFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_MA
+        {
+            Path                 = '\\contoso.com\software\it' 
+            TargetPath           = '\\ma-fileserver\it'           
+            Ensure               = 'present'
+            Type                 = 'DomainV2'
+            Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
+            PsDscRunAsCredential = $Credential
+        } # End of cDFSNamespaceFolder Resource
+
+        cDFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_NY
+        {
+            Path                 = '\\contoso.com\software\it' 
+            TargetPath           = '\\ma-fileserver\it'           
+            Ensure               = 'present'
+            Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
+            PsDscRunAsCredential = $Credential
+        } # End of cDFSNamespaceFolder Resource
     }
 }
 ```
 
-Create a standalone DFS namespace called public on the server fileserver1.
+Create a standalone DFS namespace called public on the server fileserver1. A namespace folder called Brochures is also created in this namespace that targets the \\fileserver2\brochures share.
 ```powershell
 Configuration DFSNamespace_Standalone_Public
 {
@@ -431,6 +479,16 @@ Configuration DFSNamespace_Standalone_Public
             Description          = 'Standalone DFS namespace for storing public files'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceRoot Resource
+
+       # Configure the namespace folder
+        cDFSNamespaceFolder DFSNamespaceFolder_Standalone_PublicBrochures
+        {
+            Path                 = '\\fileserver1\public\brochures'
+            TargetPath           = '\\fileserver2\brochures'
+            Ensure               = 'present'
+            Description          = 'Standalone DFS namespace for storing public brochure files'
+            PsDscRunAsCredential = $Credential
+        } # End of DFSNamespaceFolder Resource
     }
 }
 ```

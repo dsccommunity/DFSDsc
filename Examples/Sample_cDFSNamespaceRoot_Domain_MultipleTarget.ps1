@@ -51,5 +51,34 @@ Configuration DFSNamespace_Domain_MultipleTarget
             Description          = 'AD Domain based DFS namespace for storing software installers'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceRoot Resource
+
+        # Configure the namespace folders
+        cDFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_CA
+        {
+            Path                 = '\\contoso.com\software\it' 
+            TargetPath           = '\\ca-fileserver\it'           
+            Ensure               = 'present'
+            Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
+            PsDscRunAsCredential = $Credential
+        } # End of cDFSNamespaceFolder Resource
+
+        cDFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_MA
+        {
+            Path                 = '\\contoso.com\software\it' 
+            TargetPath           = '\\ma-fileserver\it'           
+            Ensure               = 'present'
+            Type                 = 'DomainV2'
+            Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
+            PsDscRunAsCredential = $Credential
+        } # End of cDFSNamespaceFolder Resource
+
+        cDFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_NY
+        {
+            Path                 = '\\contoso.com\software\it' 
+            TargetPath           = '\\ma-fileserver\it'           
+            Ensure               = 'present'
+            Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
+            PsDscRunAsCredential = $Credential
+        } # End of cDFSNamespaceFolder Resource
     }
 }

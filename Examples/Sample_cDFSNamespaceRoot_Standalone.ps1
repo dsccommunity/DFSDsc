@@ -30,5 +30,15 @@ Configuration DFSNamespace_Standalone_Public
             Description          = 'Standalone DFS namespace for storing public files'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceRoot Resource
+
+       # Configure the namespace folder
+        cDFSNamespaceFolder DFSNamespaceFolder_Standalone_PublicBrochures
+        {
+            Path                 = '\\fileserver1\public\brochures'
+            TargetPath           = '\\fileserver2\brochures'
+            Ensure               = 'present'
+            Description          = 'Standalone DFS namespace for storing public brochure files'
+            PsDscRunAsCredential = $Credential
+        } # End of DFSNamespaceFolder Resource
     }
 }
