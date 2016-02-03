@@ -1,4 +1,4 @@
-[ClassVersion("1.0.0.0"), FriendlyName("cDFSNamespaceFolde")]
+[ClassVersion("1.0.0.0"), FriendlyName("cDFSNamespaceFolder")]
 class BMD_cDFSNamespaceFolder : OMI_BaseResource
 {
     [key, Description("Specifies a path for the root of a DFS namespace.")] String Path;
