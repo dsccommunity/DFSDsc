@@ -96,12 +96,12 @@ try
 
         Describe "$($Global:DSCResourceName)\Get-TargetResource" {
     
-            Context 'Namespace does not exist' {
+            Context 'Namespace Root does not exist' {
                 
                 Mock Get-DFSNRoot
                 Mock Get-DFSNRootTarget
     
-                It 'should return absent namespace' {
+                It 'should return absent namespace root' {
                     $Result = Get-TargetResource @NamespaceSplat
                     $Result.Ensure | Should Be 'Absent'
                 }
@@ -111,12 +111,12 @@ try
                 }
             }
     
-            Context 'Namespace does exist but target does not' {
+            Context 'Namespace Root does exist but target does not' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
     
-                It 'should return correct replication group' {
+                It 'should return correct namespace root' {
                     $Result = Get-TargetResource @NamespaceSplat
                     $Result.Path                         | Should Be $Namespace.Path
                     $Result.TargetPath                   | Should Be $Namespace.TargetPath
@@ -140,12 +140,12 @@ try
                 }
             }
 
-            Context 'Namespace and target exists' {
+            Context 'Namespace Root and Target exists' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget -MockWith { $NamespaceTarget }
     
-                It 'should return correct replication group' {
+                It 'should return correct namespace root and target' {
                     $Result = Get-TargetResource @NamespaceSplat
                     $Result.Path                         | Should Be $Namespace.Path
                     $Result.TargetPath                   | Should Be $Namespace.TargetPath
@@ -177,7 +177,7 @@ try
             Mock Set-DfsnRootTarget
             Mock Remove-DfsnRootTarget
 
-            Context 'Namespace does not exist but should' {
+            Context 'Namespace Root does not exist but should' {
                 
                 Mock Get-DFSNRoot
                 Mock Get-DFSNRootTarget
@@ -199,7 +199,7 @@ try
                 }
             }
 
-            Context 'Namespace exists and should but target does not' {
+            Context 'Namespace Root exists and should but Target does not' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -221,7 +221,7 @@ try
                 }
             }
 
-            Context 'Namespace exists and should but has a different Description' {
+            Context 'Namespace Root exists and should but has a different Description' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -244,7 +244,7 @@ try
                 }
             }
 
-            Context 'Namespace exists and should but has a different EnableSiteCosting' {
+            Context 'Namespace Root exists and should but has a different EnableSiteCosting' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -267,7 +267,7 @@ try
                 }
             }
 
-            Context 'Namespace exists and should but has a different EnableInsiteReferrals' {
+            Context 'Namespace Root exists and should but has a different EnableInsiteReferrals' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -290,7 +290,7 @@ try
                 }
             }
 
-            Context 'Namespace exists and should but has a different EnableAccessBasedEnumeration' {
+            Context 'Namespace Root exists and should but has a different EnableAccessBasedEnumeration' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -313,7 +313,7 @@ try
                 }
             }
 
-            Context 'Namespace exists and should but has a different EnableRootScalability' {
+            Context 'Namespace Root exists and should but has a different EnableRootScalability' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -336,7 +336,7 @@ try
                 }
             }
 
-            Context 'Namespace exists and should but has a different EnableTargetFailback' {
+            Context 'Namespace Root exists and should but has a different EnableTargetFailback' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -359,7 +359,7 @@ try
                 }
             }
 
-            Context 'Namespace and target exists and should' {
+            Context 'Namespace Root and Target exists and should' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget -MockWith { $NamespaceTarget }
@@ -381,7 +381,7 @@ try
                 }
             }
 
-            Context 'Namespace and target exists and should but has different ReferralPriorityClass' {
+            Context 'Namespace Root and Target exists and should but has different ReferralPriorityClass' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget -MockWith { $NamespaceTarget }
@@ -404,7 +404,7 @@ try
                 }
             }
     
-            Context 'Namespace and target exists and should but has different ReferralPriorityRank' {
+            Context 'Namespace Root and Target exists and should but has different ReferralPriorityRank' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget -MockWith { $NamespaceTarget }
@@ -427,7 +427,7 @@ try
                 }
             }
 
-            Context 'Namespace target exists but should not' {
+            Context 'Namespace Root and Target exists but should not' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget -MockWith { $NamespaceTarget }
@@ -450,7 +450,7 @@ try
                 }
             }
 
-            Context 'Namespace target does not exist but should not' {
+            Context 'Namespace Root exists but Target does not exist and should not' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -476,7 +476,7 @@ try
 
         Describe "$($Global:DSCResourceName)\Test-TargetResource" {
 
-            Context 'Namespace does not exist but should' {
+            Context 'Namespace Root does not exist but should' {
                 
                 Mock Get-DFSNRoot
                 Mock Get-DFSNRootTarget
@@ -491,7 +491,7 @@ try
                 }
             }
 
-            Context 'Namespace exists and should but target does not' {
+            Context 'Namespace Root exists and should but Target does not' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -506,7 +506,7 @@ try
                 }
             }
 
-            Context 'Namespace exists and should but a different target type is specified' {
+            Context 'Namespace Root exists and should but a different Target type is specified' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -533,7 +533,7 @@ try
                 }
             }
 
-            Context 'Namespace exists and should but has a different Description' {
+            Context 'Namespace Root exists and should but has a different Description' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -549,7 +549,7 @@ try
                 }
             }
 
-            Context 'Namespace exists and should but has a different EnableSiteCosting' {
+            Context 'Namespace Root exists and should but has a different EnableSiteCosting' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -565,7 +565,7 @@ try
                 }
             }
 
-            Context 'Namespace exists and should but has a different EnableInsiteReferrals' {
+            Context 'Namespace Root exists and should but has a different EnableInsiteReferrals' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -581,7 +581,7 @@ try
                 }
             }
 
-            Context 'Namespace exists and should but has a different EnableAccessBasedEnumeration' {
+            Context 'Namespace Root exists and should but has a different EnableAccessBasedEnumeration' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -597,7 +597,7 @@ try
                 }
             }
 
-            Context 'Namespace exists and should but has a different EnableRootScalability' {
+            Context 'Namespace Root exists and should but has a different EnableRootScalability' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -613,7 +613,7 @@ try
                 }
             }
 
-            Context 'Namespace exists and should but has a different EnableTargetFailback' {
+            Context 'Namespace Root exists and should but has a different EnableTargetFailback' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -629,7 +629,7 @@ try
                 }
             }
 
-            Context 'Namespace exists and should but has a different ReferralPriorityClass' {
+            Context 'Namespace Root exists and should but has a different ReferralPriorityClass' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -645,7 +645,7 @@ try
                 }
             }
 
-            Context 'Namespace exists and should but has a different ReferralPriorityRank' {
+            Context 'Namespace Root exists and should but has a different ReferralPriorityRank' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
@@ -661,7 +661,7 @@ try
                 }
             }
 
-            Context 'Namespace and target exists and should' {
+            Context 'Namespace Root and Target exists and should' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget -MockWith { $NamespaceTarget }
@@ -676,7 +676,7 @@ try
                 }
             }
 
-            Context 'Namespace target exists but should not' {
+            Context 'Namespace Target exists but should not' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget -MockWith { $NamespaceTarget }
@@ -692,7 +692,7 @@ try
                 }
             }
 
-            Context 'Namespace target does not exist but should not' {
+            Context 'Namespace Target does not exist but should not' {
                 
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget

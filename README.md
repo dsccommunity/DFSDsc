@@ -284,6 +284,19 @@ configuration Sample_cDFSRepGroup_FullMesh
 * **ReferralPriorityClass**: Specifies the target priority class for a DFS namespace root. { Global-High | SiteCost-High | SiteCost-Normal | SiteCost-Low | Global-Low }. Optional.
 * **ReferralPriorityRank**: Specifies the priority rank, as an integer, for a root target of the DFS namespace. Uint32. Optional
     
+### cDFSNameSpaceFolder
+ This resource is used to create, edit or remove folders from DFS namespaces.  When a target is the last target in a namespace folder, the namespace folder itself will be removed. 
+
+#### Parameters
+* **Path**: Specifies a path for the DSF folder within an existing DFS Namespace. String. Required.
+* **TargetPath**: Specifies a path for a target for the DFS namespace folder. String. Required.
+* **Ensure**: Specifies if the DFS Namespace folder should exist. { Absent | Present }. String. Required.
+* **Description**: A description for the namespace folder. String. Optional.
+* **EnableInsiteReferrals**: Indicates whether a DFS namespace server provides a client only with referrals that are in the same site as the client. Boolean. Optional.
+* **EnableTargetFailback**: Indicates whether a DFS namespace uses target failback. Boolean. Optional
+* **ReferralPriorityClass**: Specifies the target priority class for a DFS namespace folder. { Global-High | SiteCost-High | SiteCost-Normal | SiteCost-Low | Global-Low }. Optional.
+* **ReferralPriorityRank**: Specifies the priority rank, as an integer, for a target in the DFS namespace. Uint32. Optional
+
 ### Examples
 Create an AD Domain V2 based DFS namespace called departments in the domain contoso.com with a single target on the computer fs_1.
 ```powershell
