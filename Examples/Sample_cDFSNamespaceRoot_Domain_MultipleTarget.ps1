@@ -67,7 +67,6 @@ Configuration DFSNamespace_Domain_MultipleTarget
             Path                 = '\\contoso.com\software\it' 
             TargetPath           = '\\ma-fileserver\it'           
             Ensure               = 'present'
-            Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
             PsDscRunAsCredential = $Credential
         } # End of cDFSNamespaceFolder Resource
