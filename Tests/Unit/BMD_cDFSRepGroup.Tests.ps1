@@ -76,6 +76,24 @@ try
             Topology = 'Manual'
             DomainName = 'CONTOSO.COM'
         }
+        $RepGroupAllFQDN = [PSObject]@{
+            GroupName = 'Test Group'
+            Ensure = 'Present'
+            Description = 'Test Description'
+            Members = @('FileServer1.CONTOSO.COM','FileServer2.CONTOSO.COM')
+            Folders = @('Folder1','Folder2')
+            Topology = 'Manual'
+            DomainName = 'CONTOSO.COM'
+        }
+        $RepGroupSomelDns = [PSObject]@{
+            GroupName = 'Test Group'
+            Ensure = 'Present'
+            Description = 'Test Description'
+            Members = @('FileServer1.CONTOSO.COM','FileServer2')
+            Folders = @('Folder1','Folder2')
+            Topology = 'Manual'
+            DomainName = 'CONTOSO.COM'
+        }
         $RepGroupConnections = @(
             [PSObject]@{
                 GroupName = 'Test Group'
@@ -110,11 +128,13 @@ try
                 GroupName = $RepGroup.GroupName
                 DomainName = $RepGroup.DomainName
                 ComputerName = $RepGroup.Members[0]
+                DnsName = "$($Repgroup.Members[0]).$($Repgroup.DomainName)"
             },
             [PSObject]@{
                 GroupName = $RepGroup.GroupName
                 DomainName = $RepGroup.DomainName
                 ComputerName = $RepGroup.Members[1]
+                DnsName = "$($Repgroup.Members[1]).$($Repgroup.DomainName)"
             }
         )
         $MockRepGroupFolder = @(
@@ -282,6 +302,72 @@ try
                 }
             }
     
+            Context 'Replication Group exists but all Members passed as FQDN' {
+                
+                Mock Get-DfsReplicationGroup -MockWith { @($MockRepGroup) }
+                Mock New-DfsReplicationGroup
+                Mock Set-DfsReplicationGroup
+                Mock Remove-DfsReplicationGroup
+                Mock Get-DfsrMember -MockWith { return $MockRepGroupMember }
+                Mock Add-DfsrMember
+                Mock Remove-DfsrMember
+                Mock Get-DfsReplicatedFolder -MockWith { return $MockRepGroupFolder }
+                Mock New-DfsReplicatedFolder
+                Mock Remove-DfsReplicatedFolder
+    
+                It 'should not throw error' {
+                    { 
+                        $Splat = $RepGroupAllFQDN.Clone()
+                        Set-TargetResource @Splat
+                    } | Should Not Throw
+                }
+                It 'should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 0
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 0
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
+                }
+            }
+
+            Context 'Replication Group exists but some Members passed as FQDN' {
+                
+                Mock Get-DfsReplicationGroup -MockWith { @($MockRepGroup) }
+                Mock New-DfsReplicationGroup
+                Mock Set-DfsReplicationGroup
+                Mock Remove-DfsReplicationGroup
+                Mock Get-DfsrMember -MockWith { return $MockRepGroupMember }
+                Mock Add-DfsrMember
+                Mock Remove-DfsrMember
+                Mock Get-DfsReplicatedFolder -MockWith { return $MockRepGroupFolder }
+                Mock New-DfsReplicatedFolder
+                Mock Remove-DfsReplicatedFolder
+    
+                It 'should not throw error' {
+                    { 
+                        $Splat = $RepGroupSomeDns.Clone()
+                        Set-TargetResource @Splat
+                    } | Should Not Throw
+                }
+                It 'should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 0
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 0
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
+                }
+            }
+
             Context 'Replication Group exists but is missing a member' {
                 
                 Mock Get-DfsReplicationGroup -MockWith { @($MockRepGroup) }
@@ -795,10 +881,44 @@ try
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
                 }
             }
     
+            Context 'Replication Group exists but all Members passed as FQDN' {
+                
+                Mock Get-DfsReplicationGroup -MockWith { @($MockRepGroup) }
+                Mock Get-DfsrMember -MockWith { return $MockRepGroupMember }
+                Mock Get-DfsReplicatedFolder -MockWith { return $MockRepGroupFolder }
+    
+                It 'should return false' {
+                    $Splat = $RepGroupAllFQDN.Clone()
+                    Test-TargetResource @Splat | Should Be $True
+                }
+                It 'should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                }
+            }
+
+            Context 'Replication Group exists but some Members passed as FQDN' {
+                
+                Mock Get-DfsReplicationGroup -MockWith { @($MockRepGroup) }
+                Mock Get-DfsrMember -MockWith { return $MockRepGroupMember }
+                Mock Get-DfsReplicatedFolder -MockWith { return $MockRepGroupFolder }
+    
+                It 'should return false' {
+                    $Splat = $RepGroupSomeDns.Clone()
+                    Test-TargetResource @Splat | Should Be $True
+                }
+                It 'should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                }
+            }
+
             Context 'Replication Group exists but is missing a member' {
                 
                 Mock Get-DfsReplicationGroup -MockWith { @($MockRepGroup) }
