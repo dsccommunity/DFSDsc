@@ -228,6 +228,7 @@ try
     
                 It 'should not throw error' {
                     $Splat = $MockRepGroupMembership.Clone()
+                    $Splat.Remove('ConflictAndDeletedPath')
                     { Set-TargetResource @Splat } | Should Not Throw
                 }
                 It 'should call expected Mocks' {
@@ -241,6 +242,7 @@ try
     
                 It 'should not throw error' {
                     $Splat = $MockRepGroupMembership.Clone()
+                    $Splat.Remove('ConflictAndDeletedPath')
                     $Splat.ComputerName = "$($Splat.ComputerName).$($Splat.DomainName)"
                     { Set-TargetResource @Splat } | Should Not Throw
                 }
@@ -354,6 +356,7 @@ try
     
                 It 'should return true' {
                     $Splat = $MockRepGroupMembership.Clone()
+                    $Splat.Remove('ConflictAndDeletedPath')
                     $Splat.ComputerName = "$($Splat.ComputerName).$($Splat.DomainName)"
                     Test-TargetResource @Splat | Should Be $True
                 }

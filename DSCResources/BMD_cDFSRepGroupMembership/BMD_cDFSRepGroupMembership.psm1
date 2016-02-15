@@ -65,6 +65,7 @@ function Get-TargetResource
                 -f $GroupName,$FolderName,$ComputerName,$DomainName
             ) -join '' )
         $returnValue += @{
+            ComputerName = $RepGroupMembership.ComputerName
             ContentPath = $RepGroupMembership.ContentPath
             StagingPath = $RepGroupMembership.StagingPath
             ConflictAndDeletedPath = $RepGroupMembership.ConflictAndDeletedPath

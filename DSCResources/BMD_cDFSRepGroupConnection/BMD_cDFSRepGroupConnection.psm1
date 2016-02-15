@@ -74,6 +74,8 @@ function Get-TargetResource
             ) -join '' )
         $returnValue += @{
             Ensure = 'Present'
+            SourceComputerName = $RepGroupConnection.SourceComputerName 
+            DestinationComputerName = $RepGroupConnection.DestinationComputerName 
             Description = $RepGroupConnection.Description
             DomainName = $RepGroupConnection.DomainName
             DisableConnection = (-not $RepGroupConnection.Enabled)
