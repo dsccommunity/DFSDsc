@@ -72,10 +72,10 @@ function Get-TargetResource
             $($LocalizedData.RepGroupConnectionExistsMessage) `
                 -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
             ) -join '' )
+        $returnValue.SourceComputerName = $RepGroupConnection.SourceComputerName 
+        $returnValue.DestinationComputerName = $RepGroupConnection.DestinationComputerName 
         $returnValue += @{
             Ensure = 'Present'
-            SourceComputerName = $RepGroupConnection.SourceComputerName 
-            DestinationComputerName = $RepGroupConnection.DestinationComputerName 
             Description = $RepGroupConnection.Description
             DomainName = $RepGroupConnection.DomainName
             DisableConnection = (-not $RepGroupConnection.Enabled)
