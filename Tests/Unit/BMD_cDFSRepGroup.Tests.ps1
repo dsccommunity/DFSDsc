@@ -1181,7 +1181,7 @@ try
                 }
             }    
             Context 'ComputerName passed includes Domain Name that does not DomainName' {
-                It 'should return correct FQDN' {
+                It 'should throw RepGroupDomainMismatchError exception' {
                     $Splat = @{
                         GroupName = 'UnitTest'
                         ComputerName = 'test.contoso.com'

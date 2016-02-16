@@ -696,11 +696,11 @@ function Get-FQDNMemberName
     {
         if (($DomainName -ne $null) -and ($DomainName -ne ''))
         {
-            Return $ComputerName.ToLower()
+            Return "$ComputerName.$DomainName".ToLower()          
         }
         else
         {
-            Return "$ComputerName.$DomainName".ToLower()          
+            Return $ComputerName.ToLower()
         }        
     }
 
