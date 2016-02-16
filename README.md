@@ -494,6 +494,11 @@ Configuration DFSNamespace_Standalone_Public
 ```
 
 ## Versions
+### 2.1.0.0
+* BMD_cDFSRepGroup- Fixed issue when using FQDN member names.
+* BMD_cDFSRepGroupMembership- Fixed issue with Get-TargetResource when using FQDN ComputerName.
+* BMD_cDFSRepGroupConnection- Fixed issue with Get-TargetResource when using FQDN SourceComputerName or FQDN DestinationComputerName.
+
 ### 2.0.0.0
 * BMD_cDFSNamespaceRoot- resource added.
 * BMD_cDFSNamespaceFolder- resource added.
