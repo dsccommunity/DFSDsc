@@ -28,6 +28,7 @@ Configuration DFSNamespace_Domain_SingleTarget
             Ensure               = 'present'
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing departmental files'
+            TimeToLiveSec        = 600
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceRoot Resource
 
@@ -38,6 +39,7 @@ Configuration DFSNamespace_Domain_SingleTarget
             TargetPath           = '\\fs_3\Finance'
             Ensure               = 'present'
             Description          = 'AD Domain based DFS namespace folder for storing finance files'
+            TimeToLiveSec        = 600
             PsDscRunAsCredential = $Credential
         } # End of cDFSNamespaceFolder Resource
 
@@ -47,6 +49,7 @@ Configuration DFSNamespace_Domain_SingleTarget
             TargetPath           = '\\fs_8\Management'
             Ensure               = 'present'
             Description          = 'AD Domain based DFS namespace folder for storing management files'
+            TimeToLiveSec        = 600
             PsDscRunAsCredential = $Credential
         } # End of cDFSNamespaceFolder Resource
     }

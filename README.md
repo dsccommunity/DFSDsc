@@ -35,7 +35,7 @@ This resource is used to create, edit or remove DFS Replication Groups. If used 
 * **GroupName**: The name of the Replication Group. Required.
 * **Ensure**: Ensures that Replication Group is either Absent or Present. Required.
 * **Description**: A description for the Replication Group. Optional.
-* **Members**: A list of computers that are members of this Replication Group. Optional.
+* **Members**: A list of computers that are members of this Replication Group. These can be specified using either the ComputerName or FQDN name for each member. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match. Optional.
 * **Folders**: A list of folders that are replicated in this Replication Group. Optional.
 * **Topology**: This allows a replication topology to assign to the Replication Group. It defaults to Manual, which will not automatically create a topology. If set to Fullmesh, a full mesh topology between all members will be created. Optional.
 * **ContentPaths**: An array of DFS Replication Group Content Paths to use for each of the Folders. This can have one entry for each Folder in the Folders parameter and should be set in th same order. If any entry is not blank then the Content Paths will need to be set manually by using the cDFSRepGroupMembership resource. Optional.
@@ -47,8 +47,8 @@ This resource is used to create, edit and remove DFS Replication Group connectio
 #### Parameters
 * **GroupName**: The name of the Replication Group. Required.
 * **Ensure**: Ensures that Replication Group connection is either Absent or Present. Required.
-* **SourceComputerName**: The name of the Replication Group source computer for the connection. Required.
-* **DestinationComputerName**: The name of the Replication Group destination computer for the connection. Required.
+* **SourceComputerName**: The name of the Replication Group source computer for the connection. This can be specified using either the ComputerName or FQDN name for the member. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match. Required.
+* **DestinationComputerName**: The name of the Replication Group destination computer for the connection. This can be specified using either the ComputerName or FQDN name for the member. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match. Required.
 * **Description**: A description for the Replication Group connection. Optional.
 * **DisableConnection**: Set to $true to disable this connection. Optional.
 * **RDCDisable**: Set to $true to disable remote differention compression on this connection. Optional.
@@ -72,7 +72,7 @@ This resource is used to configure Replication Group Folder Membership. It is us
 #### Parameters
 * **GroupName**: The name of the Replication Group. Required.
 * **FolderName**: The folder name of the Replication Group folder. Required.
-* **ComputerName**: The computer name of the Replication Group member. Required.
+* **ComputerName**: The computer name of the Replication Group member. This can be specified using either the ComputerName or FQDN name for the member. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match. Required.
 * **ContentPath**: The local content path for this folder member. Required.
 * **StagingPath**: Ths staging path for this folder member. Optional.
 * **ReadOnly**: Used to set this folder member to read only. Optional.
@@ -139,7 +139,7 @@ configuration Sample_cDFSRepGroup
             GroupName = 'Public'
             Description = 'Public files for use by all departments'
             Ensure = 'Present'
-            Members = 'FileServer1','FileServer2'
+            Members = 'FileServer1','FileServer2.contoso.com'
             Folders = 'Software'
             PSDSCRunAsCredential = $Credential
             DependsOn = "[WindowsFeature]RSATDFSMgmtConInstall"
@@ -159,7 +159,7 @@ configuration Sample_cDFSRepGroup
             GroupName = 'Public'
             Ensure = 'Present'
             SourceComputerName = 'FileServer2'
-            DestinationComputerName = 'FileServer1'
+            DestinationComputerName = 'FileServer1.contoso.com'
             PSDSCRunAsCredential = $Credential
         } # End of cDFSRepGroupConnection Resource
 
@@ -279,6 +279,7 @@ This resource is used to create, edit or remove standalone or domain based DFS n
 * **Ensure**: Specifies if the DFS Namespace root should exist. { Absent | Present }. String. Required.
 * **Type**: Specifies the type of a DFS namespace as a Type object. { Standalone | DomainV1 | DomainV2 }. String. Required. 
 * **Description**: A description for the namespace. String. Optional.
+* **TimeToLiveSec**: Specifies a TTL interval, in seconds, for referrals. Optional.
 * **EnableSiteCosting**: Indicates whether a DFS namespace uses cost-based selection. Boolean. Optional.
 * **EnableInsiteReferrals**: Indicates whether a DFS namespace server provides a client only with referrals that are in the same site as the client. Boolean. Optional.
 * **EnableAccessBasedEnumeration**: Indicates whether a DFS namespace uses access-based enumeration. Boolean. Optional.
@@ -295,6 +296,7 @@ This resource is used to create, edit or remove folders from DFS namespaces.  Wh
 * **TargetPath**: Specifies a path for a target for the DFS namespace folder. String. Required.
 * **Ensure**: Specifies if the DFS Namespace folder should exist. { Absent | Present }. String. Required.
 * **Description**: A description for the namespace folder. String. Optional.
+* **TimeToLiveSec**: Specifies a TTL interval, in seconds, for referrals. Optional.
 * **EnableInsiteReferrals**: Indicates whether a DFS namespace server provides a client only with referrals that are in the same site as the client. Boolean. Optional.
 * **EnableTargetFailback**: Indicates whether a DFS namespace uses target failback. Boolean. Optional
 * **ReferralPriorityClass**: Specifies the target priority class for a DFS namespace folder. { Global-High | SiteCost-High | SiteCost-Normal | SiteCost-Low | Global-Low }. Optional.
@@ -333,6 +335,7 @@ Configuration DFSNamespace_Domain_SingleTarget
             Ensure               = 'present'
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing departmental files'
+            TimeToLiveSec        = 600
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceRoot Resource
 
@@ -343,6 +346,7 @@ Configuration DFSNamespace_Domain_SingleTarget
             TargetPath           = '\\fs_3\Finance'
             Ensure               = 'present'
             Description          = 'AD Domain based DFS namespace folder for storing finance files'
+            TimeToLiveSec        = 600
             PsDscRunAsCredential = $Credential
         } # End of cDFSNamespaceFolder Resource
 
@@ -352,6 +356,7 @@ Configuration DFSNamespace_Domain_SingleTarget
             TargetPath           = '\\fs_8\Management'
             Ensure               = 'present'
             Description          = 'AD Domain based DFS namespace folder for storing management files'
+            TimeToLiveSec        = 600
             PsDscRunAsCredential = $Credential
         } # End of cDFSNamespaceFolder Resource
     }
@@ -494,6 +499,13 @@ Configuration DFSNamespace_Standalone_Public
 ```
 
 ## Versions
+### 2.1.0.0
+* BMD_cDFSRepGroup- Fixed issue when using FQDN member names.
+* BMD_cDFSRepGroupMembership- Fixed issue with Get-TargetResource when using FQDN ComputerName.
+* BMD_cDFSRepGroupConnection- Fixed issue with Get-TargetResource when using FQDN SourceComputerName or FQDN DestinationComputerName.
+* BMD_cDFSNamespaceRoot- Added write support to TimeToLiveSec parameter. 
+* BMD_cDFSNamespaceFolder- Added write support to TimeToLiveSec parameter. 
+
 ### 2.0.0.0
 * BMD_cDFSNamespaceRoot- resource added.
 * BMD_cDFSNamespaceFolder- resource added.

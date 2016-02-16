@@ -28,6 +28,7 @@ RepGroupExistsButShouldNotMessage=DFS Replication Group "{0}" exists but should 
 RepGroupDoesNotExistAndShouldNotMessage=DFS Replication Group "{0}" does not exist and should not. Change not required.
 RepGroupFullMeshMissingConnectionMessage=DFS Replication Group "{0}" Fullmesh Connection from "{2}" to "{3}" does not exist. Change required.
 RepGroupFullMeshDisabledConnectionMessage=DFS Replication Group "{0}" Fullmesh Connection from "{2}" to "{3}" is disabled. Change required.
+RepGroupDomainMismatchError=DFS Replication Group "{0}" Domain name in Member "{1}" does not match DomainName "{2}". Configuration correction required.
 '@
 }
 
@@ -155,6 +156,11 @@ function Set-TargetResource
                 -f $GroupName,$DomainName
             ) -join '' )
 
+        if ($Description)
+        {
+            $Splat += @{ Description = $Description }
+        } # if
+
         if ($RepGroup)
         {
             # The RG exists already - Check the existing RG and members
@@ -166,9 +172,7 @@ function Set-TargetResource
             # Check the description
             if (($Description) -and ($RepGroup.Description -ne $Description))
             {
-                Set-DfsReplicationGroup @Splat `
-                    -Description $Description `
-                    -ErrorAction Stop
+                Set-DfsReplicationGroup @Splat -ErrorAction Stop
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.RepGroupDescriptionUpdatedMessage) `
@@ -184,10 +188,6 @@ function Set-TargetResource
                 $($LocalizedData.RepGroupDoesNotExistMessage) `
                     -f $GroupName,$DomainName
                 ) -join '' )
-            if ($Description)
-            {
-                $Splat += @{ Description = $Description }
-            } # if
             New-DfsReplicationGroup @Splat -ErrorAction Stop
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
@@ -200,11 +200,20 @@ function Set-TargetResource
         # Clean up the splat so we can use it in the next cmdlets
         $Splat.Remove('Description')
         
+        # Create an array of FQDN Members from the Members Array
+        $Splat += @{ ComputerName = '' }
+        foreach ($Member in $Members)
+        {
+            $Splat.ComputerName = $Member
+            $FQDNMembers += @( Get-FQDNMemberName @Splat )
+        }
+        $Splat.Remove('ComputerName')
+        
         # Get the existing members of this DFS Rep Group
-        $ExistingMembers = (Get-DfsrMember @Splat -ErrorAction Stop).ComputerName
+        $ExistingMembers = (Get-DfsrMember @Splat -ErrorAction Stop).DnsName
 
         # Add any missing members
-        foreach ($Member in $Members) 
+        foreach ($Member in $FQDNMembers) 
         {
             if ($Member -notin $ExistingMembers)
             {
@@ -223,7 +232,7 @@ function Set-TargetResource
         # Remove any members that shouldn't exist
         foreach ($ExistingMember in $ExistingMembers)
         {
-            if ($ExistingMember -notin $Members)
+            if ($ExistingMember -notin $FQDNMembers)
             {
                 # Member exists but shouldn't - remove it
                 Remove-DfsrMember @Splat `
@@ -290,7 +299,11 @@ function Set-TargetResource
                 {
                      foreach ($membership in $memberships) 
                      {
-                        [Boolean]$primarymember = ($membership.ComputerName -eq $Members[0])
+                        
+                        [String] $FQDNMemberName = Get-FQDNMemberName `
+                            @Splat `
+                            -ComputerName $membership.ComputerName
+                        [Boolean] $primarymember = ($FQDNMemberName -eq $FQDNMembers[0])
                         if (($membership.FolderName -ne $Folders[$i]) `
                             -or (($membership.ContentPath -eq $ContentPath) `
                             -and ($membership.PrimaryMember -eq $primarymember)))
@@ -324,9 +337,9 @@ function Set-TargetResource
                     DestinationComputerName = ''
                 }
                 # Scan through the combination of connections
-                foreach ($source in $members)
+                foreach ($source in $FQDNMembers)
                 {
-                    foreach ($dest in $members)
+                    foreach ($dest in $FQDNMembers)
                     {
                         if ($source -eq $dest)
                         {
@@ -463,10 +476,19 @@ function Test-TargetResource
                 $desiredConfigurationMatch = $false
             }
 
+            # Create an array of FQDN Members from the Members Array
+            $Splat += @{ ComputerName = '' }
+            foreach ($Member in $Members)
+            {
+                $Splat.ComputerName = $Member
+                $FQDNMembers += @( Get-FQDNMemberName @Splat )
+            }
+            $Splat.Remove('ComputerName')
+
             # Compare the Members
-            $ExistingMembers = @((Get-DfsrMember @Splat -ErrorAction Stop).ComputerName)
+            $ExistingMembers = @((Get-DfsrMember @Splat -ErrorAction Stop).DnsName)
             if ((Compare-Object `
-                -ReferenceObject $Members `
+                -ReferenceObject $FQDNMembers `
                 -DifferenceObject $ExistingMembers).Count -ne 0)
             {
                 # There is a member different of some kind.
@@ -536,9 +558,9 @@ function Test-TargetResource
                         DestinationComputerName = ''
                     }
                     # Scan through the combination of connections
-                    foreach ($source in $members)
+                    foreach ($source in $FQDNMembers)
                     {
-                        foreach ($dest in $members)
+                        foreach ($dest in $FQDNMembers)
                         {
                             if ($source -eq $dest)
                             {
@@ -610,5 +632,105 @@ function Test-TargetResource
     } # if
     return $desiredConfigurationMatch
 } # Test-TargetResource
+
+
+# Helper functions
+<#
+.SYNOPSIS
+    Returns the FQDN Member name based on the ComputerName and DomainName that are provided.
+    
+    If the ComputerName is already an FQDN but the domain in the FQDN does not match the
+    value passed in DomainName then throw an exception.
+    
+    If the ComputerName is already an FQDN and the domain in the FQDN does match the value
+    passed in DomainName then the existing ComputerName is returned.
+    
+    If the ComputerName is not already an FQDN and the DomainName passed is not empty then
+    the ComputerName and DomainName are combined and returned.
+    
+    If the ComputerName is not already an FQDN and the DomainName passed is empty then
+    the ComputerName is returned.
+#>
+function Get-FQDNMemberName
+{
+    [OutputType([System.String])]
+    param
+    (
+        [parameter(Mandatory = $true)]
+        [String]
+        $GroupName,
+
+        [parameter(Mandatory = $true)]
+        [String]
+        $ComputerName,
+
+        [String]
+        $DomainName
+    )
+    
+    if ($ComputerName.Contains('.'))
+    {
+        if (($DomainName -ne $null) -and ($DomainName -ne ''))
+        {
+            if ($ComputerName -like "*.$DomainName")
+            {
+                return $ComputerName.ToLower()
+            }
+            else
+            {
+                $ExceptionParameters = @{
+                    errorId = 'RepGroupDomainMismatchError'
+                    errorCategory = 'InvalidArgument'
+                    errorMessage = $($LocalizedData.RepGroupDomainMismatchError `
+                        -f $GroupName,$ComputerName,$DomainName)
+                }
+                New-Exception @ExceptionParameters
+            }
+        }
+        else
+        {
+            Return $ComputerName.ToLower()
+        }
+    }
+    else
+    {
+        if (($DomainName -ne $null) -and ($DomainName -ne ''))
+        {
+            Return "$ComputerName.$DomainName".ToLower()          
+        }
+        else
+        {
+            Return $ComputerName.ToLower()
+        }        
+    }
+
+} # Get-FQDNMemberName
+
+<#
+.SYNOPSIS
+    Throw a custom exception.
+#>
+function New-Exception
+{
+    [CmdLetBinding()]
+    param
+    (
+        [Parameter(Mandatory)]
+        [String] $errorId,
+
+        [Parameter(Mandatory)]
+        [System.Management.Automation.ErrorCategory] $errorCategory,
+
+        [Parameter(Mandatory)]
+        [String] $errorMessage
+    )
+
+    $exception = New-Object -TypeName System.Exception `
+        -ArgumentList $errorMessage
+    $errorRecord = New-Object -TypeName System.Management.Automation.ErrorRecord `
+        -ArgumentList $exception, $errorId, $errorCategory, $null
+
+    throw $errorRecord
+} # New-Exception
 
 Export-ModuleMember -Function *-TargetResource

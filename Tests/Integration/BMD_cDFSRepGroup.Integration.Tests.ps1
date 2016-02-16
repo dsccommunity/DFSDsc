@@ -99,7 +99,15 @@ try
                     -ComputerName $Member `
                     -ErrorAction Stop
                 $RepGroupMemberNew.GroupName       | Should Be $RepGroup.GroupName
-                $RepGroupMemberNew.ComputerName    | Should Be $Member
+                # If Member name was an FQDN then match the DNSName property, otherwise the ComputerName property
+                if ($Member.Contains('.'))
+                {
+                    $RepGroupMemberNew.DnsName    | Should Be $Member
+                }
+                else
+                {
+                    $RepGroupMemberNew.ComputerName    | Should Be $Member
+                }
             }
             # Check the folders are in the Replication Group
             foreach ($Folder in $RepGroup.Folders)
