@@ -684,7 +684,7 @@ function Get-FQDNMemberName
                     errorMessage = $($LocalizedData.RepGroupDomainMismatchError `
                         -f $GroupName,$ComputerName,$DomainName)
                 }
-                New-LabException @ExceptionParameters
+                New-Exception @ExceptionParameters
             }
         }
         else
