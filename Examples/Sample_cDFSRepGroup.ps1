@@ -20,7 +20,7 @@ configuration Sample_cDFSRepGroup
             GroupName = 'Public'
             Description = 'Public files for use by all departments'
             Ensure = 'Present'
-            Members = 'FileServer1','FileServer2'
+            Members = 'FileServer1','FileServer2.contoso.com'
             Folders = 'Software'
             PSDSCRunAsCredential = $Credential
             DependsOn = "[WindowsFeature]RSATDFSMgmtConInstall"
@@ -40,7 +40,7 @@ configuration Sample_cDFSRepGroup
             GroupName = 'Public'
             Ensure = 'Present'
             SourceComputerName = 'FileServer2'
-            DestinationComputerName = 'FileServer1'
+            DestinationComputerName = 'FileServer1.contoso.com'
             PSDSCRunAsCredential = $Credential
         } # End of cDFSRepGroupConnection Resource
 

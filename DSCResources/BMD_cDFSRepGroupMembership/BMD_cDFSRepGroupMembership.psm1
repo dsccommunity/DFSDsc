@@ -64,6 +64,7 @@ function Get-TargetResource
             $($LocalizedData.RepGroupMembershipExistsMessage) `
                 -f $GroupName,$FolderName,$ComputerName,$DomainName
             ) -join '' )
+        $ReturnValue.ComputerName = $RepGroupMembership.ComputerName
         $returnValue += @{
             ContentPath = $RepGroupMembership.ContentPath
             StagingPath = $RepGroupMembership.StagingPath

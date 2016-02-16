@@ -85,11 +85,13 @@ try
                 GroupName = $RepGroup.GroupName
                 DomainName = $RepGroup.DomainName
                 ComputerName = $RepGroup.Members[0]
+                DnsName = "$($Repgroup.Members[0]).$($Repgroup.DomainName)"
             },
             [PSObject]@{
                 GroupName = $RepGroup.GroupName
                 DomainName = $RepGroup.DomainName
                 ComputerName = $RepGroup.Members[1]
+                DnsName = "$($Repgroup.Members[1]).$($Repgroup.DomainName)"
             }
         )
         $MockRepGroupFolder = @(

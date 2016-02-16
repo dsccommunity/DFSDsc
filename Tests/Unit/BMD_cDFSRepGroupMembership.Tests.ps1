@@ -80,16 +80,36 @@ try
             DomainName = $RepGroup.DomainName
             Description = $RepGroup.Description
         }
+        $RepGroupAllFQDN = [PSObject]@{
+            GroupName = 'Test Group'
+            Ensure = 'Present'
+            Description = 'Test Description'
+            Members = @('FileServer1.CONTOSO.COM','FileServer2.CONTOSO.COM')
+            Folders = @('Folder1','Folder2')
+            Topology = 'Manual'
+            DomainName = 'CONTOSO.COM'
+        }
+        $RepGroupSomelDns = [PSObject]@{
+            GroupName = 'Test Group'
+            Ensure = 'Present'
+            Description = 'Test Description'
+            Members = @('FileServer1.CONTOSO.COM','FileServer2')
+            Folders = @('Folder1','Folder2')
+            Topology = 'Manual'
+            DomainName = 'CONTOSO.COM'
+        }
         $MockRepGroupMember = @(
             [PSObject]@{
                 GroupName = $RepGroup.GroupName
                 DomainName = $RepGroup.DomainName
                 ComputerName = $RepGroup.Members[0]
+                DnsName = "$($Repgroup.Members[0]).$($Repgroup.DomainName)"
             },
             [PSObject]@{
                 GroupName = $RepGroup.GroupName
                 DomainName = $RepGroup.DomainName
                 ComputerName = $RepGroup.Members[1]
+                DnsName = "$($Repgroup.Members[1]).$($Repgroup.DomainName)"
             }
         )
         $MockRepGroupFolder = @(
@@ -173,11 +193,65 @@ try
                     Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
                 }
             }
+
+            Context 'Requested replication group does exist but ComputerName passed as FQDN' {
+                
+                Mock Get-DfsrMembership -MockWith { return @($MockRepGroupMembership) }
+    
+                It 'should return correct replication group' {
+                    $Result = Get-TargetResource `
+                            -GroupName $MockRepGroupMembership.GroupName `
+                            -FolderName $MockRepGroupMembership.FolderName `
+                            -ComputerName "$($MockRepGroupMembership.ComputerName).$($MockRepGroupMembership.DomainName)"
+                    $Result.GroupName | Should Be $MockRepGroupMembership.GroupName
+                    $Result.FolderName | Should Be $MockRepGroupMembership.FolderName
+                    $Result.ComputerName | Should Be $MockRepGroupMembership.ComputerName
+                    $Result.ContentPath | Should Be $MockRepGroupMembership.ContentPath               
+                    $Result.StagingPath | Should Be $MockRepGroupMembership.StagingPath               
+                    $Result.ConflictAndDeletedPath | Should Be $MockRepGroupMembership.ConflictAndDeletedPath               
+                    $Result.ReadOnly | Should Be $MockRepGroupMembership.ReadOnly               
+                    $Result.PrimaryMember | Should Be $MockRepGroupMembership.PrimaryMember               
+                    $Result.DomainName | Should Be $MockRepGroupMembership.DomainName
+                }
+                It 'should call the expected mocks' {
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
+                }
+            }
+
         }
     
         Describe "$($Global:DSCResourceName)\Set-TargetResource"{
     
-            Context 'Replication group folder exists but has different ContentPath' {
+            Context 'Replication group membership exists and has no differences' {
+                
+                Mock Set-DfsrMembership
+    
+                It 'should not throw error' {
+                    $Splat = $MockRepGroupMembership.Clone()
+                    $Splat.Remove('ConflictAndDeletedPath')
+                    { Set-TargetResource @Splat } | Should Not Throw
+                }
+                It 'should call expected Mocks' {
+                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly 1
+                }
+            }
+
+            Context 'Replication group membership exists and has no differences but ComputerName passed as FQDN' {
+                
+                Mock Set-DfsrMembership
+    
+                It 'should not throw error' {
+                    $Splat = $MockRepGroupMembership.Clone()
+                    $Splat.Remove('ConflictAndDeletedPath')
+                    $Splat.ComputerName = "$($Splat.ComputerName).$($Splat.DomainName)"
+                    { Set-TargetResource @Splat } | Should Not Throw
+                }
+                It 'should call expected Mocks' {
+                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly 1
+                }
+            }
+
+            Context 'Replication group membership exists but has different ContentPath' {
                 
                 Mock Set-DfsrMembership
     
@@ -192,7 +266,7 @@ try
                 }
             }
     
-            Context 'Replication group folder exists but has different StagingPath' {
+            Context 'Replication group membership exists but has different StagingPath' {
                 
                 Mock Set-DfsrMembership
     
@@ -207,7 +281,7 @@ try
                 }
             }
     
-            Context 'Replication group folder exists but has different ReadOnly' {
+            Context 'Replication group membership exists but has different ReadOnly' {
                 
                 Mock Set-DfsrMembership
     
@@ -222,7 +296,7 @@ try
                 }
             }
     
-            Context 'Replication group folder exists but has different Primary Member' {
+            Context 'Replication group membership exists but has different Primary Member' {
                 
                 Mock Set-DfsrMembership
     
@@ -276,6 +350,21 @@ try
                 }
             }
     
+            Context 'Replication group membership exists and has no differences but ComputerName passed as FQDN' {
+                
+                Mock Get-DfsrMembership -MockWith { return @($MockRepGroupMembership) }
+    
+                It 'should return true' {
+                    $Splat = $MockRepGroupMembership.Clone()
+                    $Splat.Remove('ConflictAndDeletedPath')
+                    $Splat.ComputerName = "$($Splat.ComputerName).$($Splat.DomainName)"
+                    Test-TargetResource @Splat | Should Be $True
+                }
+                It 'should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
+                }
+            }
+
             Context 'Replication group membership exists but has different ContentPath' {
                 
                 Mock Get-DfsrMembership -MockWith { return @($MockRepGroupMembership) }
