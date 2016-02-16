@@ -66,6 +66,29 @@ try
     #region Pester Tests
     InModuleScope $Global:DSCResourceName {
     
+        function New-TestException
+        {
+            [CmdLetBinding()]
+            param
+            (
+                [Parameter(Mandatory)]
+                [String] $errorId,
+
+                [Parameter(Mandatory)]
+                [System.Management.Automation.ErrorCategory] $errorCategory,
+
+                [Parameter(Mandatory)]
+                [String] $errorMessage
+            )
+
+            $exception = New-Object -TypeName System.Exception `
+                -ArgumentList $errorMessage
+            $errorRecord = New-Object -TypeName System.Management.Automation.ErrorRecord `
+                -ArgumentList $exception, $errorId, $errorCategory, $null
+
+            return $errorRecord
+        } # New-TestException
+
         # Create the Mock Objects that will be used for running tests
         $RepGroup = [PSObject]@{
             GroupName = 'Test Group'
@@ -1193,7 +1216,7 @@ try
                         errorMessage = $($LocalizedData.RepGroupDomainMismatchError `
                             -f $Splat.GroupName,$Splat.ComputerName,$Splat.DomainName)
                     }
-                    $Exception = New-Exception @ExceptionParameters
+                    $Exception = New-TestException @ExceptionParameters
                     { Get-FQDNMemberName @Splat } | Should Throw $Exception         
                 }
             }    
