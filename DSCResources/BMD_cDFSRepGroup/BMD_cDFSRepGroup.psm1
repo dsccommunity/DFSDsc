@@ -637,19 +637,19 @@ function Test-TargetResource
 # Helper functions
 <#
 .SYNOPSIS
-    Returns the FQDN Member name based on the MemberName and DomainName that are provided.
+    Returns the FQDN Member name based on the ComputerName and DomainName that are provided.
     
-    If the MemberName is already an FQDN but the domain in the FQDN does not match the
+    If the ComputerName is already an FQDN but the domain in the FQDN does not match the
     value passed in DomainName then throw an exception.
     
-    If the MemberName is already an FQDN and the domain in the FQDN does match the value
-    passed in DomainName then the existing MemberName is returned.
+    If the ComputerName is already an FQDN and the domain in the FQDN does match the value
+    passed in DomainName then the existing ComputerName is returned.
     
-    If the MemberName is not already an FQDN and the DomainName passed is not empty then
-    the MemberName and DomainName are combined and returned.
+    If the ComputerName is not already an FQDN and the DomainName passed is not empty then
+    the ComputerName and DomainName are combined and returned.
     
-    If the MemberName is not already an FQDN and the DomainName passed is empty then
-    the MemberName is returned.
+    If the ComputerName is not already an FQDN and the DomainName passed is empty then
+    the ComputerName is returned.
 #>
 function Get-FQDNMemberName
 {
@@ -662,19 +662,19 @@ function Get-FQDNMemberName
 
         [parameter(Mandatory = $true)]
         [String]
-        $MemberName,
+        $ComputerName,
 
         [String]
         $DomainName
     )
     
-    if ($MemberName.Contains('.'))
+    if ($ComputerName.Contains('.'))
     {
         if (($DomainName -ne $null) -and ($DomainName -ne ''))
         {
-            if ($MemberName -like "*.$DomainName")
+            if ($ComputerName -like "*.$DomainName")
             {
-                return $MemberName
+                return $ComputerName.ToLower()
             }
             else
             {
@@ -682,25 +682,25 @@ function Get-FQDNMemberName
                     errorId = 'RepGroupDomainMismatchError'
                     errorCategory = 'InvalidArgument'
                     errorMessage = $($LocalizedData.RepGroupDomainMismatchError `
-                        -f $GroupName,$MemberName,$DomainName)
+                        -f $GroupName,$ComputerName,$DomainName)
                 }
                 New-LabException @ExceptionParameters
             }
         }
         else
         {
-            Return $MemberName        
+            Return $ComputerName.ToLower()
         }
     }
     else
     {
         if (($DomainName -ne $null) -and ($DomainName -ne ''))
         {
-            Return $MemberName
+            Return $ComputerName.ToLower()
         }
         else
         {
-            Return "$MemberName.$DomainName"            
+            Return "$ComputerName.$DomainName".ToLower()          
         }        
     }
 

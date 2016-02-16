@@ -1168,6 +1168,55 @@ try
                 }
             }
         }
+
+        Describe "$($Global:DSCResourceName)\Get-FQDNMemberName" {
+            Context 'ComputerName passed includes Domain Name that matches DomainName' {
+                It 'should return correct FQDN' {
+                    $Splat = @{
+                        GroupName = 'UnitTest'
+                        ComputerName = 'test.contoso.com'
+                        DomainName = 'CONTOSO.COM'
+                    }
+                    Get-FQDNMemberName @Splat | Should Be 'test.contoso.com'         
+                }
+            }    
+            Context 'ComputerName passed includes Domain Name that does not DomainName' {
+                It 'should return correct FQDN' {
+                    $Splat = @{
+                        GroupName = 'UnitTest'
+                        ComputerName = 'test.contoso.com'
+                        DomainName = 'NOTMATCH.COM'
+                    }
+                    $ExceptionParameters = @{
+                        errorId = 'RepGroupDomainMismatchError'
+                        errorCategory = 'InvalidArgument'
+                        errorMessage = $($LocalizedData.RepGroupDomainMismatchError `
+                            -f $Splat.GroupName,$Splat.ComputerName,$Splat.DomainName)
+                    }
+                    $Exception = New-Exception @ExceptionParameters
+                    { Get-FQDNMemberName @Splat } | Should Throw $Exception         
+                }
+            }    
+            Context 'ComputerName passed does not include Domain Name and DomainName was passed' {
+                It 'should return correct FQDN' {
+                    $Splat = @{
+                        GroupName = 'UnitTest'
+                        ComputerName = 'test'
+                        DomainName = 'CONTOSO.COM'
+                    }
+                    Get-FQDNMemberName @Splat | Should Be 'test.contoso.com'         
+                }
+            }    
+            Context 'ComputerName passed does not include Domain Name and DomainName was not passed' {
+                It 'should return correct FQDN' {
+                    $Splat = @{
+                        GroupName = 'UnitTest'
+                        ComputerName = 'test'
+                    }
+                    Get-FQDNMemberName @Splat | Should Be 'test'         
+                }
+            }    
+        }
     }
     #endregion
 }
