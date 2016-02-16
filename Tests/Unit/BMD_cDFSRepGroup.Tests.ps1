@@ -85,7 +85,7 @@ try
             Topology = 'Manual'
             DomainName = 'CONTOSO.COM'
         }
-        $RepGroupSomelDns = [PSObject]@{
+        $RepGroupSomeDns = [PSObject]@{
             GroupName = 'Test Group'
             Ensure = 'Present'
             Description = 'Test Description'
@@ -583,8 +583,8 @@ try
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockRepGroupFolder }
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
-                Mock Get-DfsrConnection -MockWith { @($RepGroupConnections[0]) } -ParameterFilter { $SourceComputerName -eq $RepGroupConnections[0].SourceComputerName }
-                Mock Get-DfsrConnection -MockWith { @($RepGroupConnections[1]) } -ParameterFilter { $SourceComputerName -eq $RepGroupConnections[1].SourceComputerName }
+                Mock Get-DfsrConnection -MockWith { @($RepGroupConnections[0]) } -ParameterFilter { $SourceComputerName -eq "$($RepGroupConnections[0].SourceComputerName).$($RepGroupConnections[0].DomainName)" }
+                Mock Get-DfsrConnection -MockWith { @($RepGroupConnections[1]) } -ParameterFilter { $SourceComputerName -eq "$($RepGroupConnections[1].SourceComputerName).$($RepGroupConnections[1].DomainName)" }
                 Mock Add-DfsrConnection
                 Mock Set-DfsrConnection
     
@@ -624,8 +624,8 @@ try
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockRepGroupFolder }
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
-                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq $RepGroupConnections[0].SourceComputerName }
-                Mock Get-DfsrConnection -MockWith { @($RepGroupConnections[1]) } -ParameterFilter { $SourceComputerName -eq $RepGroupConnections[1].SourceComputerName }
+                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq "$($RepGroupConnections[0].SourceComputerName).$($RepGroupConnections[0].DomainName)" }
+                Mock Get-DfsrConnection -MockWith { @($RepGroupConnections[1]) } -ParameterFilter { $SourceComputerName -eq "$($RepGroupConnections[1].SourceComputerName).$($RepGroupConnections[1].DomainName)" }
                 Mock Add-DfsrConnection
                 Mock Set-DfsrConnection
     
@@ -665,8 +665,8 @@ try
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockRepGroupFolder }
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
-                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq $RepGroupConnections[0].SourceComputerName }
-                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq $RepGroupConnections[1].SourceComputerName }
+                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq "$($RepGroupConnections[0].SourceComputerName).$($RepGroupConnections[0].DomainName)" }
+                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq "$($RepGroupConnections[1].SourceComputerName).$($RepGroupConnections[1].DomainName)" }
                 Mock Add-DfsrConnection
                 Mock Set-DfsrConnection
     
@@ -706,8 +706,8 @@ try
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockRepGroupFolder }
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
-                Mock Get-DfsrConnection -MockWith { @($RepGroupConnectionDisabled) } -ParameterFilter { $SourceComputerName -eq $RepGroupConnections[0].SourceComputerName }
-                Mock Get-DfsrConnection -MockWith { @($RepGroupConnections[1]) } -ParameterFilter { $SourceComputerName -eq $RepGroupConnections[1].SourceComputerName }
+                Mock Get-DfsrConnection -MockWith { @($RepGroupConnectionDisabled) } -ParameterFilter { $SourceComputerName -eq "$($RepGroupConnections[0].SourceComputerName).$($RepGroupConnections[0].DomainName)" }
+                Mock Get-DfsrConnection -MockWith { @($RepGroupConnections[1]) } -ParameterFilter { $SourceComputerName -eq "$($RepGroupConnections[1].SourceComputerName).$($RepGroupConnections[1].DomainName)" }
                 Mock Add-DfsrConnection
                 Mock Set-DfsrConnection
     
@@ -1030,8 +1030,8 @@ try
                 Mock Get-DfsReplicationGroup -MockWith { @($MockRepGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockRepGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockRepGroupFolder }
-                Mock Get-DfsrConnection -MockWith { @($RepGroupConnections[0]) } -ParameterFilter { $SourceComputerName -eq $RepGroupConnections[0].SourceComputerName }
-                Mock Get-DfsrConnection -MockWith { @($RepGroupConnections[1]) } -ParameterFilter { $SourceComputerName -eq $RepGroupConnections[1].SourceComputerName }
+                Mock Get-DfsrConnection -MockWith { @($RepGroupConnections[0]) } -ParameterFilter { $SourceComputerName -eq "$($RepGroupConnections[0].SourceComputerName).$($RepGroupConnections[0].DomainName)" }
+                Mock Get-DfsrConnection -MockWith { @($RepGroupConnections[1]) } -ParameterFilter { $SourceComputerName -eq "$($RepGroupConnections[1].SourceComputerName).$($RepGroupConnections[1].DomainName)" }
     
                 It 'should return true' {
                     $Splat = $RepGroup.Clone()
@@ -1051,8 +1051,8 @@ try
                 Mock Get-DfsReplicationGroup -MockWith { @($MockRepGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockRepGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockRepGroupFolder }
-                Mock Get-DfsrConnection -MockWith { @($RepGroupConnections[0]) } -ParameterFilter { $SourceComputerName -eq $RepGroupConnections[0].SourceComputerName }
-                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq $RepGroupConnections[1].SourceComputerName }
+                Mock Get-DfsrConnection -MockWith { @($RepGroupConnections[0]) } -ParameterFilter { $SourceComputerName -eq "$($RepGroupConnections[0].SourceComputerName).$($RepGroupConnections[0].DomainName)" }
+                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq "$($RepGroupConnections[1].SourceComputerName).$($RepGroupConnections[1].DomainName)" }
     
                 It 'should return false' {
                     $Splat = $RepGroup.Clone()
@@ -1072,8 +1072,8 @@ try
                 Mock Get-DfsReplicationGroup -MockWith { @($MockRepGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockRepGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockRepGroupFolder }
-                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq $RepGroupConnections[0].SourceComputerName }
-                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq $RepGroupConnections[1].SourceComputerName }
+                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq "$($RepGroupConnections[0].SourceComputerName).$($RepGroupConnections[0].DomainName)" }
+                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq "$($RepGroupConnections[1].SourceComputerName).$($RepGroupConnections[1].DomainName)" }
     
                 It 'should return false' {
                     $Splat = $RepGroup.Clone()
@@ -1093,8 +1093,8 @@ try
                 Mock Get-DfsReplicationGroup -MockWith { @($MockRepGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockRepGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockRepGroupFolder }
-                Mock Get-DfsrConnection -MockWith { @($RepGroupConnectionDisabled) } -ParameterFilter { $SourceComputerName -eq $RepGroupConnections[0].SourceComputerName }
-                Mock Get-DfsrConnection -MockWith { @($RepGroupConnections[1]) } -ParameterFilter { $SourceComputerName -eq $RepGroupConnections[1].SourceComputerName }
+                Mock Get-DfsrConnection -MockWith { @($RepGroupConnectionDisabled) } -ParameterFilter { $SourceComputerName -eq "$($RepGroupConnections[0].SourceComputerName).$($RepGroupConnections[0].DomainName)" }
+                Mock Get-DfsrConnection -MockWith { @($RepGroupConnections[1]) } -ParameterFilter { $SourceComputerName -eq "$($RepGroupConnections[1].SourceComputerName).$($RepGroupConnections[1].DomainName)" }
     
                 It 'should return false' {
                     $Splat = $RepGroup.Clone()
@@ -1180,7 +1180,7 @@ try
                     Get-FQDNMemberName @Splat | Should Be 'test.contoso.com'         
                 }
             }    
-            Context 'ComputerName passed includes Domain Name that does not DomainName' {
+            Context 'ComputerName passed includes Domain Name that does not match DomainName' {
                 It 'should throw RepGroupDomainMismatchError exception' {
                     $Splat = @{
                         GroupName = 'UnitTest'
