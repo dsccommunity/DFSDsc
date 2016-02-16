@@ -35,7 +35,7 @@ This resource is used to create, edit or remove DFS Replication Groups. If used 
 * **GroupName**: The name of the Replication Group. Required.
 * **Ensure**: Ensures that Replication Group is either Absent or Present. Required.
 * **Description**: A description for the Replication Group. Optional.
-* **Members**: A list of computers that are members of this Replication Group. Optional.
+* **Members**: A list of computers that are members of this Replication Group. These can be specified using either the ComputerName or FQDN name for each member. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match. Optional.
 * **Folders**: A list of folders that are replicated in this Replication Group. Optional.
 * **Topology**: This allows a replication topology to assign to the Replication Group. It defaults to Manual, which will not automatically create a topology. If set to Fullmesh, a full mesh topology between all members will be created. Optional.
 * **ContentPaths**: An array of DFS Replication Group Content Paths to use for each of the Folders. This can have one entry for each Folder in the Folders parameter and should be set in th same order. If any entry is not blank then the Content Paths will need to be set manually by using the cDFSRepGroupMembership resource. Optional.
@@ -47,8 +47,8 @@ This resource is used to create, edit and remove DFS Replication Group connectio
 #### Parameters
 * **GroupName**: The name of the Replication Group. Required.
 * **Ensure**: Ensures that Replication Group connection is either Absent or Present. Required.
-* **SourceComputerName**: The name of the Replication Group source computer for the connection. Required.
-* **DestinationComputerName**: The name of the Replication Group destination computer for the connection. Required.
+* **SourceComputerName**: The name of the Replication Group source computer for the connection. This can be specified using either the ComputerName or FQDN name for the member. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match. Required.
+* **DestinationComputerName**: The name of the Replication Group destination computer for the connection. This can be specified using either the ComputerName or FQDN name for the member. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match. Required.
 * **Description**: A description for the Replication Group connection. Optional.
 * **DisableConnection**: Set to $true to disable this connection. Optional.
 * **RDCDisable**: Set to $true to disable remote differention compression on this connection. Optional.
@@ -72,7 +72,7 @@ This resource is used to configure Replication Group Folder Membership. It is us
 #### Parameters
 * **GroupName**: The name of the Replication Group. Required.
 * **FolderName**: The folder name of the Replication Group folder. Required.
-* **ComputerName**: The computer name of the Replication Group member. Required.
+* **ComputerName**: The computer name of the Replication Group member. This can be specified using either the ComputerName or FQDN name for the member. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match. Required.
 * **ContentPath**: The local content path for this folder member. Required.
 * **StagingPath**: Ths staging path for this folder member. Optional.
 * **ReadOnly**: Used to set this folder member to read only. Optional.
@@ -139,7 +139,7 @@ configuration Sample_cDFSRepGroup
             GroupName = 'Public'
             Description = 'Public files for use by all departments'
             Ensure = 'Present'
-            Members = 'FileServer1','FileServer2'
+            Members = 'FileServer1','FileServer2.contoso.com'
             Folders = 'Software'
             PSDSCRunAsCredential = $Credential
             DependsOn = "[WindowsFeature]RSATDFSMgmtConInstall"
@@ -159,7 +159,7 @@ configuration Sample_cDFSRepGroup
             GroupName = 'Public'
             Ensure = 'Present'
             SourceComputerName = 'FileServer2'
-            DestinationComputerName = 'FileServer1'
+            DestinationComputerName = 'FileServer1.contoso.com'
             PSDSCRunAsCredential = $Credential
         } # End of cDFSRepGroupConnection Resource
 
