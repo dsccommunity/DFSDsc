@@ -3,6 +3,9 @@
 #---------------------------------# 
 os: WMF 5
 version: 2.1.0.{build}
+environment:
+  PowerShellGalleryApiKey:
+    secure: 3fXfDuds8yhTa7WTOLIEhytrpsej9kcP+4rPrgLaFVmIhimmc+FgUVxkR4u468LH
 install: 
   - cinst -y pester
   - git clone https://github.com/PowerShell/DscResource.Tests
