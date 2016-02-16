@@ -504,6 +504,7 @@ Configuration DFSNamespace_Standalone_Public
 * BMD_cDFSRepGroupMembership- Fixed issue with Get-TargetResource when using FQDN ComputerName.
 * BMD_cDFSRepGroupConnection- Fixed issue with Get-TargetResource when using FQDN SourceComputerName or FQDN DestinationComputerName.
 * BMD_cDFSNamespaceRoot- Added write support to TimeToLiveSec parameter. 
+* BMD_cDFSNamespaceFolder- Added write support to TimeToLiveSec parameter. 
 
 ### 2.0.0.0
 * BMD_cDFSNamespaceRoot- resource added.
