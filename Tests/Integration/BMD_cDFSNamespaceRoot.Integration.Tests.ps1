@@ -83,7 +83,7 @@ try
             $NamespaceRootNew = Get-DfsnRoot -Path $NamespaceRoot.Path
             $NamespaceRootNew.Path                          | Should Be $NamespaceRoot.Path
             $NamespaceRootNew.Type                          | Should Be $NamespaceRoot.Type
-            $NamespaceRootNew.TimeToLiveSec                 | Should Be 300
+            $NamespaceRootNew.TimeToLiveSec                 | Should Be $NamespaceRoot.TimeToLiveSec
             $NamespaceRootNew.State                         | Should Be 'Online'
             $NamespaceRootNew.Description                   | Should Be $NamespaceRoot.Description
             $NamespaceRootNew.NamespacePath                 | Should Be $NamespaceRoot.Path

@@ -5,6 +5,7 @@ $NamespaceRoot = @{
     Ensure                       = 'Present'
     Type                         = 'Standalone'
     Description                  = 'Integration test namespace'
+    TimeToLiveSec                = 500
     EnableSiteCosting            = $true
     EnableInsiteReferrals        = $true
     EnableAccessBasedEnumeration = $true
@@ -23,6 +24,7 @@ Configuration BMD_cDFSNamespaceRoot_Config {
             Ensure                       = $NamespaceRoot.Ensure
             Type                         = $NamespaceRoot.Type
             Description                  = $NamespaceRoot.Description
+            TimeToLiveSec                = $NamespaceRoot.TimeToLiveSec
             EnableSiteCosting            = $NamespaceRoot.EnableSiteCosting
             EnableInsiteReferrals        = $NamespaceRoot.EnableInsiteReferrals
             EnableAccessBasedEnumeration = $NamespaceRoot.EnableAccessBasedEnumeration

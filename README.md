@@ -279,6 +279,7 @@ This resource is used to create, edit or remove standalone or domain based DFS n
 * **Ensure**: Specifies if the DFS Namespace root should exist. { Absent | Present }. String. Required.
 * **Type**: Specifies the type of a DFS namespace as a Type object. { Standalone | DomainV1 | DomainV2 }. String. Required. 
 * **Description**: A description for the namespace. String. Optional.
+* **TimeToLiveSec**: Specifies a TTL interval, in seconds, for referrals. Optional.
 * **EnableSiteCosting**: Indicates whether a DFS namespace uses cost-based selection. Boolean. Optional.
 * **EnableInsiteReferrals**: Indicates whether a DFS namespace server provides a client only with referrals that are in the same site as the client. Boolean. Optional.
 * **EnableAccessBasedEnumeration**: Indicates whether a DFS namespace uses access-based enumeration. Boolean. Optional.
@@ -295,6 +296,7 @@ This resource is used to create, edit or remove folders from DFS namespaces.  Wh
 * **TargetPath**: Specifies a path for a target for the DFS namespace folder. String. Required.
 * **Ensure**: Specifies if the DFS Namespace folder should exist. { Absent | Present }. String. Required.
 * **Description**: A description for the namespace folder. String. Optional.
+* **TimeToLiveSec**: Specifies a TTL interval, in seconds, for referrals. Optional.
 * **EnableInsiteReferrals**: Indicates whether a DFS namespace server provides a client only with referrals that are in the same site as the client. Boolean. Optional.
 * **EnableTargetFailback**: Indicates whether a DFS namespace uses target failback. Boolean. Optional
 * **ReferralPriorityClass**: Specifies the target priority class for a DFS namespace folder. { Global-High | SiteCost-High | SiteCost-Normal | SiteCost-Low | Global-Low }. Optional.
@@ -333,6 +335,7 @@ Configuration DFSNamespace_Domain_SingleTarget
             Ensure               = 'present'
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing departmental files'
+            TimeToLiveSec        = 600
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceRoot Resource
 
@@ -343,6 +346,7 @@ Configuration DFSNamespace_Domain_SingleTarget
             TargetPath           = '\\fs_3\Finance'
             Ensure               = 'present'
             Description          = 'AD Domain based DFS namespace folder for storing finance files'
+            TimeToLiveSec        = 600
             PsDscRunAsCredential = $Credential
         } # End of cDFSNamespaceFolder Resource
 
@@ -352,6 +356,7 @@ Configuration DFSNamespace_Domain_SingleTarget
             TargetPath           = '\\fs_8\Management'
             Ensure               = 'present'
             Description          = 'AD Domain based DFS namespace folder for storing management files'
+            TimeToLiveSec        = 600
             PsDscRunAsCredential = $Credential
         } # End of cDFSNamespaceFolder Resource
     }
@@ -498,6 +503,7 @@ Configuration DFSNamespace_Standalone_Public
 * BMD_cDFSRepGroup- Fixed issue when using FQDN member names.
 * BMD_cDFSRepGroupMembership- Fixed issue with Get-TargetResource when using FQDN ComputerName.
 * BMD_cDFSRepGroupConnection- Fixed issue with Get-TargetResource when using FQDN SourceComputerName or FQDN DestinationComputerName.
+* BMD_cDFSNamespaceRoot- Added write support to TimeToLiveSec parameter. 
 
 ### 2.0.0.0
 * BMD_cDFSNamespaceRoot- resource added.

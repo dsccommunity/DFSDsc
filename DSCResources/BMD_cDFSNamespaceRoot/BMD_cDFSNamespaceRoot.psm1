@@ -159,6 +159,9 @@ function Set-TargetResource
 
         [String]
         $Description,
+
+        [Uint32]
+        $TimeToLiveSec,
         
         [Boolean]
         $EnableSiteCosting,
@@ -211,6 +214,15 @@ function Set-TargetResource
             {
                 $RootProperties += @{
                     Description = $Description
+                }
+                $RootChange = $true
+            }
+
+            if (($TimeToLiveSec) `
+                -and ($Root.TimeToLiveSec -ne $TimeToLiveSec))
+            {
+                $RootProperties += @{
+                    TimeToLiveSec = $TimeToLiveSec
                 }
                 $RootChange = $true
             }
@@ -420,6 +432,9 @@ function Test-TargetResource
         [String]
         $Description,
 
+        [Uint32]
+        $TimeToLiveSec,
+        
         [Boolean]
         $EnableSiteCosting,
         
@@ -488,6 +503,16 @@ function Test-TargetResource
                 $desiredConfigurationMatch = $false
             }
                         
+            if (($TimeToLiveSec) `
+                -and ($Root.TimeToLiveSec -ne $TimeToLiveSec)) {
+                Write-Verbose -Message ( @(
+                    "$($MyInvocation.MyCommand): "
+                    $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
+                        -f $Type,$Path,$TargetPath,'TimeToLiveSec'
+                    ) -join '' )
+                $desiredConfigurationMatch = $false
+            }
+
             if (($EnableSiteCosting -ne $null) `
                 -and (($Root.Flags -contains 'Site Costing') -ne $EnableSiteCosting)) {
                 Write-Verbose -Message ( @(
