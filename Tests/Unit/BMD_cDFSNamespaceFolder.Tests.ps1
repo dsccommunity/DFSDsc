@@ -58,6 +58,7 @@ try
             TargetPath                   = '\\server1\UnitTestNamespace\Folder'
             Ensure                       = 'present'
             Description                  = 'Unit Test Namespace Description'
+            TimeToLiveSec                = 500
             EnableInsiteReferrals        = $true
             EnableTargetFailback         = $true
             ReferralPriorityClass        = 'Global-Low'
@@ -70,12 +71,12 @@ try
         }
         $NamespaceFolder = [PSObject]@{
             Path                         = $Namespace.Path
-            TimeToLiveSec                = 300
+            TimeToLiveSec                = $Namespace.TimeToLiveSec
             State                        = 'Online'
             Flags                        = @('Insite Referrals','Target Failback')
             Description                  = $Namespace.Description
             NamespacePath                = $Namespace.Path
-            TimeToLive                   = 300
+            TimeToLive                   = 500
         }
         $NamespaceTarget = [PSObject]@{
             Path                         = $Namespace.Path
@@ -214,6 +215,29 @@ try
                     { 
                         $Splat = $Namespace.Clone()
                         $Splat.Description = 'A new description'
+                        Set-TargetResource @Splat
+                    } | Should Not Throw
+                }
+                It 'should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0 
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 1
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 1
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                }
+            }
+
+            Context 'Namespace Folder exists and should but has a different TimeToLiveSec' {
+                
+                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
+                Mock Get-DFSNFolderTarget
+    
+                It 'should not throw error' {                        
+                    { 
+                        $Splat = $Namespace.Clone()
+                        $Splat.TimeToLiveSec = $Splat.TimeToLiveSec + 1
                         Set-TargetResource @Splat
                     } | Should Not Throw
                 }
@@ -429,6 +453,22 @@ try
                 It 'should return false' {                        
                     $Splat = $Namespace.Clone()
                     $Splat.Description = 'A new description'
+                    Test-TargetResource @Splat | Should Be $False
+                }
+                It 'should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                }
+            }
+
+            Context 'Namespace Folder exists and should but has a different TimeToLiveSec' {
+                
+                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
+                Mock Get-DFSNFolderTarget
+    
+                It 'should return false' {                        
+                    $Splat = $Namespace.Clone()
+                    $Splat.TimeToLiveSec = $Splat.TimeToLiveSec + 1
                     Test-TargetResource @Splat | Should Be $False
                 }
                 It 'should call expected Mocks' {

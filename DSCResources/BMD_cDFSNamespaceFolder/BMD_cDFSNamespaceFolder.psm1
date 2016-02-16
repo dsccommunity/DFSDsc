@@ -145,6 +145,9 @@ function Set-TargetResource
         [String]
         $Description,
         
+        [Uint32]
+        $TimeToLiveSec,
+
         [Boolean]
         $EnableInsiteReferrals,
            
@@ -187,6 +190,15 @@ function Set-TargetResource
             {
                 $FolderProperties += @{
                     Description = $Description
+                }
+                $FolderChange = $true
+            }
+
+            if (($TimeToLiveSec) `
+                -and ($Folder.TimeToLiveSec -ne $TimeToLiveSec))
+            {
+                $FolderProperties += @{
+                    TimeToLiveSec = $TimeToLiveSec
                 }
                 $FolderChange = $true
             }
@@ -364,6 +376,9 @@ function Test-TargetResource
         [String]
         $Description,
         
+        [Uint32]
+        $TimeToLiveSec,
+
         [Boolean]
         $EnableInsiteReferrals,
             
@@ -409,6 +424,16 @@ function Test-TargetResource
                 $desiredConfigurationMatch = $false
             }
                         
+            if (($TimeToLiveSec) `
+                -and ($Folder.TimeToLiveSec -ne $TimeToLiveSec)) {
+                Write-Verbose -Message ( @(
+                    "$($MyInvocation.MyCommand): "
+                    $($LocalizedData.NamespaceFolderParameterNeedsUpdateMessage) `
+                        -f $Path,$TargetPath,'TimeToLiveSec'
+                    ) -join '' )
+                $desiredConfigurationMatch = $false
+            }
+
             if (($EnableInsiteReferrals -ne $null) `
                 -and (($Folder.Flags -contains 'Insite Referrals') -ne $EnableInsiteReferrals)) {
                 Write-Verbose -Message ( @(

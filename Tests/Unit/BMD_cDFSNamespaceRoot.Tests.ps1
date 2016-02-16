@@ -59,13 +59,14 @@ try
             Type                         = 'DomainV2'
             Ensure                       = 'present'
             Description                  = 'Unit Test Namespace Description'
+            TimeToLiveSec                = 500            
             EnableSiteCosting            = $true
             EnableInsiteReferrals        = $true
             EnableAccessBasedEnumeration = $true
             EnableRootScalability        = $true
             EnableTargetFailback         = $true
             ReferralPriorityClass        = 'Global-Low'
-            ReferralPriorityRank         = 10            
+            ReferralPriorityRank         = 10
         }
         $NamespaceSplat = [PSObject]@{
             Path                         = $Namespace.Path 
@@ -75,13 +76,13 @@ try
         }
         $NamespaceRoot = [PSObject]@{
             Path                         = $Namespace.Path
-            TimeToLiveSec                = 300
+            TimeToLiveSec                = $Namespace.TimeToLiveSec
             State                        = 'Online'
             Flags                        = @('Site Costing','Insite Referrals','AccessBased Enumeration','Root Scalability','Target Failback')
             Type                         = 'Domain V2'
             Description                  = $Namespace.Description
             NamespacePath                = $Namespace.Path
-            TimeToLive                   = 300
+            TimeToLive                   = 500
         }
         $NamespaceStandaloneRoot = $NamespaceRoot.Clone()
         $NamespaceStandaloneRoot.Type = 'Standalone'
@@ -230,6 +231,29 @@ try
                     { 
                         $Splat = $Namespace.Clone()
                         $Splat.Description = 'A new description'
+                        Set-TargetResource @Splat
+                    } | Should Not Throw
+                }
+                It 'should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0 
+                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly 1
+                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
+                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly 0
+                }
+            }
+
+            Context 'Namespace Root exists and should but has a different TimeToLiveSec' {
+                
+                Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
+                Mock Get-DFSNRootTarget
+    
+                It 'should not throw error' {                        
+                    { 
+                        $Splat = $Namespace.Clone()
+                        $Splat.TimeToLiveSec = $Splat.TimeToLiveSec + 1
                         Set-TargetResource @Splat
                     } | Should Not Throw
                 }
@@ -541,6 +565,22 @@ try
                 It 'should return false' {                        
                     $Splat = $Namespace.Clone()
                     $Splat.Description = 'A new description'
+                    Test-TargetResource @Splat | Should Be $False
+                }
+                It 'should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
+                }
+            }
+
+            Context 'Namespace Root exists and should but has a different TimeToLiveSec' {
+                
+                Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
+                Mock Get-DFSNRootTarget
+    
+                It 'should return false' {                        
+                    $Splat = $Namespace.Clone()
+                    $Splat.TimeToLiveSec = $Splat.TimeToLiveSec + 1
                     Test-TargetResource @Splat | Should Be $False
                 }
                 It 'should call expected Mocks' {

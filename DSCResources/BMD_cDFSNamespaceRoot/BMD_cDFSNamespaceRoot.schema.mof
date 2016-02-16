@@ -13,6 +13,6 @@ class BMD_cDFSNamespaceRoot : OMI_BaseResource
     [Write, Description("Indicates whether a DFS namespace uses target failback.")] Boolean EnableTargetFailback;
     [Write, Description("Specifies the target priority class for a DFS namespace root."), ValueMap{"Global-High","SiteCost-High","SiteCost-Normal","SiteCost-Low","Global-Low"}, Values{"Global-High","SiteCost-High","SiteCost-Normal","SiteCost-Low","Global-Low"}] String ReferralPriorityClass;
     [Write, Description("Specifies the priority rank, as an integer, for a root target of the DFS namespace.")] Uint32 ReferralPriorityRank;
-    [Read] Uint32 TimeToLiveSec;
+    [Write, Description("Specifies a TTL interval, in seconds, for referrals.")] Uint32 TimeToLiveSec;
     [Read] String State;
 };
