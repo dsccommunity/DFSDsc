@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/8tcxkh8rtgyxlmls/branch/master?svg=true)](https://ci.appveyor.com/project/PlagueHO/xDFS/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/wsfx7kvb773907t3?svg=true)](https://ci.appveyor.com/project/PlagueHO/xdfs)
 
 # xDFS
 
