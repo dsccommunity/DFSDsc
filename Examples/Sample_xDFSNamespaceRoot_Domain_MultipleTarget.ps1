@@ -5,7 +5,8 @@ Configuration DFSNamespace_Domain_MultipleTarget
 
     Node $NodeName
     {
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", (ConvertTo-SecureString $"MyP@ssw0rd!1" -AsPlainText -Force))    
+        $Password = 'MyP@ssw0rd!1' | ConvertTo-SecureString -AsPlainText -Force
+        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", $Password)
 
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
@@ -24,8 +25,8 @@ Configuration DFSNamespace_Domain_MultipleTarget
        # Configure the namespace
         xDFSNamespaceRoot DFSNamespaceRoot_Domain_Software_CA
         {
-            Path                 = '\\contoso.com\software' 
-            TargetPath           = '\\ca-fileserver\software'           
+            Path                 = '\\contoso.com\software'
+            TargetPath           = '\\ca-fileserver\software'
             Ensure               = 'present'
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
@@ -34,8 +35,8 @@ Configuration DFSNamespace_Domain_MultipleTarget
 
         xDFSNamespaceRoot DFSNamespaceRoot_Domain_Software_MA
         {
-            Path                 = '\\contoso.com\software' 
-            TargetPath           = '\\ma-fileserver\software'           
+            Path                 = '\\contoso.com\software'
+            TargetPath           = '\\ma-fileserver\software'
             Ensure               = 'present'
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
@@ -44,8 +45,8 @@ Configuration DFSNamespace_Domain_MultipleTarget
 
         xDFSNamespaceRoot DFSNamespaceRoot_Domain_Software_NY
         {
-            Path                 = '\\contoso.com\software' 
-            TargetPath           = '\\ma-fileserver\software'           
+            Path                 = '\\contoso.com\software'
+            TargetPath           = '\\ma-fileserver\software'
             Ensure               = 'present'
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
@@ -55,8 +56,8 @@ Configuration DFSNamespace_Domain_MultipleTarget
         # Configure the namespace folders
         xDFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_CA
         {
-            Path                 = '\\contoso.com\software\it' 
-            TargetPath           = '\\ca-fileserver\it'           
+            Path                 = '\\contoso.com\software\it'
+            TargetPath           = '\\ca-fileserver\it'
             Ensure               = 'present'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
             PsDscRunAsCredential = $Credential
@@ -64,8 +65,8 @@ Configuration DFSNamespace_Domain_MultipleTarget
 
         xDFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_MA
         {
-            Path                 = '\\contoso.com\software\it' 
-            TargetPath           = '\\ma-fileserver\it'           
+            Path                 = '\\contoso.com\software\it'
+            TargetPath           = '\\ma-fileserver\it'
             Ensure               = 'present'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
             PsDscRunAsCredential = $Credential
@@ -74,7 +75,7 @@ Configuration DFSNamespace_Domain_MultipleTarget
         xDFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_NY
         {
             Path                 = '\\contoso.com\software\it' 
-            TargetPath           = '\\ma-fileserver\it'           
+            TargetPath           = '\\ma-fileserver\it'
             Ensure               = 'present'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
             PsDscRunAsCredential = $Credential

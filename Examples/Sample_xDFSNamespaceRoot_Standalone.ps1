@@ -4,7 +4,8 @@ Configuration DFSNamespace_Standalone_Public
 
     Node $NodeName
     {
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", (ConvertTo-SecureString $"MyP@ssw0rd!1" -AsPlainText -Force))    
+        $Password = 'MyP@ssw0rd!1' | ConvertTo-SecureString -AsPlainText -Force
+        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", $Password)
 
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
