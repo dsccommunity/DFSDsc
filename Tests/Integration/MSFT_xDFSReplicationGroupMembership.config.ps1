@@ -16,8 +16,8 @@ else
     }
 }
 
-$RepgroupMembership = @{
-    GroupName              = 'IntegrationTestRepGroup'
+$ReplicationGroupMembership = @{
+    GroupName              = 'IntegrationTestReplicationGroup'
     Folders                = $TestConfig.Folders
     FolderName             = $TestConfig.Folders[0]
     Members                = $TestConfig.Members
@@ -28,17 +28,17 @@ $RepgroupMembership = @{
     PSDSCRunAsCredential   = New-Object System.Management.Automation.PSCredential ($TestConfig.Username, (ConvertTo-SecureString $TestConfig.Password -AsPlainText -Force))
 }
 
-Configuration MSFT_xDFSRepGroupMembership_Config {
+Configuration MSFT_xDFSReplicationGroupMembership_Config {
     Import-DscResource -ModuleName xDFS
     node localhost {
-        xDFSRepGroupMembership Integration_Test {
-            GroupName                   = $RepgroupMembership.GroupName
-            FolderName                  = $RepgroupMembership.FolderName
-            ComputerName                = $RepgroupMembership.ComputerName
-            ContentPath                 = $RepgroupMembership.ContentPath
-            ReadOnly                    = $RepgroupMembership.ReadOnly
-            PrimaryMember               = $RepgroupMembership.PrimaryMember
-            PSDSCRunAsCredential        = $RepgroupMembership.PSDSCRunAsCredential
+        xDFSReplicationGroupMembership Integration_Test {
+            GroupName                   = $ReplicationGroupMembership.GroupName
+            FolderName                  = $ReplicationGroupMembership.FolderName
+            ComputerName                = $ReplicationGroupMembership.ComputerName
+            ContentPath                 = $ReplicationGroupMembership.ContentPath
+            ReadOnly                    = $ReplicationGroupMembership.ReadOnly
+            PrimaryMember               = $ReplicationGroupMembership.PrimaryMember
+            PSDSCRunAsCredential        = $ReplicationGroupMembership.PSDSCRunAsCredential
         }
     }
 }

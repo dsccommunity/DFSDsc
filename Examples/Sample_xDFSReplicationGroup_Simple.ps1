@@ -1,4 +1,4 @@
-configuration Sample_xDFSRepGroup_Simple
+configuration Sample_xDFSReplicationGroup_Simple
 {
     Import-DscResource -Module xDFS
 
@@ -8,14 +8,14 @@ configuration Sample_xDFSRepGroup_Simple
 
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
-        WindowsFeature RSATDFSMgmtConInstall 
-        { 
-            Ensure = "Present" 
-            Name = "RSAT-DFS-Mgmt-Con" 
+        WindowsFeature RSATDFSMgmtConInstall
+        {
+            Ensure = "Present"
+            Name = "RSAT-DFS-Mgmt-Con"
         }
 
         # Configure the Replication Group
-        xDFSRepGroup RGPublic
+        xDFSReplicationGroup RGPublic
         {
             GroupName = 'Public'
             Description = 'Public files for use by all departments'

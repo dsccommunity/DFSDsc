@@ -9,7 +9,7 @@ The **xDFS** module contains DSC resources for configuring Distributed File Syst
 
 ## Installation
 ```powershell
-Install-Module -Name xDFS -MinimumVersion 1.0.0.0
+Install-Module -Name xDFS -MinimumVersion 3.0.0.0
 ```
 
 ## Important Information
@@ -28,8 +28,8 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 
 
 ## Replication Group Resources
-### xDFSRepGroup
-This resource is used to create, edit or remove DFS Replication Groups. If used to create a Replication Group it should be combined with the xDFSRepGroupMembership resources.
+### xDFSReplicationGroup
+This resource is used to create, edit or remove DFS Replication Groups. If used to create a Replication Group it should be combined with the xDFSReplicationGroupMembership resources.
 
 #### Parameters
 * **GroupName**: The name of the Replication Group. Required.
@@ -38,10 +38,10 @@ This resource is used to create, edit or remove DFS Replication Groups. If used 
 * **Members**: A list of computers that are members of this Replication Group. These can be specified using either the ComputerName or FQDN name for each member. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match. Optional.
 * **Folders**: A list of folders that are replicated in this Replication Group. Optional.
 * **Topology**: This allows a replication topology to assign to the Replication Group. It defaults to Manual, which will not automatically create a topology. If set to Fullmesh, a full mesh topology between all members will be created. Optional.
-* **ContentPaths**: An array of DFS Replication Group Content Paths to use for each of the Folders. This can have one entry for each Folder in the Folders parameter and should be set in th same order. If any entry is not blank then the Content Paths will need to be set manually by using the xDFSRepGroupMembership resource. Optional.
+* **ContentPaths**: An array of DFS Replication Group Content Paths to use for each of the Folders. This can have one entry for each Folder in the Folders parameter and should be set in th same order. If any entry is not blank then the Content Paths will need to be set manually by using the xDFSReplicationGroupMembership resource. Optional.
 * **DomainName**: The AD domain the Replication Group should created in. Optional.
 
-### xDFSRepGroupConnection
+### xDFSReplicationGroupConnection
 This resource is used to create, edit and remove DFS Replication Group connections. This resource should ONLY be used if the Topology parameter in the Resource Group is set to Manual.
 
 #### Parameters
@@ -54,8 +54,8 @@ This resource is used to create, edit and remove DFS Replication Group connectio
 * **RDCDisable**: Set to $true to disable remote differental compression on this connection. Optional.
 * **DomainName**: The AD domain the Replication Group connection should created in. Optional.
 
-### xDFSRepGroupFolder
-This resource is used to configure DFS Replication Group folders. This is an optional resource, and only needs to be used if the folder Description, FilenameToExclude or DirectoryNameToExclude fields need to be set. In most cases just setting the Folders property in the xDFSRepGroup resource will be acceptable.
+### xDFSReplicationGroupFolder
+This resource is used to configure DFS Replication Group folders. This is an optional resource, and only needs to be used if the folder Description, FilenameToExclude or DirectoryNameToExclude fields need to be set. In most cases just setting the Folders property in the xDFSReplicationGroup resource will be acceptable.
 
 #### Parameters
 * **GroupName**: The name of the Replication Group. Required.
@@ -66,8 +66,8 @@ This resource is used to configure DFS Replication Group folders. This is an opt
 * **DfsnPath**: The DFS Namespace Path to this Replication Group folder is mapped to. This does NOT create the Namespace folders, it only sets the name in the folder object. Optional.
 * **DomainName**: The AD domain the Replication Group should created in. Optional.
 
-### xDFSRepGroupMembership
-This resource is used to configure Replication Group Folder Membership. It is usually used to set the **ContentPath** for each Replication Group folder on each Member computer. It can also be used to set additional properties of the Membership. This resource shouldn't be used for folders where the Content Path is set in the xDFSRepGroup.
+### xDFSReplicationGroupMembership
+This resource is used to configure Replication Group Folder Membership. It is usually used to set the **ContentPath** for each Replication Group folder on each Member computer. It can also be used to set additional properties of the Membership. This resource shouldn't be used for folders where the Content Path is set in the xDFSReplicationGroup.
 
 #### Parameters
 * **GroupName**: The name of the Replication Group. Required.
@@ -82,7 +82,7 @@ This resource is used to configure Replication Group Folder Membership. It is us
 ### Examples
 Create a DFS Replication Group called Public containing two members, FileServer1 and FileServer2. The Replication Group contains two folders called Software and Misc. An automatic Full Mesh connection topology will be assigned. The Content Paths for each folder and member will be set to 'd:\public\software' and 'd:\public\misc' respectively:
 ```powershell
-configuration Sample_xDFSRepGroup_Simple
+configuration Sample_xDFSReplicationGroup_Simple
 {
     Import-DscResource -Module xDFS
 
@@ -92,14 +92,14 @@ configuration Sample_xDFSRepGroup_Simple
 
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
-        WindowsFeature RSATDFSMgmtConInstall 
-        { 
-            Ensure = "Present" 
-            Name = "RSAT-DFS-Mgmt-Con" 
+        WindowsFeature RSATDFSMgmtConInstall
+        {
+            Ensure = "Present"
+            Name = "RSAT-DFS-Mgmt-Con"
         }
 
         # Configure the Replication Group
-        xDFSRepGroup RGPublic
+        xDFSReplicationGroup RGPublic
         {
             GroupName = 'Public'
             Description = 'Public files for use by all departments'
@@ -117,7 +117,7 @@ configuration Sample_xDFSRepGroup_Simple
 
 Create a DFS Replication Group called Public containing two members, FileServer1 and FileServer2. The Replication Group contains a single folder called Software. A description will be set on the Software folder and it will be set to exclude the directory Temp from replication. A manual topology is assigned to the replication connections.
 ```powershell
-configuration Sample_xDFSRepGroup
+configuration Sample_xDFSReplicationGroup
 {
     Import-DscResource -Module xDFS
 
@@ -134,7 +134,7 @@ configuration Sample_xDFSRepGroup
         }
 
         # Configure the Replication Group
-        xDFSRepGroup RGPublic
+        xDFSReplicationGroup RGPublic
         {
             GroupName = 'Public'
             Description = 'Public files for use by all departments'
@@ -145,35 +145,35 @@ configuration Sample_xDFSRepGroup
             DependsOn = "[WindowsFeature]RSATDFSMgmtConInstall"
         } # End of RGPublic Resource
 
-        xDFSRepGroupConnection RGPublicC1
+        xDFSReplicationGroupConnection RGPublicC1
         {
             GroupName = 'Public'
             Ensure = 'Present'
             SourceComputerName = 'FileServer1'
             DestinationComputerName = 'FileServer2'
             PSDSCRunAsCredential = $Credential
-        } # End of xDFSRepGroupConnection Resource
+        } # End of xDFSReplicationGroupConnection Resource
 
-        xDFSRepGroupConnection RGPublicC2
+        xDFSReplicationGroupConnection RGPublicC2
         {
             GroupName = 'Public'
             Ensure = 'Present'
             SourceComputerName = 'FileServer2'
             DestinationComputerName = 'FileServer1.contoso.com'
             PSDSCRunAsCredential = $Credential
-        } # End of xDFSRepGroupConnection Resource
+        } # End of xDFSReplicationGroupConnection Resource
 
-        xDFSRepGroupFolder RGSoftwareFolder
+        xDFSReplicationGroupFolder RGSoftwareFolder
         {
             GroupName = 'Public'
             FolderName = 'Software'
             Description = 'DFS Share for storing software installers'
             DirectoryNameToExclude = 'Temp'
             PSDSCRunAsCredential = $Credential
-            DependsOn = '[xDFSRepGroup]RGPublic'
+            DependsOn = '[xDFSReplicationGroup]RGPublic'
         } # End of RGPublic Resource
 
-        xDFSRepGroupMembership RGPublicSoftwareFS1
+        xDFSReplicationGroupMembership RGPublicSoftwareFS1
         {
             GroupName = 'Public'
             FolderName = 'Software'
@@ -181,17 +181,17 @@ configuration Sample_xDFSRepGroup
             ContentPath = 'd:\Public\Software'
             PrimaryMember = $true
             PSDSCRunAsCredential = $Credential
-            DependsOn = '[xDFSRepGroupFolder]RGSoftwareFolder'
+            DependsOn = '[xDFSReplicationGroupFolder]RGSoftwareFolder'
         } # End of RGPublicSoftwareFS1 Resource
 
-        xDFSRepGroupMembership RGPublicSoftwareFS2
+        xDFSReplicationGroupMembership RGPublicSoftwareFS2
         {
             GroupName = 'Public'
             FolderName = 'Software'
             ComputerName = 'FileServer2'
             ContentPath = 'e:\Data\Public\Software'
             PSDSCRunAsCredential = $Credential
-            DependsOn = '[xDFSRepGroupFolder]RGPublicSoftwareFS1'
+            DependsOn = '[xDFSReplicationGroupFolder]RGPublicSoftwareFS1'
         } # End of RGPublicSoftwareFS2 Resource
 
     } # End of Node
@@ -201,7 +201,7 @@ configuration Sample_xDFSRepGroup
 
 Create a DFS Replication Group called Public containing two members, FileServer1 and FileServer2. The Replication Group contains a single folder called Software. A description will be set on the Software folder and it will be set to exclude the directory Temp from replication. An automatic fullmesh topology is assigned to the replication group connections.
 ```powershell
-configuration Sample_xDFSRepGroup_FullMesh
+configuration Sample_xDFSReplicationGroup_FullMesh
 {
     Import-DscResource -Module xDFS
 
@@ -211,14 +211,14 @@ configuration Sample_xDFSRepGroup_FullMesh
 
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
-        WindowsFeature RSATDFSMgmtConInstall 
-        { 
-            Ensure = "Present" 
-            Name = "RSAT-DFS-Mgmt-Con" 
+        WindowsFeature RSATDFSMgmtConInstall
+        {
+            Ensure = "Present"
+            Name = "RSAT-DFS-Mgmt-Con"
         }
 
         # Configure the Replication Group
-        xDFSRepGroup RGPublic
+        xDFSReplicationGroup RGPublic
         {
             GroupName = 'Public'
             Description = 'Public files for use by all departments'
@@ -230,17 +230,17 @@ configuration Sample_xDFSRepGroup_FullMesh
             DependsOn = "[WindowsFeature]RSATDFSMgmtConInstall"
         } # End of RGPublic Resource
 
-        xDFSRepGroupFolder RGSoftwareFolder
+        xDFSReplicationGroupFolder RGSoftwareFolder
         {
             GroupName = 'Public'
             FolderName = 'Software'
             Description = 'DFS Share for storing software installers'
             DirectoryNameToExclude = 'Temp'
             PSDSCRunAsCredential = $Credential
-            DependsOn = '[xDFSRepGroup]RGPublic'
+            DependsOn = '[xDFSReplicationGroup]RGPublic'
         } # End of RGPublic Resource
 
-        xDFSRepGroupMembership RGPublicSoftwareFS1
+        xDFSReplicationGroupMembership RGPublicSoftwareFS1
         {
             GroupName = 'Public'
             FolderName = 'Software'
@@ -248,17 +248,17 @@ configuration Sample_xDFSRepGroup_FullMesh
             ContentPath = 'd:\Public\Software'
             PrimaryMember = $true
             PSDSCRunAsCredential = $Credential
-            DependsOn = '[xDFSRepGroupFolder]RGSoftwareFolder'
+            DependsOn = '[xDFSReplicationGroupFolder]RGSoftwareFolder'
         } # End of RGPublicSoftwareFS1 Resource
 
-        xDFSRepGroupMembership RGPublicSoftwareFS2
+        xDFSReplicationGroupMembership RGPublicSoftwareFS2
         {
             GroupName = 'Public'
             FolderName = 'Software'
             ComputerName = 'FileServer2'
             ContentPath = 'e:\Data\Public\Software'
             PSDSCRunAsCredential = $Credential
-            DependsOn = '[xDFSRepGroupFolder]RGPublicSoftwareFS1'
+            DependsOn = '[xDFSReplicationGroupFolder]RGPublicSoftwareFS1'
         } # End of RGPublicSoftwareFS2 Resource
 
     } # End of Node
@@ -271,13 +271,13 @@ configuration Sample_xDFSRepGroup_FullMesh
 **This resource has been deprecated. Please use xDFSNamespaceRoot and xDFSNamespaceFolder instead.**
 
 ### xDFSNamespaceRoot
-This resource is used to create, edit or remove standalone or domain based DFS namespaces.  When the server is the last server in the namespace, the namespace itself will be removed. 
+This resource is used to create, edit or remove standalone or domain based DFS namespaces.  When the server is the last server in the namespace, the namespace itself will be removed.
 
 #### Parameters
 * **Path**: Specifies a path for the root of a DFS namespace. String. Required.
 * **TargetPath**: Specifies a path for a root target of the DFS namespace. String. Required.
 * **Ensure**: Specifies if the DFS Namespace root should exist. { Absent | Present }. String. Required.
-* **Type**: Specifies the type of a DFS namespace as a Type object. { Standalone | DomainV1 | DomainV2 }. String. Required. 
+* **Type**: Specifies the type of a DFS namespace as a Type object. { Standalone | DomainV1 | DomainV2 }. String. Required.
 * **Description**: A description for the namespace. String. Optional.
 * **TimeToLiveSec**: Specifies a TTL interval, in seconds, for referrals. Optional.
 * **EnableSiteCosting**: Indicates whether a DFS namespace uses cost-based selection. Boolean. Optional.
@@ -287,9 +287,9 @@ This resource is used to create, edit or remove standalone or domain based DFS n
 * **EnableTargetFailback**: Indicates whether a DFS namespace uses target failback. Boolean. Optional
 * **ReferralPriorityClass**: Specifies the target priority class for a DFS namespace root. { Global-High | SiteCost-High | SiteCost-Normal | SiteCost-Low | Global-Low }. Optional.
 * **ReferralPriorityRank**: Specifies the priority rank, as an integer, for a root target of the DFS namespace. Uint32. Optional
-    
+
 ### xDFSNamespaceFolder
-This resource is used to create, edit or remove folders from DFS namespaces.  When a target is the last target in a namespace folder, the namespace folder itself will be removed. 
+This resource is used to create, edit or remove folders from DFS namespaces.  When a target is the last target in a namespace folder, the namespace folder itself will be removed.
 
 #### Parameters
 * **Path**: Specifies a path for the DSF folder within an existing DFS Namespace. String. Required.
@@ -311,14 +311,14 @@ Configuration DFSNamespace_Domain_SingleTarget
 
     Node $NodeName
     {
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", (ConvertTo-SecureString $"MyP@ssw0rd!1" -AsPlainText -Force))    
+        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential("CONTOSO.COM\Administrator", (ConvertTo-SecureString $"MyP@ssw0rd!1" -AsPlainText -Force))
 
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
-        WindowsFeature RSATDFSMgmtConInstall 
-        { 
-            Ensure = "Present" 
-            Name = "RSAT-DFS-Mgmt-Con" 
+        WindowsFeature RSATDFSMgmtConInstall
+        {
+            Ensure = "Present"
+            Name = "RSAT-DFS-Mgmt-Con"
         }
 
         WindowsFeature DFS
@@ -371,14 +371,14 @@ Configuration DFSNamespace_Domain_MultipleTarget
 
     Node $NodeName
     {
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", (ConvertTo-SecureString $"MyP@ssw0rd!1" -AsPlainText -Force))    
+        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", (ConvertTo-SecureString $"MyP@ssw0rd!1" -AsPlainText -Force))
 
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
-        WindowsFeature RSATDFSMgmtConInstall 
-        { 
-            Ensure = "Present" 
-            Name = "RSAT-DFS-Mgmt-Con" 
+        WindowsFeature RSATDFSMgmtConInstall
+        {
+            Ensure = "Present"
+            Name = "RSAT-DFS-Mgmt-Con"
         }
 
         WindowsFeature DFS
@@ -390,8 +390,8 @@ Configuration DFSNamespace_Domain_MultipleTarget
        # Configure the namespace
         xDFSNamespaceRoot DFSNamespaceRoot_Domain_Software_CA
         {
-            Path                 = '\\contoso.com\software' 
-            TargetPath           = '\\ca-fileserver\software'           
+            Path                 = '\\contoso.com\software'
+            TargetPath           = '\\ca-fileserver\software'
             Ensure               = 'present'
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
@@ -400,8 +400,8 @@ Configuration DFSNamespace_Domain_MultipleTarget
 
         xDFSNamespaceRoot DFSNamespaceRoot_Domain_Software_MA
         {
-            Path                 = '\\contoso.com\software' 
-            TargetPath           = '\\ma-fileserver\software'           
+            Path                 = '\\contoso.com\software'
+            TargetPath           = '\\ma-fileserver\software'
             Ensure               = 'present'
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
@@ -410,8 +410,8 @@ Configuration DFSNamespace_Domain_MultipleTarget
 
         xDFSNamespaceRoot DFSNamespaceRoot_Domain_Software_NY
         {
-            Path                 = '\\contoso.com\software' 
-            TargetPath           = '\\ma-fileserver\software'           
+            Path                 = '\\contoso.com\software'
+            TargetPath           = '\\ma-fileserver\software'
             Ensure               = 'present'
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
@@ -421,8 +421,8 @@ Configuration DFSNamespace_Domain_MultipleTarget
         # Configure the namespace folders
         xDFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_CA
         {
-            Path                 = '\\contoso.com\software\it' 
-            TargetPath           = '\\ca-fileserver\it'           
+            Path                 = '\\contoso.com\software\it'
+            TargetPath           = '\\ca-fileserver\it'
             Ensure               = 'present'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
             PsDscRunAsCredential = $Credential
@@ -430,8 +430,8 @@ Configuration DFSNamespace_Domain_MultipleTarget
 
         xDFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_MA
         {
-            Path                 = '\\contoso.com\software\it' 
-            TargetPath           = '\\ma-fileserver\it'           
+            Path                 = '\\contoso.com\software\it'
+            TargetPath           = '\\ma-fileserver\it'
             Ensure               = 'present'
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
@@ -440,8 +440,8 @@ Configuration DFSNamespace_Domain_MultipleTarget
 
         xDFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_NY
         {
-            Path                 = '\\contoso.com\software\it' 
-            TargetPath           = '\\ma-fileserver\it'           
+            Path                 = '\\contoso.com\software\it'
+            TargetPath           = '\\ma-fileserver\it'
             Ensure               = 'present'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
             PsDscRunAsCredential = $Credential
@@ -458,14 +458,14 @@ Configuration DFSNamespace_Standalone_Public
 
     Node $NodeName
     {
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", (ConvertTo-SecureString $"MyP@ssw0rd!1" -AsPlainText -Force))    
+        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", (ConvertTo-SecureString $"MyP@ssw0rd!1" -AsPlainText -Force))
 
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
-        WindowsFeature RSATDFSMgmtConInstall 
+        WindowsFeature RSATDFSMgmtConInstall
         { 
-            Ensure = "Present" 
-            Name = "RSAT-DFS-Mgmt-Con" 
+            Ensure = "Present"
+            Name = "RSAT-DFS-Mgmt-Con"
         }
 
         WindowsFeature DFS
@@ -499,6 +499,9 @@ Configuration DFSNamespace_Standalone_Public
 ```
 
 ## Versions
+### 3.0.0.0
+* RepGroup renamed to ReplicationGroup in all files.
+
 ### 2.2.0.0
 * DSC Module moved to MSFT.
 * MSFT_xDFSNamespace- Removed.
@@ -567,7 +570,3 @@ Configuration DFSNamespace_Standalone_Public
 
 ### 1.0.0.0
 * Initial release.
-
-## Links
-* **[GitHub Repo](https://github.com/PlagueHO/xDFS)**: Raise any issues, requests or PRs here.
-* **[My Blog](https://dscottraynsford.wordpress.com)**: See my PowerShell and Programming Blog.

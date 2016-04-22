@@ -1,4 +1,4 @@
-configuration Sample_xDFSRepGroup
+configuration Sample_xDFSReplicationGroup
 {
     Import-DscResource -Module xDFS
 
@@ -15,7 +15,7 @@ configuration Sample_xDFSRepGroup
         }
 
         # Configure the Replication Group
-        xDFSRepGroup RGPublic
+        xDFSReplicationGroup RGPublic
         {
             GroupName = 'Public'
             Description = 'Public files for use by all departments'
@@ -26,35 +26,35 @@ configuration Sample_xDFSRepGroup
             DependsOn = "[WindowsFeature]RSATDFSMgmtConInstall"
         } # End of RGPublic Resource
 
-        xDFSRepGroupConnection RGPublicC1
+        xDFSReplicationGroupConnection RGPublicC1
         {
             GroupName = 'Public'
             Ensure = 'Present'
             SourceComputerName = 'FileServer1'
             DestinationComputerName = 'FileServer2'
             PSDSCRunAsCredential = $Credential
-        } # End of xDFSRepGroupConnection Resource
+        } # End of xDFSReplicationGroupConnection Resource
 
-        xDFSRepGroupConnection RGPublicC2
+        xDFSReplicationGroupConnection RGPublicC2
         {
             GroupName = 'Public'
             Ensure = 'Present'
             SourceComputerName = 'FileServer2'
             DestinationComputerName = 'FileServer1.contoso.com'
             PSDSCRunAsCredential = $Credential
-        } # End of xDFSRepGroupConnection Resource
+        } # End of xDFSReplicationGroupConnection Resource
 
-        xDFSRepGroupFolder RGSoftwareFolder
+        xDFSReplicationGroupFolder RGSoftwareFolder
         {
             GroupName = 'Public'
             FolderName = 'Software'
             Description = 'DFS Share for storing software installers'
             DirectoryNameToExclude = 'Temp'
             PSDSCRunAsCredential = $Credential
-            DependsOn = '[xDFSRepGroup]RGPublic'
-        } # End of RGSoftwareFolder Resource
+            DependsOn = '[xDFSReplicationGroup]RGPublic'
+        } # End of RGPublic Resource
 
-        xDFSRepGroupMembership RGPublicSoftwareFS1
+        xDFSReplicationGroupMembership RGPublicSoftwareFS1
         {
             GroupName = 'Public'
             FolderName = 'Software'
@@ -62,17 +62,17 @@ configuration Sample_xDFSRepGroup
             ContentPath = 'd:\Public\Software'
             PrimaryMember = $true
             PSDSCRunAsCredential = $Credential
-            DependsOn = '[xDFSRepGroupFolder]RGSoftwareFolder'
+            DependsOn = '[xDFSReplicationGroupFolder]RGSoftwareFolder'
         } # End of RGPublicSoftwareFS1 Resource
 
-        xDFSRepGroupMembership RGPublicSoftwareFS2
+        xDFSReplicationGroupMembership RGPublicSoftwareFS2
         {
             GroupName = 'Public'
             FolderName = 'Software'
             ComputerName = 'FileServer2'
             ContentPath = 'e:\Data\Public\Software'
             PSDSCRunAsCredential = $Credential
-            DependsOn = '[xDFSRepGroupFolder]RGPublicSoftwareFS1'
+            DependsOn = '[xDFSReplicationGroupFolder]RGPublicSoftwareFS1'
         } # End of RGPublicSoftwareFS2 Resource
 
     } # End of Node

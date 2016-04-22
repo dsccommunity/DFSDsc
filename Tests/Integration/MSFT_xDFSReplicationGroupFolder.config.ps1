@@ -16,25 +16,27 @@ else
     }
 }
 
-$RepgroupConnection = @{
-    GroupName               = 'IntegrationTestRepGroup'
+$ReplicationGroupFolder = @{
+    GroupName               = 'IntegrationTestReplicationGroup'
     Folders                 = $TestConfig.Folders
     Members                 = $TestConfig.Members
-    Ensure                  = 'Present'
-    SourceComputerName      = $TestConfig.Members[0]
-    DestinationComputerName = $TestConfig.Members[1]
+    FolderName              = $TestConfig.Folders[0]
+    Description             = "Integration Test Rep Group Folder $($TestConfig.Folders[0])"
+    DirectoryNameToExclude  = @('Temp')
+    FilenameToExclude       = @('*.bak','*.tmp')
     PSDSCRunAsCredential    = New-Object System.Management.Automation.PSCredential ($TestConfig.Username, (ConvertTo-SecureString $TestConfig.Password -AsPlainText -Force))
 }
 
-Configuration MSFT_xDFSRepGroupConnection_Config {
+Configuration MSFT_xDFSReplicationGroupFolder_Config {
     Import-DscResource -ModuleName xDFS
     node localhost {
-        xDFSRepGroupConnection Integration_Test {
-            GroupName                   = $RepgroupConnection.GroupName
-            Ensure                      = 'Present'
-            SourceComputerName          = $RepgroupConnection.SourceComputerName
-            DestinationComputerName     = $RepgroupConnection.DestinationComputerName
-            PSDSCRunAsCredential        = $RepgroupConnection.PSDSCRunAsCredential
+        xDFSReplicationGroupFolder Integration_Test {
+            GroupName                   = $ReplicationGroupFolder.GroupName
+            FolderName                  = $ReplicationGroupFolder.FolderName
+            Description                 = $ReplicationGroupFolder.Description
+            DirectoryNameToExclude      = $ReplicationGroupFolder.DirectoryNameToExclude
+            FilenameToExclude           = $ReplicationGroupFolder.FilenameToExclude
+            PSDSCRunAsCredential        = $ReplicationGroupFolder.PSDSCRunAsCredential
         }
     }
 }

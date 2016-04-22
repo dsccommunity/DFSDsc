@@ -2,16 +2,16 @@ data LocalizedData
 {
     # culture="en-US"
     ConvertFrom-StringData -StringData @'
-GettingRepGroupFolderMessage=Getting DFS Replication Group "{0}" folder "{1}".
-RepGroupFolderExistsMessage=DFS Replication Group "{0}" folder "{1}" exists.
-RepGroupFolderMissingError=DFS Replication Group "{0}" folder "{1}" is missing.
+GettingReplicationGroupFolderMessage=Getting DFS Replication Group "{0}" folder "{1}".
+ReplicationGroupFolderExistsMessage=DFS Replication Group "{0}" folder "{1}" exists.
+ReplicationGroupFolderMissingError=DFS Replication Group "{0}" folder "{1}" is missing.
 SettingRegGroupFolderMessage=Setting DFS Replication Group "{0}" folder "{1}".
-RepGroupFolderUpdatedMessage=DFS Replication Group "{0}" folder "{1}" has has been updated.
+ReplicationGroupFolderUpdatedMessage=DFS Replication Group "{0}" folder "{1}" has has been updated.
 TestingRegGroupFolderMessage=Testing DFS Replication Group "{0}" folder "{1}".
-RepGroupFolderDescriptionMismatchMessage=DFS Replication Group "{0}" folder "{1}" has incorrect Description. Change required.
-RepGroupFolderFileNameToExcludeMismatchMessage=DFS Replication Group "{0}" folder "{1}" has incorrect FileNameToExclude. Change required.
-RepGroupFolderDirectoryNameToExcludeMismatchMessage=DFS Replication Group "{0}" folder "{1}" has incorrect DirectoryNameToExclude. Change required.
-RepGroupFolderDfsnPathMismatchMessage=DFS Replication Group "{0}" folder "{1}" has incorrect DfsnPath. Change required.
+ReplicationGroupFolderDescriptionMismatchMessage=DFS Replication Group "{0}" folder "{1}" has incorrect Description. Change required.
+ReplicationGroupFolderFileNameToExcludeMismatchMessage=DFS Replication Group "{0}" folder "{1}" has incorrect FileNameToExclude. Change required.
+ReplicationGroupFolderDirectoryNameToExcludeMismatchMessage=DFS Replication Group "{0}" folder "{1}" has incorrect DirectoryNameToExclude. Change required.
+ReplicationGroupFolderDfsnPathMismatchMessage=DFS Replication Group "{0}" folder "{1}" has incorrect DfsnPath. Change required.
 '@
 }
 
@@ -35,7 +35,7 @@ function Get-TargetResource
     
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.GettingRepGroupFolderMessage) `
+        $($LocalizedData.GettingReplicationGroupFolderMessage) `
             -f $GroupName,$FolderName,$DomainName
         ) -join '' )
 
@@ -49,23 +49,23 @@ function Get-TargetResource
     {
         $Splat += @{ DomainName = $DomainName }
     }
-    $RepGroupFolder = Get-DfsReplicatedFolder @Splat `
+    $ReplicationGroupFolder = Get-DfsReplicatedFolder @Splat `
         -ErrorAction Stop
-    if ($RepGroupFolder)
+    if ($ReplicationGroupFolder)
     {
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.RepGroupFolderExistsMessage) `
+            $($LocalizedData.ReplicationGroupFolderExistsMessage) `
                 -f $GroupName,$FolderName,$DomainName
             ) -join '' )
         # Array paramters are disabled until this issue is resolved:
         # https://windowsserver.uservoice.com/forums/301869-powershell/suggestions/11088807-get-dscconfiguration-fails-with-embedded-cim-type
         $returnValue += @{
-            Description = $RepGroupFolder.Description
-            # FilenameToExclude = $RepGroupFolder.FilenameToExclude
-            # DirectoryNameToExclude = $RepGroupFolder.DirectoryNameToExclude
-            DfsnPath = $RepGroupFolder.DfsnPath
-            DomainName = $RepGroupFolder.DomainName
+            Description = $ReplicationGroupFolder.Description
+            # FilenameToExclude = $ReplicationGroupFolder.FilenameToExclude
+            # DirectoryNameToExclude = $ReplicationGroupFolder.DirectoryNameToExclude
+            DfsnPath = $ReplicationGroupFolder.DfsnPath
+            DomainName = $ReplicationGroupFolder.DomainName
         }
     }
     else
@@ -73,7 +73,7 @@ function Get-TargetResource
         # The Rep Group folder doesn't exist
         $errorId = 'RegGroupFolderMissingError'
         $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
-        $errorMessage = $($LocalizedData.RepGroupFolderMissingError) `
+        $errorMessage = $($LocalizedData.ReplicationGroupFolderMissingError) `
             -f $GroupName,$FolderName,$DomainName
         $exception = New-Object -TypeName System.InvalidOperationException `
             -ArgumentList $errorMessage
@@ -126,7 +126,7 @@ function Set-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.RepGroupFolderUpdatedMessage) `
+        $($LocalizedData.ReplicationGroupFolderUpdatedMessage) `
             -f $GroupName,$FolderName,$DomainName
         ) -join '' )
 
@@ -179,25 +179,25 @@ function Test-TargetResource
     {
         $Splat += @{ DomainName = $DomainName }
     }
-    $RepGroupFolder = Get-DfsReplicatedFolder @Splat `
+    $ReplicationGroupFolder = Get-DfsReplicatedFolder @Splat `
         -ErrorAction Stop
 
-    if ($RepGroupFolder)
+    if ($ReplicationGroupFolder)
     {
         # The rep group folder is found
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.RepGroupFolderExistsMessage) `
+            $($LocalizedData.ReplicationGroupFolderExistsMessage) `
                 -f $GroupName,$FolderName,$DomainName
             ) -join '' )
 
         # Check the description
         if (($PSBoundParameters.ContainsKey('Description')) `
-            -and ($RepGroupFolder.Description -ne $Description))
+            -and ($ReplicationGroupFolder.Description -ne $Description))
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.RepGroupFolderDescriptionMismatchMessage) `
+                $($LocalizedData.ReplicationGroupFolderDescriptionMismatchMessage) `
                     -f $GroupName,$FolderName,$DomainName
                 ) -join '' )
             $desiredConfigurationMatch = $false
@@ -206,12 +206,12 @@ function Test-TargetResource
         # Check the FileNameToExclude
         if (($PSBoundParameters.ContainsKey('FileNameToExclude')) `
             -and ((Compare-Object `
-                -ReferenceObject  $RepGroupFolder.FileNameToExclude `
+                -ReferenceObject  $ReplicationGroupFolder.FileNameToExclude `
                 -DifferenceObject $FileNameToExclude).Count -ne 0))
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.RepGroupFolderFileNameToExcludeMismatchMessage) `
+                $($LocalizedData.ReplicationGroupFolderFileNameToExcludeMismatchMessage) `
                     -f $GroupName,$FolderName,$DomainName
                 ) -join '' )
             $desiredConfigurationMatch = $false
@@ -220,23 +220,23 @@ function Test-TargetResource
         # Check the DirectoryNameToExclude
         if (($PSBoundParameters.ContainsKey('DirectoryNameToExclude')) `
             -and ((Compare-Object `
-                -ReferenceObject  $RepGroupFolder.DirectoryNameToExclude `
+                -ReferenceObject  $ReplicationGroupFolder.DirectoryNameToExclude `
                 -DifferenceObject $DirectoryNameToExclude).Count -ne 0))
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.RepGroupFolderDirectoryNameToExcludeMismatchMessage) `
+                $($LocalizedData.ReplicationGroupFolderDirectoryNameToExcludeMismatchMessage) `
                     -f $GroupName,$FolderName,$DomainName
                 ) -join '' )
             $desiredConfigurationMatch = $false
         }
 
         if (($PSBoundParameters.ContainsKey('DfsnPath')) `
-            -and ($RepGroupFolder.DfsnPath -ne $DfsnPath))
+            -and ($ReplicationGroupFolder.DfsnPath -ne $DfsnPath))
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.RepGroupFolderDfsnPathMismatchMessage) `
+                $($LocalizedData.ReplicationGroupFolderDfsnPathMismatchMessage) `
                     -f $GroupName,$FolderName,$DomainName
                 ) -join '' )
             $desiredConfigurationMatch = $false
@@ -247,7 +247,7 @@ function Test-TargetResource
         # The Rep Group folder doesn't exist
         $errorId = 'RegGroupFolderMissingError'
         $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
-        $errorMessage = $($LocalizedData.RepGroupFolderMissingError) `
+        $errorMessage = $($LocalizedData.ReplicationGroupFolderMissingError) `
             -f $GroupName,$FolderName,$DomainName
         $exception = New-Object -TypeName System.InvalidOperationException `
             -ArgumentList $errorMessage

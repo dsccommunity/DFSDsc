@@ -16,27 +16,25 @@ else
     }
 }
 
-$RepgroupFolder = @{
-    GroupName               = 'IntegrationTestRepGroup'
+$ReplicationGroupConnection = @{
+    GroupName               = 'IntegrationTestReplicationGroup'
     Folders                 = $TestConfig.Folders
     Members                 = $TestConfig.Members
-    FolderName              = $TestConfig.Folders[0]
-    Description             = "Integration Test Rep Group Folder $($TestConfig.Folders[0])"
-    DirectoryNameToExclude  = @('Temp')
-    FilenameToExclude       = @('*.bak','*.tmp')
+    Ensure                  = 'Present'
+    SourceComputerName      = $TestConfig.Members[0]
+    DestinationComputerName = $TestConfig.Members[1]
     PSDSCRunAsCredential    = New-Object System.Management.Automation.PSCredential ($TestConfig.Username, (ConvertTo-SecureString $TestConfig.Password -AsPlainText -Force))
 }
 
-Configuration MSFT_xDFSRepGroupFolder_Config {
+Configuration MSFT_xDFSReplicationGroupConnection_Config {
     Import-DscResource -ModuleName xDFS
     node localhost {
-        xDFSRepGroupFolder Integration_Test {
-            GroupName                   = $RepgroupFolder.GroupName
-            FolderName                  = $RepgroupFolder.FolderName
-            Description                 = $RepgroupFolder.Description
-            DirectoryNameToExclude      = $RepgroupFolder.DirectoryNameToExclude
-            FilenameToExclude           = $RepgroupFolder.FilenameToExclude
-            PSDSCRunAsCredential        = $RepgroupFolder.PSDSCRunAsCredential
+        xDFSReplicationGroupConnection Integration_Test {
+            GroupName                   = $ReplicationGroupConnection.GroupName
+            Ensure                      = 'Present'
+            SourceComputerName          = $ReplicationGroupConnection.SourceComputerName
+            DestinationComputerName     = $ReplicationGroupConnection.DestinationComputerName
+            PSDSCRunAsCredential        = $ReplicationGroupConnection.PSDSCRunAsCredential
         }
     }
 }

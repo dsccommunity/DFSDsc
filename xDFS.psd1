@@ -4,7 +4,7 @@
 # RootModule = ''
 
 # Version number of this module.
-ModuleVersion = '2.2.0.0'
+ModuleVersion = '3.0.0.0'
 
 # ID used to uniquely identify this module
 GUID = '3bcb9c66-ea0b-4675-bd46-c390a382c388'
@@ -22,7 +22,7 @@ Copyright = '(c) 2015 Microsoft Corporation. All rights reserved.'
 Description = 'DSC resources for configuring Distributed File System Replication and Namespaces.'
 
 # Minimum version of the Windows PowerShell engine required by this module
-PowerShellVersion = '4.0'
+PowerShellVersion = '5.0'
 
 # Name of the Windows PowerShell host required by this module
 # PowerShellHostName = ''
@@ -112,4 +112,3 @@ PrivateData = @{
 # DefaultCommandPrefix = ''
 
 }
-
