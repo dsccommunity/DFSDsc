@@ -88,7 +88,8 @@ configuration Sample_xDFSReplicationGroup_Simple
 
     Node $NodeName
     {
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", (ConvertTo-SecureString $"MyP@ssw0rd!1" -AsPlainText -Force))
+        $Password = New-Object -Type SecureString [char[]] 'MyPassword' | % { $Password.AppendChar( $_ ) }
+        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", $Password)
 
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
@@ -123,7 +124,8 @@ configuration Sample_xDFSReplicationGroup
 
     Node $NodeName
     {
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", (ConvertTo-SecureString $"MyP@ssw0rd!1" -AsPlainText -Force))
+        $Password = New-Object -Type SecureString [char[]] 'MyPassword' | % { $Password.AppendChar( $_ ) }
+        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", $Password)
 
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
@@ -207,7 +209,8 @@ configuration Sample_xDFSReplicationGroup_FullMesh
 
     Node $NodeName
     {
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", (ConvertTo-SecureString $"MyP@ssw0rd!1" -AsPlainText -Force))
+        $Password = New-Object -Type SecureString [char[]] 'MyPassword' | % { $Password.AppendChar( $_ ) }
+        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", $Password)
 
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
@@ -311,7 +314,8 @@ Configuration DFSNamespace_Domain_SingleTarget
 
     Node $NodeName
     {
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential("CONTOSO.COM\Administrator", (ConvertTo-SecureString $"MyP@ssw0rd!1" -AsPlainText -Force))
+        $Password = New-Object -Type SecureString [char[]] 'MyPassword' | % { $Password.AppendChar( $_ ) }
+        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", $Password)
 
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
@@ -371,7 +375,8 @@ Configuration DFSNamespace_Domain_MultipleTarget
 
     Node $NodeName
     {
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", (ConvertTo-SecureString $"MyP@ssw0rd!1" -AsPlainText -Force))
+        $Password = New-Object -Type SecureString [char[]] 'MyPassword' | % { $Password.AppendChar( $_ ) }
+        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", $Password)
 
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
@@ -458,7 +463,8 @@ Configuration DFSNamespace_Standalone_Public
 
     Node $NodeName
     {
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", (ConvertTo-SecureString $"MyP@ssw0rd!1" -AsPlainText -Force))
+        $Password = New-Object -Type SecureString [char[]] 'MyPassword' | % { $Password.AppendChar( $_ ) }
+        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", $Password)
 
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install

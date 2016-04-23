@@ -15,7 +15,7 @@ else
         ContentPaths = @("$(ENV:Temp)TestFolder1","$(ENV:Temp)TestFolder2")
     }
 }
-
+$TestPassword = New-Object -Type SecureString [char[]] $TestConfig.Password | % { $Password.AppendChar( $_ ) }
 $ReplicationGroup = @{
     GroupName            = 'IntegrationTestReplicationGroup'
     Description          = 'Integration Test Replication Group'
@@ -23,7 +23,7 @@ $ReplicationGroup = @{
     Members              = $TestConfig.Members
     Folders              = $TestConfig.Folders
     Topology             = 'Fullmesh'
-    PSDSCRunAsCredential = New-Object System.Management.Automation.PSCredential ($TestConfig.Username, (ConvertTo-SecureString $TestConfig.Password -AsPlainText -Force))
+    PSDSCRunAsCredential = New-Object System.Management.Automation.PSCredential ($TestConfig.Username, $TestPassword)
 }
 
 Configuration MSFT_xDFSReplicationGroup_Config {

@@ -15,7 +15,7 @@ else
         ContentPaths = @("$(ENV:Temp)TestFolder1","$(ENV:Temp)TestFolder2")
     }
 }
-
+$TestPassword = New-Object -Type SecureString [char[]] $TestConfig.Password | % { $Password.AppendChar( $_ ) }
 $ReplicationGroupFolder = @{
     GroupName               = 'IntegrationTestReplicationGroup'
     Folders                 = $TestConfig.Folders
@@ -24,7 +24,7 @@ $ReplicationGroupFolder = @{
     Description             = "Integration Test Rep Group Folder $($TestConfig.Folders[0])"
     DirectoryNameToExclude  = @('Temp')
     FilenameToExclude       = @('*.bak','*.tmp')
-    PSDSCRunAsCredential    = New-Object System.Management.Automation.PSCredential ($TestConfig.Username, (ConvertTo-SecureString $TestConfig.Password -AsPlainText -Force))
+    PSDSCRunAsCredential    = New-Object System.Management.Automation.PSCredential ($TestConfig.Username, $TestPassword)
 }
 
 Configuration MSFT_xDFSReplicationGroupFolder_Config {
