@@ -4,7 +4,7 @@ configuration Sample_xDFSReplicationGroup
 
     Node $NodeName
     {
-        $Password = 'MyP@ssw0rd!1' | ConvertTo-SecureString -AsPlainText -Force
+        $Password = New-Object -Type SecureString [char[]] 'MyPassword' | % { $Password.AppendChar( $_ ) }
         [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", $Password)
 
         # Install the Prerequisite features first
