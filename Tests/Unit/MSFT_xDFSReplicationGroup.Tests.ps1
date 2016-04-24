@@ -121,8 +121,8 @@ try
                 DestinationComputerName = $ReplicationGroup.Members[1]
                 Ensure = 'Present'
                 Description = 'Connection Description'
-                DisableConnection = $false
-                DisableRDC = $false
+                EnsureEnabled = 'Enabled'
+                EnsureRDCEnabled = 'Enabled'
                 DomainName = 'CONTOSO.COM'
             },
             [PSObject]@{
@@ -131,13 +131,13 @@ try
                 DestinationComputerName = $ReplicationGroup.Members[0]
                 Ensure = 'Present'
                 Description = 'Connection Description'
-                DisableConnection = $false
-                DisableRDC = $false
+                EnsureEnabled = 'Enabled'
+                EnsureRDCEnabled = 'Enabled'
                 DomainName = 'CONTOSO.COM'
             }
         )
         $ReplicationGroupConnectionDisabled = $ReplicationGroupConnections[0].Clone()
-        $ReplicationGroupConnectionDisabled.DisableConnection = $True
+        $ReplicationGroupConnectionDisabled.EnsureEnabled = 'Disabled'
         $MockReplicationGroup = [PSObject]@{
             GroupName = $ReplicationGroup.GroupName
             DomainName = $ReplicationGroup.DomainName
@@ -194,8 +194,8 @@ try
             SourceComputerName = $ReplicationGroupConnections[0].SourceComputerName
             DestinationComputerName = $ReplicationGroupConnections[0].DestinationComputerName
             Description = $ReplicationGroupConnections[0].Description
-            Enabled = (-not $ReplicationGroupConnections[0].DisableConnection)
-            RDCEnabled = (-not $ReplicationGroupConnections[0].DisableRDC)
+            Enabled = ($ReplicationGroupConnections[0].EnsureEnabled -eq 'Enabled')
+            RDCEnabled = ($ReplicationGroupConnections[0].EnsureRDCEnabled -eq 'Enabled')
             DomainName = $ReplicationGroupConnections[0].DomainName
         }
         $ReplicationGroupContentPath = $ReplicationGroup.Clone()
