@@ -198,6 +198,15 @@ try
             RDCEnabled = ($ReplicationGroupConnections[0].EnsureRDCEnabled -eq 'Enabled')
             DomainName = $ReplicationGroupConnections[0].DomainName
         }
+        $MockReplicationGroupConnectionDisabled = [PSObject]@{
+            GroupName = $ReplicationGroupConnections[0].GroupName
+            SourceComputerName = $ReplicationGroupConnections[0].SourceComputerName
+            DestinationComputerName = $ReplicationGroupConnections[0].DestinationComputerName
+            Description = $ReplicationGroupConnections[0].Description
+            Enabled = $False
+            RDCEnabled = ($ReplicationGroupConnections[0].EnsureRDCEnabled -eq 'Enabled')
+            DomainName = $ReplicationGroupConnections[0].DomainName
+        }
         $ReplicationGroupContentPath = $ReplicationGroup.Clone()
         $ReplicationGroupContentPath += @{ ContentPaths = @($MockReplicationGroupMembership.ContentPath) }
     
@@ -726,7 +735,7 @@ try
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
-                Mock Get-DfsrConnection -MockWith { @($ReplicationGroupConnectionDisabled) } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)" }
+                Mock Get-DfsrConnection -MockWith { return $MockReplicationGroupConnectionDisabled } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)" }
                 Mock Get-DfsrConnection -MockWith { @($ReplicationGroupConnections[1]) } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)" }
                 Mock Add-DfsrConnection
                 Mock Set-DfsrConnection
@@ -1113,7 +1122,7 @@ try
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
-                Mock Get-DfsrConnection -MockWith { @($ReplicationGroupConnectionDisabled) } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)" }
+                Mock Get-DfsrConnection -MockWith {  return $MockReplicationGroupConnectionDisabled } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)" }
                 Mock Get-DfsrConnection -MockWith { @($ReplicationGroupConnections[1]) } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)" }
     
                 It 'should return false' {
