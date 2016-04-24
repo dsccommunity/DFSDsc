@@ -33,7 +33,7 @@ This resource is used to create, edit or remove DFS Replication Groups. If used 
 
 #### Parameters
 * **GroupName**: The name of the Replication Group. Required.
-* **Ensure**: Ensures that Replication Group is either Absent or Present. Required.
+* **Ensure**: Ensures that Replication Group is either Absent or Present. Required. { Absent | Present }
 * **Description**: A description for the Replication Group. Optional.
 * **Members**: A list of computers that are members of this Replication Group. These can be specified using either the ComputerName or FQDN name for each member. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match. Optional.
 * **Folders**: A list of folders that are replicated in this Replication Group. Optional.
@@ -46,12 +46,12 @@ This resource is used to create, edit and remove DFS Replication Group connectio
 
 #### Parameters
 * **GroupName**: The name of the Replication Group. Required.
-* **Ensure**: Ensures that Replication Group connection is either Absent or Present. Required.
+* **Ensure**: Ensures that Replication Group connection is either Absent or Present. Required. { Absent | Present }
 * **SourceComputerName**: The name of the Replication Group source computer for the connection. This can be specified using either the ComputerName or FQDN name for the member. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match. Required.
 * **DestinationComputerName**: The name of the Replication Group destination computer for the connection. This can be specified using either the ComputerName or FQDN name for the member. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match. Required.
 * **Description**: A description for the Replication Group connection. Optional.
-* **DisableConnection**: Set to $true to disable this connection. Optional.
-* **RDCDisable**: Set to $true to disable remote differental compression on this connection. Optional.
+* **EnsureEnabled**: Ensures that connection is either Enabled or Disabled. Optional. { Enabled | Disabled }. Default: Enabled.
+* **EnsureRDCEnabled**: Ensures remote differential compression is Enabled or Disabled. Optional.  { Enabled | Disabled }. Default: Enabled.
 * **DomainName**: The AD domain the Replication Group connection should created in. Optional.
 
 ### xDFSReplicationGroupFolder
@@ -507,6 +507,9 @@ Configuration DFSNamespace_Standalone_Public
 ## Versions
 ### 3.0.0.0
 * RepGroup renamed to ReplicationGroup in all files.
+* xDFSReplicationGroupConnection- Changed DisableConnection parameter to EnsureEnabled.
+                                  Changed DisableRDC parameter to EnsureRDCEnabled.
+* xDFSReplicationGroup- Fixed bug where disabled connection was not enabled in Fullmesh topology.
 
 ### 2.2.0.0
 * DSC Module moved to MSFT.

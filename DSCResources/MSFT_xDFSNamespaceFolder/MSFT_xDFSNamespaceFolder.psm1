@@ -293,20 +293,20 @@ function Set-TargetResource
             }
 
             # Output the target parameters that were changed/set
-            $TargetProperties.GetEnumerator() | ForEach-Object -Process {                
+            $TargetProperties.GetEnumerator() | ForEach-Object -Process {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceFolderTargetUpdateParameterMessage) `
                         -f $Path,$TargetPath,$_.name, $_.value
-                ) -join '' )            
-            }            
+                ) -join '' )
+            }
         }
         else
         {
             # Prepare to use the PSBoundParameters as a splat to created
             # The new DFS Namespace Folder.
             $null = $PSBoundParameters.Remove('Ensure')
-                        
+
             # Correct the ReferralPriorityClass field
             if ($ReferralPriorityClass)
             { 
@@ -317,13 +317,13 @@ function Set-TargetResource
             $null = New-DfsnFolder `
                 @PSBoundParameters `
                 -ErrorAction Stop
-                                    
-            $PSBoundParameters.GetEnumerator() | ForEach-Object -Process {                
+
+            $PSBoundParameters.GetEnumerator() | ForEach-Object -Process {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceFolderUpdateParameterMessage) `
                         -f $Path,$TargetPath,$_.name, $_.value
-                ) -join '' )            
+                ) -join '' )
             }
         }
     }
@@ -335,8 +335,8 @@ function Set-TargetResource
         $Target = Get-FolderTarget `
             -Path $Path `
             -TargetPath $TargetPath
-            
-        if ($Target)                
+
+        if ($Target)
         {
             # Remove the target from the Namespace Folder
             $null = Remove-DfsnFolderTarget `
@@ -350,7 +350,7 @@ function Set-TargetResource
                 $($LocalizedData.NamespaceFolderTargetRemovedMessage) `
                     -f $Path,$TargetPath
             ) -join '' )
-        }            
+        }
     }
 } # Set-TargetResource
 

@@ -121,8 +121,8 @@ try
                 DestinationComputerName = $ReplicationGroup.Members[1]
                 Ensure = 'Present'
                 Description = 'Connection Description'
-                DisableConnection = $false
-                DisableRDC = $false
+                EnsureEnabled = 'Enabled'
+                EnsureRDCEnabled = 'Enabled'
                 DomainName = 'CONTOSO.COM'
             },
             [PSObject]@{
@@ -131,13 +131,13 @@ try
                 DestinationComputerName = $ReplicationGroup.Members[0]
                 Ensure = 'Present'
                 Description = 'Connection Description'
-                DisableConnection = $false
-                DisableRDC = $false
+                EnsureEnabled = 'Enabled'
+                EnsureRDCEnabled = 'Enabled'
                 DomainName = 'CONTOSO.COM'
             }
         )
         $ReplicationGroupConnectionDisabled = $ReplicationGroupConnections[0].Clone()
-        $ReplicationGroupConnectionDisabled.DisableConnection = $True
+        $ReplicationGroupConnectionDisabled.EnsureEnabled = 'Disabled'
         $MockReplicationGroup = [PSObject]@{
             GroupName = $ReplicationGroup.GroupName
             DomainName = $ReplicationGroup.DomainName
@@ -189,13 +189,33 @@ try
         $MockReplicationGroupMembershipNotPrimary = $MockReplicationGroupMembership.Clone()
         $MockReplicationGroupMembershipNotPrimary.PrimaryMember = $False
     
-        $MockReplicationGroupConnection = [PSObject]@{
+        $MockReplicationGroupConnections = @(
+            [PSObject]@{
+                GroupName = $ReplicationGroupConnections[0].GroupName
+                SourceComputerName = $ReplicationGroupConnections[0].SourceComputerName
+                DestinationComputerName = $ReplicationGroupConnections[0].DestinationComputerName
+                Description = $ReplicationGroupConnections[0].Description
+                Enabled = ($ReplicationGroupConnections[0].EnsureEnabled -eq 'Enabled')
+                RDCEnabled = ($ReplicationGroupConnections[0].EnsureRDCEnabled -eq 'Enabled')
+                DomainName = $ReplicationGroupConnections[0].DomainName
+            },
+            [PSObject]@{
+                GroupName = $ReplicationGroupConnections[1].GroupName
+                SourceComputerName = $ReplicationGroupConnections[1].SourceComputerName
+                DestinationComputerName = $ReplicationGroupConnections[1].DestinationComputerName
+                Description = $ReplicationGroupConnections[1].Description
+                Enabled = ($ReplicationGroupConnections[1].EnsureEnabled -eq 'Enabled')
+                RDCEnabled = ($ReplicationGroupConnections[1].EnsureRDCEnabled -eq 'Enabled')
+                DomainName = $ReplicationGroupConnections[1].DomainName
+            }
+        )
+        $MockReplicationGroupConnectionDisabled = [PSObject]@{
             GroupName = $ReplicationGroupConnections[0].GroupName
             SourceComputerName = $ReplicationGroupConnections[0].SourceComputerName
             DestinationComputerName = $ReplicationGroupConnections[0].DestinationComputerName
             Description = $ReplicationGroupConnections[0].Description
-            Enabled = (-not $ReplicationGroupConnections[0].DisableConnection)
-            RDCEnabled = (-not $ReplicationGroupConnections[0].DisableRDC)
+            Enabled = $False
+            RDCEnabled = ($ReplicationGroupConnections[0].EnsureRDCEnabled -eq 'Enabled')
             DomainName = $ReplicationGroupConnections[0].DomainName
         }
         $ReplicationGroupContentPath = $ReplicationGroup.Clone()
@@ -590,7 +610,7 @@ try
                     Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
                 }
             }
-    
+
             Context 'Replication Group with Fullmesh topology exists and is correct' {
                 
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
@@ -603,11 +623,19 @@ try
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
-                Mock Get-DfsrConnection -MockWith { @($ReplicationGroupConnections[0]) } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)" }
-                Mock Get-DfsrConnection -MockWith { @($ReplicationGroupConnections[1]) } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)" }
+                Mock Get-DfsrConnection `
+                    -MockWith { @($MockReplicationGroupConnections[0]) } `
+                    -ParameterFilter {
+                        $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)"
+                    }
+                Mock Get-DfsrConnection `
+                    -MockWith { @($MockReplicationGroupConnections[1]) } `
+                    -ParameterFilter {
+                        $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)"
+                    }
                 Mock Add-DfsrConnection
                 Mock Set-DfsrConnection
-    
+
                 It 'should not throw error' {
                     { 
                         $Splat = $ReplicationGroup.Clone()
@@ -644,11 +672,19 @@ try
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
-                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)" }
-                Mock Get-DfsrConnection -MockWith { @($ReplicationGroupConnections[1]) } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)" }
+                Mock Get-DfsrConnection `
+                    -MockWith { } `
+                    -ParameterFilter {
+                        $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)"
+                    }
+                Mock Get-DfsrConnection `
+                    -MockWith { @($MockReplicationGroupConnections[1]) } `
+                    -ParameterFilter {
+                        $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)"
+                    }
                 Mock Add-DfsrConnection
                 Mock Set-DfsrConnection
-    
+
                 It 'should not throw error' {
                     { 
                         $Splat = $ReplicationGroup.Clone()
@@ -685,13 +721,21 @@ try
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
-                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)" }
-                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)" }
+                Mock Get-DfsrConnection `
+                    -MockWith { } `
+                    -ParameterFilter {
+                        $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)"
+                    }
+                Mock Get-DfsrConnection `
+                    -MockWith { } `
+                    -ParameterFilter {
+                        $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)"
+                    }
                 Mock Add-DfsrConnection
                 Mock Set-DfsrConnection
-    
+
                 It 'should not throw error' {
-                    { 
+                    {
                         $Splat = $ReplicationGroup.Clone()
                         $Splat.Topology = 'Fullmesh'
                         Set-TargetResource @Splat
@@ -713,9 +757,8 @@ try
                     Assert-MockCalled -commandName Set-DfsrConnection -Exactly 0
                 }
             }
-    
+
             Context 'Replication Group with Fullmesh topology exists and has a disabled connection' {
-                
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock New-DfsReplicationGroup
                 Mock Set-DfsReplicationGroup
@@ -726,11 +769,19 @@ try
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
-                Mock Get-DfsrConnection -MockWith { @($ReplicationGroupConnectionDisabled) } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)" }
-                Mock Get-DfsrConnection -MockWith { @($ReplicationGroupConnections[1]) } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)" }
+                Mock Get-DfsrConnection `
+                    -MockWith { return $MockReplicationGroupConnectionDisabled } `
+                    -ParameterFilter {
+                        $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)"
+                    }
+                Mock Get-DfsrConnection `
+                    -MockWith { @($MockReplicationGroupConnections[1]) } `
+                    -ParameterFilter {
+                        $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)"
+                    }
                 Mock Add-DfsrConnection
                 Mock Set-DfsrConnection
-    
+
                 It 'should not throw error' {
                     { 
                         $Splat = $ReplicationGroup.Clone()
@@ -754,7 +805,7 @@ try
                     Assert-MockCalled -commandName Set-DfsrConnection -Exactly 1
                 }
             }
-    
+
             Context 'Replication Group Content Path is set but needs to be changed' {
                 
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
@@ -769,7 +820,7 @@ try
                 Mock Remove-DfsReplicatedFolder
                 Mock Get-DfsrMembership -MockWith { @($MockReplicationGroupMembership) }
                 Mock Set-DfsrMembership
-    
+
                 It 'should not throw error' {
                     { 
                         $Splat = $ReplicationGroupContentPath.Clone()
@@ -792,9 +843,9 @@ try
                     Assert-MockCalled -commandName Set-DfsrMembership -Exactly 1
                 }
             }
-    
+
             Context 'Replication Group Content Path is set and does not need to be changed' {
-                
+
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock New-DfsReplicationGroup
                 Mock Set-DfsReplicationGroup
@@ -807,7 +858,7 @@ try
                 Mock Remove-DfsReplicatedFolder
                 Mock Get-DfsrMembership -MockWith { @($MockReplicationGroupMembership) }
                 Mock Set-DfsrMembership
-    
+
                 It 'should not throw error' {
                     { 
                         $Splat = $ReplicationGroupContentPath.Clone()
@@ -829,9 +880,9 @@ try
                     Assert-MockCalled -commandName Set-DfsrMembership -Exactly 0
                 }
             }
-    
+
             Context 'Replication Group Content Path is set and does not need to be changed but primarymember does' {
-                
+
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock New-DfsReplicationGroup
                 Mock Set-DfsReplicationGroup
@@ -844,7 +895,7 @@ try
                 Mock Remove-DfsReplicatedFolder
                 Mock Get-DfsrMembership -MockWith { @($MockReplicationGroupMembershipNotPrimary) }
                 Mock Set-DfsrMembership
-    
+
                 It 'should not throw error' {
                     { 
                         $Splat = $ReplicationGroupContentPath.Clone()
@@ -867,18 +918,17 @@ try
                 }
             }
         }
-    
+
         Describe "$($Global:DSCResourceName)\Test-TargetResource" {
             Context 'Replication Group does not exist but should' {
-                
+
                 Mock Get-DfsReplicationGroup
                 Mock Get-DfsrMember
                 Mock Get-DfsReplicatedFolder
-    
+
                 It 'should return false' {
                     $Splat = $ReplicationGroup.Clone()
                     Test-TargetResource @Splat | Should Be $False
-                    
                 }
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
@@ -886,13 +936,13 @@ try
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 0
                 }
             }
-    
+
             Context 'Replication Group exists but has different description' {
                 
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
-    
+
                 It 'should return false' {
                     $Splat = $ReplicationGroup.Clone()
                     $Splat.Description = 'Changed'
@@ -904,13 +954,13 @@ try
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
                 }
             }
-    
+
             Context 'Replication Group exists but all Members passed as FQDN' {
-                
+
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
-    
+
                 It 'should return false' {
                     $Splat = $ReplicationGroupAllFQDN.Clone()
                     Test-TargetResource @Splat | Should Be $True
@@ -927,7 +977,7 @@ try
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
-    
+
                 It 'should return false' {
                     $Splat = $ReplicationGroupSomeDns.Clone()
                     Test-TargetResource @Splat | Should Be $True
@@ -944,7 +994,7 @@ try
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
-    
+
                 It 'should return false' {
                     $Splat = $ReplicationGroup.Clone()
                     $Splat.Members = @('FileServer2','FileServer1','FileServerNew')
@@ -956,13 +1006,13 @@ try
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
                 }
             }
-    
+
             Context 'Replication Group exists but has an extra member' {
                 
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
-    
+
                 It 'should return false' {
                     $Splat = $ReplicationGroup.Clone()
                     $Splat.Members = @('FileServer2')
@@ -974,13 +1024,13 @@ try
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
                 }
             }
-    
+
             Context 'Replication Group exists but is missing a folder' {
-                
+
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
-    
+
                 It 'should return false' {
                     $Splat = $ReplicationGroup.Clone()
                     $Splat.Folders = @('Folder2','Folder1','FolderNew')
@@ -992,13 +1042,13 @@ try
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
                 }
             }
-    
+
             Context 'Replication Group exists but has an extra folder' {
-                
+
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
-    
+
                 It 'should return false' {
                     $Splat = $ReplicationGroup.Clone()
                     $Splat.Folders = @('Folder2')
@@ -1015,7 +1065,7 @@ try
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
-    
+
                 It 'should return false' {
                     $Splat = $ReplicationGroup.Clone()
                     $Splat.Ensure = 'Absent'
@@ -1027,13 +1077,13 @@ try
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 0
                 }
             }
-    
+
             Context 'Replication Group exists and is correct' {
-                
+
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
-    
+
                 It 'should return true' {
                     $Splat = $ReplicationGroup.Clone()
                     Test-TargetResource @Splat | Should Be $True
@@ -1044,15 +1094,23 @@ try
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
                 }
             }
-    
+
             Context 'Replication Group Fullmesh Topology is required and correct' {
-                
+
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
-                Mock Get-DfsrConnection -MockWith { @($ReplicationGroupConnections[0]) } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)" }
-                Mock Get-DfsrConnection -MockWith { @($ReplicationGroupConnections[1]) } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)" }
-    
+                Mock Get-DfsrConnection `
+                    -MockWith { @($MockReplicationGroupConnections[0]) } `
+                    -ParameterFilter {
+                        $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)"
+                    }
+                Mock Get-DfsrConnection `
+                    -MockWith { @($MockReplicationGroupConnections[1]) } `
+                    -ParameterFilter {
+                        $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)"
+                    }
+
                 It 'should return true' {
                     $Splat = $ReplicationGroup.Clone()
                     $Splat.Topology = 'Fullmesh'
@@ -1065,15 +1123,23 @@ try
                     Assert-MockCalled -commandName Get-DfsrConnection -Exactly 2
                 }
             }
-    
+
             Context 'Replication Group Fullmesh Topology is required and one connection missing' {
                 
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
-                Mock Get-DfsrConnection -MockWith { @($ReplicationGroupConnections[0]) } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)" }
-                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)" }
-    
+                Mock Get-DfsrConnection `
+                    -MockWith { @($MockReplicationGroupConnections[0]) } `
+                    -ParameterFilter {
+                        $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)"
+                    }
+                Mock Get-DfsrConnection `
+                    -MockWith { } `
+                    -ParameterFilter { `
+                        $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)"
+                    }
+
                 It 'should return false' {
                     $Splat = $ReplicationGroup.Clone()
                     $Splat.Topology = 'Fullmesh'
@@ -1086,15 +1152,22 @@ try
                     Assert-MockCalled -commandName Get-DfsrConnection -Exactly 2
                 }
             }
-    
+
             Context 'Replication Group Fullmesh Topology is required and all connections missing' {
                 
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
-                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)" }
-                Mock Get-DfsrConnection -MockWith { } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)" }
-    
+                Mock Get-DfsrConnection `
+                    -MockWith { } `
+                    -ParameterFilter {
+                        $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)"
+                    }
+                Mock Get-DfsrConnection `
+                    -MockWith { } `
+                    -ParameterFilter {
+                        $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)"
+                    }
                 It 'should return false' {
                     $Splat = $ReplicationGroup.Clone()
                     $Splat.Topology = 'Fullmesh'
@@ -1107,15 +1180,22 @@ try
                     Assert-MockCalled -commandName Get-DfsrConnection -Exactly 2
                 }
             }
-    
+
             Context 'Replication Group Fullmesh Topology is required and connection is disabled' {
-                
+
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
-                Mock Get-DfsrConnection -MockWith { @($ReplicationGroupConnectionDisabled) } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)" }
-                Mock Get-DfsrConnection -MockWith { @($ReplicationGroupConnections[1]) } -ParameterFilter { $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)" }
-    
+                Mock Get-DfsrConnection `
+                    -MockWith { return $MockReplicationGroupConnectionDisabled } `
+                    -ParameterFilter {
+                        $SourceComputerName -eq "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)"
+                    }
+                Mock Get-DfsrConnection `
+                    -MockWith { @($MockReplicationGroupConnections[1]) } `
+                    -ParameterFilter {
+                        $SourceComputerName -eq "$($ReplicationGroupConnections[1].SourceComputerName).$($ReplicationGroupConnections[1].DomainName)"
+                    }
                 It 'should return false' {
                     $Splat = $ReplicationGroup.Clone()
                     $Splat.Topology = 'Fullmesh'
@@ -1128,14 +1208,14 @@ try
                     Assert-MockCalled -commandName Get-DfsrConnection -Exactly 2
                 }
             }
-    
+
             Context 'Replication Group Content Path is set and different' {
-                
+
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
                 Mock Get-DfsrMembership -MockWith { @($MockReplicationGroupMembership) }
-    
+
                 It 'should return false' {
                     $Splat = $ReplicationGroupContentPath.Clone()
                     $Splat.ContentPaths = @('Different')
@@ -1148,14 +1228,14 @@ try
                     Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
                 }
             }
-    
+
             Context 'Replication Group Content Path is set and the same and PrimaryMember is correct' {
-                
+
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
                 Mock Get-DfsrMembership -MockWith { @($MockReplicationGroupMembership) }
-    
+
                 It 'should return true' {
                     $Splat = $ReplicationGroupContentPath.Clone()
                     Test-TargetResource @Splat | Should Be $True
@@ -1167,17 +1247,16 @@ try
                     Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
                 }
             }
-    
+
             Context 'Replication Group Content Path is set and the same and PrimaryMember is not correct' {
                 
                 Mock Get-DfsReplicationGroup -MockWith { @($MockReplicationGroup) }
                 Mock Get-DfsrMember -MockWith { return $MockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
                 Mock Get-DfsrMembership -MockWith { @($MockReplicationGroupMembershipNotPrimary) }
-    
+
                 It 'should return false' {
                     $Splat = $ReplicationGroupContentPath.Clone()
-    
                     Test-TargetResource @Splat | Should Be $False
                 }
                 It 'should call expected Mocks' {
@@ -1197,9 +1276,9 @@ try
                         ComputerName = 'test.contoso.com'
                         DomainName = 'CONTOSO.COM'
                     }
-                    Get-FQDNMemberName @Splat | Should Be 'test.contoso.com'         
+                    Get-FQDNMemberName @Splat | Should Be 'test.contoso.com'
                 }
-            }    
+            }
             Context 'ComputerName passed includes Domain Name that does not match DomainName' {
                 It 'should throw ReplicationGroupDomainMismatchError exception' {
                     $Splat = @{
@@ -1214,9 +1293,9 @@ try
                             -f $Splat.GroupName,$Splat.ComputerName,$Splat.DomainName)
                     }
                     $Exception = New-TestException @ExceptionParameters
-                    { Get-FQDNMemberName @Splat } | Should Throw $Exception         
+                    { Get-FQDNMemberName @Splat } | Should Throw $Exception
                 }
-            }    
+            }
             Context 'ComputerName passed does not include Domain Name and DomainName was passed' {
                 It 'should return correct FQDN' {
                     $Splat = @{
@@ -1224,18 +1303,18 @@ try
                         ComputerName = 'test'
                         DomainName = 'CONTOSO.COM'
                     }
-                    Get-FQDNMemberName @Splat | Should Be 'test.contoso.com'         
+                    Get-FQDNMemberName @Splat | Should Be 'test.contoso.com'
                 }
-            }    
+            }
             Context 'ComputerName passed does not include Domain Name and DomainName was not passed' {
                 It 'should return correct FQDN' {
                     $Splat = @{
                         GroupName = 'UnitTest'
                         ComputerName = 'test'
                     }
-                    Get-FQDNMemberName @Splat | Should Be 'test'         
+                    Get-FQDNMemberName @Splat | Should Be 'test'
                 }
-            }    
+            }
         }
     }
     #endregion

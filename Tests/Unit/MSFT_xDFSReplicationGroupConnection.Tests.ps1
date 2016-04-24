@@ -80,8 +80,8 @@ try
                 DestinationComputerName = $ReplicationGroup.Members[1]
                 Ensure = 'Present'
                 Description = 'Connection Description'
-                DisableConnection = $false
-                DisableRDC = $false
+                EnsureEnabled = 'Enabled'
+                EnsureRDCEnabled = 'Enabled'
                 DomainName = 'CONTOSO.COM'
             },
             [PSObject]@{
@@ -90,13 +90,13 @@ try
                 DestinationComputerName = $ReplicationGroup.Members[0]
                 Ensure = 'Present'
                 Description = 'Connection Description'
-                DisableConnection = $false
-                DisableRDC = $false
+                EnsureEnabled = 'Enabled'
+                EnsureRDCEnabled = 'Enabled'
                 DomainName = 'CONTOSO.COM'
             }
         )
         $ReplicationGroupConnectionDisabled = $ReplicationGroupConnections[0].Clone()
-        $ReplicationGroupConnectionDisabled.DisableConnection = $True
+        $ReplicationGroupConnectionDisabled.EnsureEnabled = 'Disabled'
         $MockReplicationGroup = [PSObject]@{
             GroupName = $ReplicationGroup.GroupName
             DomainName = $ReplicationGroup.DomainName
@@ -149,8 +149,8 @@ try
             SourceComputerName = $ReplicationGroupConnections[0].SourceComputerName
             DestinationComputerName = $ReplicationGroupConnections[0].DestinationComputerName
             Description = $ReplicationGroupConnections[0].Description
-            Enabled = (-not $ReplicationGroupConnections[0].DisableConnection)
-            RDCEnabled = (-not $ReplicationGroupConnections[0].DisableRDC)
+            Enabled = ($ReplicationGroupConnections[0].EnsureEnabled -eq 'Enabled')
+            RDCEnabled = ($ReplicationGroupConnections[0].EnsureRDCEnabled -eq 'Enabled')
             DomainName = $ReplicationGroupConnections[0].DomainName
         }
     
@@ -188,8 +188,8 @@ try
                     $Result.SourceComputerName | Should Be $ReplicationGroupConnections[0].SourceComputerName
                     $Result.DestinationComputerName | Should Be $ReplicationGroupConnections[0].DestinationComputerName
                     $Result.Description | Should Be $ReplicationGroupConnections[0].Description
-                    $Result.DisableConnection | Should Be $ReplicationGroupConnections[0].DisableConnection
-                    $Result.DisableRDC | Should Be $ReplicationGroupConnections[0].DisableRDC
+                    $Result.EnsureEnabled | Should Be $ReplicationGroupConnections[0].EnsureEnabled
+                    $Result.EnsureRDCEnabled | Should Be $ReplicationGroupConnections[0].EnsureRDCEnabled
                     $Result.DomainName | Should Be $ReplicationGroupConnections[0].DomainName
                 }
                 It 'should call the expected mocks' {
@@ -212,8 +212,8 @@ try
                     $Result.SourceComputerName | Should Be $ReplicationGroupConnections[0].SourceComputerName
                     $Result.DestinationComputerName | Should Be $ReplicationGroupConnections[0].DestinationComputerName
                     $Result.Description | Should Be $ReplicationGroupConnections[0].Description
-                    $Result.DisableConnection | Should Be $ReplicationGroupConnections[0].DisableConnection
-                    $Result.DisableRDC | Should Be $ReplicationGroupConnections[0].DisableRDC
+                    $Result.EnsureEnabled | Should Be $ReplicationGroupConnections[0].EnsureEnabled
+                    $Result.EnsureRDCEnabled | Should Be $ReplicationGroupConnections[0].EnsureRDCEnabled
                     $Result.DomainName | Should Be $ReplicationGroupConnections[0].DomainName
                 }
                 It 'should call the expected mocks' {
@@ -311,7 +311,7 @@ try
                 }
             }
     
-            Context 'Replication Group connection exists but has different DisableConnection' {
+            Context 'Replication Group connection exists but has different EnsureEnabled' {
                 
                 Mock Get-DfsrConnection -MockWith { return @($MockReplicationGroupConnection) }
                 Mock Set-DfsrConnection
@@ -321,7 +321,7 @@ try
                 It 'should not throw error' {
                     { 
                         $Splat = $ReplicationGroupConnections[0].Clone()
-                        $Splat.DisableConnection = (-not $Splat.DisableConnection)
+                        $Splat.EnsureEnabled = 'Disabled'
                         Set-TargetResource @Splat
                     } | Should Not Throw
                 }
@@ -333,7 +333,7 @@ try
                 }
             }
     
-            Context 'Replication Group connection exists but has different DisableRDC' {
+            Context 'Replication Group connection exists but has different EnsureRDCEnabled' {
                 
                 Mock Get-DfsrConnection -MockWith { return @($MockReplicationGroupConnection) }
                 Mock Set-DfsrConnection
@@ -343,7 +343,7 @@ try
                 It 'should not throw error' {
                     { 
                         $Splat = $ReplicationGroupConnections[0].Clone()
-                        $Splat.DisableRDC = (-not $Splat.DisableRDC)
+                        $Splat.EnsureRDCEnabled = 'Disabled'
                         $Splat.Description = 'Changed'
                         Set-TargetResource @Splat
                     } | Should Not Throw
@@ -458,13 +458,13 @@ try
                 }
             }
     
-            Context 'Replication Group Connection exists but has different DisableConnection' {
+            Context 'Replication Group Connection exists but has different EnsureEnabled' {
                 
                 Mock Get-DfsrConnection -MockWith { @($MockReplicationGroupConnection) }
     
                 It 'should return false' {
                     $Splat = $ReplicationGroupConnections[0].Clone()
-                    $Splat.DisableConnection = (-not $Splat.DisableConnection)
+                    $Splat.EnsureEnabled = 'Disabled'
                     Test-TargetResource @Splat | Should Be $False
                 }
                 It 'should call expected Mocks' {
@@ -472,13 +472,13 @@ try
                 }
             }
     
-            Context 'Replication Group Connection exists but has different DisableRDC' {
+            Context 'Replication Group Connection exists but has different EnsureRDCEnabled' {
                 
                 Mock Get-DfsrConnection -MockWith { @($MockReplicationGroupConnection) }
     
                 It 'should return false' {
                     $Splat = $ReplicationGroupConnections[0].Clone()
-                    $Splat.DisableRDC = (-not $Splat.DisableRDC)
+                    $Splat.EnsureRDCEnabled = 'Disabled'
                     Test-TargetResource @Splat | Should Be $False
                 }
                 It 'should call expected Mocks' {
