@@ -1,24 +1,21 @@
 $Global:DSCModuleName   = 'xDFS'
-$Global:DSCResourceName = 'MSFT_xDFSRepGroupMembership'
+$Global:DSCResourceName = 'MSFT_xDFSReplicationGroupMembership'
 
 #region HEADER
+# Unit Test Template Version: 1.1.0
 [String] $moduleRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))
 if ( (-not (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
      (-not (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
 {
     & git @('clone','https://github.com/PowerShell/DscResource.Tests.git',(Join-Path -Path $moduleRoot -ChildPath '\DSCResource.Tests\'))
 }
-else
-{
-    & git @('-C',(Join-Path -Path $moduleRoot -ChildPath '\DSCResource.Tests\'),'pull')
-}
+
 Import-Module (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1') -Force
 $TestEnvironment = Initialize-TestEnvironment `
     -DSCModuleName $Global:DSCModuleName `
     -DSCResourceName $Global:DSCResourceName `
     -TestType Unit 
-#endregion
-
+#endregion HEADER
 
 # Begin Testing
 try
@@ -67,7 +64,7 @@ try
     InModuleScope $Global:DSCResourceName {
     
         # Create the Mock Objects that will be used for running tests
-        $RepGroup = [PSObject]@{
+        $ReplicationGroup = [PSObject]@{
             GroupName = 'Test Group'
             Ensure = 'Present'
             DomainName = 'CONTOSO.COM'
@@ -75,12 +72,12 @@ try
             Members = @('FileServer1','FileServer2')
             Folders = @('Folder1','Folder2')
         }
-        $MockRepGroup = [PSObject]@{
-            GroupName = $RepGroup.GroupName
-            DomainName = $RepGroup.DomainName
-            Description = $RepGroup.Description
+        $MockReplicationGroup = [PSObject]@{
+            GroupName = $ReplicationGroup.GroupName
+            DomainName = $ReplicationGroup.DomainName
+            Description = $ReplicationGroup.Description
         }
-        $RepGroupAllFQDN = [PSObject]@{
+        $ReplicationGroupAllFQDN = [PSObject]@{
             GroupName = 'Test Group'
             Ensure = 'Present'
             Description = 'Test Description'
@@ -89,7 +86,7 @@ try
             Topology = 'Manual'
             DomainName = 'CONTOSO.COM'
         }
-        $RepGroupSomelDns = [PSObject]@{
+        $ReplicationGroupSomelDns = [PSObject]@{
             GroupName = 'Test Group'
             Ensure = 'Present'
             Description = 'Test Description'
@@ -98,43 +95,43 @@ try
             Topology = 'Manual'
             DomainName = 'CONTOSO.COM'
         }
-        $MockRepGroupMember = @(
+        $MockReplicationGroupMember = @(
             [PSObject]@{
-                GroupName = $RepGroup.GroupName
-                DomainName = $RepGroup.DomainName
-                ComputerName = $RepGroup.Members[0]
-                DnsName = "$($Repgroup.Members[0]).$($Repgroup.DomainName)"
+                GroupName = $ReplicationGroup.GroupName
+                DomainName = $ReplicationGroup.DomainName
+                ComputerName = $ReplicationGroup.Members[0]
+                DnsName = "$($ReplicationGroup.Members[0]).$($ReplicationGroup.DomainName)"
             },
             [PSObject]@{
-                GroupName = $RepGroup.GroupName
-                DomainName = $RepGroup.DomainName
-                ComputerName = $RepGroup.Members[1]
-                DnsName = "$($Repgroup.Members[1]).$($Repgroup.DomainName)"
+                GroupName = $ReplicationGroup.GroupName
+                DomainName = $ReplicationGroup.DomainName
+                ComputerName = $ReplicationGroup.Members[1]
+                DnsName = "$($ReplicationGroup.Members[1]).$($ReplicationGroup.DomainName)"
             }
         )
-        $MockRepGroupFolder = @(
+        $MockReplicationGroupFolder = @(
             [PSObject]@{
-                GroupName = $RepGroup.GroupName
-                DomainName = $RepGroup.DomainName
-                FolderName = $RepGroup.Folders[0]
+                GroupName = $ReplicationGroup.GroupName
+                DomainName = $ReplicationGroup.DomainName
+                FolderName = $ReplicationGroup.Folders[0]
                 Description = 'Description 1'
                 FileNameToExclude = @('~*','*.bak','*.tmp')
                 DirectoryNameToExclude = @()
             },
             [PSObject]@{
-                GroupName = $RepGroup.GroupName
-                DomainName = $RepGroup.DomainName
-                FolderName = $RepGroup.Folders[1]
+                GroupName = $ReplicationGroup.GroupName
+                DomainName = $ReplicationGroup.DomainName
+                FolderName = $ReplicationGroup.Folders[1]
                 Description = 'Description 2'
                 FileNameToExclude = @('~*','*.bak','*.tmp')
                 DirectoryNameToExclude = @()
             }
         )
-        $MockRepGroupMembership = [PSObject]@{
-            GroupName = $RepGroup.GroupName
-            DomainName = $RepGroup.DomainName
-            FolderName = $RepGroup.Folders[0]
-            ComputerName = $RepGroup.Members[0]
+        $MockReplicationGroupMembership = [PSObject]@{
+            GroupName = $ReplicationGroup.GroupName
+            DomainName = $ReplicationGroup.DomainName
+            FolderName = $ReplicationGroup.Folders[0]
+            ComputerName = $ReplicationGroup.Members[0]
             ContentPath = 'd:\public\software\'
             StagingPath = 'd:\public\software\DfsrPrivate\Staging\'
             ConflictAndDeletedPath = 'd:\public\software\DfsrPrivate\ConflictAndDeleted\'
@@ -151,8 +148,8 @@ try
                 It 'should throw RegGroupFolderMissingError error' {
                     $errorId = 'RegGroupMembershipMissingError'
                     $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
-                    $errorMessage = $($LocalizedData.RepGroupMembershipMissingError) `
-                        -f $MockRepGroupMembership.GroupName,$MockRepGroupMembership.FolderName,$MockRepGroupMembership.ComputerName
+                    $errorMessage = $($LocalizedData.ReplicationGroupMembershipMissingError) `
+                        -f $MockReplicationGroupMembership.GroupName,$MockReplicationGroupMembership.FolderName,$MockReplicationGroupMembership.ComputerName
                     $exception = New-Object -TypeName System.InvalidOperationException `
                         -ArgumentList $errorMessage
                     $errorRecord = New-Object -TypeName System.Management.Automation.ErrorRecord `
@@ -160,9 +157,9 @@ try
     
                     {
                         $Result = Get-TargetResource `
-                            -GroupName $MockRepGroupMembership.GroupName `
-                            -FolderName $MockRepGroupMembership.FolderName `
-                            -ComputerName $MockRepGroupMembership.ComputerName
+                            -GroupName $MockReplicationGroupMembership.GroupName `
+                            -FolderName $MockReplicationGroupMembership.FolderName `
+                            -ComputerName $MockReplicationGroupMembership.ComputerName
                     } | Should Throw $errorRecord               
                 }
                 It 'should call the expected mocks' {
@@ -172,22 +169,22 @@ try
     
             Context 'Requested replication group does exist' {
                 
-                Mock Get-DfsrMembership -MockWith { return @($MockRepGroupMembership) }
+                Mock Get-DfsrMembership -MockWith { return @($MockReplicationGroupMembership) }
     
                 It 'should return correct replication group' {
                     $Result = Get-TargetResource `
-                            -GroupName $MockRepGroupMembership.GroupName `
-                            -FolderName $MockRepGroupMembership.FolderName `
-                            -ComputerName $MockRepGroupMembership.ComputerName
-                    $Result.GroupName | Should Be $MockRepGroupMembership.GroupName
-                    $Result.FolderName | Should Be $MockRepGroupMembership.FolderName               
-                    $Result.ComputerName | Should Be $MockRepGroupMembership.ComputerName               
-                    $Result.ContentPath | Should Be $MockRepGroupMembership.ContentPath               
-                    $Result.StagingPath | Should Be $MockRepGroupMembership.StagingPath               
-                    $Result.ConflictAndDeletedPath | Should Be $MockRepGroupMembership.ConflictAndDeletedPath               
-                    $Result.ReadOnly | Should Be $MockRepGroupMembership.ReadOnly               
-                    $Result.PrimaryMember | Should Be $MockRepGroupMembership.PrimaryMember               
-                    $Result.DomainName | Should Be $MockRepGroupMembership.DomainName
+                            -GroupName $MockReplicationGroupMembership.GroupName `
+                            -FolderName $MockReplicationGroupMembership.FolderName `
+                            -ComputerName $MockReplicationGroupMembership.ComputerName
+                    $Result.GroupName | Should Be $MockReplicationGroupMembership.GroupName
+                    $Result.FolderName | Should Be $MockReplicationGroupMembership.FolderName               
+                    $Result.ComputerName | Should Be $MockReplicationGroupMembership.ComputerName               
+                    $Result.ContentPath | Should Be $MockReplicationGroupMembership.ContentPath               
+                    $Result.StagingPath | Should Be $MockReplicationGroupMembership.StagingPath               
+                    $Result.ConflictAndDeletedPath | Should Be $MockReplicationGroupMembership.ConflictAndDeletedPath               
+                    $Result.ReadOnly | Should Be $MockReplicationGroupMembership.ReadOnly               
+                    $Result.PrimaryMember | Should Be $MockReplicationGroupMembership.PrimaryMember               
+                    $Result.DomainName | Should Be $MockReplicationGroupMembership.DomainName
                 }
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
@@ -196,22 +193,22 @@ try
 
             Context 'Requested replication group does exist but ComputerName passed as FQDN' {
                 
-                Mock Get-DfsrMembership -MockWith { return @($MockRepGroupMembership) }
+                Mock Get-DfsrMembership -MockWith { return @($MockReplicationGroupMembership) }
     
                 It 'should return correct replication group' {
                     $Result = Get-TargetResource `
-                            -GroupName $MockRepGroupMembership.GroupName `
-                            -FolderName $MockRepGroupMembership.FolderName `
-                            -ComputerName "$($MockRepGroupMembership.ComputerName).$($MockRepGroupMembership.DomainName)"
-                    $Result.GroupName | Should Be $MockRepGroupMembership.GroupName
-                    $Result.FolderName | Should Be $MockRepGroupMembership.FolderName
-                    $Result.ComputerName | Should Be $MockRepGroupMembership.ComputerName
-                    $Result.ContentPath | Should Be $MockRepGroupMembership.ContentPath               
-                    $Result.StagingPath | Should Be $MockRepGroupMembership.StagingPath               
-                    $Result.ConflictAndDeletedPath | Should Be $MockRepGroupMembership.ConflictAndDeletedPath               
-                    $Result.ReadOnly | Should Be $MockRepGroupMembership.ReadOnly               
-                    $Result.PrimaryMember | Should Be $MockRepGroupMembership.PrimaryMember               
-                    $Result.DomainName | Should Be $MockRepGroupMembership.DomainName
+                            -GroupName $MockReplicationGroupMembership.GroupName `
+                            -FolderName $MockReplicationGroupMembership.FolderName `
+                            -ComputerName "$($MockReplicationGroupMembership.ComputerName).$($MockReplicationGroupMembership.DomainName)"
+                    $Result.GroupName | Should Be $MockReplicationGroupMembership.GroupName
+                    $Result.FolderName | Should Be $MockReplicationGroupMembership.FolderName
+                    $Result.ComputerName | Should Be $MockReplicationGroupMembership.ComputerName
+                    $Result.ContentPath | Should Be $MockReplicationGroupMembership.ContentPath               
+                    $Result.StagingPath | Should Be $MockReplicationGroupMembership.StagingPath               
+                    $Result.ConflictAndDeletedPath | Should Be $MockReplicationGroupMembership.ConflictAndDeletedPath               
+                    $Result.ReadOnly | Should Be $MockReplicationGroupMembership.ReadOnly               
+                    $Result.PrimaryMember | Should Be $MockReplicationGroupMembership.PrimaryMember               
+                    $Result.DomainName | Should Be $MockReplicationGroupMembership.DomainName
                 }
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
@@ -227,7 +224,7 @@ try
                 Mock Set-DfsrMembership
     
                 It 'should not throw error' {
-                    $Splat = $MockRepGroupMembership.Clone()
+                    $Splat = $MockReplicationGroupMembership.Clone()
                     $Splat.Remove('ConflictAndDeletedPath')
                     { Set-TargetResource @Splat } | Should Not Throw
                 }
@@ -241,7 +238,7 @@ try
                 Mock Set-DfsrMembership
     
                 It 'should not throw error' {
-                    $Splat = $MockRepGroupMembership.Clone()
+                    $Splat = $MockReplicationGroupMembership.Clone()
                     $Splat.Remove('ConflictAndDeletedPath')
                     $Splat.ComputerName = "$($Splat.ComputerName).$($Splat.DomainName)"
                     { Set-TargetResource @Splat } | Should Not Throw
@@ -256,7 +253,7 @@ try
                 Mock Set-DfsrMembership
     
                 It 'should not throw error' {
-                    $Splat = $MockRepGroupMembership.Clone()
+                    $Splat = $MockReplicationGroupMembership.Clone()
                     $Splat.Remove('ConflictAndDeletedPath')
                     $Splat.ContentPath = 'Different'
                     { Set-TargetResource @Splat } | Should Not Throw
@@ -271,7 +268,7 @@ try
                 Mock Set-DfsrMembership
     
                 It 'should not throw error' {
-                    $Splat = $MockRepGroupMembership.Clone()
+                    $Splat = $MockReplicationGroupMembership.Clone()
                     $Splat.Remove('ConflictAndDeletedPath')
                     $Splat.StagingPath = 'Different'
                     { Set-TargetResource @Splat } | Should Not Throw
@@ -286,7 +283,7 @@ try
                 Mock Set-DfsrMembership
     
                 It 'should not throw error' {
-                    $Splat = $MockRepGroupMembership.Clone()
+                    $Splat = $MockReplicationGroupMembership.Clone()
                     $Splat.Remove('ConflictAndDeletedPath')
                     $Splat.ReadOnly = (-not $Splat.ReadOnly)
                     { Set-TargetResource @Splat } | Should Not Throw
@@ -301,7 +298,7 @@ try
                 Mock Set-DfsrMembership
     
                 It 'should not throw error' {
-                    $Splat = $MockRepGroupMembership.Clone()
+                    $Splat = $MockReplicationGroupMembership.Clone()
                     $Splat.Remove('ConflictAndDeletedPath')
                     $Splat.PrimaryMember = (-not $Splat.PrimaryMember)
                     { Set-TargetResource @Splat } | Should Not Throw
@@ -321,13 +318,13 @@ try
                 It 'should throw RegGroupMembershipMissingError error' {
                     $errorId = 'RegGroupMembershipMissingError'
                     $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
-                    $errorMessage = $($LocalizedData.RepGroupMembershipMissingError) -f `
-                        $MockRepGroupMembership.GroupName,$MockRepGroupMembership.FolderName,$MockRepGroupMembership.ComputerName
+                    $errorMessage = $($LocalizedData.ReplicationGroupMembershipMissingError) -f `
+                        $MockReplicationGroupMembership.GroupName,$MockReplicationGroupMembership.FolderName,$MockReplicationGroupMembership.ComputerName
                     $exception = New-Object -TypeName System.InvalidOperationException `
                         -ArgumentList $errorMessage
                     $errorRecord = New-Object -TypeName System.Management.Automation.ErrorRecord `
                         -ArgumentList $exception, $errorId, $errorCategory, $null
-                    $Splat = $MockRepGroupMembership.Clone()
+                    $Splat = $MockReplicationGroupMembership.Clone()
                     $Splat.Remove('ConflictAndDeletedPath')
                     { Test-TargetResource @Splat } | Should Throw $errorRecord
                 }
@@ -338,10 +335,10 @@ try
     
             Context 'Replication group membership exists and has no differences' {
                 
-                Mock Get-DfsrMembership -MockWith { return @($MockRepGroupMembership) }
+                Mock Get-DfsrMembership -MockWith { return @($MockReplicationGroupMembership) }
     
                 It 'should return true' {
-                    $Splat = $MockRepGroupMembership.Clone()
+                    $Splat = $MockReplicationGroupMembership.Clone()
                     $Splat.Remove('ConflictAndDeletedPath')
                     Test-TargetResource @Splat | Should Be $True
                 }
@@ -352,10 +349,10 @@ try
     
             Context 'Replication group membership exists and has no differences but ComputerName passed as FQDN' {
                 
-                Mock Get-DfsrMembership -MockWith { return @($MockRepGroupMembership) }
+                Mock Get-DfsrMembership -MockWith { return @($MockReplicationGroupMembership) }
     
                 It 'should return true' {
-                    $Splat = $MockRepGroupMembership.Clone()
+                    $Splat = $MockReplicationGroupMembership.Clone()
                     $Splat.Remove('ConflictAndDeletedPath')
                     $Splat.ComputerName = "$($Splat.ComputerName).$($Splat.DomainName)"
                     Test-TargetResource @Splat | Should Be $True
@@ -367,10 +364,10 @@ try
 
             Context 'Replication group membership exists but has different ContentPath' {
                 
-                Mock Get-DfsrMembership -MockWith { return @($MockRepGroupMembership) }
+                Mock Get-DfsrMembership -MockWith { return @($MockReplicationGroupMembership) }
     
                 It 'should return false' {
-                    $Splat = $MockRepGroupMembership.Clone()
+                    $Splat = $MockReplicationGroupMembership.Clone()
                     $Splat.Remove('ConflictAndDeletedPath')
                     $Splat.ContentPath = 'Different'
                     Test-TargetResource @Splat | Should Be $False
@@ -382,10 +379,10 @@ try
     
             Context 'Replication group membership exists but has different StagingPath' {
                 
-                Mock Get-DfsrMembership -MockWith { return @($MockRepGroupMembership) }
+                Mock Get-DfsrMembership -MockWith { return @($MockReplicationGroupMembership) }
     
                 It 'should return false' {
-                    $Splat = $MockRepGroupMembership.Clone()
+                    $Splat = $MockReplicationGroupMembership.Clone()
                     $Splat.Remove('ConflictAndDeletedPath')
                     $Splat.StagingPath = 'Different'
                     Test-TargetResource @Splat | Should Be $False
@@ -397,10 +394,10 @@ try
     
             Context 'Replication group membership exists but has different ReadOnly' {
                 
-                Mock Get-DfsrMembership -MockWith { return @($MockRepGroupMembership) }
+                Mock Get-DfsrMembership -MockWith { return @($MockReplicationGroupMembership) }
     
                 It 'should return false' {
-                    $Splat = $MockRepGroupMembership.Clone()
+                    $Splat = $MockReplicationGroupMembership.Clone()
                     $Splat.Remove('ConflictAndDeletedPath')
                     $Splat.ReadOnly = (-not $Splat.ReadOnly)
                     Test-TargetResource @Splat | Should Be $False
@@ -412,10 +409,10 @@ try
     
             Context 'Replication group membership exists but has different PrimaryMember' {
                 
-                Mock Get-DfsrMembership -MockWith { return @($MockRepGroupMembership) }
+                Mock Get-DfsrMembership -MockWith { return @($MockReplicationGroupMembership) }
     
                 It 'should return false' {
-                    $Splat = $MockRepGroupMembership.Clone()
+                    $Splat = $MockReplicationGroupMembership.Clone()
                     $Splat.Remove('ConflictAndDeletedPath')
                     $Splat.PrimaryMember = (-not $Splat.PrimaryMember)
                     Test-TargetResource @Splat | Should Be $False

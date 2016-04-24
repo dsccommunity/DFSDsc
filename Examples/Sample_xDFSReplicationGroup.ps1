@@ -1,10 +1,11 @@
-configuration Sample_xDFSRepGroup_FullMesh
+configuration Sample_xDFSReplicationGroup
 {
     Import-DscResource -Module xDFS
 
     Node $NodeName
     {
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", (ConvertTo-SecureString $"MyP@ssw0rd!1" -AsPlainText -Force))
+        $Password = New-Object -Type SecureString [char[]] 'MyPassword' | % { $Password.AppendChar( $_ ) }
+        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", $Password)
 
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
@@ -15,29 +16,46 @@ configuration Sample_xDFSRepGroup_FullMesh
         }
 
         # Configure the Replication Group
-        xDFSRepGroup RGPublic
+        xDFSReplicationGroup RGPublic
         {
             GroupName = 'Public'
             Description = 'Public files for use by all departments'
             Ensure = 'Present'
-            Members = 'FileServer1','FileServer2'
+            Members = 'FileServer1','FileServer2.contoso.com'
             Folders = 'Software'
-            Topology = 'Fullmesh'
             PSDSCRunAsCredential = $Credential
             DependsOn = "[WindowsFeature]RSATDFSMgmtConInstall"
         } # End of RGPublic Resource
 
-        xDFSRepGroupFolder RGSoftwareFolder
+        xDFSReplicationGroupConnection RGPublicC1
+        {
+            GroupName = 'Public'
+            Ensure = 'Present'
+            SourceComputerName = 'FileServer1'
+            DestinationComputerName = 'FileServer2'
+            PSDSCRunAsCredential = $Credential
+        } # End of xDFSReplicationGroupConnection Resource
+
+        xDFSReplicationGroupConnection RGPublicC2
+        {
+            GroupName = 'Public'
+            Ensure = 'Present'
+            SourceComputerName = 'FileServer2'
+            DestinationComputerName = 'FileServer1.contoso.com'
+            PSDSCRunAsCredential = $Credential
+        } # End of xDFSReplicationGroupConnection Resource
+
+        xDFSReplicationGroupFolder RGSoftwareFolder
         {
             GroupName = 'Public'
             FolderName = 'Software'
             Description = 'DFS Share for storing software installers'
             DirectoryNameToExclude = 'Temp'
             PSDSCRunAsCredential = $Credential
-            DependsOn = '[xDFSRepGroup]RGPublic'
-        } # End of RGSoftwareFolder Resource
+            DependsOn = '[xDFSReplicationGroup]RGPublic'
+        } # End of RGPublic Resource
 
-        xDFSRepGroupMembership RGPublicSoftwareFS1
+        xDFSReplicationGroupMembership RGPublicSoftwareFS1
         {
             GroupName = 'Public'
             FolderName = 'Software'
@@ -45,17 +63,17 @@ configuration Sample_xDFSRepGroup_FullMesh
             ContentPath = 'd:\Public\Software'
             PrimaryMember = $true
             PSDSCRunAsCredential = $Credential
-            DependsOn = '[xDFSRepGroupFolder]RGSoftwareFolder'
+            DependsOn = '[xDFSReplicationGroupFolder]RGSoftwareFolder'
         } # End of RGPublicSoftwareFS1 Resource
 
-        xDFSRepGroupMembership RGPublicSoftwareFS2
+        xDFSReplicationGroupMembership RGPublicSoftwareFS2
         {
             GroupName = 'Public'
             FolderName = 'Software'
             ComputerName = 'FileServer2'
             ContentPath = 'e:\Data\Public\Software'
             PSDSCRunAsCredential = $Credential
-            DependsOn = '[xDFSRepGroupFolder]RGPublicSoftwareFS1'
+            DependsOn = '[xDFSReplicationGroupFolder]RGPublicSoftwareFS1'
         } # End of RGPublicSoftwareFS2 Resource
 
     } # End of Node

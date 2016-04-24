@@ -738,4 +738,3 @@ function New-TerminatingError
 }
 
 Export-ModuleMember -Function *-TargetResource
-

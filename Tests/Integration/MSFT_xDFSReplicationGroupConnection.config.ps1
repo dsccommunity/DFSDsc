@@ -15,26 +15,26 @@ else
         ContentPaths = @("$(ENV:Temp)TestFolder1","$(ENV:Temp)TestFolder2")
     }
 }
-
-$RepgroupConnection = @{
-    GroupName               = 'IntegrationTestRepGroup'
+$TestPassword = New-Object -Type SecureString [char[]] $TestConfig.Password | % { $Password.AppendChar( $_ ) }
+$ReplicationGroupConnection = @{
+    GroupName               = 'IntegrationTestReplicationGroup'
     Folders                 = $TestConfig.Folders
     Members                 = $TestConfig.Members
     Ensure                  = 'Present'
     SourceComputerName      = $TestConfig.Members[0]
     DestinationComputerName = $TestConfig.Members[1]
-    PSDSCRunAsCredential    = New-Object System.Management.Automation.PSCredential ($TestConfig.Username, (ConvertTo-SecureString $TestConfig.Password -AsPlainText -Force))
+    PSDSCRunAsCredential    = New-Object System.Management.Automation.PSCredential ($TestConfig.Username, $TestPassword)
 }
 
-Configuration MSFT_xDFSRepGroupConnection_Config {
+Configuration MSFT_xDFSReplicationGroupConnection_Config {
     Import-DscResource -ModuleName xDFS
     node localhost {
-        xDFSRepGroupConnection Integration_Test {
-            GroupName                   = $RepgroupConnection.GroupName
+        xDFSReplicationGroupConnection Integration_Test {
+            GroupName                   = $ReplicationGroupConnection.GroupName
             Ensure                      = 'Present'
-            SourceComputerName          = $RepgroupConnection.SourceComputerName
-            DestinationComputerName     = $RepgroupConnection.DestinationComputerName
-            PSDSCRunAsCredential        = $RepgroupConnection.PSDSCRunAsCredential
+            SourceComputerName          = $ReplicationGroupConnection.SourceComputerName
+            DestinationComputerName     = $ReplicationGroupConnection.DestinationComputerName
+            PSDSCRunAsCredential        = $ReplicationGroupConnection.PSDSCRunAsCredential
         }
     }
 }

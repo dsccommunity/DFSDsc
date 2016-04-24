@@ -2,16 +2,16 @@ data LocalizedData
 {
     # culture="en-US"
     ConvertFrom-StringData -StringData @'
-GettingRepGroupMembershipMessage=Getting DFS Replication Group "{0}" folder "{1}" on "{2}".
-RepGroupMembershipExistsMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" exists.
-RepGroupMembershipMissingError=DFS Replication Group "{0}" folder "{1}" on "{2}" is missing.
+GettingReplicationGroupMembershipMessage=Getting DFS Replication Group "{0}" folder "{1}" on "{2}".
+ReplicationGroupMembershipExistsMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" exists.
+ReplicationGroupMembershipMissingError=DFS Replication Group "{0}" folder "{1}" on "{2}" is missing.
 SettingRegGroupMembershipMessage=Setting DFS Replication Group "{0}" folder "{1}" on "{2}".
-RepGroupMembershipUpdatedMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" has has been updated.
+ReplicationGroupMembershipUpdatedMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" has has been updated.
 TestingRegGroupMembershipMessage=Testing DFS Replication Group "{0}" folder "{1}" on "{2}".
-RepGroupMembershipContentPathMismatchMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect ContentPath. Change required.
-RepGroupMembershipStagingPathMismatchMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect StagingPath. Change required.
-RepGroupMembershipReadOnlyMismatchMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect ReadOnly. Change required.
-RepGroupMembershipPrimaryMemberismatchMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect PrimaryMember. Change required.
+ReplicationGroupMembershipContentPathMismatchMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect ContentPath. Change required.
+ReplicationGroupMembershipStagingPathMismatchMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect StagingPath. Change required.
+ReplicationGroupMembershipReadOnlyMismatchMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect ReadOnly. Change required.
+ReplicationGroupMembershipPrimaryMemberismatchMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect PrimaryMember. Change required.
 '@
 }
 
@@ -39,7 +39,7 @@ function Get-TargetResource
     
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.GettingRepGroupMembershipMessage) `
+        $($LocalizedData.GettingReplicationGroupMembershipMessage) `
             -f $GroupName,$FolderName,$ComputerName,$DomainName
         ) -join '' )
 
@@ -54,24 +54,24 @@ function Get-TargetResource
         $Splat += @{ DomainName = $DomainName }
     }
     $returnValue += @{ FolderName = $FolderName }
-    $RepGroupMembership = Get-DfsrMembership @Splat `
+    $ReplicationGroupMembership = Get-DfsrMembership @Splat `
         -ErrorAction Stop `
         | Where-Object { $_.FolderName -eq $FolderName }
-    if ($RepGroupMembership)
+    if ($ReplicationGroupMembership)
     {
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.RepGroupMembershipExistsMessage) `
+            $($LocalizedData.ReplicationGroupMembershipExistsMessage) `
                 -f $GroupName,$FolderName,$ComputerName,$DomainName
             ) -join '' )
-        $ReturnValue.ComputerName = $RepGroupMembership.ComputerName
+        $ReturnValue.ComputerName = $ReplicationGroupMembership.ComputerName
         $returnValue += @{
-            ContentPath = $RepGroupMembership.ContentPath
-            StagingPath = $RepGroupMembership.StagingPath
-            ConflictAndDeletedPath = $RepGroupMembership.ConflictAndDeletedPath
-            ReadOnly = $RepGroupMembership.ReadOnly
-            PrimaryMember = $RepGroupMembership.PrimaryMember
-            DomainName = $RepGroupMembership.DomainName
+            ContentPath = $ReplicationGroupMembership.ContentPath
+            StagingPath = $ReplicationGroupMembership.StagingPath
+            ConflictAndDeletedPath = $ReplicationGroupMembership.ConflictAndDeletedPath
+            ReadOnly = $ReplicationGroupMembership.ReadOnly
+            PrimaryMember = $ReplicationGroupMembership.PrimaryMember
+            DomainName = $ReplicationGroupMembership.DomainName
         }
     }
     else
@@ -79,7 +79,7 @@ function Get-TargetResource
         # The Rep Group membership doesn't exist
         $errorId = 'RegGroupMembershipMissingError'
         $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
-        $errorMessage = $($LocalizedData.RepGroupMembershipMissingError) `
+        $errorMessage = $($LocalizedData.ReplicationGroupMembershipMissingError) `
             -f $GroupName,$FolderName,$ComputerName,$DomainName
         $exception = New-Object -TypeName System.InvalidOperationException `
             -ArgumentList $errorMessage
@@ -136,7 +136,7 @@ function Set-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.RepGroupMembershipUpdatedMessage) `
+        $($LocalizedData.ReplicationGroupMembershipUpdatedMessage) `
             -f $GroupName,$FolderName,$ComputerName,$DomainName
         ) -join '' )
 } # Set-TargetResource
@@ -192,25 +192,25 @@ function Test-TargetResource
     {
         $Splat += @{ DomainName = $DomainName }
     }
-    $RepGroupMembership = Get-DfsrMembership @Splat `
+    $ReplicationGroupMembership = Get-DfsrMembership @Splat `
         -ErrorAction Stop `
         | Where-Object { $_.FolderName -eq $FolderName }
-    if ($RepGroupMembership)
+    if ($ReplicationGroupMembership)
     {
         # The rep group folder is found
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.RepGroupMembershipExistsMessage) `
+            $($LocalizedData.ReplicationGroupMembershipExistsMessage) `
                 -f $GroupName,$FolderName,$ComputerName,$DomainName
             ) -join '' )
 
         # Check the ContentPath
         if (($PSBoundParameters.ContainsKey('ContentPath')) `
-            -and ($RepGroupMembership.ContentPath -ne $ContentPath))
+            -and ($ReplicationGroupMembership.ContentPath -ne $ContentPath))
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.RepGroupMembershipContentPathMismatchMessage) `
+                $($LocalizedData.ReplicationGroupMembershipContentPathMismatchMessage) `
                     -f $GroupName,$FolderName,$ComputerName,$DomainName
                 ) -join '' )
             $desiredConfigurationMatch = $false
@@ -218,11 +218,11 @@ function Test-TargetResource
         
         # Check the StagingPath
         if (($PSBoundParameters.ContainsKey('StagingPath')) `
-            -and ($RepGroupMembership.StagingPath -ne $StagingPath))
+            -and ($ReplicationGroupMembership.StagingPath -ne $StagingPath))
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.RepGroupMembershipStagingPathMismatchMessage) `
+                $($LocalizedData.ReplicationGroupMembershipStagingPathMismatchMessage) `
                     -f $GroupName,$FolderName,$ComputerName,$DomainName
                 ) -join '' )
             $desiredConfigurationMatch = $false
@@ -230,11 +230,11 @@ function Test-TargetResource
 
         # Check the ReadOnly
         if (($PSBoundParameters.ContainsKey('ReadOnly')) `
-            -and ($RepGroupMembership.ReadOnly -ne $ReadOnly))
+            -and ($ReplicationGroupMembership.ReadOnly -ne $ReadOnly))
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.RepGroupMembershipReadOnlyMismatchMessage) `
+                $($LocalizedData.ReplicationGroupMembershipReadOnlyMismatchMessage) `
                     -f $GroupName,$FolderName,$ComputerName,$DomainName
                 ) -join '' )
             $desiredConfigurationMatch = $false
@@ -242,11 +242,11 @@ function Test-TargetResource
 
         # Check the PrimaryMember
         if (($PSBoundParameters.ContainsKey('PrimaryMember')) `
-            -and ($RepGroupMembership.PrimaryMember -ne $PrimaryMember))
+            -and ($ReplicationGroupMembership.PrimaryMember -ne $PrimaryMember))
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.RepGroupMembershipPrimaryMemberMismatchMessage) `
+                $($LocalizedData.ReplicationGroupMembershipPrimaryMemberMismatchMessage) `
                     -f $GroupName,$FolderName,$ComputerName,$DomainName
                 ) -join '' )
             $desiredConfigurationMatch = $false
@@ -258,7 +258,7 @@ function Test-TargetResource
         # The Rep Group membership doesn't exist
         $errorId = 'RegGroupMembershipMissingError'
         $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
-        $errorMessage = $($LocalizedData.RepGroupMembershipMissingError) `
+        $errorMessage = $($LocalizedData.ReplicationGroupMembershipMissingError) `
             -f $GroupName,$FolderName,$ComputerName,$DomainName
         $exception = New-Object -TypeName System.InvalidOperationException `
             -ArgumentList $errorMessage

@@ -7,7 +7,7 @@ These integration tests can only be run on a computer that:
    to create a DFS Replication Group.
 
 If the above are available then to allow these tests to be run a
-MSFT_xDFSRepGroup.config.json file must be created in the same folder as
+MSFT_xDFSReplicationGroup.config.json file must be created in the same folder as
 this file. The content should be a customized version of the following:
 {
     "Username":  "CONTOSO.COM\\Administrator",
@@ -29,7 +29,7 @@ this file. The content should be a customized version of the following:
 If the above are available and configured these integration tests will run.
 #>
 $Global:DSCModuleName   = 'xDFS'
-$Global:DSCResourceName = 'MSFT_xDFSRepGroup'
+$Global:DSCResourceName = 'MSFT_xDFSReplicationGroup'
 
 # Test to see if the config file is available.
 $ConfigFile = "$([System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path))\$($Global:DSCResourceName).config.json"
@@ -39,16 +39,14 @@ if (! (Test-Path -Path $ConfigFile))
 }
 
 #region HEADER
+# Integration Test Template Version: 1.1.0
 [String] $moduleRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))
 if ( (-not (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
      (-not (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
 {
     & git @('clone','https://github.com/PowerShell/DscResource.Tests.git',(Join-Path -Path $moduleRoot -ChildPath '\DSCResource.Tests\'))
 }
-else
-{
-    & git @('-C',(Join-Path -Path $moduleRoot -ChildPath '\DSCResource.Tests\'),'pull')
-}
+
 Import-Module (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1') -Force
 $TestEnvironment = Initialize-TestEnvironment `
     -DSCModuleName $Global:DSCModuleName `
@@ -63,7 +61,7 @@ try
     $ConfigFile = Join-Path -Path $PSScriptRoot -ChildPath "$($Global:DSCResourceName).config.ps1" 
     . $ConfigFile
 
-    Describe "$($Global:DSCResourceName)_Integration" {           
+    Describe "$($Global:DSCResourceName)_Integration" {
         #region DEFAULT TESTS
         It 'Should compile without throwing' {
             {
@@ -86,44 +84,44 @@ try
         #endregion
 
         It 'Should have set the resource and all the parameters should match' {
-            $RepGroupNew = Get-DfsReplicationGroup `
-                -GroupName $RepGroup.GroupName `
+            $ReplicationGroupNew = Get-DfsReplicationGroup `
+                -GroupName $ReplicationGroup.GroupName `
                 -ErrorAction Stop
-            $RepGroupNew.GroupName                 | Should Be $RepGroup.GroupName
-            $RepGroupNew.Description               | Should Be $RepGroup.Description
+            $ReplicationGroupNew.GroupName                 | Should Be $ReplicationGroup.GroupName
+            $ReplicationGroupNew.Description               | Should Be $ReplicationGroup.Description
             # Check the members are in the Replication Group
-            foreach ($Member in $RepGroup.Members)
+            foreach ($Member in $ReplicationGroup.Members)
             {
-                $RepGroupMemberNew = Get-DfsrMember `
-                    -GroupName $RepGroup.GroupName `
+                $ReplicationGroupMemberNew = Get-DfsrMember `
+                    -GroupName $ReplicationGroup.GroupName `
                     -ComputerName $Member `
                     -ErrorAction Stop
-                $RepGroupMemberNew.GroupName       | Should Be $RepGroup.GroupName
+                $ReplicationGroupMemberNew.GroupName       | Should Be $ReplicationGroup.GroupName
                 # If Member name was an FQDN then match the DNSName property, otherwise the ComputerName property
                 if ($Member.Contains('.'))
                 {
-                    $RepGroupMemberNew.DnsName    | Should Be $Member
+                    $ReplicationGroupMemberNew.DnsName    | Should Be $Member
                 }
                 else
                 {
-                    $RepGroupMemberNew.ComputerName    | Should Be $Member
+                    $ReplicationGroupMemberNew.ComputerName    | Should Be $Member
                 }
             }
             # Check the folders are in the Replication Group
-            foreach ($Folder in $RepGroup.Folders)
+            foreach ($Folder in $ReplicationGroup.Folders)
             {
-                $RepGroupFolderNew = Get-DfsReplicatedFolder `
-                    -GroupName $RepGroup.GroupName `
+                $ReplicationGroupFolderNew = Get-DfsReplicatedFolder `
+                    -GroupName $ReplicationGroup.GroupName `
                     -FolderName $Folder `
                     -ErrorAction Stop
-                $RepGroupFolderNew.GroupName       | Should Be $RepGroup.GroupName
-                $RepGroupFolderNew.FolderName      | Should Be $Folder
+                $ReplicationGroupFolderNew.GroupName       | Should Be $ReplicationGroup.GroupName
+                $ReplicationGroupFolderNew.FolderName      | Should Be $Folder
             }
         }
         
         # Clean up
         Remove-DFSReplicationGroup `
-            -GroupName $RepGroup.GroupName `
+            -GroupName $ReplicationGroup.GroupName `
             -RemoveReplicatedFolders `
             -Force `
             -Confirm:$false
