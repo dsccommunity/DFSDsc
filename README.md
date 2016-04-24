@@ -509,6 +509,7 @@ Configuration DFSNamespace_Standalone_Public
 * RepGroup renamed to ReplicationGroup in all files.
 * xDFSReplicationGroupConnection- Changed DisableConnection parameter to EnsureEnabled.
                                   Changed DisableRDC parameter to EnsureRDCEnabled.
+* xDFSReplicationGroup- Fixed bug where disabled connection was not enabled in Fullmesh topology.
 
 ### 2.2.0.0
 * DSC Module moved to MSFT.

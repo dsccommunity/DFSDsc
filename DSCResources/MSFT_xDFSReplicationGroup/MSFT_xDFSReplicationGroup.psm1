@@ -350,7 +350,7 @@ function Set-TargetResource
                         $ReplicationGroupConnection = Get-DfsrConnection @Splat `
                             -ErrorAction Stop
                         if ($ReplicationGroupConnection) {
-                            if ($ReplicationGroupConnection.DisableConnection) {
+                            if (-not $ReplicationGroupConnection.Enabled) {
                                 Set-DfsrConnection @Splat `
                                     -DisableConnection $false `
                                     -ErrorAction Stop
@@ -572,7 +572,7 @@ function Test-TargetResource
                                 -ErrorAction Stop
                             if ($ReplicationGroupConnection)
                             {
-                                if ($ReplicationGroupConnection.DisableConnection)
+                                if (-not $ReplicationGroupConnection.Enabled)
                                 {
                                     Write-Verbose -Message ( @(
                                         "$($MyInvocation.MyCommand): "
