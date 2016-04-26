@@ -84,13 +84,16 @@ Create a DFS Replication Group called Public containing two members, FileServer1
 ```powershell
 configuration Sample_xDFSReplicationGroup_Simple
 {
+    param
+    (
+        [Parameter(Mandatory)]
+        [pscredential] $Credential
+    )
+
     Import-DscResource -Module xDFS
 
     Node $NodeName
     {
-        $Password = New-Object -Type SecureString [char[]] 'MyPassword' | % { $Password.AppendChar( $_ ) }
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", $Password)
-
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
         WindowsFeature RSATDFSMgmtConInstall
@@ -114,19 +117,42 @@ configuration Sample_xDFSReplicationGroup_Simple
         } # End of RGPublic Resource
     } # End of Node
 } # End of Configuration
+$ComputerName = Read-Host -Prompt 'Computer Name'
+$ConfigData = @{
+    AllNodes = @(
+        @{
+            Nodename = $ComputerName
+            CertificateFile = "C:\publicKeys\targetNode.cer"
+            Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
+        }
+    )
+}
+Sample_xDFSReplicationGroup_Simple `
+    -configurationData $ConfigData `
+    -Credential (Get-Credential -Message "Domain Credentials")
+Start-DscConfiguration `
+    -Wait `
+    -Force `
+    -Verbose `
+    -ComputerName $ComputerName `
+    -Path $PSScriptRoot\Sample_xDFSReplicationGroup_Simple `
+    -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
 ```
 
 Create a DFS Replication Group called Public containing two members, FileServer1 and FileServer2. The Replication Group contains a single folder called Software. A description will be set on the Software folder and it will be set to exclude the directory Temp from replication. A manual topology is assigned to the replication connections.
 ```powershell
 configuration Sample_xDFSReplicationGroup
 {
+    param
+    (
+        [Parameter(Mandatory)]
+        [pscredential] $Credential
+    )
+
     Import-DscResource -Module xDFS
 
     Node $NodeName
     {
-        $Password = New-Object -Type SecureString [char[]] 'MyPassword' | % { $Password.AppendChar( $_ ) }
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", $Password)
-
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
         WindowsFeature RSATDFSMgmtConInstall 
@@ -198,6 +224,26 @@ configuration Sample_xDFSReplicationGroup
 
     } # End of Node
 } # End of Configuration
+$ComputerName = Read-Host -Prompt 'Computer Name'
+$ConfigData = @{
+    AllNodes = @(
+        @{
+            Nodename = $ComputerName
+            CertificateFile = "C:\publicKeys\targetNode.cer"
+            Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
+        }
+    )
+}
+Sample_xDFSReplicationGroup `
+    -configurationData $ConfigData `
+    -Credential (Get-Credential -Message "Domain Credentials")
+Start-DscConfiguration `
+    -Wait `
+    -Force `
+    -Verbose `
+    -ComputerName $ComputerName `
+    -Path $PSScriptRoot\Sample_xDFSReplicationGroup `
+    -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
 ```
 
 
@@ -205,13 +251,16 @@ Create a DFS Replication Group called Public containing two members, FileServer1
 ```powershell
 configuration Sample_xDFSReplicationGroup_FullMesh
 {
+    param
+    (
+        [Parameter(Mandatory)]
+        [pscredential] $Credential
+    )
+
     Import-DscResource -Module xDFS
 
     Node $NodeName
     {
-        $Password = New-Object -Type SecureString [char[]] 'MyPassword' | % { $Password.AppendChar( $_ ) }
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", $Password)
-
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
         WindowsFeature RSATDFSMgmtConInstall
@@ -266,6 +315,26 @@ configuration Sample_xDFSReplicationGroup_FullMesh
 
     } # End of Node
 } # End of Configuration
+$ComputerName = Read-Host -Prompt 'Computer Name'
+$ConfigData = @{
+    AllNodes = @(
+        @{
+            Nodename = $ComputerName
+            CertificateFile = "C:\publicKeys\targetNode.cer"
+            Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
+        }
+    )
+}
+Sample_xDFSReplicationGroup_FullMesh `
+    -configurationData $ConfigData `
+    -Credential (Get-Credential -Message "Domain Credentials")
+Start-DscConfiguration `
+    -Wait `
+    -Force `
+    -Verbose `
+    -ComputerName $ComputerName `
+    -Path $PSScriptRoot\Sample_xDFSReplicationGroup_FullMesh `
+    -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
 ```
 
 
@@ -310,13 +379,16 @@ Create an AD Domain V2 based DFS namespace called departments in the domain cont
 ```powershell
 Configuration DFSNamespace_Domain_SingleTarget
 {
+    param
+    (
+        [Parameter(Mandatory)]
+        [pscredential] $Credential
+    )
+
     Import-DscResource -ModuleName 'xDFS'
 
     Node $NodeName
     {
-        $Password = New-Object -Type SecureString [char[]] 'MyPassword' | % { $Password.AppendChar( $_ ) }
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", $Password)
-
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
         WindowsFeature RSATDFSMgmtConInstall
@@ -365,19 +437,42 @@ Configuration DFSNamespace_Domain_SingleTarget
         } # End of xDFSNamespaceFolder Resource
     }
 }
+$ComputerName = Read-Host -Prompt 'Computer Name'
+$ConfigData = @{
+    AllNodes = @(
+        @{
+            Nodename = $ComputerName
+            CertificateFile = "C:\publicKeys\targetNode.cer"
+            Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
+        }
+    )
+}
+DFSNamespace_Domain_SingleTarget `
+    -configurationData $ConfigData `
+    -Credential (Get-Credential -Message "Domain Credentials")
+Start-DscConfiguration `
+    -Wait `
+    -Force `
+    -Verbose `
+    -ComputerName $ComputerName `
+    -Path $PSScriptRoot\DFSNamespace_Domain_SingleTarget `
+    -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
 ```
 
 Create an AD Domain V2 based DFS namespace called software in the domain contoso.com with a three targets on the servers ca-fileserver, ma-fileserver and ny-fileserver. It also creates a IT folder in each namespace.
 ```powershell
 Configuration DFSNamespace_Domain_MultipleTarget
 {
+    param
+    (
+        [Parameter(Mandatory)]
+        [pscredential] $Credential
+    )
+
     Import-DscResource -ModuleName 'xDFS'
 
     Node $NodeName
     {
-        $Password = New-Object -Type SecureString [char[]] 'MyPassword' | % { $Password.AppendChar( $_ ) }
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", $Password)
-
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
         WindowsFeature RSATDFSMgmtConInstall
@@ -453,19 +548,42 @@ Configuration DFSNamespace_Domain_MultipleTarget
         } # End of xDFSNamespaceFolder Resource
     }
 }
+$ComputerName = Read-Host -Prompt 'Computer Name'
+$ConfigData = @{
+    AllNodes = @(
+        @{
+            Nodename = $ComputerName
+            CertificateFile = "C:\publicKeys\targetNode.cer"
+            Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
+        }
+    )
+}
+DFSNamespace_Domain_MultipleTarget `
+    -configurationData $ConfigData `
+    -Credential (Get-Credential -Message "Domain Credentials")
+Start-DscConfiguration `
+    -Wait `
+    -Force `
+    -Verbose `
+    -ComputerName $ComputerName `
+    -Path $PSScriptRoot\DFSNamespace_Domain_MultipleTarget `
+    -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
 ```
 
 Create a standalone DFS namespace called public on the server fileserver1. A namespace folder called Brochures is also created in this namespace that targets the \\fileserver2\brochures share.
 ```powershell
 Configuration DFSNamespace_Standalone_Public
 {
+    param
+    (
+        [Parameter(Mandatory)]
+        [pscredential] $Credential
+    )
+
     Import-DscResource -ModuleName 'xDFS'
 
     Node $NodeName
     {
-        $Password = New-Object -Type SecureString [char[]] 'MyPassword' | % { $Password.AppendChar( $_ ) }
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", $Password)
-
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
         WindowsFeature RSATDFSMgmtConInstall
@@ -502,6 +620,26 @@ Configuration DFSNamespace_Standalone_Public
         } # End of DFSNamespaceFolder Resource
     }
 }
+$ComputerName = Read-Host -Prompt 'Computer Name'
+$ConfigData = @{
+    AllNodes = @(
+        @{
+            Nodename = $ComputerName
+            CertificateFile = "C:\publicKeys\targetNode.cer"
+            Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
+        }
+    )
+}
+DFSNamespace_Standalone_Public `
+    -configurationData $ConfigData `
+    -Credential (Get-Credential -Message "Domain Credentials")
+Start-DscConfiguration `
+    -Wait `
+    -Force `
+    -Verbose `
+    -ComputerName $ComputerName `
+    -Path $PSScriptRoot\DFSNamespace_Standalone_Public `
+    -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
 ```
 
 ## Versions
