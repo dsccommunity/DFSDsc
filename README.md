@@ -117,11 +117,11 @@ configuration Sample_xDFSReplicationGroup_Simple
         } # End of RGPublic Resource
     } # End of Node
 } # End of Configuration
-
+$ComputerName = Read-Host -Prompt 'Computer Name'
 $ConfigData = @{
     AllNodes = @(
         @{
-            Nodename = "FILESERVER1"
+            Nodename = $ComputerName
             CertificateFile = "C:\publicKeys\targetNode.cer"
             Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
         }
@@ -134,7 +134,7 @@ Start-DscConfiguration `
     -Wait `
     -Force `
     -Verbose `
-    -ComputerName "FILESERVER1" `
+    -ComputerName $ComputerName `
     -Path $PSScriptRoot\Sample_xDFSReplicationGroup_Simple `
     -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
 ```
@@ -224,11 +224,11 @@ configuration Sample_xDFSReplicationGroup
 
     } # End of Node
 } # End of Configuration
-
+$ComputerName = Read-Host -Prompt 'Computer Name'
 $ConfigData = @{
     AllNodes = @(
         @{
-            Nodename = "FILESERVER1"
+            Nodename = $ComputerName
             CertificateFile = "C:\publicKeys\targetNode.cer"
             Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
         }
@@ -241,7 +241,7 @@ Start-DscConfiguration `
     -Wait `
     -Force `
     -Verbose `
-    -ComputerName "FILESERVER1" `
+    -ComputerName $ComputerName `
     -Path $PSScriptRoot\Sample_xDFSReplicationGroup `
     -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
 ```
@@ -315,11 +315,11 @@ configuration Sample_xDFSReplicationGroup_FullMesh
 
     } # End of Node
 } # End of Configuration
-
+$ComputerName = Read-Host -Prompt 'Computer Name'
 $ConfigData = @{
     AllNodes = @(
         @{
-            Nodename = "FILESERVER1"
+            Nodename = $ComputerName
             CertificateFile = "C:\publicKeys\targetNode.cer"
             Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
         }
@@ -332,7 +332,7 @@ Start-DscConfiguration `
     -Wait `
     -Force `
     -Verbose `
-    -ComputerName "FILESERVER1" `
+    -ComputerName $ComputerName `
     -Path $PSScriptRoot\Sample_xDFSReplicationGroup_FullMesh `
     -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
 ```
@@ -437,11 +437,11 @@ Configuration DFSNamespace_Domain_SingleTarget
         } # End of xDFSNamespaceFolder Resource
     }
 }
-
+$ComputerName = Read-Host -Prompt 'Computer Name'
 $ConfigData = @{
     AllNodes = @(
         @{
-            Nodename = "FILESERVER1"
+            Nodename = $ComputerName
             CertificateFile = "C:\publicKeys\targetNode.cer"
             Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
         }
@@ -454,7 +454,7 @@ Start-DscConfiguration `
     -Wait `
     -Force `
     -Verbose `
-    -ComputerName "FILESERVER1" `
+    -ComputerName $ComputerName `
     -Path $PSScriptRoot\DFSNamespace_Domain_SingleTarget `
     -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
 ```
@@ -548,11 +548,11 @@ Configuration DFSNamespace_Domain_MultipleTarget
         } # End of xDFSNamespaceFolder Resource
     }
 }
-
+$ComputerName = Read-Host -Prompt 'Computer Name'
 $ConfigData = @{
     AllNodes = @(
         @{
-            Nodename = "FILESERVER1"
+            Nodename = $ComputerName
             CertificateFile = "C:\publicKeys\targetNode.cer"
             Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
         }
@@ -565,7 +565,7 @@ Start-DscConfiguration `
     -Wait `
     -Force `
     -Verbose `
-    -ComputerName "FILESERVER1" `
+    -ComputerName $ComputerName `
     -Path $PSScriptRoot\DFSNamespace_Domain_MultipleTarget `
     -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
 ```
@@ -620,11 +620,11 @@ Configuration DFSNamespace_Standalone_Public
         } # End of DFSNamespaceFolder Resource
     }
 }
-
+$ComputerName = Read-Host -Prompt 'Computer Name'
 $ConfigData = @{
     AllNodes = @(
         @{
-            Nodename = "FILESERVER1"
+            Nodename = $ComputerName
             CertificateFile = "C:\publicKeys\targetNode.cer"
             Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
         }
@@ -637,7 +637,7 @@ Start-DscConfiguration `
     -Wait `
     -Force `
     -Verbose `
-    -ComputerName "FILESERVER1" `
+    -ComputerName $ComputerName `
     -Path $PSScriptRoot\DFSNamespace_Standalone_Public `
     -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
 ```

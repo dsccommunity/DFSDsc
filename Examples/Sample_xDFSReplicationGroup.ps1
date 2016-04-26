@@ -81,11 +81,11 @@ configuration Sample_xDFSReplicationGroup
 
     } # End of Node
 } # End of Configuration
-
+$ComputerName = Read-Host -Prompt 'Computer Name'
 $ConfigData = @{
     AllNodes = @(
         @{
-            Nodename = "FILESERVER1"
+            Nodename = $ComputerName
             CertificateFile = "C:\publicKeys\targetNode.cer"
             Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
         }
@@ -98,6 +98,6 @@ Start-DscConfiguration `
     -Wait `
     -Force `
     -Verbose `
-    -ComputerName "FILESERVER1" `
+    -ComputerName $ComputerName `
     -Path $PSScriptRoot\Sample_xDFSReplicationGroup `
     -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
