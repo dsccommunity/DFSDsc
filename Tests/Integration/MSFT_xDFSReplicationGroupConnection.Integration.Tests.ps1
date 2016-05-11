@@ -7,7 +7,7 @@ These integration tests can only be run on a computer that:
    to create a DFS Replication Group.
 
 If the above are available then to allow these tests to be run a
-MSFT_xDFSRepGroupFolder.config.json file must be created in the same folder as
+MSFT_xDFSReplicationGroupFolder.config.json file must be created in the same folder as
 this file. The content should be a customized version of the following:
 {
     "Username":  "CONTOSO.COM\\Administrator",
@@ -29,7 +29,7 @@ this file. The content should be a customized version of the following:
 If the above are available and configured these integration tests will run.
 #>
 $Global:DSCModuleName   = 'xDFS'
-$Global:DSCResourceName = 'MSFT_xDFSRepGroupFolder'
+$Global:DSCResourceName = 'MSFT_xDFSReplicationGroupConnection'
 
 # Test to see if the config file is available.
 $ConfigFile = "$([System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path))\$($Global:DSCResourceName).config.json"
@@ -39,16 +39,14 @@ if (! (Test-Path -Path $ConfigFile))
 }
 
 #region HEADER
+# Integration Test Template Version: 1.1.0
 [String] $moduleRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))
 if ( (-not (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
      (-not (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
 {
     & git @('clone','https://github.com/PowerShell/DscResource.Tests.git',(Join-Path -Path $moduleRoot -ChildPath '\DSCResource.Tests\'))
 }
-else
-{
-    & git @('-C',(Join-Path -Path $moduleRoot -ChildPath '\DSCResource.Tests\'),'pull')
-}
+
 Import-Module (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1') -Force
 $TestEnvironment = Initialize-TestEnvironment `
     -DSCModuleName $Global:DSCModuleName `
@@ -66,17 +64,17 @@ try
     Describe "$($Global:DSCResourceName)_Integration" {           
         # Create the Replication group to work with
         New-DFSReplicationGroup `
-            -GroupName $RepgroupFolder.GroupName
-        foreach ($Member in $RepgroupFolder.Members)
+            -GroupName $ReplicationGroupConnection.GroupName
+        foreach ($Member in $ReplicationGroupConnection.Members)
         {
             Add-DFSRMember `
-                -GroupName $RepgroupFolder.GroupName `
+                -GroupName $ReplicationGroupConnection.GroupName `
                 -ComputerName $Member
         }
-        foreach ($Folder in $RepgroupFolder.Folders)
+        foreach ($Folder in $ReplicationGroupConnection.Folders)
         {
             New-DFSReplicatedFolder `
-                -GroupName $RepgroupFolder.GroupName `
+                -GroupName $ReplicationGroupConnection.GroupName `
                 -FolderName $Folder
         }
             
@@ -102,20 +100,19 @@ try
         #endregion
 
         It 'Should have set the resource and all the parameters should match' {
-            $RepGroupFolderNew = Get-DfsReplicatedFolder `
-                -GroupName $RepgroupFolder.GroupName `
-                -FolderName $RepgroupFolder.FolderName `
+            $ReplicationGroupConnectionNew = Get-DfsrConnection `
+                -GroupName $ReplicationGroupConnection.GroupName `
+                -SourceComputerName $ReplicationGroupConnection.SourceComputerName `
+                -DestinationComputerName $ReplicationGroupConnection.DestinationComputerName `
                 -ErrorAction Stop
-            $RepGroupFolderNew.GroupName              | Should Be $RepgroupFolder.GroupName
-            $RepGroupFolderNew.FolderName             | Should Be $RepgroupFolder.FolderName
-            $RepGroupFolderNew.Description            | Should Be $RepgroupFolder.Description
-            $RepGroupFolderNew.DirectoryNameToExclude | Should Be $RepgroupFolder.DirectoryNameToExclude
-            $RepGroupFolderNew.FilenameToExclude      | Should Be $RepgroupFolder.FilenameToExclude
+            $ReplicationGroupConnectionNew.GroupName               | Should Be $ReplicationGroupConnection.GroupName
+            $ReplicationGroupConnectionNew.SourceComputerName      | Should Be $ReplicationGroupConnection.SourceComputerName
+            $ReplicationGroupConnectionNew.DestinationComputerName | Should Be $ReplicationGroupConnection.DestinationComputerName
         }
         
         # Clean up
         Remove-DFSReplicationGroup `
-            -GroupName $RepgroupFolder.GroupName `
+            -GroupName $ReplicationGroupConnection.GroupName `
             -RemoveReplicatedFolders `
             -Force `
             -Confirm:$false

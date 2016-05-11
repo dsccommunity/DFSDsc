@@ -2,20 +2,20 @@ data LocalizedData
 {
     # culture="en-US"
     ConvertFrom-StringData -StringData @'
-GettingRepGroupMessage=Getting DFS Replication Group Connection "{0}" from "{1}" to "{2}".
-RepGroupConnectionExistsMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" exists.
-RepGroupConnectionDoesNotExistMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" does not exist.
+GettingReplicationGroupMessage=Getting DFS Replication Group Connection "{0}" from "{1}" to "{2}".
+ReplicationGroupConnectionExistsMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" exists.
+ReplicationGroupConnectionDoesNotExistMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" does not exist.
 SettingRegGroupConnectionMessage=Setting DFS Replication Group Connection "{0}" from "{1}" to "{2}".
-EnsureRepGroupConnectionExistsMessage=Ensuring DFS Replication Group "{0}" from "{1}" to "{2}" exists.
-EnsureRepGroupConnectionDoesNotExistMessage=Ensuring DFS Replication Group "{0}" from "{1}" to "{2}" does not exist.
-RepGroupConnectionCreatedMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" has been created.
-RepGroupConnectionUpdatedMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" description has been updated.
-RepGroupConnectionExistsRemovedMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" existed, but has been removed.
+EnsureReplicationGroupConnectionExistsMessage=Ensuring DFS Replication Group "{0}" from "{1}" to "{2}" exists.
+EnsureReplicationGroupConnectionDoesNotExistMessage=Ensuring DFS Replication Group "{0}" from "{1}" to "{2}" does not exist.
+ReplicationGroupConnectionCreatedMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" has been created.
+ReplicationGroupConnectionUpdatedMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" description has been updated.
+ReplicationGroupConnectionExistsRemovedMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" existed, but has been removed.
 TestingConnectionRegGroupMessage=Testing DFS Replication Group Connection "{0}" from "{1}" to "{2}".
-RepGroupConnectionNeedsUpdateMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" description is different. Change required.
-RepGroupConnectionDoesNotExistButShouldMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" does not exist but should. Change required.
-RepGroupConnectionExistsButShouldNotMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" exists but should not. Change required.
-RepGroupConnectionDoesNotExistAndShouldNotMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" does not exist and should not. Change not required.
+ReplicationGroupConnectionNeedsUpdateMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" {4} is different. Change required.
+ReplicationGroupConnectionDoesNotExistButShouldMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" does not exist but should. Change required.
+ReplicationGroupConnectionExistsButShouldNotMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" exists but should not. Change required.
+ReplicationGroupConnectionDoesNotExistAndShouldNotMessage=DFS Replication Group Connection "{0}" from "{1}" to "{2}" does not exist and should not. Change not required.
 '@
 }
 
@@ -48,7 +48,7 @@ function Get-TargetResource
     
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.GettingRepGroupConnectionMessage) `
+        $($LocalizedData.GettingReplicationGroupConnectionMessage) `
             -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
         ) -join '' )
 
@@ -63,30 +63,46 @@ function Get-TargetResource
     {
         $Splat += @{ DomainName = $DomainName }
     }
-    $RepGroupConnection = Get-DfsrConnection @Splat `
+    $ReplicationGroupConnection = Get-DfsrConnection @Splat `
         -ErrorAction Stop
-    if ($RepGroupConnection)
+    if ($ReplicationGroupConnection)
     {
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.RepGroupConnectionExistsMessage) `
+            $($LocalizedData.ReplicationGroupConnectionExistsMessage) `
                 -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
             ) -join '' )
-        $returnValue.SourceComputerName = $RepGroupConnection.SourceComputerName 
-        $returnValue.DestinationComputerName = $RepGroupConnection.DestinationComputerName 
+        $returnValue.SourceComputerName = $ReplicationGroupConnection.SourceComputerName 
+        $returnValue.DestinationComputerName = $ReplicationGroupConnection.DestinationComputerName 
+        if ($ReplicationGroupConnection.Enabled)
+        {
+            $EnsureEnabled = 'Enabled'
+        }
+        else
+        {
+            $EnsureEnabled = 'Disabled'
+        } # if
+        if ($ReplicationGroupConnection.RdcEnabled)
+        {
+            $EnsureRDCEnabled = 'Enabled'
+        }
+        else
+        {
+            $EnsureRDCEnabled = 'Disabled'
+        } # if
         $returnValue += @{
             Ensure = 'Present'
-            Description = $RepGroupConnection.Description
-            DomainName = $RepGroupConnection.DomainName
-            DisableConnection = (-not $RepGroupConnection.Enabled)
-            DisableRDC = (-not $RepGroupConnection.RdcEnabled)
+            Description = $ReplicationGroupConnection.Description
+            DomainName = $ReplicationGroupConnection.DomainName
+            EnsureEnabled = $EnsureEnabled
+            EnsureRDCEnabled = $EnsureRDCEnabled
         }
     }
     else
     {       
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.RepGroupConnectionDoesNotExistMessage) `
+            $($LocalizedData.ReplicationGroupConnectionDoesNotExistMessage) `
                 -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
             ) -join '' )
         $returnValue += @{ Ensure = 'Absent' }
@@ -119,11 +135,13 @@ function Set-TargetResource
         [String]
         $Description,
 
-        [Boolean]
-        $DisableConnection = $false,
+        [ValidateSet('Enabled','Disabled')]
+        [String]
+        $EnsureEnabled = 'Enabled',
 
-        [Boolean]
-        $DisableRDC = $false,
+        [ValidateSet('Enabled','Disabled')]
+        [String]
+        $EnsureRDCEnabled = 'Enabled',
 
         [String]
         $DomainName
@@ -137,6 +155,8 @@ function Set-TargetResource
 
     # Remove Ensure so the PSBoundParameters can be used to splat
     $null = $PSBoundParameters.Remove('Ensure')
+    $null = $PSBoundParameters.Remove('EnsureEnabled')
+    $null = $PSBoundParameters.Remove('EnsureRDCEnabled')
 
     # Lookup the existing Replication Group Connection
     $Splat = @{
@@ -148,30 +168,33 @@ function Set-TargetResource
     {
         $Splat += @{ DomainName = $DomainName }
     }
-    $RepGroupConnection = Get-DfsrConnection @Splat -ErrorAction Stop
+    $ReplicationGroupConnection = Get-DfsrConnection @Splat -ErrorAction Stop
 
     if ($Ensure -eq 'Present')
     {
         # The rep group connection should exist
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.EnsureRepGroupConnectionExistsMessage) `
+            $($LocalizedData.EnsureReplicationGroupConnectionExistsMessage) `
                 -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
             ) -join '' )
 
-        if ($RepGroupConnection)
+        $null = $PSBoundParameters.Add('DisableConnection',($EnsureEnabled -eq 'Disabled'))
+        $null = $PSBoundParameters.Add('DisableRDC',($EnsureRDCEnabled -eq 'Disabled'))
+
+        if ($ReplicationGroupConnection)
         {
             # The RG connection exists already - update it
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.RepGroupConnectionExistsMessage) `
+                $($LocalizedData.ReplicationGroupConnectionExistsMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
                 ) -join '' )
             Set-DfsrConnection @PSBoundParameters `
                 -ErrorAction Stop
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.RepGroupConnectionUpdatedMessage) `
+                $($LocalizedData.ReplicationGroupConnectionUpdatedMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
                 ) -join '' )
 
@@ -181,14 +204,14 @@ function Set-TargetResource
             # Ths Rep Groups doesn't exist - Create it
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.RepGroupConnectionDoesNotExistMessage) `
+                $($LocalizedData.ReplicationGroupConnectionDoesNotExistMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
                 ) -join '' )
             Add-DfsrConnection @PSBoundParameters `
                 -ErrorAction Stop
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.RepGroupConnectionCreatedMessage) `
+                $($LocalizedData.ReplicationGroupConnectionCreatedMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
                 ) -join '' )
 
@@ -199,16 +222,16 @@ function Set-TargetResource
         # The Rep Group should not exist
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.EnsureRepGroupConnectionDoesNotExistMessage) `
+            $($LocalizedData.EnsureReplicationGroupConnectionDoesNotExistMessage) `
                 -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
             ) -join '' )
-        if ($RepGroup)
+        if ($ReplicationGroup)
         {
             # Remove the replication group
             Remove-DfsrConnection @Splat -Force -ErrorAction Stop
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.RepGroupConnectionExistsRemovedMessage) `
+                $($LocalizedData.ReplicationGroupConnectionExistsRemovedMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
                 ) -join '' )
         }
@@ -240,11 +263,13 @@ function Test-TargetResource
         [String]
         $Description,
 
-        [Boolean]
-        $DisableConnection = $false,
+        [ValidateSet('Enabled','Disabled')]
+        [String]
+        $EnsureEnabled = 'Enabled',
 
-        [Boolean]
-        $DisableRDC = $false,
+        [ValidateSet('Enabled','Disabled')]
+        [String]
+        $EnsureRDCEnabled = 'Enabled',
 
         [String]
         $DomainName
@@ -272,32 +297,58 @@ function Test-TargetResource
     {
         $Splat += @{ DomainName = $DomainName }
     }
-    $RepGroupConnection = Get-DfsrConnection @Splat `
+    $ReplicationGroupConnection = Get-DfsrConnection @Splat `
         -ErrorAction Stop
 
     if ($Ensure -eq 'Present')
     {
         # The RG should exist
-        if ($RepGroupConnection)
+        if ($ReplicationGroupConnection)
         {
             # The RG exists already
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.RepGroupConnectionExistsMessage) `
+                $($LocalizedData.ReplicationGroupConnectionExistsMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
                 ) -join '' )
 
             # Check if any of the non-key paramaters are different.
-            if (    
-                    (($PSBoundParameters.ContainsKey('Description')) -and ($RepGroupConnection.Description -ne $Description)) `
-                -or (($PSBoundParameters.ContainsKey('DisableConnection')) -and ($RepGroupConnection.Enabled -eq $DisableConnection)) `
-                -or (($PSBoundParameters.ContainsKey('DisableRDC')) -and ($RepGroupConnection.RDCEnabled -eq $DisableRDC))
-                )
+            if (($PSBoundParameters.ContainsKey('Description')) -and `
+                ($ReplicationGroupConnection.Description -ne $Description))
             {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.RepGroupConnectionNeedsUpdateMessage) `
-                        -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
+                    $($LocalizedData.ReplicationGroupConnectionNeedsUpdateMessage) `
+                        -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName, `
+                        'Description'
+                    ) -join '' )
+                $desiredConfigurationMatch = $false
+            }
+
+            if (($EnsureEnabled -eq 'Enabled') `
+                -and (-not $ReplicationGroupConnection.Enabled) `
+                -or ($EnsureEnabled -eq 'Disabled') `
+                -and ($ReplicationGroupConnection.Enabled))
+            {
+                Write-Verbose -Message ( @(
+                    "$($MyInvocation.MyCommand): "
+                    $($LocalizedData.ReplicationGroupConnectionNeedsUpdateMessage) `
+                        -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName, `
+                        'Enabled'
+                    ) -join '' )
+                $desiredConfigurationMatch = $false
+            }
+
+            if (($EnsureRDCEnabled -eq 'Enabled') `
+                -and (-not $ReplicationGroupConnection.RDCEnabled) `
+                -or ($EnsureRDCEnabled -eq 'Disabled') `
+                -and ($ReplicationGroupConnection.RDCEnabled))
+            {
+                Write-Verbose -Message ( @(
+                    "$($MyInvocation.MyCommand): "
+                    $($LocalizedData.ReplicationGroupConnectionNeedsUpdateMessage) `
+                        -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName, `
+                        'RDC Enabled'
                     ) -join '' )
                 $desiredConfigurationMatch = $false
             }
@@ -307,7 +358,7 @@ function Test-TargetResource
             # Ths RG doesn't exist but should
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                 $($LocalizedData.RepGroupConnectionDoesNotExistButShouldMessage) `
+                 $($LocalizedData.ReplicationGroupConnectionDoesNotExistButShouldMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
                 ) -join '' )
             $desiredConfigurationMatch = $false
@@ -316,12 +367,12 @@ function Test-TargetResource
     else
     {
         # The RG should not exist
-        if ($RepGroupConnection)
+        if ($ReplicationGroupConnection)
         {
             # The RG exists but should not
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                 $($LocalizedData.RepGroupConnectionExistsButShouldNotMessage) `
+                 $($LocalizedData.ReplicationGroupConnectionExistsButShouldNotMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
                 ) -join '' )
             $desiredConfigurationMatch = $false
@@ -331,7 +382,7 @@ function Test-TargetResource
             # The RG does not exist and should not
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.RepGroupConnectionDoesNotExistAndShouldNotMessage) `
+                $($LocalizedData.ReplicationGroupConnectionDoesNotExistAndShouldNotMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
                 ) -join '' )
         }

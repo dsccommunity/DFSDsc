@@ -1,11 +1,15 @@
 Configuration DFSNamespace_Domain_SingleTarget
 {
+    param
+    (
+        [Parameter(Mandatory)]
+        [pscredential] $Credential
+    )
+
     Import-DscResource -ModuleName 'xDFS'
 
     Node $NodeName
     {
-        [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential ("CONTOSO.COM\Administrator", (ConvertTo-SecureString $"MyP@ssw0rd!1" -AsPlainText -Force))    
-
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
         WindowsFeature RSATDFSMgmtConInstall 
@@ -54,3 +58,23 @@ Configuration DFSNamespace_Domain_SingleTarget
         } # End of xDFSNamespaceFolder Resource
     }
 }
+$ComputerName = Read-Host -Prompt 'Computer Name'
+$ConfigData = @{
+    AllNodes = @(
+        @{
+            Nodename = $ComputerName
+            CertificateFile = "C:\publicKeys\targetNode.cer"
+            Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
+        }
+    )
+}
+DFSNamespace_Domain_SingleTarget `
+    -configurationData $ConfigData `
+    -Credential (Get-Credential -Message "Domain Credentials")
+Start-DscConfiguration `
+    -Wait `
+    -Force `
+    -Verbose `
+    -ComputerName $ComputerName `
+    -Path $PSScriptRoot\DFSNamespace_Domain_SingleTarget `
+    -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")

@@ -15,28 +15,28 @@ else
         ContentPaths = @("$(ENV:Temp)TestFolder1","$(ENV:Temp)TestFolder2")
     }
 }
-
-$RepgroupFolder = @{
-    GroupName               = 'IntegrationTestRepGroup'
+$TestPassword = New-Object -Type SecureString [char[]] $TestConfig.Password | % { $Password.AppendChar( $_ ) }
+$ReplicationGroupFolder = @{
+    GroupName               = 'IntegrationTestReplicationGroup'
     Folders                 = $TestConfig.Folders
     Members                 = $TestConfig.Members
     FolderName              = $TestConfig.Folders[0]
     Description             = "Integration Test Rep Group Folder $($TestConfig.Folders[0])"
     DirectoryNameToExclude  = @('Temp')
     FilenameToExclude       = @('*.bak','*.tmp')
-    PSDSCRunAsCredential    = New-Object System.Management.Automation.PSCredential ($TestConfig.Username, (ConvertTo-SecureString $TestConfig.Password -AsPlainText -Force))
+    PSDSCRunAsCredential    = New-Object System.Management.Automation.PSCredential ($TestConfig.Username, $TestPassword)
 }
 
-Configuration MSFT_xDFSRepGroupFolder_Config {
+Configuration MSFT_xDFSReplicationGroupFolder_Config {
     Import-DscResource -ModuleName xDFS
     node localhost {
-        xDFSRepGroupFolder Integration_Test {
-            GroupName                   = $RepgroupFolder.GroupName
-            FolderName                  = $RepgroupFolder.FolderName
-            Description                 = $RepgroupFolder.Description
-            DirectoryNameToExclude      = $RepgroupFolder.DirectoryNameToExclude
-            FilenameToExclude           = $RepgroupFolder.FilenameToExclude
-            PSDSCRunAsCredential        = $RepgroupFolder.PSDSCRunAsCredential
+        xDFSReplicationGroupFolder Integration_Test {
+            GroupName                   = $ReplicationGroupFolder.GroupName
+            FolderName                  = $ReplicationGroupFolder.FolderName
+            Description                 = $ReplicationGroupFolder.Description
+            DirectoryNameToExclude      = $ReplicationGroupFolder.DirectoryNameToExclude
+            FilenameToExclude           = $ReplicationGroupFolder.FilenameToExclude
+            PSDSCRunAsCredential        = $ReplicationGroupFolder.PSDSCRunAsCredential
         }
     }
 }

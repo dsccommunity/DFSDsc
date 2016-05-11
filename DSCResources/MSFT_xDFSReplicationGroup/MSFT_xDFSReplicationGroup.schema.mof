@@ -1,5 +1,5 @@
-[ClassVersion("1.0.0.0"), FriendlyName("xDFSRepGroup")]
-class MSFT_xDFSRepGroup : OMI_BaseResource
+[ClassVersion("1.0.0.0"), FriendlyName("xDFSReplicationGroup")]
+class MSFT_xDFSReplicationGroup : OMI_BaseResource
 {
     [Key, Description("The name of the DFS Replication Group.")] String GroupName;
     [Required, Description("Specifies whether the DSF Replication Group should exist."), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
