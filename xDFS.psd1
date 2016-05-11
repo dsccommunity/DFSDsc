@@ -84,10 +84,10 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        Tags = @( 'DSC','DesiredStateConfiguration','DFS','DistributedFileSystem' )
+        Tags = @( 'DSC','DesiredStateConfiguration','DSCResourceKit','DSCResource','DFS','DistributedFileSystem' )
 
         # A URL to the license for this module.
-        LicenseUri = 'https://github.com/PowerShell/DscResources/blob/master/LICENSE'
+        LicenseUri = 'https://github.com/PowerShell/xDFS/blob/master/LICENSE'
 
         # A URL to the main website for this project.
         ProjectUri = 'https://github.com/PowerShell/xDFS'
