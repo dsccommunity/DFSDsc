@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/wsfx7kvb773907t3?svg=true)](https://ci.appveyor.com/project/PlagueHO/xdfs)
+[![Build status](https://ci.appveyor.com/api/projects/status/5hkcpe757hhe4583?svg=true)](https://ci.appveyor.com/project/PowerShell/xdfs)
 
 # xDFS
 
