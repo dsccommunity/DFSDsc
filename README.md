@@ -643,6 +643,9 @@ Start-DscConfiguration `
 ```
 
 ## Versions
+### Unreleased
+* Removed Pester version from AppVeyor.yml.
+
 ### 3.0.0.0
 * RepGroup renamed to ReplicationGroup in all files.
 * xDFSReplicationGroupConnection- Changed DisableConnection parameter to EnsureEnabled.
