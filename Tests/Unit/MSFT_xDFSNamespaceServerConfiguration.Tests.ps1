@@ -53,18 +53,12 @@ try
         # Create the Mock Objects that will be used for running tests
         $NamespaceServerConfiguration = [PSObject]@{
             LdapTimeoutSec               = 45
-            EnableInsiteReferrals        = $True
-            EnableSiteCostedReferrals    = $True
-            PreferLogonDC                = $True
-            SyncIntervalSec              = 20
+            SyncIntervalSec              = 5000
             UseFQDN                      = $True
         }
         $NamespaceServerConfigurationSplat = [PSObject]@{
             IsSingleInstance             = 'Yes'
             LdapTimeoutSec               = $NamespaceServerConfiguration.LdapTimeoutSec
-            EnableInsiteReferrals        = $NamespaceServerConfiguration.EnableInsiteReferrals
-            EnableSiteCostedReferrals    = $NamespaceServerConfiguration.EnableSiteCostedReferrals
-            PreferLogonDC                = $NamespaceServerConfiguration.PreferLogonDC
             SyncIntervalSec              = $NamespaceServerConfiguration.SyncIntervalSec
             UseFQDN                      = $NamespaceServerConfiguration.UseFQDN
         }
@@ -78,9 +72,6 @@ try
                 It 'should return correct namespace server configuration values' {
                     $Result = Get-TargetResource -IsSingleInstance 'Yes'
                     $Result.LdapTimeoutSec            | Should Be $NamespaceServerConfiguration.LdapTimeoutSec
-                    $Result.EnableInsiteReferrals     | Should Be $NamespaceServerConfiguration.EnableInsiteReferrals
-                    $Result.EnableSiteCostedReferrals | Should Be $NamespaceServerConfiguration.EnableSiteCostedReferrals
-                    $Result.PreferLogonDC             | Should Be $NamespaceServerConfiguration.PreferLogonDC
                     $Result.SyncIntervalSec           | Should Be $NamespaceServerConfiguration.SyncIntervalSec
                     $Result.UseFQDN                   | Should Be $NamespaceServerConfiguration.UseFQDN
                 }
@@ -113,48 +104,6 @@ try
                     {
                         $Splat = $NamespaceServerConfigurationSplat.Clone()
                         $Splat.LdapTimeoutSec = $Splat.LdapTimeoutSec + 1
-                        Set-TargetResource @Splat
-                    } | Should Not Throw
-                }
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
-                    Assert-MockCalled -commandName Set-DFSNServerConfiguration -Exactly 1
-                }
-            }
-
-            Context 'Namespace Server Configuration EnableInsiteReferrals is different' {
-                It 'should not throw error' {
-                    {
-                        $Splat = $NamespaceServerConfigurationSplat.Clone()
-                        $Splat.EnableInsiteReferrals = -not $Splat.EnableInsiteReferrals
-                        Set-TargetResource @Splat
-                    } | Should Not Throw
-                }
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
-                    Assert-MockCalled -commandName Set-DFSNServerConfiguration -Exactly 1
-                }
-            }
-
-            Context 'Namespace Server Configuration EnableSiteCostedReferrals is different' {
-                It 'should not throw error' {
-                    {
-                        $Splat = $NamespaceServerConfigurationSplat.Clone()
-                        $Splat.EnableSiteCostedReferrals = -not $Splat.EnableSiteCostedReferrals
-                        Set-TargetResource @Splat
-                    } | Should Not Throw
-                }
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
-                    Assert-MockCalled -commandName Set-DFSNServerConfiguration -Exactly 1
-                }
-            }
-
-            Context 'Namespace Server Configuration PreferLogonDC is different' {
-                It 'should not throw error' {
-                    {
-                        $Splat = $NamespaceServerConfigurationSplat.Clone()
-                        $Splat.PreferLogonDC = -not $Splat.PreferLogonDC
                         Set-TargetResource @Splat
                     } | Should Not Throw
                 }
@@ -211,39 +160,6 @@ try
                 It 'should return false' {
                     $Splat = $NamespaceServerConfigurationSplat.Clone()
                     $Splat.LdapTimeoutSec = $Splat.LdapTimeoutSec + 1
-                    Test-TargetResource @Splat | Should Be $False
-                }
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
-                }
-            }
-
-            Context 'Namespace Server Configuration EnableInsiteReferrals is different' {
-                It 'should return false' {
-                    $Splat = $NamespaceServerConfigurationSplat.Clone()
-                    $Splat.EnableInsiteReferrals = -not $Splat.EnableInsiteReferrals
-                    Test-TargetResource @Splat | Should Be $False
-                }
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
-                }
-            }
-
-            Context 'Namespace Server Configuration EnableSiteCostedReferrals is different' {
-                It 'should return false' {
-                    $Splat = $NamespaceServerConfigurationSplat.Clone()
-                    $Splat.EnableSiteCostedReferrals = -not $Splat.EnableSiteCostedReferrals
-                    Test-TargetResource @Splat | Should Be $False
-                }
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
-                }
-            }
-
-            Context 'Namespace Server Configuration PreferLogonDC is different' {
-                It 'should return false' {
-                    $Splat = $NamespaceServerConfigurationSplat.Clone()
-                    $Splat.PreferLogonDC = -not $Splat.PreferLogonDC
                     Test-TargetResource @Splat | Should Be $False
                 }
                 It 'should call expected Mocks' {

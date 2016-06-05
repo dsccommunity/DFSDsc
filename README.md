@@ -380,9 +380,6 @@ This resource is used to configure DFS Namespace server settings. This is a sing
 #### Parameters
 * **IsSingleInstance**: Specifies if the resource is a single instance, the value must be 'Yes'. Required.
 * **LdapTimeoutSec**: Specifies a time-out value, in seconds, for Lightweight Directory Access Protocol (LDAP) requests for the DFS namespace server. Uint32. Optional.
-* **EnableInsiteReferrals**: Indicates whether this server provides only in-site referrals. Boolean. Optional.
-* **EnableSiteCostedReferrals**: Indicates whether the server can use cost-based selection. Boolean. Optional.
-* **PreferLogonDC**: Indicates whether to prefer the logon domain controller in referrals. Boolean. Optional.
 * **SyncIntervalSec**: This interval controls how often domain-based DFS namespace root servers and domain controllers connect to the PDC emulator to get updates of DFS namespace metadata. Uint32. Optional.
 * **UseFQDN**: Indicates whether a DFS namespace server uses FQDNs in referrals. Boolean. Optional.
 

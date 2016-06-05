@@ -21,9 +21,6 @@ data ParameterList
 {
     @(
         @{ Name = 'LdapTimeoutSec';            Type = 'Uint32'  },
-        @{ Name = 'EnableInsiteReferrals';     Type = 'Boolean' },
-        @{ Name = 'EnableSiteCostedReferrals'; Type = 'Boolean' },
-        @{ Name = 'PreferLogonDC';             Type = 'Boolean' },
         @{ Name = 'SyncIntervalSec';           Type = 'String'  },
         @{ Name = 'UseFQDN';                   Type = 'Uint32'; Restart = $True }
     )
@@ -79,15 +76,6 @@ function Set-TargetResource
 
         [Uint32]
         $LdapTimeoutSec,
-
-        [Boolean]
-        $EnableInsiteReferrals,
-
-        [Boolean]
-        $EnableSiteCostedReferrals,
-
-        [Boolean]
-        $PreferLogonDC,
 
         [Uint32]
         $SyncIntervalSec,
@@ -176,15 +164,6 @@ function Test-TargetResource
 
         [Uint32]
         $LdapTimeoutSec,
-
-        [Boolean]
-        $EnableInsiteReferrals,
-
-        [Boolean]
-        $EnableSiteCostedReferrals,
-
-        [Boolean]
-        $PreferLogonDC,
 
         [Uint32]
         $SyncIntervalSec,

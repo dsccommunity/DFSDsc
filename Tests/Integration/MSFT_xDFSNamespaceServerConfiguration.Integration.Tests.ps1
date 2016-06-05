@@ -47,6 +47,10 @@ try
         Break
     }
 
+    # Backup the existing settings
+    $ServerConfigurationBackup = Get-DFSNServerConfiguration `
+        -ComputerName LocalHost
+
     #region Integration Tests
     $ConfigFile = Join-Path -Path $PSScriptRoot -ChildPath "$($Global:DSCResourceName).config.ps1"
     . $ConfigFile
@@ -69,14 +73,16 @@ try
             # Get the Rule details
             $NamespaceServerConfigurationNew = Get-DfsnServerConfiguration -ComputerName LocalHost
             $NamespaceServerConfigurationNew.LdapTimeoutSec            = $NamespaceServerConfiguration.LdapTimeoutSec
-            $NamespaceServerConfigurationNew.EnableInsiteReferrals     = $NamespaceServerConfiguration.EnableInsiteReferrals
-            $NamespaceServerConfigurationNew.EnableSiteCostedReferrals = $NamespaceServerConfiguration.EnableSiteCostedReferrals
-            $NamespaceServerConfigurationNew.PreferLogonDC             = $NamespaceServerConfiguration.PreferLogonDC
             $NamespaceServerConfigurationNew.SyncIntervalSec           = $NamespaceServerConfiguration.SyncIntervalSec
             $NamespaceServerConfigurationNew.UseFQDN                   = $NamespaceServerConfiguration.UseFQDN
         }
 
         # Clean up
+        Set-DFSNServerConfiguration `
+            -ComputerName LocalHost `
+            -LdapTimeoutSec $ServerConfigurationBackup.LdapTimeoutSec `
+            -SyncIntervalSec $ServerConfigurationBackup.SyncIntervalSec `
+            -UseFQDN $ServerConfigurationBackup.UseFQDN
     }
     #endregion
 }
