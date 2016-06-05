@@ -381,7 +381,7 @@ This resource is used to configure DFS Namespace server settings. This is a sing
 * **IsSingleInstance**: Specifies if the resource is a single instance, the value must be 'Yes'. Required.
 * **LdapTimeoutSec**: Specifies a time-out value, in seconds, for Lightweight Directory Access Protocol (LDAP) requests for the DFS namespace server. Uint32. Optional.
 * **SyncIntervalSec**: This interval controls how often domain-based DFS namespace root servers and domain controllers connect to the PDC emulator to get updates of DFS namespace metadata. Uint32. Optional.
-* **UseFQDN**: Indicates whether a DFS namespace server uses FQDNs in referrals. Boolean. Optional.
+* **UseFQDN**: Indicates whether a DFS namespace server uses FQDNs in referrals. Boolean.  Optional.
 
 ### Examples
 Create an AD Domain V2 based DFS namespace called departments in the domain contoso.com with a single root target on the computer fs_1. Two subfolders are defined with targets that direct to shares on servers fs_3 and fs_8.
