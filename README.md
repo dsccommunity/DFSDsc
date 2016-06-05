@@ -737,7 +737,7 @@ Start-DscConfiguration `
 ## Versions
 ### Unreleased
 * MSFT_xDFSNamespaceServerConfiguration- resource added.
-* Corrected names of DFS Namespace sample files to indicate that they are not just setting Namespace roots.
+* Corrected names of DFS Namespace sample files to indicate that they are setting Namespace roots and folders.
 * Removed Pester version from AppVeyor.yml.
 
 ### 3.0.0.0
