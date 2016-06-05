@@ -199,7 +199,7 @@ try
 
             Context 'Namespace Server Configuration all parameters are the same' {
                 It 'should return true' {
-                    $Splat = $Namespace.Clone()
+                    $Splat = $NamespaceServerConfigurationSplat.Clone()
                     Test-TargetResource @Splat | Should Be $True
                 }
                 It 'should call expected Mocks' {
@@ -209,7 +209,7 @@ try
 
             Context 'Namespace Server Configuration LdapTimeoutSec is different' {
                 It 'should return false' {
-                    $Splat = $Namespace.Clone()
+                    $Splat = $NamespaceServerConfigurationSplat.Clone()
                     $Splat.LdapTimeoutSec = $Splat.LdapTimeoutSec + 1
                     Test-TargetResource @Splat | Should Be $False
                 }
@@ -220,7 +220,7 @@ try
 
             Context 'Namespace Server Configuration EnableInsiteReferrals is different' {
                 It 'should return false' {
-                    $Splat = $Namespace.Clone()
+                    $Splat = $NamespaceServerConfigurationSplat.Clone()
                     $Splat.EnableInsiteReferrals = -not $Splat.EnableInsiteReferrals
                     Test-TargetResource @Splat | Should Be $False
                 }
@@ -231,7 +231,7 @@ try
 
             Context 'Namespace Server Configuration EnableSiteCostedReferrals is different' {
                 It 'should return false' {
-                    $Splat = $Namespace.Clone()
+                    $Splat = $NamespaceServerConfigurationSplat.Clone()
                     $Splat.EnableSiteCostedReferrals = -not $Splat.EnableSiteCostedReferrals
                     Test-TargetResource @Splat | Should Be $False
                 }
@@ -242,7 +242,7 @@ try
 
             Context 'Namespace Server Configuration PreferLogonDC is different' {
                 It 'should return false' {
-                    $Splat = $Namespace.Clone()
+                    $Splat = $NamespaceServerConfigurationSplat.Clone()
                     $Splat.PreferLogonDC = -not $Splat.PreferLogonDC
                     Test-TargetResource @Splat | Should Be $False
                 }
@@ -253,7 +253,7 @@ try
 
             Context 'Namespace Server Configuration SyncIntervalSec is different' {
                 It 'should return false' {
-                    $Splat = $Namespace.Clone()
+                    $Splat = $NamespaceServerConfigurationSplat.Clone()
                     $Splat.SyncIntervalSec = $Splat.SyncIntervalSec + 1
                     Test-TargetResource @Splat | Should Be $False
                 }
@@ -264,7 +264,7 @@ try
 
             Context 'Namespace Server Configuration UseFQDN is different' {
                 It 'should return false' {
-                    $Splat = $Namespace.Clone()
+                    $Splat = $NamespaceServerConfigurationSplat.Clone()
                     $Splat.UseFQDN = -not $Splat.UseFQDN
                     Test-TargetResource @Splat | Should Be $False
                 }
