@@ -195,7 +195,7 @@ try
 
         Describe "$($Global:DSCResourceName)\Test-TargetResource" {
 
-            Mock Get-DFSNServerConfiguration
+            Mock Get-DFSNServerConfiguration -MockWith { $NamespaceServerConfiguration }
 
             Context 'Namespace Server Configuration all parameters are the same' {
                 It 'should return true' {
