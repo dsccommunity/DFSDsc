@@ -25,7 +25,7 @@ data ParameterList
         @{ Name = 'EnableSiteCostedReferrals'; Type = 'Boolean' },
         @{ Name = 'PreferLogonDC';             Type = 'Boolean' },
         @{ Name = 'SyncIntervalSec';           Type = 'String'  },
-        @{ Name = 'UseFQDN';                   Type = 'Uint32'; Restart = $True  }
+        @{ Name = 'UseFQDN';                   Type = 'Uint32'; Restart = $True }
     )
 }
 
@@ -118,7 +118,7 @@ function Set-TargetResource
         $ParameterSource = $ServerConfiguration.$($parameter.name)
         $ParameterNew = (Invoke-Expression -Command "`$$($parameter.name)")
         if ($PSBoundParameters.ContainsKey($parameter.Name) `
-            -and ($ParameterSource -ne $ParameterNew)) {
+            -and ($ParameterSource -ne $ParameterNew))
         {
             $ChangeParameters += @{
                 $($parameter.name) = $ParameterNew
