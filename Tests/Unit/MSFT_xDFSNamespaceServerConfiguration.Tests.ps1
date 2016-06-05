@@ -61,7 +61,7 @@ try
         }
         $NamespaceServerConfigurationSplat = [PSObject]@{
             IsSingleInstance             = 'Yes'
-            LdapTimeoutSec               = $NamespaceServerConfiguration.EnableInsiteReferrals
+            LdapTimeoutSec               = $NamespaceServerConfiguration.LdapTimeoutSec
             EnableInsiteReferrals        = $NamespaceServerConfiguration.EnableInsiteReferrals
             EnableSiteCostedReferrals    = $NamespaceServerConfiguration.EnableSiteCostedReferrals
             PreferLogonDC                = $NamespaceServerConfiguration.PreferLogonDC
