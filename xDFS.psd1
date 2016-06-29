@@ -4,7 +4,7 @@
 # RootModule = ''
 
 # Version number of this module.
-ModuleVersion = '3.0.0.0'
+ModuleVersion = '3.1.0.0'
 
 # ID used to uniquely identify this module
 GUID = '3bcb9c66-ea0b-4675-bd46-c390a382c388'
@@ -96,7 +96,11 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        # ReleaseNotes = ''
+        ReleaseNotes = '* MSFT_xDFSNamespaceServerConfiguration- resource added.
+* Corrected names of DFS Namespace sample files to indicate that they are setting Namespace roots and folders.
+* Removed Pester version from AppVeyor.yml.
+
+'
 
         # External dependent modules of this module
         # ExternalModuleDependencies = ''
@@ -112,3 +116,4 @@ PrivateData = @{
 # DefaultCommandPrefix = ''
 
 }
+
