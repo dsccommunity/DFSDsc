@@ -1,4 +1,4 @@
-Configuration DFSNamespace_Standalone_Public
+Configuration DFSNamespace_Standalone
 {
     param
     (
@@ -12,10 +12,10 @@ Configuration DFSNamespace_Standalone_Public
     {
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
-        WindowsFeature RSATDFSMgmtConInstall 
-        { 
-            Ensure = "Present" 
-            Name = "RSAT-DFS-Mgmt-Con" 
+        WindowsFeature RSATDFSMgmtConInstall
+        {
+            Ensure = "Present"
+            Name = "RSAT-DFS-Mgmt-Con"
         }
 
         WindowsFeature DFS
@@ -56,7 +56,7 @@ $ConfigData = @{
         }
     )
 }
-DFSNamespace_Standalone_Public `
+DFSNamespace_Standalone `
     -configurationData $ConfigData `
     -Credential (Get-Credential -Message "Domain Credentials")
 Start-DscConfiguration `
@@ -64,5 +64,5 @@ Start-DscConfiguration `
     -Force `
     -Verbose `
     -ComputerName $ComputerName `
-    -Path $PSScriptRoot\DFSNamespace_Standalone_Public `
+    -Path $PSScriptRoot\DFSNamespace_Standalone `
     -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
