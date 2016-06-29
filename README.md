@@ -158,10 +158,10 @@ configuration Sample_xDFSReplicationGroup
     {
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
-        WindowsFeature RSATDFSMgmtConInstall 
-        { 
-            Ensure = "Present" 
-            Name = "RSAT-DFS-Mgmt-Con" 
+        WindowsFeature RSATDFSMgmtConInstall
+        {
+            Ensure = "Present"
+            Name = "RSAT-DFS-Mgmt-Con"
         }
 
         # Configure the Replication Group
@@ -377,6 +377,15 @@ This resource is used to create, edit or remove folders from DFS namespaces.  Wh
 * **ReferralPriorityClass**: Specifies the target priority class for a DFS namespace folder. { Global-High | SiteCost-High | SiteCost-Normal | SiteCost-Low | Global-Low }. Optional.
 * **ReferralPriorityRank**: Specifies the priority rank, as an integer, for a target in the DFS namespace. Uint32. Optional
 
+### xDFSNamespaceServerConfiguration
+This resource is used to configure DFS Namespace server settings. This is a single instance resource that can only be used once in a DSC Configuration.
+
+#### Parameters
+* **IsSingleInstance**: Specifies if the resource is a single instance, the value must be 'Yes'. Required.
+* **LdapTimeoutSec**: Specifies a time-out value, in seconds, for Lightweight Directory Access Protocol (LDAP) requests for the DFS namespace server. Uint32. Optional.
+* **SyncIntervalSec**: This interval controls how often domain-based DFS namespace root servers and domain controllers connect to the PDC emulator to get updates of DFS namespace metadata. Uint32. Optional.
+* **UseFQDN**: Indicates whether a DFS namespace server uses FQDNs in referrals. Boolean.  Optional.
+
 ### Examples
 Create an AD Domain V2 based DFS namespace called departments in the domain contoso.com with a single root target on the computer fs_1. Two subfolders are defined with targets that direct to shares on servers fs_3 and fs_8.
 ```powershell
@@ -409,7 +418,7 @@ Configuration DFSNamespace_Domain_SingleTarget
        # Configure the namespace
         xDFSNamespaceRoot DFSNamespaceRoot_Domain_Departments
         {
-            Path                 = '\\contoso.com\departments' 
+            Path                 = '\\contoso.com\departments'
             TargetPath           = '\\fs_1\departments'
             Ensure               = 'present'
             Type                 = 'DomainV2'
@@ -421,7 +430,7 @@ Configuration DFSNamespace_Domain_SingleTarget
        # Configure the namespace folders
         xDFSNamespaceFolder DFSNamespaceFolder_Domain_Finance
         {
-            Path                 = '\\contoso.com\departments\finance' 
+            Path                 = '\\contoso.com\departments\finance'
             TargetPath           = '\\fs_3\Finance'
             Ensure               = 'present'
             Description          = 'AD Domain based DFS namespace folder for storing finance files'
@@ -431,7 +440,7 @@ Configuration DFSNamespace_Domain_SingleTarget
 
         xDFSNamespaceFolder DFSNamespaceFolder_Domain_Management
         {
-            Path                 = '\\contoso.com\departments\management' 
+            Path                 = '\\contoso.com\departments\management'
             TargetPath           = '\\fs_8\Management'
             Ensure               = 'present'
             Description          = 'AD Domain based DFS namespace folder for storing management files'
@@ -575,7 +584,7 @@ Start-DscConfiguration `
 
 Create a standalone DFS namespace called public on the server fileserver1. A namespace folder called Brochures is also created in this namespace that targets the \\fileserver2\brochures share.
 ```powershell
-Configuration DFSNamespace_Standalone_Public
+Configuration DFSNamespace_Standalone
 {
     param
     (
@@ -590,7 +599,7 @@ Configuration DFSNamespace_Standalone_Public
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
         WindowsFeature RSATDFSMgmtConInstall
-        { 
+        {
             Ensure = "Present"
             Name = "RSAT-DFS-Mgmt-Con"
         }
@@ -633,7 +642,7 @@ $ConfigData = @{
         }
     )
 }
-DFSNamespace_Standalone_Public `
+DFSNamespace_Standalone `
     -configurationData $ConfigData `
     -Credential (Get-Credential -Message "Domain Credentials")
 Start-DscConfiguration `
@@ -641,12 +650,94 @@ Start-DscConfiguration `
     -Force `
     -Verbose `
     -ComputerName $ComputerName `
-    -Path $PSScriptRoot\DFSNamespace_Standalone_Public `
+    -Path $PSScriptRoot\DFSNamespace_Standalone `
+    -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
+```
+
+Create a standalone DFS namespace using FQDN called public on the server fileserver1.contoso.com. A namespace folder called Brochures is also created in this namespace that targets the \\fileserver2.contoso.com\brochures share.
+```powershell
+Configuration DFSNamespace_Standalone_FQDN
+{
+    param
+    (
+        [Parameter(Mandatory)]
+        [pscredential] $Credential
+    )
+
+    Import-DscResource -ModuleName 'xDFS'
+
+    Node $NodeName
+    {
+        # Install the Prerequisite features first
+        # Requires Windows Server 2012 R2 Full install
+        WindowsFeature RSATDFSMgmtConInstall
+        {
+            Ensure = "Present"
+            Name = "RSAT-DFS-Mgmt-Con"
+        }
+
+        WindowsFeature DFS
+        {
+            Name = 'FS-DFS-Namespace'
+            Ensure = 'Present'
+        }
+
+       # Configure the namespace server
+        xDFSNamespaceServerConfiguration DFSNamespaceConfig
+        {
+            IsSingleInstance          = 'Yes'
+            UseFQDN                   = $true
+            PsDscRunAsCredential      = $Credential
+        } # End of xDFSNamespaceServerConfiguration Resource
+
+       # Configure the namespace
+        xDFSNamespaceRoot DFSNamespaceRoot_Standalone_Public
+        {
+            Path                 = '\\fileserver1.contoso.com\public'
+            TargetPath           = '\\fileserver1.contoso.com\public'
+            Ensure               = 'present'
+            Type                 = 'Standalone'
+            Description          = 'Standalone DFS namespace for storing public files'
+            PsDscRunAsCredential = $Credential
+        } # End of DFSNamespaceRoot Resource
+
+       # Configure the namespace folder
+        xDFSNamespaceFolder DFSNamespaceFolder_Standalone_PublicBrochures
+        {
+            Path                 = '\\fileserver1.contoso.com\public\brochures'
+            TargetPath           = '\\fileserver2.contoso.com\brochures'
+            Ensure               = 'present'
+            Description          = 'Standalone DFS namespace for storing public brochure files'
+            PsDscRunAsCredential = $Credential
+        } # End of DFSNamespaceFolder Resource
+    }
+}
+$ComputerName = Read-Host -Prompt 'Computer Name'
+$ConfigData = @{
+    AllNodes = @(
+        @{
+            Nodename        = $ComputerName
+            CertificateFile = "C:\publicKeys\targetNode.cer"
+            Thumbprint      = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
+        }
+    )
+}
+DFSNamespace_Standalone_FQDN `
+    -configurationData $ConfigData `
+    -Credential (Get-Credential -Message "Domain Credentials")
+Start-DscConfiguration `
+    -Wait `
+    -Force `
+    -Verbose `
+    -ComputerName $ComputerName `
+    -Path $PSScriptRoot\DFSNamespace_Standalone_FQDN `
     -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
 ```
 
 ## Versions
 ### Unreleased
+* MSFT_xDFSNamespaceServerConfiguration- resource added.
+* Corrected names of DFS Namespace sample files to indicate that they are setting Namespace roots and folders.
 * Removed Pester version from AppVeyor.yml.
 
 ### 3.0.0.0
@@ -663,8 +754,8 @@ Start-DscConfiguration `
 * MSFT_xDFSRepGroup- Fixed issue when using FQDN member names.
 * MSFT_xDFSRepGroupMembership- Fixed issue with Get-TargetResource when using FQDN ComputerName.
 * MSFT_xDFSRepGroupConnection- Fixed issue with Get-TargetResource when using FQDN SourceComputerName or FQDN DestinationComputerName.
-* MSFT_xDFSNamespaceRoot- Added write support to TimeToLiveSec parameter. 
-* MSFT_xDFSNamespaceFolder- Added write support to TimeToLiveSec parameter. 
+* MSFT_xDFSNamespaceRoot- Added write support to TimeToLiveSec parameter.
+* MSFT_xDFSNamespaceFolder- Added write support to TimeToLiveSec parameter.
 
 ### 2.0.0.0
 * MSFT_xDFSNamespaceRoot- resource added.
