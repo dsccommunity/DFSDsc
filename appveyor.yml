@@ -23,6 +23,7 @@ install:
             $installed = ($LASTEXITCODE -eq 0)
             $retries++
         }
+        Install-WindowsFeature FS-DFS-Namespace,FS-DFS-Replication,RSAT-DFS-Mgmt-Con
 #---------------------------------#
 #      build configuration        #
 #---------------------------------#
