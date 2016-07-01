@@ -736,6 +736,7 @@ Start-DscConfiguration `
 
 ## Versions
 ### Unreleased
+* Converted AppVeyor.yml to pull Pester from PSGallery instead of Chocolatey.
 
 ### 3.1.0.0
 * MSFT_xDFSNamespaceServerConfiguration- resource added.
