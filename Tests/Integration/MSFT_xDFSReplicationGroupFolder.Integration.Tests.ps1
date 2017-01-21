@@ -28,11 +28,11 @@ this file. The content should be a customized version of the following:
 
 If the above are available and configured these integration tests will run.
 #>
-$Global:DSCModuleName   = 'xDFS'
-$Global:DSCResourceName = 'MSFT_xDFSReplicationGroupFolder'
+$script:DSCModuleName   = 'xDFS'
+$script:DSCResourceName = 'MSFT_xDFSReplicationGroupFolder'
 
 # Test to see if the config file is available.
-$ConfigFile = "$([System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path))\$($Global:DSCResourceName).config.json"
+$ConfigFile = "$([System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path))\$($script:DSCResourceName).config.json"
 if (! (Test-Path -Path $ConfigFile))
 {
     return
@@ -49,8 +49,8 @@ if ( (-not (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath 'DSCResource
 
 Import-Module (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1') -Force
 $TestEnvironment = Initialize-TestEnvironment `
-    -DSCModuleName $Global:DSCModuleName `
-    -DSCResourceName $Global:DSCResourceName `
+    -DSCModuleName $script:DSCModuleName `
+    -DSCResourceName $script:DSCResourceName `
     -TestType Integration
 #endregion
 
@@ -58,10 +58,10 @@ $TestEnvironment = Initialize-TestEnvironment `
 try
 {
     #region Integration Tests
-    $ConfigFile = Join-Path -Path $PSScriptRoot -ChildPath "$($Global:DSCResourceName).config.ps1"
+    $ConfigFile = Join-Path -Path $PSScriptRoot -ChildPath "$($script:DSCResourceName).config.ps1"
     . $ConfigFile
 
-    Describe "$($Global:DSCResourceName)_Integration" {
+    Describe "$($script:DSCResourceName)_Integration" {
         # Create the Replication group to work with
         New-DFSReplicationGroup `
             -GroupName $ReplicationGroupFolder.GroupName

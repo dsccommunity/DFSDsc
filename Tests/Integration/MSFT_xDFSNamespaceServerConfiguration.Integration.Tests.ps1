@@ -1,5 +1,5 @@
-$Global:DSCModuleName   = 'xDFS'
-$Global:DSCResourceName = 'MSFT_xDFSNamespaceServerConfiguration'
+$script:DSCModuleName   = 'xDFS'
+$script:DSCResourceName = 'MSFT_xDFSNamespaceServerConfiguration'
 
 #region HEADER
 # Integration Test Template Version: 1.1.0
@@ -12,8 +12,8 @@ if ( (-not (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath 'DSCResource
 
 Import-Module (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1') -Force
 $TestEnvironment = Initialize-TestEnvironment `
-    -DSCModuleName $Global:DSCModuleName `
-    -DSCResourceName $Global:DSCResourceName `
+    -DSCModuleName $script:DSCModuleName `
+    -DSCResourceName $script:DSCResourceName `
     -TestType Integration
 #endregion
 
@@ -52,10 +52,10 @@ try
         -ComputerName LocalHost
 
     #region Integration Tests
-    $ConfigFile = Join-Path -Path $PSScriptRoot -ChildPath "$($Global:DSCResourceName).config.ps1"
+    $ConfigFile = Join-Path -Path $PSScriptRoot -ChildPath "$($script:DSCResourceName).config.ps1"
     . $ConfigFile
 
-    Describe "$($Global:DSCResourceName)_Integration" {
+    Describe "$($script:DSCResourceName)_Integration" {
         #region DEFAULT TESTS
         It 'Should compile without throwing' {
             {

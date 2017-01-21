@@ -1,5 +1,5 @@
-$Global:DSCModuleName   = 'xDFS'
-$Global:DSCResourceName = 'MSFT_xDFSNamespaceFolder'
+$script:DSCModuleName   = 'xDFS'
+$script:DSCResourceName = 'MSFT_xDFSNamespaceFolder'
 
 #region HEADER
 # Integration Test Template Version: 1.1.0
@@ -12,8 +12,8 @@ if ( (-not (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath 'DSCResource
 
 Import-Module (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1') -Force
 $TestEnvironment = Initialize-TestEnvironment `
-    -DSCModuleName $Global:DSCModuleName `
-    -DSCResourceName $Global:DSCResourceName `
+    -DSCModuleName $script:DSCModuleName `
+    -DSCResourceName $script:DSCResourceName `
     -TestType Integration
 #endregion
 
@@ -48,13 +48,13 @@ try
     }
 
     #region Integration Tests
-    $ConfigFile = Join-Path -Path $PSScriptRoot -ChildPath "$($Global:DSCResourceName).config.ps1"
+    $ConfigFile = Join-Path -Path $PSScriptRoot -ChildPath "$($script:DSCResourceName).config.ps1"
     . $ConfigFile
 
-    Describe "$($Global:DSCResourceName)_Integration" {
+    Describe "$($script:DSCResourceName)_Integration" {
         # Create a SMB share for the Namespace
         [String] $RandomFileName = [System.IO.Path]::GetRandomFileName()
-        [String] $ShareFolderRoot = Join-Path -Path $env:Temp -ChildPath "$($Global:DSCResourceName)_$RandomFileName"
+        [String] $ShareFolderRoot = Join-Path -Path $env:Temp -ChildPath "$($script:DSCResourceName)_$RandomFileName"
         New-Item `
             -Path $ShareFolderRoot `
             -Type Directory
@@ -63,7 +63,7 @@ try
             -Path $ShareFolderRoot `
             -FullAccess 'Everyone'
         [String] $RandomFileName = [System.IO.Path]::GetRandomFileName()
-        [String] $ShareFolderFolder = Join-Path -Path $env:Temp -ChildPath "$($Global:DSCResourceName)_$RandomFileName"
+        [String] $ShareFolderFolder = Join-Path -Path $env:Temp -ChildPath "$($script:DSCResourceName)_$RandomFileName"
         New-Item `
             -Path $ShareFolderFolder `
             -Type Directory
