@@ -85,7 +85,7 @@ try
             $NamespaceRootNew.State                         | Should Be 'Online'
             $NamespaceRootNew.Description                   | Should Be $NamespaceRoot.Description
             $NamespaceRootNew.NamespacePath                 | Should Be $NamespaceRoot.Path
-            $NamespaceRootNew.Flags                         | Should Be @('Site Costing','Insite Referrals','AccessBased Enumeration','Target Failback')
+            $NamespaceRootNew.Flags                         | Should Be @('Target Failback','Site Costing','Insite Referrals','AccessBased Enumeration')
             $NamespaceRootTargetNew = Get-DfsnRootTarget -Path $NamespaceRoot.Path -TargetPath $NamespaceRoot.TargetPath
             $NamespaceRootTargetNew.Path                    | Should Be $NamespaceRoot.Path
             $NamespaceRootTargetNew.NamespacePath           | Should Be $NamespaceRoot.Path

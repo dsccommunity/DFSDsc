@@ -97,7 +97,7 @@ try
             $NamespaceFolderNew.State                         | Should Be 'Online'
             $NamespaceFolderNew.Description                   | Should Be $NamespaceFolder.Description
             $NamespaceFolderNew.NamespacePath                 | Should Be $NamespaceFolder.Path
-            $NamespaceFolderNew.Flags                         | Should Be @('Insite Referrals','Target Failback')
+            $NamespaceFolderNew.Flags                         | Should Be @('Target Failback','Insite Referrals')
             $NamespaceFolderTargetNew = Get-DfsnFolderTarget -Path $NamespaceFolder.Path -TargetPath $NamespaceFolder.TargetPath
             $NamespaceFolderTargetNew.Path                    | Should Be $NamespaceFolder.Path
             $NamespaceFolderTargetNew.NamespacePath           | Should Be $NamespaceFolder.Path
