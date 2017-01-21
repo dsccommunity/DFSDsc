@@ -14,7 +14,7 @@ Import-Module (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHel
 $TestEnvironment = Initialize-TestEnvironment `
     -DSCModuleName $Global:DSCModuleName `
     -DSCResourceName $Global:DSCResourceName `
-    -TestType Integration 
+    -TestType Integration
 #endregion
 
 # Using try/finally to always cleanup even if something awful happens.
@@ -40,13 +40,13 @@ try
             It 'Should have the DFS Namespace Feature Installed' {
                 $Installed | Should Be $true
             }
-        }   
+        }
     }
     if ($Installed -eq $false)
     {
         Break
     }
-   
+
     #region Integration Tests
     $ConfigFile = Join-Path -Path $PSScriptRoot -ChildPath "$($Global:DSCResourceName).config.ps1"
     . $ConfigFile
@@ -54,7 +54,7 @@ try
     Describe "$($Global:DSCResourceName)_Integration" {
         # Create a SMB share for the Namespace
         [String] $RandomFileName = [System.IO.Path]::GetRandomFileName()
-        [String] $ShareFolderRoot = Join-Path -Path $env:Temp -ChildPath "$($Global:DSCResourceName)_$RandomFileName" 
+        [String] $ShareFolderRoot = Join-Path -Path $env:Temp -ChildPath "$($Global:DSCResourceName)_$RandomFileName"
         New-Item `
             -Path $ShareFolderRoot `
             -Type Directory
@@ -62,12 +62,12 @@ try
             -Name $NamespaceRootName `
             -Path $ShareFolderRoot `
             -FullAccess 'Everyone'
-            
+
         #region DEFAULT TESTS
         It 'Should compile without throwing' {
             {
-                Invoke-Expression -Command "$($Global:DSCResourceName)_Config -OutputPath `$TestEnvironment.WorkingFolder"
-                Start-DscConfiguration -Path $TestEnvironment.WorkingFolder -ComputerName localhost -Wait -Verbose -Force
+                & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive
+                Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
             } | Should not throw
         }
 
@@ -93,7 +93,7 @@ try
             $NamespaceRootTargetNew.ReferralPriorityClass   | Should Be $NamespaceRoot.ReferralPriorityClass
             $NamespaceRootTargetNew.ReferralPriorityRank    | Should Be $NamespaceRoot.ReferralPriorityRank
         }
-        
+
         # Clean up
         Remove-DFSNRoot `
             -Path $NamespaceRoot.Path `

@@ -103,8 +103,8 @@ function Set-TargetResource
     $Restart = $False
     foreach ($parameter in $ParameterList)
     {
-        $ParameterSource = $ServerConfiguration.$($parameter.name)
-        $ParameterNew = (Invoke-Expression -Command "`$$($parameter.name)")
+        $parameterSource = $ServerConfiguration.$($parameter.name)
+        $parameterNew = (Get-Variable -Name ($parameter.name)).Value
         if ($PSBoundParameters.ContainsKey($parameter.Name) `
             -and ($ParameterSource -ne $ParameterNew))
         {
@@ -192,8 +192,8 @@ function Test-TargetResource
     # Check each parameter
     foreach ($parameter in $ParameterList)
     {
-        $ParameterSource = $ServerConfiguration.$($parameter.name)
-        $ParameterNew = (Invoke-Expression -Command "`$$($parameter.name)")
+        $parameterSource = $ServerConfiguration.$($parameter.name)
+        $parameterNew = (Get-Variable -Name ($parameter.name)).Value
         if ($PSBoundParameters.ContainsKey($parameter.Name) `
             -and ($ParameterSource -ne $ParameterNew)) {
             Write-Verbose -Message ( @(

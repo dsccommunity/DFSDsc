@@ -13,7 +13,7 @@ NamespaceRootTargetUpdateParameterMessage=Setting {0} DFS Namespace Root "{1}" T
 NamespaceRootCreatedMessage={0} DFS Namespace Root "{1}" Target "{2}" created.
 NamespaceRootTargetRemovedMessage={0} DFS Namespace Root "{1}" Target "{2}" removed.
 TestingNamespaceRootMessage=Testing {0} DFS Namespace Root "{1}" Target "{2}".
-NamespaceRootTypeConversionError=Error- {0} DFS Namespace can not be added to a {3} DFS Namespace. 
+NamespaceRootTypeConversionError=Error- {0} DFS Namespace can not be added to a {3} DFS Namespace.
 NamespaceRootParameterNeedsUpdateMessage={0} DFS Namespace Root "{1}" {3} is different. Change required.
 NamespaceRootTargetParameterNeedsUpdateMessage={0} DFS Namespace Root "{1}" Target "{2}" {3} is different. Change required.
 NamespaceRootDoesNotExistButShouldMessage={0} DFS Namespace Root "{1}" does not exist but should. Change required.
@@ -24,7 +24,7 @@ NamespaceRootTargetDoesNotExistAndShouldNotMessage={0} DFS Namespace Root "{1}" 
 '@
 }
 
-function Get-TargetResource 
+function Get-TargetResource
 {
     [CmdletBinding()]
     [OutputType([Hashtable])]
@@ -42,12 +42,12 @@ function Get-TargetResource
         [ValidateSet('Present','Absent')]
         [String]
         $Ensure,
-        
+
         [parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]
         [String]
         $Type
-    )       
+    )
 
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
@@ -62,14 +62,14 @@ function Get-TargetResource
         Ensure = 'Absent'
         Type = $Type
     }
-    
+
     # Remove the Ensue parmeter from the bound parameters
     $null = $PSBoundParameters.Remove('Ensure')
-        
-    # Lookup the existing Namespace root    
+
+    # Lookup the existing Namespace root
     $Root = Get-Root `
         -Path $Path
-    
+
     if ($Root)
     {
         # The namespace exists
@@ -85,7 +85,7 @@ function Get-TargetResource
         Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.NamespaceRootDoesNotExistMessage) `
-                    -f $Type,$Path,$TargetPath 
+                    -f $Type,$Path,$TargetPath
             ) -join '' )
         return $ReturnValue
     }
@@ -100,8 +100,8 @@ function Get-TargetResource
         EnableRootScalability        = ($Root.Flags -contains 'Root Scalability')
         EnableTargetFailback         = ($Root.Flags -contains 'Target Failback')
     }
-    
-    # DFS Root exists but does target exist?               
+
+    # DFS Root exists but does target exist?
     $Target = Get-RootTarget `
         -Path $Path `
         -TargetPath $TargetPath
@@ -114,7 +114,7 @@ function Get-TargetResource
             ReferralPriorityClass        = $Target.ReferralPriorityClass
             ReferralPriorityRank         = $Target.ReferralPriorityRank
         }
-        
+
         Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.NamespaceRootTargetExistsMessage) `
@@ -122,15 +122,15 @@ function Get-TargetResource
             ) -join '' )
     }
     else
-    {               
+    {
         # The target does not exist in this namespace
         Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.NamespaceRootTargetDoesNotExistMessage) `
                     -f $Type,$Path,$TargetPath
             ) -join '' )
-    }    
-    
+    }
+
     return $ReturnValue
 } # Get-TargetResource
 
@@ -151,7 +151,7 @@ function Set-TargetResource
         [ValidateSet('Present','Absent')]
         [String]
         $Ensure,
-        
+
         [parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]
         [String]
@@ -162,28 +162,28 @@ function Set-TargetResource
 
         [Uint32]
         $TimeToLiveSec,
-        
+
         [Boolean]
         $EnableSiteCosting,
-        
+
         [Boolean]
         $EnableInsiteReferrals,
-    
+
         [Boolean]
         $EnableAccessBasedEnumeration,
-        
+
         [Boolean]
         $EnableRootScalability,
-        
+
         [Boolean]
         $EnableTargetFailback,
 
         [ValidateSet('Global-High','SiteCost-High','SiteCost-Normal','SiteCost-Low','Global-Low')]
         [String]
         $ReferralPriorityClass,
-        
+
         [Uint32]
-        $ReferralPriorityRank        
+        $ReferralPriorityRank
     )
 
     Write-Verbose -Message ( @(
@@ -192,7 +192,7 @@ function Set-TargetResource
                 -f $Type,$Path,$TargetPath
         ) -join '' )
 
-    # Lookup the existing Namespace root    
+    # Lookup the existing Namespace root
     $Root = Get-Root `
         -Path $Path
 
@@ -203,7 +203,7 @@ function Set-TargetResource
         {
             # Does the root need to be updated?
             [boolean] $RootChange = $false
-            
+
             # The root properties that will be updated
             $RootProperties = @{
                 State = 'online'
@@ -227,51 +227,51 @@ function Set-TargetResource
                 $RootChange = $true
             }
 
-            if (($EnableSiteCosting -ne $null) `
+            if (($null -ne $EnableSiteCosting) `
                 -and (($Root.Flags -contains 'Site Costing') -ne $EnableSiteCosting))
             {
-                $RootProperties += @{                    
+                $RootProperties += @{
                     EnableSiteCosting = $EnableSiteCosting
                 }
                 $RootChange = $true
             }
 
-            if (($EnableInsiteReferrals -ne $null) `
+            if (($null -ne $EnableInsiteReferrals) `
                 -and (($Root.Flags -contains 'Insite Referrals') -ne $EnableInsiteReferrals))
             {
-                $RootProperties += @{                    
+                $RootProperties += @{
                     EnableInsiteReferrals = $EnableInsiteReferrals
                 }
                 $RootChange = $true
             }
 
-            if (($EnableAccessBasedEnumeration -ne $null) `
+            if (($null -ne $EnableAccessBasedEnumeration) `
                 -and (($Root.Flags -contains 'AccessBased Enumeration') -ne $EnableAccessBasedEnumeration))
             {
-                $RootProperties += @{                    
+                $RootProperties += @{
                     EnableAccessBasedEnumeration = $EnableAccessBasedEnumeration
                 }
                 $RootChange = $true
             }
 
-            if (($EnableRootScalability -ne $null) `
+            if (($null -ne $EnableRootScalability) `
                 -and (($Root.Flags -contains 'Root Scalability') -ne $EnableRootScalability))
             {
-                $RootProperties += @{                    
+                $RootProperties += @{
                     EnableRootScalability = $EnableRootScalability
                 }
                 $RootChange = $true
             }
 
-            if (($EnableTargetFailback -ne $null) `
+            if (($null -ne $EnableTargetFailback) `
                 -and (($Root.Flags -contains 'Target Failback') -ne $EnableTargetFailback))
             {
-                $RootProperties += @{                    
+                $RootProperties += @{
                     EnableTargetFailback = $EnableTargetFailback
                 }
                 $RootChange = $true
             }
-            
+
             if ($RootChange)
             {
                 # Update root settings
@@ -280,20 +280,20 @@ function Set-TargetResource
                     @RootProperties `
                     -ErrorAction Stop
 
-                $RootProperties.GetEnumerator() | ForEach-Object -Process {                
+                $RootProperties.GetEnumerator() | ForEach-Object -Process {
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
                         $($LocalizedData.NamespaceRootUpdateParameterMessage) `
                             -f $Type,$Path,$TargetPath,$_.name, $_.value
-                    ) -join '' )            
+                    ) -join '' )
                 }
             }
-                                
+
             # Get target
             $Target = Get-RootTarget `
                 -Path $Path `
                 -TargetPath $TargetPath
-            
+
             # Does the target need to be updated?
             [boolean] $TargetChange = $false
 
@@ -309,15 +309,15 @@ function Set-TargetResource
                 }
                 $TargetChange = $true
             }
-            
+
             if (($ReferralPriorityRank) `
                 -and ($Target.ReferralPriorityRank -ne $ReferralPriorityRank))
             {
-                $TargetProperties += @{                    
+                $TargetProperties += @{
                     ReferralPriorityRank = $ReferralPriorityRank
                 }
                 $TargetChange = $true
-            }                
+            }
 
             # Is the target a member of the namespace?
             if ($Target)
@@ -344,23 +344,23 @@ function Set-TargetResource
             }
 
             # Output the target parameters that were changed/set
-            $TargetProperties.GetEnumerator() | ForEach-Object -Process {                
+            $TargetProperties.GetEnumerator() | ForEach-Object -Process {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceRootTargetUpdateParameterMessage) `
                         -f $Type,$Path,$TargetPath,$_.name, $_.value
-                ) -join '' )            
-            }            
+                ) -join '' )
+            }
         }
         else
         {
             # Prepare to use the PSBoundParameters as a splat to created
             # The new DFS Namespace root.
             $null = $PSBoundParameters.Remove('Ensure')
-                        
+
             # Correct the ReferralPriorityClass field
             if ($ReferralPriorityClass)
-            { 
+            {
                 $PSBoundParameters.ReferralPriorityClass = ($ReferralPriorityClass -replace '-','')
             }
 
@@ -368,13 +368,13 @@ function Set-TargetResource
             $null = New-DfsnRoot `
                 @PSBoundParameters `
                 -ErrorAction Stop
-                                    
-            $PSBoundParameters.GetEnumerator() | ForEach-Object -Process {                
+
+            $PSBoundParameters.GetEnumerator() | ForEach-Object -Process {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceRootUpdateParameterMessage) `
                         -f $Type,$Path,$TargetPath,$_.name, $_.value
-                ) -join '' )            
+                ) -join '' )
             }
         }
     }
@@ -386,8 +386,8 @@ function Set-TargetResource
         $Target = Get-RootTarget `
             -Path $Path `
             -TargetPath $TargetPath
-            
-        if ($Target)                
+
+        if ($Target)
         {
             # Remove the target from the namespace
             $null = Remove-DfsnRootTarget `
@@ -401,7 +401,7 @@ function Set-TargetResource
                 $($LocalizedData.NamespaceRootTargetRemovedMessage) `
                     -f $Type,$Path,$TargetPath
             ) -join '' )
-        }            
+        }
     }
 } # Set-TargetResource
 
@@ -423,54 +423,54 @@ function Test-TargetResource
         [ValidateSet('Present','Absent')]
         [String]
         $Ensure,
-        
+
         [parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]
         [String]
         $Type,
-        
+
         [String]
         $Description,
 
         [Uint32]
         $TimeToLiveSec,
-        
+
         [Boolean]
         $EnableSiteCosting,
-        
+
         [Boolean]
         $EnableInsiteReferrals,
-    
+
         [Boolean]
         $EnableAccessBasedEnumeration,
-        
+
         [Boolean]
         $EnableRootScalability,
-        
+
         [Boolean]
         $EnableTargetFailback,
 
         [ValidateSet('Global-High','SiteCost-High','SiteCost-Normal','SiteCost-Low','Global-Low')]
         [String]
         $ReferralPriorityClass,
-        
+
         [Uint32]
-        $ReferralPriorityRank          
+        $ReferralPriorityRank
     )
-   
+
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($LocalizedData.TestingNamespaceRootMessage) `
-                -f $Type,$Path,$TargetPath 
+                -f $Type,$Path,$TargetPath
         ) -join '' )
 
     # Flag to signal whether settings are correct
-    [Boolean] $DesiredConfigurationMatch = $true    
+    [Boolean] $DesiredConfigurationMatch = $true
 
-    # Lookup the existing Namespace root    
+    # Lookup the existing Namespace root
     $Root = Get-Root `
         -Path $Path
-            
+
     if ($Ensure -eq 'Present')
     {
         # The Namespace root should exist
@@ -490,7 +490,7 @@ function Test-TargetResource
                     ErrorAction = 'Stop'
                 }
                 New-TerminatingError @ErrorParam
-            }        
+            }
 
             # Check the Namespace parameters
             if (($Description) `
@@ -502,7 +502,7 @@ function Test-TargetResource
                     ) -join '' )
                 $desiredConfigurationMatch = $false
             }
-                        
+
             if (($TimeToLiveSec) `
                 -and ($Root.TimeToLiveSec -ne $TimeToLiveSec)) {
                 Write-Verbose -Message ( @(
@@ -513,7 +513,7 @@ function Test-TargetResource
                 $desiredConfigurationMatch = $false
             }
 
-            if (($EnableSiteCosting -ne $null) `
+            if (($null -ne $EnableSiteCosting) `
                 -and (($Root.Flags -contains 'Site Costing') -ne $EnableSiteCosting)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
@@ -523,7 +523,7 @@ function Test-TargetResource
                 $desiredConfigurationMatch = $false
             }
 
-            if (($EnableInsiteReferrals -ne $null) `
+            if (($null -ne $EnableInsiteReferrals) `
                 -and (($Root.Flags -contains 'Insite Referrals') -ne $EnableInsiteReferrals)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
@@ -533,7 +533,7 @@ function Test-TargetResource
                 $desiredConfigurationMatch = $false
             }
 
-            if (($EnableAccessBasedEnumeration -ne $null) `
+            if (($null -ne $EnableAccessBasedEnumeration) `
                 -and (($Root.Flags -contains 'AccessBased Enumeration') -ne $EnableAccessBasedEnumeration)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
@@ -543,7 +543,7 @@ function Test-TargetResource
                 $desiredConfigurationMatch = $false
             }
 
-            if (($EnableRootScalability -ne $null) `
+            if (($null -ne $EnableRootScalability) `
                 -and (($Root.Flags -contains 'Root Scalability') -ne $EnableRootScalability)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
@@ -553,7 +553,7 @@ function Test-TargetResource
                 $desiredConfigurationMatch = $false
             }
 
-            if (($EnableTargetFailback -ne $null) `
+            if (($null -ne $EnableTargetFailback) `
                 -and (($Root.Flags -contains 'Target Failback') -ne $EnableTargetFailback)) {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
@@ -597,7 +597,7 @@ function Test-TargetResource
                     $($LocalizedData.NamespaceRootTargetDoesNotExistButShouldMessage) `
                         -f $Type,$Path,$TargetPath
                     ) -join '' )
-                $desiredConfigurationMatch = $false                   
+                $desiredConfigurationMatch = $false
             }
         }
         else
@@ -619,7 +619,7 @@ function Test-TargetResource
             $Target = Get-RootTarget `
                 -Path $Path `
                 -TargetPath $TargetPath
-                
+
             if ($Target)
             {
                 # The Root target exists but should not - change required
@@ -650,8 +650,8 @@ function Test-TargetResource
                 ) -join '' )
         }
     } # if
-               
-    return $DesiredConfigurationMatch 
+
+    return $DesiredConfigurationMatch
 
 } # Test-TargetResource
 
@@ -688,10 +688,10 @@ Function Get-RootTarget {
         [parameter(Mandatory = $true)]
         [String]
         $Path,
-        
+
         [parameter(Mandatory = $true)]
         [String]
-        $TargetPath        
+        $TargetPath
     )
     # Lookup the DFSN Root Target in a namespace.
     # Return null if doesn't exist.

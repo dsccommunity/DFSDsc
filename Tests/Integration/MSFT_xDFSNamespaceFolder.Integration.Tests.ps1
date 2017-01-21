@@ -14,7 +14,7 @@ Import-Module (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHel
 $TestEnvironment = Initialize-TestEnvironment `
     -DSCModuleName $Global:DSCModuleName `
     -DSCResourceName $Global:DSCResourceName `
-    -TestType Integration 
+    -TestType Integration
 #endregion
 
 # Using try/finally to always cleanup even if something awful happens.
@@ -40,13 +40,13 @@ try
             It 'Should have the DFS Namespace Feature Installed' {
                 $Installed | Should Be $true
             }
-        }   
+        }
     }
     if ($Installed -eq $false)
     {
         Break
     }
-   
+
     #region Integration Tests
     $ConfigFile = Join-Path -Path $PSScriptRoot -ChildPath "$($Global:DSCResourceName).config.ps1"
     . $ConfigFile
@@ -54,7 +54,7 @@ try
     Describe "$($Global:DSCResourceName)_Integration" {
         # Create a SMB share for the Namespace
         [String] $RandomFileName = [System.IO.Path]::GetRandomFileName()
-        [String] $ShareFolderRoot = Join-Path -Path $env:Temp -ChildPath "$($Global:DSCResourceName)_$RandomFileName" 
+        [String] $ShareFolderRoot = Join-Path -Path $env:Temp -ChildPath "$($Global:DSCResourceName)_$RandomFileName"
         New-Item `
             -Path $ShareFolderRoot `
             -Type Directory
@@ -63,7 +63,7 @@ try
             -Path $ShareFolderRoot `
             -FullAccess 'Everyone'
         [String] $RandomFileName = [System.IO.Path]::GetRandomFileName()
-        [String] $ShareFolderFolder = Join-Path -Path $env:Temp -ChildPath "$($Global:DSCResourceName)_$RandomFileName" 
+        [String] $ShareFolderFolder = Join-Path -Path $env:Temp -ChildPath "$($Global:DSCResourceName)_$RandomFileName"
         New-Item `
             -Path $ShareFolderFolder `
             -Type Directory
@@ -75,12 +75,12 @@ try
             -Path $NamespaceRoot.Path `
             -TargetPath $NamespaceRoot.TargetPath `
             -Type Standalone
-            
+
         #region DEFAULT TESTS
         It 'Should compile without throwing' {
             {
-                Invoke-Expression -Command "$($Global:DSCResourceName)_Config -OutputPath `$TestEnvironment.WorkingFolder"
-                Start-DscConfiguration -Path $TestEnvironment.WorkingFolder -ComputerName localhost -Wait -Verbose -Force
+                & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive
+                Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
             } | Should not throw
         }
 
@@ -105,7 +105,7 @@ try
             $NamespaceFolderTargetNew.ReferralPriorityClass   | Should Be $NamespaceFolder.ReferralPriorityClass
             $NamespaceFolderTargetNew.ReferralPriorityRank    | Should Be $NamespaceFolder.ReferralPriorityRank
         }
-        
+
         # Clean up
         Remove-DFSNFolder `
             -Path $NamespaceFolder.Path `

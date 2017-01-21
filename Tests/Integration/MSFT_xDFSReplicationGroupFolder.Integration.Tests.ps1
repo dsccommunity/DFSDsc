@@ -51,17 +51,17 @@ Import-Module (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHel
 $TestEnvironment = Initialize-TestEnvironment `
     -DSCModuleName $Global:DSCModuleName `
     -DSCResourceName $Global:DSCResourceName `
-    -TestType Integration 
+    -TestType Integration
 #endregion
 
 # Using try/finally to always cleanup even if something awful happens.
 try
 {
     #region Integration Tests
-    $ConfigFile = Join-Path -Path $PSScriptRoot -ChildPath "$($Global:DSCResourceName).config.ps1" 
+    $ConfigFile = Join-Path -Path $PSScriptRoot -ChildPath "$($Global:DSCResourceName).config.ps1"
     . $ConfigFile
 
-    Describe "$($Global:DSCResourceName)_Integration" {           
+    Describe "$($Global:DSCResourceName)_Integration" {
         # Create the Replication group to work with
         New-DFSReplicationGroup `
             -GroupName $ReplicationGroupFolder.GroupName
@@ -77,7 +77,7 @@ try
                 -GroupName $ReplicationGroupFolder.GroupName `
                 -FolderName $Folder
         }
-            
+
         #region DEFAULT TESTS
         It 'Should compile without throwing' {
             {
@@ -89,8 +89,8 @@ try
                         }
                     )
                 }
-                Invoke-Expression -Command "$($Global:DSCResourceName)_Config -OutputPath `$TestEnvironment.WorkingFolder -ConfigurationData `$ConfigData"
-                Start-DscConfiguration -Path $TestEnvironment.WorkingFolder -ComputerName localhost -Wait -Verbose -Force
+                & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive -ConfigurationData $ConfigData
+                Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
             } | Should not throw
         }
 
@@ -110,7 +110,7 @@ try
             $ReplicationGroupFolderNew.DirectoryNameToExclude | Should Be $ReplicationGroupFolder.DirectoryNameToExclude
             $ReplicationGroupFolderNew.FilenameToExclude      | Should Be $ReplicationGroupFolder.FilenameToExclude
         }
-        
+
         # Clean up
         Remove-DFSReplicationGroup `
             -GroupName $ReplicationGroupFolder.GroupName `

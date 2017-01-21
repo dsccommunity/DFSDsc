@@ -1,6 +1,6 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/5hkcpe757hhe4583?svg=true)](https://ci.appveyor.com/project/PowerShell/xdfs)
-
 # xDFS
+
+[![Build status](https://ci.appveyor.com/api/projects/status/5hkcpe757hhe4583?svg=true)](https://ci.appveyor.com/project/PowerShell/xdfs)
 
 The **xDFS** module contains DSC resources for configuring Distributed File System Replication and Namespaces. Currently in this version only Replication folders are supported. Namespaces will be supported in a future release.
 
@@ -8,33 +8,40 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 ## Requirements
+
 * **Windows Management Framework 5.0**: Required because the PSDSCRunAsCredential DSC Resource parameter is needed.
 
 ## Installation
+
 ```powershell
 Install-Module -Name xDFS -MinimumVersion 3.0.0.0
 ```
 
 ## Important Information
+
 ### DFSR Module
+
 This DSC Resource requires that the DFSR PowerShell module is installed onto any computer this resource will be used on. This module is installed as part of RSAT tools or RSAT-DFS-Mgmt-Con Windows Feature in Windows Server 2012 R2.
 However, this will automatically convert a Server Core installation into one containing the management tools, which may not be ideal because it is no longer strictly a Server Core installation.
 Because this DSC Resource actually only configures information within the AD, it is only required that this resource is run on a computer that is registered in AD. It doesn't need to be run on one of the File Servers participating
 in the Distributed File System or Namespace.
 
 ### Domain Credentials
+
 Because this resource is configuring information within Active Directory, the **PSDSCRunAsCredential** property must be used with a credential of a domain user that can work with DFS information. This means that this resource can only work on computers with Windows Management Framework 5.0 or above.
 
 
 ## Contributing
+
 Please check out common DSC Resources [contributing guidelines](https://github.com/PowerShell/DscResource.Kit/blob/master/CONTRIBUTING.md).
 
 
 ## Replication Group Resources
+
 ### xDFSReplicationGroup
+
 This resource is used to create, edit or remove DFS Replication Groups. If used to create a Replication Group it should be combined with the xDFSReplicationGroupMembership resources.
 
-#### Parameters
 * **GroupName**: The name of the Replication Group. Required.
 * **Ensure**: Ensures that Replication Group is either Absent or Present. Required. { Absent | Present }
 * **Description**: A description for the Replication Group. Optional.
@@ -45,9 +52,9 @@ This resource is used to create, edit or remove DFS Replication Groups. If used 
 * **DomainName**: The AD domain the Replication Group should created in. Optional.
 
 ### xDFSReplicationGroupConnection
+
 This resource is used to create, edit and remove DFS Replication Group connections. This resource should ONLY be used if the Topology parameter in the Resource Group is set to Manual.
 
-#### Parameters
 * **GroupName**: The name of the Replication Group. Required.
 * **Ensure**: Ensures that Replication Group connection is either Absent or Present. Required. { Absent | Present }
 * **SourceComputerName**: The name of the Replication Group source computer for the connection. This can be specified using either the ComputerName or FQDN name for the member. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match. Required.
@@ -58,9 +65,9 @@ This resource is used to create, edit and remove DFS Replication Group connectio
 * **DomainName**: The AD domain the Replication Group connection should created in. Optional.
 
 ### xDFSReplicationGroupFolder
+
 This resource is used to configure DFS Replication Group folders. This is an optional resource, and only needs to be used if the folder Description, FilenameToExclude or DirectoryNameToExclude fields need to be set. In most cases just setting the Folders property in the xDFSReplicationGroup resource will be acceptable.
 
-#### Parameters
 * **GroupName**: The name of the Replication Group. Required.
 * **FolderName**: The name of the Replication Group folder. Required.
 * **Description**: A description for the Replication Group. Optional.
@@ -70,9 +77,9 @@ This resource is used to configure DFS Replication Group folders. This is an opt
 * **DomainName**: The AD domain the Replication Group should created in. Optional.
 
 ### xDFSReplicationGroupMembership
+
 This resource is used to configure Replication Group Folder Membership. It is usually used to set the **ContentPath** for each Replication Group folder on each Member computer. It can also be used to set additional properties of the Membership. This resource shouldn't be used for folders where the Content Path is set in the xDFSReplicationGroup.
 
-#### Parameters
 * **GroupName**: The name of the Replication Group. Required.
 * **FolderName**: The folder name of the Replication Group folder. Required.
 * **ComputerName**: The computer name of the Replication Group member. This can be specified using either the ComputerName or FQDN name for the member. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match. Required.
@@ -82,8 +89,10 @@ This resource is used to configure Replication Group Folder Membership. It is us
 * **PrimaryMember**: Used to configure this as the Primary Member. Every folder must have at least one primary member for initial replication to take place. Default to false. Optional.
 * **DomainName**: The AD domain the Replication Group should created in. Optional.
 
-### Examples
+### Replication Group Examples
+
 Create a DFS Replication Group called Public containing two members, FileServer1 and FileServer2. The Replication Group contains two folders called Software and Misc. An automatic Full Mesh connection topology will be assigned. The Content Paths for each folder and member will be set to 'd:\public\software' and 'd:\public\misc' respectively:
+
 ```powershell
 configuration Sample_xDFSReplicationGroup_Simple
 {
@@ -143,6 +152,7 @@ Start-DscConfiguration `
 ```
 
 Create a DFS Replication Group called Public containing two members, FileServer1 and FileServer2. The Replication Group contains a single folder called Software. A description will be set on the Software folder and it will be set to exclude the directory Temp from replication. A manual topology is assigned to the replication connections.
+
 ```powershell
 configuration Sample_xDFSReplicationGroup
 {
@@ -249,8 +259,8 @@ Start-DscConfiguration `
     -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
 ```
 
-
 Create a DFS Replication Group called Public containing two members, FileServer1 and FileServer2. The Replication Group contains a single folder called Software. A description will be set on the Software folder and it will be set to exclude the directory Temp from replication. An automatic fullmesh topology is assigned to the replication group connections.
+
 ```powershell
 configuration Sample_xDFSReplicationGroup_FullMesh
 {
@@ -342,13 +352,15 @@ Start-DscConfiguration `
 
 
 ## Namespace Resources
+
 ### xDFSNameSpace
+
 **This resource has been deprecated. Please use xDFSNamespaceRoot and xDFSNamespaceFolder instead.**
 
 ### xDFSNamespaceRoot
+
 This resource is used to create, edit or remove standalone or domain based DFS namespaces.  When the server is the last server in the namespace, the namespace itself will be removed.
 
-#### Parameters
 * **Path**: Specifies a path for the root of a DFS namespace. String. Required.
 * **TargetPath**: Specifies a path for a root target of the DFS namespace. String. Required.
 * **Ensure**: Specifies if the DFS Namespace root should exist. { Absent | Present }. String. Required.
@@ -364,9 +376,9 @@ This resource is used to create, edit or remove standalone or domain based DFS n
 * **ReferralPriorityRank**: Specifies the priority rank, as an integer, for a root target of the DFS namespace. Uint32. Optional
 
 ### xDFSNamespaceFolder
+
 This resource is used to create, edit or remove folders from DFS namespaces.  When a target is the last target in a namespace folder, the namespace folder itself will be removed.
 
-#### Parameters
 * **Path**: Specifies a path for the DSF folder within an existing DFS Namespace. String. Required.
 * **TargetPath**: Specifies a path for a target for the DFS namespace folder. String. Required.
 * **Ensure**: Specifies if the DFS Namespace folder should exist. { Absent | Present }. String. Required.
@@ -378,16 +390,18 @@ This resource is used to create, edit or remove folders from DFS namespaces.  Wh
 * **ReferralPriorityRank**: Specifies the priority rank, as an integer, for a target in the DFS namespace. Uint32. Optional
 
 ### xDFSNamespaceServerConfiguration
+
 This resource is used to configure DFS Namespace server settings. This is a single instance resource that can only be used once in a DSC Configuration.
 
-#### Parameters
 * **IsSingleInstance**: Specifies if the resource is a single instance, the value must be 'Yes'. Required.
 * **LdapTimeoutSec**: Specifies a time-out value, in seconds, for Lightweight Directory Access Protocol (LDAP) requests for the DFS namespace server. Uint32. Optional.
 * **SyncIntervalSec**: This interval controls how often domain-based DFS namespace root servers and domain controllers connect to the PDC emulator to get updates of DFS namespace metadata. Uint32. Optional.
 * **UseFQDN**: Indicates whether a DFS namespace server uses FQDNs in referrals. Boolean.  Optional.
 
-### Examples
+### Namespace Examples
+
 Create an AD Domain V2 based DFS namespace called departments in the domain contoso.com with a single root target on the computer fs_1. Two subfolders are defined with targets that direct to shares on servers fs_3 and fs_8.
+
 ```powershell
 Configuration DFSNamespace_Domain_SingleTarget
 {
@@ -472,6 +486,7 @@ Start-DscConfiguration `
 ```
 
 Create an AD Domain V2 based DFS namespace called software in the domain contoso.com with a three targets on the servers ca-fileserver, ma-fileserver and ny-fileserver. It also creates a IT folder in each namespace.
+
 ```powershell
 Configuration DFSNamespace_Domain_MultipleTarget
 {
@@ -583,6 +598,7 @@ Start-DscConfiguration `
 ```
 
 Create a standalone DFS namespace called public on the server fileserver1. A namespace folder called Brochures is also created in this namespace that targets the \\fileserver2\brochures share.
+
 ```powershell
 Configuration DFSNamespace_Standalone
 {
@@ -655,6 +671,7 @@ Start-DscConfiguration `
 ```
 
 Create a standalone DFS namespace using FQDN called public on the server fileserver1.contoso.com. A namespace folder called Brochures is also created in this namespace that targets the \\fileserver2.contoso.com\brochures share.
+
 ```powershell
 Configuration DFSNamespace_Standalone_FQDN
 {
@@ -735,26 +752,36 @@ Start-DscConfiguration `
 ```
 
 ## Versions
+
 ### Unreleased
+
 * Converted AppVeyor.yml to pull Pester from PSGallery instead of Chocolatey.
-* Changed AppVeyor.yml to use default image
+* Changed AppVeyor.yml to use default image.
+* Converted AppVeyor build process to use AppVeyor.yml.
+* Resolved PSSA violations.
+* Resolved Readme.md style violations.
+* Converted Integration Tests to use Test Drive and stop using Invoke-Pester.
 
 ### 3.1.0.0
+
 * MSFT_xDFSNamespaceServerConfiguration- resource added.
 * Corrected names of DFS Namespace sample files to indicate that they are setting Namespace roots and folders.
 * Removed Pester version from AppVeyor.yml.
 
 ### 3.0.0.0
+
 * RepGroup renamed to ReplicationGroup in all files.
 * xDFSReplicationGroupConnection- Changed DisableConnection parameter to EnsureEnabled.
                                   Changed DisableRDC parameter to EnsureRDCEnabled.
 * xDFSReplicationGroup- Fixed bug where disabled connection was not enabled in Fullmesh topology.
 
 ### 2.2.0.0
+
 * DSC Module moved to MSFT.
 * MSFT_xDFSNamespace- Removed.
 
 ### 2.1.0.0
+
 * MSFT_xDFSRepGroup- Fixed issue when using FQDN member names.
 * MSFT_xDFSRepGroupMembership- Fixed issue with Get-TargetResource when using FQDN ComputerName.
 * MSFT_xDFSRepGroupConnection- Fixed issue with Get-TargetResource when using FQDN SourceComputerName or FQDN DestinationComputerName.
@@ -762,21 +789,24 @@ Start-DscConfiguration `
 * MSFT_xDFSNamespaceFolder- Added write support to TimeToLiveSec parameter.
 
 ### 2.0.0.0
+
 * MSFT_xDFSNamespaceRoot- resource added.
 * MSFT_xDFSNamespaceFolder- resource added.
 * MSFT_xDFSNamespace- deprecated - use MSFT_xDFSNamespaceRoot instead.
 
 ### 1.5.1.0
+
 * MSFT_xDFSNamespace- Add parameters:
-    - EnableSiteCosting
-    - EnableInsiteReferrals
-    - EnableAccessBasedEnumeration
-    - EnableRootScalability
-    - EnableTargetFailback
-    - ReferralPriorityClass
-    - ReferralPriorityRank
+  * EnableSiteCosting
+  * EnableInsiteReferrals
+  * EnableAccessBasedEnumeration
+  * EnableRootScalability
+  * EnableTargetFailback
+  * ReferralPriorityClass
+  * ReferralPriorityRank
 
 ### 1.5.0.0
+
 * MSFT_xDFSNamespace- New sample files added.
 * MSFT_xDFSNamespace- MOF parameter descriptions corrected.
 * MSFT_xDFSNamespace- Rearchitected code.
@@ -786,35 +816,45 @@ Start-DscConfiguration `
 * MSFT_xDFSRepGroup- Array Parameter output disabled in Get-TargetResource until [this issue](https://windowsserver.uservoice.com/forums/301869-powershell/suggestions/11088807-get-dscconfiguration-fails-with-embedded-cim-type) is resolved.
 
 ### 1.4.2.0
+
 * MSFT_xDFSRepGroup- Fixed "Cannot bind argument to parameter 'DifferenceObject' because it is null." error.
 * All Unit tests updated to use *_TestEnvironment functions in DSCResource.Tests\TestHelpers.psm1
 
 ### 1.4.1.0
+
 * MSFT_xDFSNamespace- Renamed Sample_DcFSNamespace.ps1 to Sample_xDFSNamespace.
 * MSFT_xDFSNamespace- Corrected Import-DscResouce in example.
 
 ### 1.4.0.0
+
 * Community update by Erik Granneman
 * New DSC recource xDFSNameSpace
 
 ### 1.3.2.0
+
 * Documentation and Module Manifest Update only.
 
 ### 1.3.1.0
+
 * xDFSRepGroupFolder- DfsnPath parameter added for setting DFS Namespace path mapping.
 
 ### 1.3.0.0
+
 * xDFSRepGroup- If ContentPaths is set, PrimaryMember is set to first member in the Members array.
 * xDFSRRepGroupMembership- PrimaryMembers property added so that Primary Member can be set.
 
 ### 1.2.1.0
+
 * xDFSRepGroup- Fix to ContentPaths generation when more than one folder is provided.
 
 ### 1.2.0.0
+
 * xDFSRepGroup- ContentPaths string array parameter.
 
 ### 1.1.0.0
+
 * xDFSRepGroupConnection- Resource added.
 
 ### 1.0.0.0
+
 * Initial release.
