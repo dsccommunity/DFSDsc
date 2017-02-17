@@ -8,7 +8,7 @@ install:
     - ps: |
         Install-WindowsFeature FS-DFS-Namespace,FS-DFS-Replication,RSAT-DFS-Mgmt-Con
         Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
-        Start-AppveyorInstallTask
+        Invoke-AppveyorInstallTask
 
 #---------------------------------#
 #      build configuration        #
@@ -33,4 +33,4 @@ test_script:
 # scripts to run before deployment
 deploy_script:
     - ps: |
-        Start-AppveyorAfterTestTask
+        Invoke-AppveyorAfterTestTask
