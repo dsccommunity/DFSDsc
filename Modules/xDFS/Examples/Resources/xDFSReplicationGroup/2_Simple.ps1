@@ -5,7 +5,7 @@
     An automatic Full Mesh connection topology will be assigned. The Content Paths for each
     folder and member will be set to 'd:\public\software' and 'd:\public\misc' respectively.
 #>
-configuration Example
+Configuration Example
 {
     param
     (

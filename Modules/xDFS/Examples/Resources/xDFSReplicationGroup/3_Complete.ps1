@@ -5,7 +5,7 @@
     will be set on the Software folder and it will be set to exclude the directory Temp from
     replication. A manual topology is assigned to the replication connections.
 #>
-configuration Example
+Configuration Example
 {
     param
     (
@@ -90,6 +90,5 @@ configuration Example
             PSDSCRunAsCredential = $Credential
             DependsOn = '[xDFSReplicationGroupFolder]RGSoftwareFolder'
         } # End of RGPublicSoftwareFS2 Resource
-
     } # End of Node
 } # End of Configuration
