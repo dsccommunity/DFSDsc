@@ -764,6 +764,7 @@ Start-DscConfiguration `
 * Converted Integration Tests to use Test Drive and stop using Invoke-Pester.
 * Move strings into separate language files.
 * Added CodeCov support.
+* Clean up manifest file by removing commented out sections.
 
 ### 3.1.0.0
 
