@@ -26,35 +26,14 @@
     # Processor architecture (None, X86, Amd64) required by this module
     ProcessorArchitecture = 'None'
 
-    # Assemblies that must be loaded prior to importing this module
-    RequiredAssemblies = @()
-
-    # Script files (.ps1) that are run in the caller's environment prior to importing this module.
-    ScriptsToProcess = @()
-
-    # Type files (.ps1xml) to be loaded when importing this module
-    TypesToProcess = @()
-
-    # Format files (.ps1xml) to be loaded when importing this module
-    FormatsToProcess = @()
-
     # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
     NestedModules = @('Modules\DFSDsc.ResourceHelper\DFSDsc.ResourceHelper.psm1')
 
     # Functions to export from this module
-    FunctionsToExport = @()
+    FunctionsToExport = '*'
 
     # Cmdlets to export from this module
-    CmdletsToExport = @()
-
-    # Variables to export from this module
-    VariablesToExport = @()
-
-    # Aliases to export from this module
-    AliasesToExport = @()
-
-    # List of all files packaged with this module
-    FileList = @()
+    CmdletsToExport = '*'
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
     PrivateData = @{
