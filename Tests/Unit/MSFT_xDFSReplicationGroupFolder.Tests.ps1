@@ -1,20 +1,20 @@
-$Global:DSCModuleName   = 'xDFS'
-$Global:DSCResourceName = 'MSFT_xDFSReplicationGroupFolder'
+$script:DSCModuleName   = 'xDFS'
+$script:DSCResourceName = 'MSFT_xDFSReplicationGroupFolder'
 
 #region HEADER
 # Unit Test Template Version: 1.1.0
-[String] $moduleRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))
-if ( (-not (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
-     (-not (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
+[string] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\xDFS'
+if ( (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
+     (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
 {
-    & git @('clone','https://github.com/PowerShell/DscResource.Tests.git',(Join-Path -Path $moduleRoot -ChildPath '\DSCResource.Tests\'))
+    & git @('clone','https://github.com/PowerShell/DscResource.Tests.git',(Join-Path -Path $script:moduleRoot -ChildPath '\DSCResource.Tests\'))
 }
 
-Import-Module (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1') -Force
+Import-Module (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1') -Force
 $TestEnvironment = Initialize-TestEnvironment `
-    -DSCModuleName $Global:DSCModuleName `
-    -DSCResourceName $Global:DSCResourceName `
-    -TestType Unit 
+    -DSCModuleName $script:DSCModuleName `
+    -DSCResourceName $script:DSCResourceName `
+    -TestType Unit
 #endregion HEADER
 
 # Begin Testing
@@ -40,7 +40,7 @@ try
             It 'Should have the DFS Replication Feature Installed' {
                 $Installed | Should Be $true
             }
-        }   
+        }
     }
     if ($Installed -eq $false)
     {
@@ -53,7 +53,7 @@ try
             It 'Should have the DFS Management Tools Feature Installed' {
                 $Installed | Should Be $true
             }
-        }   
+        }
     }
     if ($Installed -eq $false)
     {
@@ -61,8 +61,8 @@ try
     }
 
     #region Pester Tests
-    InModuleScope $Global:DSCResourceName {
-    
+    InModuleScope $script:DSCResourceName {
+
         # Create the Mock Objects that will be used for running tests
         $ReplicationGroup = [PSObject]@{
             GroupName = 'Test Group'
@@ -121,13 +121,13 @@ try
             ConflictAndDeletedPath = 'd:\public\software\DfsrPrivate\ConflictAndDeleted\'
             ReadOnly = $False
         }
-    
-        Describe "$($Global:DSCResourceName)\Get-TargetResource" {
-    
+
+        Describe "MSFT_xDFSReplicationGroupFolder\Get-TargetResource" {
+
             Context 'Replication group folder does not exist' {
-                
+
                 Mock Get-DfsReplicatedFolder
-    
+
                 It 'should throw RegGroupFolderMissingError error' {
                     $errorId = 'RegGroupFolderMissingError'
                     $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
@@ -136,28 +136,28 @@ try
                         -ArgumentList $errorMessage
                     $errorRecord = New-Object -TypeName System.Management.Automation.ErrorRecord `
                         -ArgumentList $exception, $errorId, $errorCategory, $null
-    
+
                     {
                         $Result = Get-TargetResource `
                             -GroupName $MockReplicationGroupFolder[0].GroupName `
                             -FolderName $MockReplicationGroupFolder[0].FolderName
-                    } | Should Throw $errorRecord               
+                    } | Should Throw $errorRecord
                 }
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
                 }
             }
-    
+
             Context 'Requested replication group does exist' {
-                
+
                 Mock Get-DfsReplicatedFolder -MockWith { return @($MockReplicationGroupFolder[0]) }
-    
+
                 It 'should return correct replication group' {
                     $Result = Get-TargetResource `
                         -GroupName $MockReplicationGroupFolder[0].GroupName `
                         -FolderName $MockReplicationGroupFolder[0].FolderName
                     $Result.GroupName | Should Be $MockReplicationGroupFolder[0].GroupName
-                    $Result.FolderName | Should Be $MockReplicationGroupFolder[0].FolderName               
+                    $Result.FolderName | Should Be $MockReplicationGroupFolder[0].FolderName
                     $Result.Description | Should Be $MockReplicationGroupFolder[0].Description
                     $Result.DomainName | Should Be $MockReplicationGroupFolder[0].DomainName
                     # Tests disabled until this issue is resolved:
@@ -170,13 +170,13 @@ try
                 }
             }
         }
-    
-        Describe "$($Global:DSCResourceName)\Set-TargetResource" {
-    
+
+        Describe "MSFT_xDFSReplicationGroupFolder\Set-TargetResource" {
+
             Context 'Replication group folder exists but has different Description' {
-                
+
                 Mock Set-DfsReplicatedFolder
-    
+
                 It 'should not throw error' {
                     $Splat = $MockReplicationGroupFolder[0].Clone()
                     $Splat.Description = 'Different'
@@ -186,11 +186,11 @@ try
                     Assert-MockCalled -commandName Set-DfsReplicatedFolder -Exactly 1
                 }
             }
-    
+
             Context 'Replication group folder exists but has different FileNameToExclude' {
-                
+
                 Mock Set-DfsReplicatedFolder
-    
+
                 It 'should not throw error' {
                     $Splat = $MockReplicationGroupFolder[0].Clone()
                     $Splat.FileNameToExclude = @('*.tmp')
@@ -200,11 +200,11 @@ try
                     Assert-MockCalled -commandName Set-DfsReplicatedFolder -Exactly 1
                 }
             }
-    
+
             Context 'Replication group folder exists but has different DirectoryNameToExclude' {
-                
+
                 Mock Set-DfsReplicatedFolder
-    
+
                 It 'should not throw error' {
                     $Splat = $MockReplicationGroupFolder[0].Clone()
                     $Splat.DirectoryNameToExclude = @('*.tmp')
@@ -214,11 +214,11 @@ try
                     Assert-MockCalled -commandName Set-DfsReplicatedFolder -Exactly 1
                 }
             }
-    
+
             Context 'Replication group folder exists but has different DfsnPath' {
-                
+
                 Mock Set-DfsReplicatedFolder
-    
+
                 It 'should not throw error' {
                     $Splat = $MockReplicationGroupFolder[0].Clone()
                     $Splat.DfsnPath = '\\CONTOSO.COM\Public\Different'
@@ -228,15 +228,15 @@ try
                     Assert-MockCalled -commandName Set-DfsReplicatedFolder -Exactly 1
                 }
             }
-    
+
         }
-    
-        Describe "$($Global:DSCResourceName)\Test-TargetResource" {
-    
+
+        Describe "MSFT_xDFSReplicationGroupFolder\Test-TargetResource" {
+
             Context 'Replication group folder does not exist' {
-                
+
                 Mock Get-DfsReplicatedFolder
-    
+
                 It 'should throw RegGroupFolderMissingError error' {
                     $errorId = 'RegGroupFolderMissingError'
                     $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
@@ -252,11 +252,11 @@ try
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
                 }
             }
-    
+
             Context 'Replication group folder exists and has no differences' {
-                
+
                 Mock Get-DfsReplicatedFolder -MockWith { return @($MockReplicationGroupFolder[0]) }
-    
+
                 It 'should return true' {
                     $Splat = $MockReplicationGroupFolder[0].Clone()
                     Test-TargetResource @Splat | Should Be $True
@@ -265,11 +265,11 @@ try
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
                 }
             }
-    
+
             Context 'Replication group folder exists but has different Description' {
-                
+
                 Mock Get-DfsReplicatedFolder -MockWith { return @($MockReplicationGroupFolder[0]) }
-    
+
                 It 'should return false' {
                     $Splat = $MockReplicationGroupFolder[0].Clone()
                     $Splat.Description = 'Different'
@@ -279,11 +279,11 @@ try
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
                 }
             }
-    
+
             Context 'Replication group folder exists but has different FileNameToExclude' {
-                
+
                 Mock Get-DfsReplicatedFolder -MockWith { return @($MockReplicationGroupFolder[0]) }
-    
+
                 It 'should return false' {
                     $Splat = $MockReplicationGroupFolder[0].Clone()
                     $Splat.FileNameToExclude = @('*.tmp')
@@ -293,11 +293,11 @@ try
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
                 }
             }
-    
+
             Context 'Replication group folder exists but has different DirectoryNameToExclude' {
-                
+
                 Mock Get-DfsReplicatedFolder -MockWith { return @($MockReplicationGroupFolder[0]) }
-    
+
                 It 'should return false' {
                     $Splat = $MockReplicationGroupFolder[0].Clone()
                     $Splat.DirectoryNameToExclude = @('*.tmp')
@@ -307,11 +307,11 @@ try
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
                 }
             }
-    
+
             Context 'Replication group folder exists but has different DfsnPath' {
-                
+
                 Mock Get-DfsReplicatedFolder -MockWith { return @($MockReplicationGroupFolder[0]) }
-    
+
                 It 'should return false' {
                     $Splat = $MockReplicationGroupFolder[0].Clone()
                     $Splat.DfsnPath = '\\CONTOSO.COM\Public\Different'

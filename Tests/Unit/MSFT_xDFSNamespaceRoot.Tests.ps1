@@ -1,20 +1,20 @@
-$Global:DSCModuleName   = 'xDFS'
-$Global:DSCResourceName = 'MSFT_xDFSNamespaceRoot'
+$script:DSCModuleName   = 'xDFS'
+$script:DSCResourceName = 'MSFT_xDFSNamespaceRoot'
 
 #region HEADER
 # Unit Test Template Version: 1.1.0
-[String] $moduleRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))
-if ( (-not (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
-     (-not (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
+[string] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\xDFS'
+if ( (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
+     (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
 {
-    & git @('clone','https://github.com/PowerShell/DscResource.Tests.git',(Join-Path -Path $moduleRoot -ChildPath '\DSCResource.Tests\'))
+    & git @('clone','https://github.com/PowerShell/DscResource.Tests.git',(Join-Path -Path $script:moduleRoot -ChildPath '\DSCResource.Tests\'))
 }
 
-Import-Module (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1') -Force
+Import-Module (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1') -Force
 $TestEnvironment = Initialize-TestEnvironment `
-    -DSCModuleName $Global:DSCModuleName `
-    -DSCResourceName $Global:DSCResourceName `
-    -TestType Unit 
+    -DSCModuleName $script:DSCModuleName `
+    -DSCResourceName $script:DSCResourceName `
+    -TestType Unit
 #endregion HEADER
 
 # Begin Testing
@@ -40,7 +40,7 @@ try
             It 'Should have the DFS Namespace Feature Installed' {
                 $Installed | Should Be $true
             }
-        }   
+        }
     }
     if ($Installed -eq $false)
     {
@@ -48,16 +48,16 @@ try
     }
 
     #region Pester Tests
-    InModuleScope $Global:DSCResourceName {
-    
+    InModuleScope $script:DSCResourceName {
+
         # Create the Mock Objects that will be used for running tests
         $Namespace = [PSObject]@{
-            Path                         = '\\contoso.com\UnitTestNamespace' 
+            Path                         = '\\contoso.com\UnitTestNamespace'
             TargetPath                   = '\\server1\UnitTestNamespace'
             Type                         = 'DomainV2'
             Ensure                       = 'present'
             Description                  = 'Unit Test Namespace Description'
-            TimeToLiveSec                = 500            
+            TimeToLiveSec                = 500
             EnableSiteCosting            = $true
             EnableInsiteReferrals        = $true
             EnableAccessBasedEnumeration = $true
@@ -67,7 +67,7 @@ try
             ReferralPriorityRank         = 10
         }
         $NamespaceSplat = [PSObject]@{
-            Path                         = $Namespace.Path 
+            Path                         = $Namespace.Path
             TargetPath                   = $Namespace.TargetPath
             Ensure                       = $Namespace.Ensure
             Type                         = $Namespace.Type
@@ -91,15 +91,15 @@ try
             NamespacePath                = $Namespace.Path
             ReferralPriorityRank         = $Namespace.ReferralPriorityRank
             TargetPath                   = $Namespace.TargetPath
-        }    
+        }
 
-        Describe "$($Global:DSCResourceName)\Get-TargetResource" {
-    
+        Describe "MSFT_xDFSNamespaceRoot\Get-TargetResource" {
+
             Context 'Namespace Root does not exist' {
-                
+
                 Mock Get-DFSNRoot
                 Mock Get-DFSNRootTarget
-    
+
                 It 'should return absent namespace root' {
                     $Result = Get-TargetResource @NamespaceSplat
                     $Result.Ensure | Should Be 'Absent'
@@ -109,12 +109,12 @@ try
                     Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 0
                 }
             }
-    
+
             Context 'Namespace Root does exist but target does not' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
+
                 It 'should return correct namespace root' {
                     $Result = Get-TargetResource @NamespaceSplat
                     $Result.Path                         | Should Be $Namespace.Path
@@ -131,7 +131,7 @@ try
                     $Result.EnableTargetFailback         | Should Be ($NamespaceRoot.Flags -contains 'Target Failback')
                     $Result.ReferralPriorityClass        | Should Be $null
                     $Result.ReferralPriorityRank         | Should Be $null
-                    
+
                 }
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
@@ -140,10 +140,10 @@ try
             }
 
             Context 'Namespace Root and Target exists' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget -MockWith { $NamespaceTarget }
-    
+
                 It 'should return correct namespace root and target' {
                     $Result = Get-TargetResource @NamespaceSplat
                     $Result.Path                         | Should Be $Namespace.Path
@@ -167,8 +167,8 @@ try
                 }
             }
         }
-    
-        Describe "$($Global:DSCResourceName)\Set-TargetResource" {    
+
+        Describe "MSFT_xDFSNamespaceRoot\Set-TargetResource" {
 
             Mock New-DFSNRoot
             Mock Set-DFSNRoot
@@ -177,12 +177,12 @@ try
             Mock Remove-DfsnRootTarget
 
             Context 'Namespace Root does not exist but should' {
-                
+
                 Mock Get-DFSNRoot
                 Mock Get-DFSNRootTarget
-    
+
                 It 'should not throw error' {
-                    { 
+                    {
                         $Splat = $Namespace.Clone()
                         Set-TargetResource @Splat
                     } | Should Not Throw
@@ -190,7 +190,7 @@ try
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 1 
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName Set-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 0
                     Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
@@ -199,12 +199,12 @@ try
             }
 
             Context 'Namespace Root exists and should but Target does not' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should not throw error' {                        
-                    { 
+
+                It 'should not throw error' {
+                    {
                         $Splat = $Namespace.Clone()
                         Set-TargetResource @Splat
                     } | Should Not Throw
@@ -212,7 +212,7 @@ try
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0 
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName Set-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 1
                     Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
@@ -221,12 +221,12 @@ try
             }
 
             Context 'Namespace Root exists and should but has a different Description' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should not throw error' {                        
-                    { 
+
+                It 'should not throw error' {
+                    {
                         $Splat = $Namespace.Clone()
                         $Splat.Description = 'A new description'
                         Set-TargetResource @Splat
@@ -235,7 +235,7 @@ try
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0 
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName Set-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 1
                     Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
@@ -244,12 +244,12 @@ try
             }
 
             Context 'Namespace Root exists and should but has a different TimeToLiveSec' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should not throw error' {                        
-                    { 
+
+                It 'should not throw error' {
+                    {
                         $Splat = $Namespace.Clone()
                         $Splat.TimeToLiveSec = $Splat.TimeToLiveSec + 1
                         Set-TargetResource @Splat
@@ -258,7 +258,7 @@ try
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0 
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName Set-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 1
                     Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
@@ -267,12 +267,12 @@ try
             }
 
             Context 'Namespace Root exists and should but has a different EnableSiteCosting' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should not throw error' {                        
-                    { 
+
+                It 'should not throw error' {
+                    {
                         $Splat = $Namespace.Clone()
                         $Splat.EnableSiteCosting = $false
                         Set-TargetResource @Splat
@@ -281,7 +281,7 @@ try
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0 
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName Set-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 1
                     Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
@@ -290,12 +290,12 @@ try
             }
 
             Context 'Namespace Root exists and should but has a different EnableInsiteReferrals' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should not throw error' {                        
-                    { 
+
+                It 'should not throw error' {
+                    {
                         $Splat = $Namespace.Clone()
                         $Splat.EnableInsiteReferrals = $False
                         Set-TargetResource @Splat
@@ -304,7 +304,7 @@ try
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0 
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName Set-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 1
                     Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
@@ -313,12 +313,12 @@ try
             }
 
             Context 'Namespace Root exists and should but has a different EnableAccessBasedEnumeration' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should not throw error' {                        
-                    { 
+
+                It 'should not throw error' {
+                    {
                         $Splat = $Namespace.Clone()
                         $Splat.EnableAccessBasedEnumeration = $False
                         Set-TargetResource @Splat
@@ -327,7 +327,7 @@ try
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0 
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName Set-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 1
                     Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
@@ -336,12 +336,12 @@ try
             }
 
             Context 'Namespace Root exists and should but has a different EnableRootScalability' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should not throw error' {                        
-                    { 
+
+                It 'should not throw error' {
+                    {
                         $Splat = $Namespace.Clone()
                         $Splat.EnableRootScalability = $False
                         Set-TargetResource @Splat
@@ -350,7 +350,7 @@ try
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0 
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName Set-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 1
                     Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
@@ -359,12 +359,12 @@ try
             }
 
             Context 'Namespace Root exists and should but has a different EnableTargetFailback' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should not throw error' {                        
-                    { 
+
+                It 'should not throw error' {
+                    {
                         $Splat = $Namespace.Clone()
                         $Splat.EnableTargetFailback = $False
                         Set-TargetResource @Splat
@@ -373,7 +373,7 @@ try
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0 
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName Set-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 1
                     Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
@@ -382,12 +382,12 @@ try
             }
 
             Context 'Namespace Root and Target exists and should' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget -MockWith { $NamespaceTarget }
-    
-                It 'should not throw error' {   
-                    { 
+
+                It 'should not throw error' {
+                    {
                         $Splat = $Namespace.Clone()
                         Set-TargetResource @Splat
                     } | Should Not Throw
@@ -395,7 +395,7 @@ try
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0 
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName Set-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 0
                     Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
@@ -404,12 +404,12 @@ try
             }
 
             Context 'Namespace Root and Target exists and should but has different ReferralPriorityClass' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget -MockWith { $NamespaceTarget }
-    
-                It 'should not throw error' {   
-                    { 
+
+                It 'should not throw error' {
+                    {
                         $Splat = $Namespace.Clone()
                         $Splat.ReferralPriorityClass = 'SiteCost-High'
                         Set-TargetResource @Splat
@@ -418,21 +418,21 @@ try
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0 
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName Set-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 0
                     Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 1
                     Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly 0
                 }
             }
-    
+
             Context 'Namespace Root and Target exists and should but has different ReferralPriorityRank' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget -MockWith { $NamespaceTarget }
-    
-                It 'should not throw error' {   
-                    { 
+
+                It 'should not throw error' {
+                    {
                         $Splat = $Namespace.Clone()
                         $Splat.ReferralPriorityRank++
                         Set-TargetResource @Splat
@@ -441,7 +441,7 @@ try
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0 
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName Set-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 0
                     Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 1
@@ -450,12 +450,12 @@ try
             }
 
             Context 'Namespace Root and Target exists but should not' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget -MockWith { $NamespaceTarget }
-    
-                It 'should not throw error' {   
-                    { 
+
+                It 'should not throw error' {
+                    {
                         $Splat = $Namespace.Clone()
                         $Splat.Ensure = 'Absent'
                         Set-TargetResource @Splat
@@ -464,7 +464,7 @@ try
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0 
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName Set-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 0
                     Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
@@ -473,12 +473,12 @@ try
             }
 
             Context 'Namespace Root exists but Target does not exist and should not' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should not throw error' {   
-                    { 
+
+                It 'should not throw error' {
+                    {
                         $Splat = $Namespace.Clone()
                         $Splat.Ensure = 'Absent'
                         Set-TargetResource @Splat
@@ -487,7 +487,7 @@ try
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
                     Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0 
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName Set-DFSNRoot -Exactly 0
                     Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 0
                     Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
@@ -496,13 +496,13 @@ try
             }
         }
 
-        Describe "$($Global:DSCResourceName)\Test-TargetResource" {
+        Describe "MSFT_xDFSNamespaceRoot\Test-TargetResource" {
 
             Context 'Namespace Root does not exist but should' {
-                
+
                 Mock Get-DFSNRoot
                 Mock Get-DFSNRootTarget
-    
+
                 It 'should return false' {
                     $Splat = $Namespace.Clone()
                     Test-TargetResource @Splat | Should Be $False
@@ -514,11 +514,11 @@ try
             }
 
             Context 'Namespace Root exists and should but Target does not' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should return false' {                        
+
+                It 'should return false' {
                     $Splat = $Namespace.Clone()
                     Test-TargetResource @Splat | Should Be $false
                 }
@@ -529,11 +529,11 @@ try
             }
 
             Context 'Namespace Root exists and should but a different Target type is specified' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should throw exception' {                        
+
+                It 'should throw exception' {
                     $errorId = 'NamespaceRootTypeConversionError'
                     $errorMessage = $($LocalizedData.NamespaceRootTypeConversionError) `
                         -f 'Standalone',$Namespace.Path,$Namespace.TargetPath,'DomainV2'
@@ -556,11 +556,11 @@ try
             }
 
             Context 'Namespace Root exists and should but has a different Description' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should return false' {                        
+
+                It 'should return false' {
                     $Splat = $Namespace.Clone()
                     $Splat.Description = 'A new description'
                     Test-TargetResource @Splat | Should Be $False
@@ -572,11 +572,11 @@ try
             }
 
             Context 'Namespace Root exists and should but has a different TimeToLiveSec' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should return false' {                        
+
+                It 'should return false' {
                     $Splat = $Namespace.Clone()
                     $Splat.TimeToLiveSec = $Splat.TimeToLiveSec + 1
                     Test-TargetResource @Splat | Should Be $False
@@ -588,11 +588,11 @@ try
             }
 
             Context 'Namespace Root exists and should but has a different EnableSiteCosting' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should return false' {                        
+
+                It 'should return false' {
                     $Splat = $Namespace.Clone()
                     $Splat.EnableSiteCosting = $False
                     Test-TargetResource @Splat | Should Be $False
@@ -604,11 +604,11 @@ try
             }
 
             Context 'Namespace Root exists and should but has a different EnableInsiteReferrals' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should return false' {                        
+
+                It 'should return false' {
                     $Splat = $Namespace.Clone()
                     $Splat.EnableInsiteReferrals = $False
                     Test-TargetResource @Splat | Should Be $False
@@ -620,11 +620,11 @@ try
             }
 
             Context 'Namespace Root exists and should but has a different EnableAccessBasedEnumeration' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should return false' {                        
+
+                It 'should return false' {
                     $Splat = $Namespace.Clone()
                     $Splat.EnableAccessBasedEnumeration = $False
                     Test-TargetResource @Splat | Should Be $False
@@ -636,11 +636,11 @@ try
             }
 
             Context 'Namespace Root exists and should but has a different EnableRootScalability' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should return false' {                        
+
+                It 'should return false' {
                     $Splat = $Namespace.Clone()
                     $Splat.EnableRootScalability = $False
                     Test-TargetResource @Splat | Should Be $False
@@ -652,11 +652,11 @@ try
             }
 
             Context 'Namespace Root exists and should but has a different EnableTargetFailback' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should return false' {                        
+
+                It 'should return false' {
                     $Splat = $Namespace.Clone()
                     $Splat.EnableTargetFailback = $False
                     Test-TargetResource @Splat | Should Be $False
@@ -668,11 +668,11 @@ try
             }
 
             Context 'Namespace Root exists and should but has a different ReferralPriorityClass' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should return false' {                        
+
+                It 'should return false' {
                     $Splat = $Namespace.Clone()
                     $Splat.ReferralPriorityClass = 'SiteCost-Normal'
                     Test-TargetResource @Splat | Should Be $False
@@ -684,11 +684,11 @@ try
             }
 
             Context 'Namespace Root exists and should but has a different ReferralPriorityRank' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should return false' {                        
+
+                It 'should return false' {
                     $Splat = $Namespace.Clone()
                     $Splat.ReferralPriorityRank++
                     Test-TargetResource @Splat | Should Be $False
@@ -700,11 +700,11 @@ try
             }
 
             Context 'Namespace Root and Target exists and should' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget -MockWith { $NamespaceTarget }
-    
-                It 'should return true' {   
+
+                It 'should return true' {
                     $Splat = $Namespace.Clone()
                     Test-TargetResource @Splat | Should Be $True
                 }
@@ -715,11 +715,11 @@ try
             }
 
             Context 'Namespace Target exists but should not' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget -MockWith { $NamespaceTarget }
-    
-                It 'should return false' {   
+
+                It 'should return false' {
                     $Splat = $Namespace.Clone()
                     $Splat.Ensure = 'Absent'
                     Test-TargetResource @Splat | Should Be $False
@@ -731,11 +731,11 @@ try
             }
 
             Context 'Namespace Target does not exist but should not' {
-                
+
                 Mock Get-DFSNRoot -MockWith { $NamespaceRoot }
                 Mock Get-DFSNRootTarget
-    
-                It 'should return true' {   
+
+                It 'should return true' {
                     $Splat = $Namespace.Clone()
                     $Splat.Ensure = 'Absent'
                     Test-TargetResource @Splat | Should Be $True
@@ -747,10 +747,10 @@ try
             }
         }
 
-        Describe "$($Global:DSCResourceName)\Get-Root" {
+        Describe "MSFT_xDFSNamespaceRoot\Get-Root" {
 
             Context 'DFSN Root does not exist' {
-                   
+
                 $errorId = 'Cannot get DFS root properites on "{0}"' -f $NamespaceRoot.Path
                 $errorCategory = 'NotSpecified'
                 $exception = New-Object `
@@ -761,7 +761,7 @@ try
                     -ArgumentList $exception, $errorId, $errorCategory, $null
 
                 Mock Get-DfsnRoot { throw $errorRecord }
-                
+
                 It 'should return null' {
 
                     $Result = Get-Root `
@@ -774,11 +774,11 @@ try
             }
 
             Context 'DFSN Root exists' {
-                   
+
                 Mock Get-DfsnRoot -MockWith { $NamespaceRoot }
-                
+
                 It 'should return the expected root' {
-                        
+
                     $Result = Get-Root `
                         -Path $NamespaceRoot.Path
                     $Result | Should Be $NamespaceRoot
@@ -789,10 +789,10 @@ try
             }
         }
 
-        Describe "$($Global:DSCResourceName)\Get-RootTarget" {
+        Describe "MSFT_xDFSNamespaceRoot\Get-RootTarget" {
 
             Context 'DFSN Root Target does not exist' {
-                   
+
                 $errorId = 'Cannot get DFS target properites on "{0}"' -f $NamespaceTarget.TargetPath
                 $errorCategory = 'NotSpecified'
                 $exception = New-Object `
@@ -803,7 +803,7 @@ try
                     -ArgumentList $exception, $errorId, $errorCategory, $null
 
                 Mock Get-DfsnRootTarget { throw $errorRecord }
-                
+
                 It 'should return null' {
 
                     $Result = Get-RootTarget `
@@ -817,11 +817,11 @@ try
             }
 
             Context 'DFSN Root Target exists' {
-                   
+
                 Mock Get-DfsnRootTarget -MockWith { $NamespaceTarget }
-                
+
                 It 'should return the expected target' {
-                        
+
                     $Result = Get-RootTarget `
                         -Path $NamespaceTarget.Path `
                         -TargetPath $NamespaceTarget.TargetPath
@@ -833,10 +833,10 @@ try
             }
         }
 
-        Describe "$($Global:DSCResourceName)\New-TerminatingError" {
+        Describe "MSFT_xDFSNamespaceRoot\New-TerminatingError" {
 
             Context 'Create a TestError Exception' {
-                   
+
                 It 'should throw an TestError exception' {
                     $errorId = 'TestError'
                     $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidArgument
@@ -847,13 +847,13 @@ try
                     $errorRecord = New-Object `
                         -TypeName System.Management.Automation.ErrorRecord `
                         -ArgumentList $exception, $errorId, $errorCategory, $null
-                        
+
                     { New-TerminatingError `
                         -ErrorId $errorId `
                         -ErrorMessage $errorMessage `
                         -ErrorCategory $errorCategory } | Should Throw $errorRecord
                 }
-            }                        
+            }
         }
     }
     #endregion
