@@ -1,9 +1,21 @@
-configuration Sample_xDFSReplicationGroup_FullMesh
+<#
+    .EXAMPLE
+    Create a DFS Replication Group called Public containing two members, FileServer1 and
+    FileServer2. The Replication Group contains a single folder called Software. A description
+    will be set on the Software folder and it will be set to exclude the directory Temp from
+    replication. An automatic fullmesh topology is assigned to the replication group connections.
+#>
+configuration Example
 {
     param
     (
-        [Parameter(Mandatory)]
-        [pscredential] $Credential
+        [Parameter()]
+        [string[]]
+        $NodeName = 'localhost',
+
+        [Parameter()]
+        [pscredential]
+        $Credential
     )
 
     Import-DscResource -Module xDFS
@@ -59,28 +71,8 @@ configuration Sample_xDFSReplicationGroup_FullMesh
             ComputerName = 'FileServer2'
             ContentPath = 'e:\Data\Public\Software'
             PSDSCRunAsCredential = $Credential
-            DependsOn = '[xDFSReplicationGroupFolder]RGPublicSoftwareFS1'
+            DependsOn = '[xDFSReplicationGroupFolder]RGSoftwareFolder'
         } # End of RGPublicSoftwareFS2 Resource
 
     } # End of Node
 } # End of Configuration
-$ComputerName = Read-Host -Prompt 'Computer Name'
-$ConfigData = @{
-    AllNodes = @(
-        @{
-            Nodename = $ComputerName
-            CertificateFile = "C:\publicKeys\targetNode.cer"
-            Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
-        }
-    )
-}
-Sample_xDFSReplicationGroup_FullMesh `
-    -configurationData $ConfigData `
-    -Credential (Get-Credential -Message "Domain Credentials")
-Start-DscConfiguration `
-    -Wait `
-    -Force `
-    -Verbose `
-    -ComputerName $ComputerName `
-    -Path $PSScriptRoot\Sample_xDFSReplicationGroup_FullMesh `
-    -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")

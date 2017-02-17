@@ -7,6 +7,8 @@ install:
 
     - ps: |
         Install-WindowsFeature FS-DFS-Namespace,FS-DFS-Replication,RSAT-DFS-Mgmt-Con
+        $moduleName = 'xDFS'
+        $mainModuleFolder = "Modules\$moduleName"
         Import-Module "$env:APPVEYOR_BUILD_FOLDER\DscResource.Tests\AppVeyor.psm1"
         Invoke-AppveyorInstallTask
 
@@ -23,7 +25,8 @@ build: false
 test_script:
     - ps: |
         Invoke-AppveyorTestScriptTask `
-            -CodeCoverage `
+            -Type 'Harness' `
+            -MainModulePath $mainModuleFolder `
             -CodeCovIo
 
 #---------------------------------#
@@ -33,4 +36,7 @@ test_script:
 # scripts to run before deployment
 deploy_script:
     - ps: |
-        Invoke-AppveyorAfterTestTask
+        Invoke-AppveyorAfterTestTask `
+            -Type 'Wiki' `
+            -MainModulePath $mainModuleFolder `
+            -ResourceModuleName $moduleName

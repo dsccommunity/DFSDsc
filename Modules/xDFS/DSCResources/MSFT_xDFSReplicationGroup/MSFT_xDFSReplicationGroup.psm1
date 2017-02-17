@@ -645,7 +645,7 @@ function Get-FQDNMemberName
 
     if ($ComputerName.Contains('.'))
     {
-        if (($DomainName -ne $null) -and ($DomainName -ne ''))
+        if (($null -ne $DomainName) -and ($DomainName -ne ''))
         {
             if ($ComputerName -like "*.$DomainName")
             {
@@ -669,7 +669,7 @@ function Get-FQDNMemberName
     }
     else
     {
-        if (($DomainName -ne $null) -and ($DomainName -ne ''))
+        if (($null -ne $DomainName) -and ($DomainName -ne ''))
         {
             Return "$ComputerName.$DomainName".ToLower()
         }

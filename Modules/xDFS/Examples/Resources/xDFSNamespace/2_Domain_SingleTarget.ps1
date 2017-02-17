@@ -1,9 +1,20 @@
-Configuration DFSNamespace_Domain_SingleTarget
+<#
+    .EXAMPLE
+    Create an AD Domain V2 based DFS namespace called departments in the domain contoso.com
+    with a single root target on the computer fs_1. Two subfolders are defined with targets
+    that direct to shares on servers fs_3 and fs_8.
+#>
+Configuration Example
 {
     param
     (
-        [Parameter(Mandatory)]
-        [pscredential] $Credential
+        [Parameter()]
+        [string[]]
+        $NodeName = 'localhost',
+
+        [Parameter()]
+        [pscredential]
+        $Credential
     )
 
     Import-DscResource -ModuleName 'xDFS'
@@ -12,10 +23,10 @@ Configuration DFSNamespace_Domain_SingleTarget
     {
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
-        WindowsFeature RSATDFSMgmtConInstall 
-        { 
-            Ensure = "Present" 
-            Name = "RSAT-DFS-Mgmt-Con" 
+        WindowsFeature RSATDFSMgmtConInstall
+        {
+            Ensure = "Present"
+            Name = "RSAT-DFS-Mgmt-Con"
         }
 
         WindowsFeature DFS
@@ -27,7 +38,7 @@ Configuration DFSNamespace_Domain_SingleTarget
        # Configure the namespace
         xDFSNamespaceRoot DFSNamespaceRoot_Domain_Departments
         {
-            Path                 = '\\contoso.com\departments' 
+            Path                 = '\\contoso.com\departments'
             TargetPath           = '\\fs_1\departments'
             Ensure               = 'present'
             Type                 = 'DomainV2'
@@ -39,7 +50,7 @@ Configuration DFSNamespace_Domain_SingleTarget
        # Configure the namespace folders
         xDFSNamespaceFolder DFSNamespaceFolder_Domain_Finance
         {
-            Path                 = '\\contoso.com\departments\finance' 
+            Path                 = '\\contoso.com\departments\finance'
             TargetPath           = '\\fs_3\Finance'
             Ensure               = 'present'
             Description          = 'AD Domain based DFS namespace folder for storing finance files'
@@ -49,7 +60,7 @@ Configuration DFSNamespace_Domain_SingleTarget
 
         xDFSNamespaceFolder DFSNamespaceFolder_Domain_Management
         {
-            Path                 = '\\contoso.com\departments\management' 
+            Path                 = '\\contoso.com\departments\management'
             TargetPath           = '\\fs_8\Management'
             Ensure               = 'present'
             Description          = 'AD Domain based DFS namespace folder for storing management files'
@@ -58,23 +69,3 @@ Configuration DFSNamespace_Domain_SingleTarget
         } # End of xDFSNamespaceFolder Resource
     }
 }
-$ComputerName = Read-Host -Prompt 'Computer Name'
-$ConfigData = @{
-    AllNodes = @(
-        @{
-            Nodename = $ComputerName
-            CertificateFile = "C:\publicKeys\targetNode.cer"
-            Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
-        }
-    )
-}
-DFSNamespace_Domain_SingleTarget `
-    -configurationData $ConfigData `
-    -Credential (Get-Credential -Message "Domain Credentials")
-Start-DscConfiguration `
-    -Wait `
-    -Force `
-    -Verbose `
-    -ComputerName $ComputerName `
-    -Path $PSScriptRoot\DFSNamespace_Domain_SingleTarget `
-    -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")

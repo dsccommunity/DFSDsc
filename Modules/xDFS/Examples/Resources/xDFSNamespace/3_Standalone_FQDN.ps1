@@ -1,9 +1,20 @@
-Configuration DFSNamespace_Standalone
+<#
+    .EXAMPLE
+    Create a standalone DFS namespace using FQDN called public on the server
+    fileserver1.contoso.com. A namespace folder called Brochures is also created in this
+    namespace that targets the \\fileserver2.contoso.com\brochures share.
+#>
+Configuration Example
 {
     param
     (
-        [Parameter(Mandatory)]
-        [pscredential] $Credential
+        [Parameter()]
+        [string[]]
+        $NodeName = 'localhost',
+
+        [Parameter()]
+        [pscredential]
+        $Credential
     )
 
     Import-DscResource -ModuleName 'xDFS'
@@ -24,11 +35,19 @@ Configuration DFSNamespace_Standalone
             Ensure = 'Present'
         }
 
+       # Configure the namespace server
+        xDFSNamespaceServerConfiguration DFSNamespaceConfig
+        {
+            IsSingleInstance          = 'Yes'
+            UseFQDN                   = $true
+            PsDscRunAsCredential      = $Credential
+        } # End of xDFSNamespaceServerConfiguration Resource
+
        # Configure the namespace
         xDFSNamespaceRoot DFSNamespaceRoot_Standalone_Public
         {
-            Path                 = '\\fileserver1\public'
-            TargetPath           = '\\fileserver1\public'
+            Path                 = '\\fileserver1.contoso.com\public'
+            TargetPath           = '\\fileserver1.contoso.com\public'
             Ensure               = 'present'
             Type                 = 'Standalone'
             Description          = 'Standalone DFS namespace for storing public files'
@@ -38,31 +57,11 @@ Configuration DFSNamespace_Standalone
        # Configure the namespace folder
         xDFSNamespaceFolder DFSNamespaceFolder_Standalone_PublicBrochures
         {
-            Path                 = '\\fileserver1\public\brochures'
-            TargetPath           = '\\fileserver2\brochures'
+            Path                 = '\\fileserver1.contoso.com\public\brochures'
+            TargetPath           = '\\fileserver2.contoso.com\brochures'
             Ensure               = 'present'
             Description          = 'Standalone DFS namespace for storing public brochure files'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceFolder Resource
     }
 }
-$ComputerName = Read-Host -Prompt 'Computer Name'
-$ConfigData = @{
-    AllNodes = @(
-        @{
-            Nodename = $ComputerName
-            CertificateFile = "C:\publicKeys\targetNode.cer"
-            Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
-        }
-    )
-}
-DFSNamespace_Standalone `
-    -configurationData $ConfigData `
-    -Credential (Get-Credential -Message "Domain Credentials")
-Start-DscConfiguration `
-    -Wait `
-    -Force `
-    -Verbose `
-    -ComputerName $ComputerName `
-    -Path $PSScriptRoot\DFSNamespace_Standalone `
-    -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")

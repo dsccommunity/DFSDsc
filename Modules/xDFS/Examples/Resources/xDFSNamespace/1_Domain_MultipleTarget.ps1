@@ -1,10 +1,20 @@
-```powershell
-Configuration DFSNamespace_Domain_MultipleTarget
+<#
+    .EXAMPLE
+    Create an AD Domain V2 based DFS namespace called software in the domain contoso.com with
+    a three targets on the servers ca-fileserver, ma-fileserver and ny-fileserver. It also
+    creates a IT folder in each namespace.
+#>
+Configuration Example
 {
     param
     (
-        [Parameter(Mandatory)]
-        [pscredential] $Credential
+        [Parameter()]
+        [string[]]
+        $NodeName = 'localhost',
+
+        [Parameter()]
+        [pscredential]
+        $Credential
     )
 
     Import-DscResource -ModuleName 'xDFS'
@@ -13,10 +23,10 @@ Configuration DFSNamespace_Domain_MultipleTarget
     {
         # Install the Prerequisite features first
         # Requires Windows Server 2012 R2 Full install
-        WindowsFeature RSATDFSMgmtConInstall 
-        { 
-            Ensure = "Present" 
-            Name = "RSAT-DFS-Mgmt-Con" 
+        WindowsFeature RSATDFSMgmtConInstall
+        {
+            Ensure = "Present"
+            Name = "RSAT-DFS-Mgmt-Con"
         }
 
         WindowsFeature DFS
@@ -77,7 +87,7 @@ Configuration DFSNamespace_Domain_MultipleTarget
 
         xDFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_NY
         {
-            Path                 = '\\contoso.com\software\it' 
+            Path                 = '\\contoso.com\software\it'
             TargetPath           = '\\ma-fileserver\it'
             Ensure               = 'present'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
@@ -85,23 +95,3 @@ Configuration DFSNamespace_Domain_MultipleTarget
         } # End of xDFSNamespaceFolder Resource
     }
 }
-$ComputerName = Read-Host -Prompt 'Computer Name'
-$ConfigData = @{
-    AllNodes = @(
-        @{
-            Nodename = $ComputerName
-            CertificateFile = "C:\publicKeys\targetNode.cer"
-            Thumbprint = "AC23EA3A9E291A75757A556D0B71CBBF8C4F6FD8"
-        }
-    )
-}
-DFSNamespace_Domain_MultipleTarget `
-    -configurationData $ConfigData `
-    -Credential (Get-Credential -Message "Domain Credentials")
-Start-DscConfiguration `
-    -Wait `
-    -Force `
-    -Verbose `
-    -ComputerName $ComputerName `
-    -Path $PSScriptRoot\DFSNamespace_Domain_MultipleTarget `
-    -Credential (Get-Credential -Message "Local Admin Credentials on Remote Machine")
