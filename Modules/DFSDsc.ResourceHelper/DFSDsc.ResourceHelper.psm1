@@ -170,5 +170,9 @@ function Get-LocalizedData
     return $localizedData
 }
 
-Export-ModuleMember -Function @( 'Test-IsNanoServer', 'New-InvalidArgumentException',
-    'New-InvalidOperationException', 'Get-LocalizedData' )
+Export-ModuleMember -Function @(
+    'Test-IsNanoServer'
+    'New-InvalidArgumentException'
+    'New-InvalidOperationException'
+    'Get-LocalizedData'
+    )
