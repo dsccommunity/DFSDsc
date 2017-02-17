@@ -1,16 +1,12 @@
-data LocalizedData
-{
-# culture="en-US"
-ConvertFrom-StringData -StringData @'
-GettingNamespaceServerConfigurationMessage=Getting DFS Namespace Server Configuration.
-SettingNamespaceServerConfigurationMessage=Setting DFS Namespace Server Configuration.
-NamespaceServerConfigurationUpdateParameterMessage=Setting DFS Namespace Server Configuration parameter {0} to "{1}".
-NamespaceServerConfigurationUpdatedMessage=Setting DFS Namespace Server Configuration updated.
-NamespaceServerConfigurationServiceRestartedMessage=DFS Namespace Server restarted.
-TestingNamespaceServerConfigurationMessage=Testing DFS Namespace Server Configuration.
-NamespaceServerConfigurationParameterNeedsUpdateMessage=DFS Namespace Server Configuration parameter "{0}" is "{1}" but should be "{2}". Change required.
-'@
-}
+$script:ResourceRootPath = Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent)
+
+# Import the xCertificate Resource Module (to import the common modules)
+Import-Module -Name (Join-Path -Path $script:ResourceRootPath -ChildPath 'xDFS.psd1')
+
+# Import Localization Strings
+$localizedData = Get-LocalizedData `
+    -ResourceName 'MSFT_xDFSNamespaceServerConfiguration' `
+    -ResourcePath (Split-Path -Parent $Script:MyInvocation.MyCommand.Path)
 
 <#
     This is an array of all the parameters used by this resource

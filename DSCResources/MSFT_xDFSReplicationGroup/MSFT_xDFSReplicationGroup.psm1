@@ -1,37 +1,12 @@
-data LocalizedData
-{
-    # culture="en-US"
-    ConvertFrom-StringData -StringData @'
-GettingReplicationGroupMessage=Getting DFS Replication Group "{0}".
-ReplicationGroupExistsMessage=DFS Replication Group "{0}" exists.
-ReplicationGroupDoesNotExistMessage=DFS Replication Group "{0}" does not exist.
-SettingRegGroupMessage=Setting DFS Replication Group "{0}".
-EnsureReplicationGroupExistsMessage=Ensuring DFS Replication Group "{0}" exists.
-EnsureReplicationGroupDoesNotExistMessage=Ensuring DFS Replication Group "{0}" does not exist.
-ReplicationGroupCreatedMessage=DFS Replication Group "{0}" has been created.
-ReplicationGroupDescriptionUpdatedMessage=DFS Replication Group "{0}" description has been updated.
-ReplicationGroupMemberAddedMessage=DFS Replication Group "{0}" added member "{2}".
-ReplicationGroupMemberRemovedMessage=DFS Replication Group "{0}" removed member "{2}".
-ReplicationGroupFolderAddedMessage=DFS Replication Group "{0}" added folder "{2}".
-ReplicationGroupFolderRemovedMessage=DFS Replication Group "{0}" removed folder "{2}".
-ReplicationGroupContentPathUpdatedMessage=DFS Replication Group "{0}" Content Path for "{2}" updated.
-ReplicationGroupExistsRemovedMessage=DFS Replication Group "{0}" existed, but has been removed.
-ReplicationGroupFullMeshConnectionAddedMessage=DFS Replication Group "{0}" Fullmesh Connection from "{2}" to "{3}" added.
-ReplicationGroupFullMeshConnectionUpdatedMessage=DFS Replication Group "{0}" Fullmesh Connection from "{2}" to "{3}" updated.
-TestingRegGroupMessage=Testing DFS Replication Group "{0}".
-ReplicationGroupDescriptionNeedsUpdateMessage=DFS Replication Group "{0}" description is different. Change required.
-ReplicationGroupMembersNeedUpdateMessage=DFS Replication Group "{0}" members are different. Change required.
-ReplicationGroupFoldersNeedUpdateMessage=DFS Replication Group "{0}" folders are different. Change required.
-ReplicationGroupContentPathNeedUpdateMessage=DFS Replication Group "{0}" Content Path for "{2}" is different. Change required.
-ReplicationGroupDoesNotExistButShouldMessage=DFS Replication Group "{0}" does not exist but should. Change required.
-ReplicationGroupExistsButShouldNotMessage=DFS Replication Group "{0}" exists but should not. Change required.
-ReplicationGroupDoesNotExistAndShouldNotMessage=DFS Replication Group "{0}" does not exist and should not. Change not required.
-ReplicationGroupFullMeshMissingConnectionMessage=DFS Replication Group "{0}" Fullmesh Connection from "{2}" to "{3}" does not exist. Change required.
-ReplicationGroupFullMeshDisabledConnectionMessage=DFS Replication Group "{0}" Fullmesh Connection from "{2}" to "{3}" is disabled. Change required.
-ReplicationGroupDomainMismatchError=DFS Replication Group "{0}" Domain name in Member "{1}" does not match DomainName "{2}". Configuration correction required.
-'@
-}
+$script:ResourceRootPath = Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent)
 
+# Import the xCertificate Resource Module (to import the common modules)
+Import-Module -Name (Join-Path -Path $script:ResourceRootPath -ChildPath 'xDFS.psd1')
+
+# Import Localization Strings
+$localizedData = Get-LocalizedData `
+    -ResourceName 'MSFT_xDFSReplicationGroup' `
+    -ResourcePath (Split-Path -Parent $Script:MyInvocation.MyCommand.Path)
 
 function Get-TargetResource
 {
@@ -50,7 +25,7 @@ function Get-TargetResource
         [String]
         $DomainName
     )
-    
+
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
         $($LocalizedData.GettingReplicationGroupMessage) `
@@ -73,7 +48,7 @@ function Get-TargetResource
             $($LocalizedData.ReplicationGroupExistsMessage) `
                 -f $GroupName,$DomainName
             ) -join '' )
-          
+
         # Array paramters are disabled until this issue is resolved:
         # https://windowsserver.uservoice.com/forums/301869-powershell/suggestions/11088807-get-dscconfiguration-fails-with-embedded-cim-type
         $returnValue += @{
@@ -86,7 +61,7 @@ function Get-TargetResource
         }
     }
     else
-    {       
+    {
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($LocalizedData.ReplicationGroupDoesNotExistMessage) `
@@ -199,7 +174,7 @@ function Set-TargetResource
 
         # Clean up the splat so we can use it in the next cmdlets
         $Splat.Remove('Description')
-        
+
         # Create an array of FQDN Members from the Members Array
         $Splat += @{ ComputerName = '' }
         foreach ($Member in $Members)
@@ -208,12 +183,12 @@ function Set-TargetResource
             $FQDNMembers += @( Get-FQDNMemberName @Splat )
         }
         $Splat.Remove('ComputerName')
-        
+
         # Get the existing members of this DFS Rep Group
         $ExistingMembers = (Get-DfsrMember @Splat -ErrorAction Stop).DnsName
 
         # Add any missing members
-        foreach ($Member in $FQDNMembers) 
+        foreach ($Member in $FQDNMembers)
         {
             if ($Member -notin $ExistingMembers)
             {
@@ -297,9 +272,9 @@ function Set-TargetResource
                 $ContentPath = $ContentPaths[$i]
                 if ($ContentPath)
                 {
-                     foreach ($membership in $memberships) 
+                     foreach ($membership in $memberships)
                      {
-                        
+
                         [String] $FQDNMemberName = Get-FQDNMemberName `
                             @Splat `
                             -ComputerName $membership.ComputerName
@@ -638,16 +613,16 @@ function Test-TargetResource
 <#
 .SYNOPSIS
     Returns the FQDN Member name based on the ComputerName and DomainName that are provided.
-    
+
     If the ComputerName is already an FQDN but the domain in the FQDN does not match the
     value passed in DomainName then throw an exception.
-    
+
     If the ComputerName is already an FQDN and the domain in the FQDN does match the value
     passed in DomainName then the existing ComputerName is returned.
-    
+
     If the ComputerName is not already an FQDN and the DomainName passed is not empty then
     the ComputerName and DomainName are combined and returned.
-    
+
     If the ComputerName is not already an FQDN and the DomainName passed is empty then
     the ComputerName is returned.
 #>
@@ -667,7 +642,7 @@ function Get-FQDNMemberName
         [String]
         $DomainName
     )
-    
+
     if ($ComputerName.Contains('.'))
     {
         if (($DomainName -ne $null) -and ($DomainName -ne ''))

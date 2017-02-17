@@ -1,6 +1,7 @@
 # xDFS
 
 [![Build status](https://ci.appveyor.com/api/projects/status/5hkcpe757hhe4583?svg=true)](https://ci.appveyor.com/project/PowerShell/xdfs)
+[![codecov](https://codecov.io/gh/PowerShell/xDFS/branch/master/graph/badge.svg)](https://codecov.io/gh/PowerShell/xDFS)
 
 The **xDFS** module contains DSC resources for configuring Distributed File System Replication and Namespaces. Currently in this version only Replication folders are supported. Namespaces will be supported in a future release.
 
@@ -761,6 +762,8 @@ Start-DscConfiguration `
 * Resolved PSSA violations.
 * Resolved Readme.md style violations.
 * Converted Integration Tests to use Test Drive and stop using Invoke-Pester.
+* Move strings into separate language files.
+* Added CodeCov support.
 
 ### 3.1.0.0
 

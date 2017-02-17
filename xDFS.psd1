@@ -55,7 +55,7 @@ TypesToProcess = @()
 FormatsToProcess = @()
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-# NestedModules = @()
+NestedModules = @('Modules\DFSDsc.ResourceHelper\DFSDsc.ResourceHelper.psm1')
 
 # Functions to export from this module
 FunctionsToExport = @()
@@ -106,7 +106,7 @@ PrivateData = @{
         # ExternalModuleDependencies = ''
 
     } # End of PSData hashtable
-    
+
  } # End of PrivateData hashtable
 
 # HelpInfo URI of this module

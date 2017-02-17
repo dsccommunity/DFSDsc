@@ -1,20 +1,12 @@
-data LocalizedData
-{
-    # culture="en-US"
-    ConvertFrom-StringData -StringData @'
-GettingReplicationGroupMembershipMessage=Getting DFS Replication Group "{0}" folder "{1}" on "{2}".
-ReplicationGroupMembershipExistsMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" exists.
-ReplicationGroupMembershipMissingError=DFS Replication Group "{0}" folder "{1}" on "{2}" is missing.
-SettingRegGroupMembershipMessage=Setting DFS Replication Group "{0}" folder "{1}" on "{2}".
-ReplicationGroupMembershipUpdatedMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" has has been updated.
-TestingRegGroupMembershipMessage=Testing DFS Replication Group "{0}" folder "{1}" on "{2}".
-ReplicationGroupMembershipContentPathMismatchMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect ContentPath. Change required.
-ReplicationGroupMembershipStagingPathMismatchMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect StagingPath. Change required.
-ReplicationGroupMembershipReadOnlyMismatchMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect ReadOnly. Change required.
-ReplicationGroupMembershipPrimaryMemberismatchMessage=DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect PrimaryMember. Change required.
-'@
-}
+$script:ResourceRootPath = Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent)
 
+# Import the xCertificate Resource Module (to import the common modules)
+Import-Module -Name (Join-Path -Path $script:ResourceRootPath -ChildPath 'xDFS.psd1')
+
+# Import Localization Strings
+$localizedData = Get-LocalizedData `
+    -ResourceName 'MSFT_xDFSReplicationGroupMembership' `
+    -ResourcePath (Split-Path -Parent $Script:MyInvocation.MyCommand.Path)
 
 function Get-TargetResource
 {
@@ -36,7 +28,7 @@ function Get-TargetResource
         [String]
         $DomainName
     )
-    
+
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
         $($LocalizedData.GettingReplicationGroupMembershipMessage) `
@@ -75,7 +67,7 @@ function Get-TargetResource
         }
     }
     else
-    {       
+    {
         # The Rep Group membership doesn't exist
         $errorId = 'RegGroupMembershipMissingError'
         $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
@@ -215,7 +207,7 @@ function Test-TargetResource
                 ) -join '' )
             $desiredConfigurationMatch = $false
         }
-        
+
         # Check the StagingPath
         if (($PSBoundParameters.ContainsKey('StagingPath')) `
             -and ($ReplicationGroupMembership.StagingPath -ne $StagingPath))

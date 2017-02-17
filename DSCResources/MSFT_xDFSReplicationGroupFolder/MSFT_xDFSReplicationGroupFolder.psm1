@@ -1,20 +1,12 @@
-data LocalizedData
-{
-    # culture="en-US"
-    ConvertFrom-StringData -StringData @'
-GettingReplicationGroupFolderMessage=Getting DFS Replication Group "{0}" folder "{1}".
-ReplicationGroupFolderExistsMessage=DFS Replication Group "{0}" folder "{1}" exists.
-ReplicationGroupFolderMissingError=DFS Replication Group "{0}" folder "{1}" is missing.
-SettingRegGroupFolderMessage=Setting DFS Replication Group "{0}" folder "{1}".
-ReplicationGroupFolderUpdatedMessage=DFS Replication Group "{0}" folder "{1}" has has been updated.
-TestingRegGroupFolderMessage=Testing DFS Replication Group "{0}" folder "{1}".
-ReplicationGroupFolderDescriptionMismatchMessage=DFS Replication Group "{0}" folder "{1}" has incorrect Description. Change required.
-ReplicationGroupFolderFileNameToExcludeMismatchMessage=DFS Replication Group "{0}" folder "{1}" has incorrect FileNameToExclude. Change required.
-ReplicationGroupFolderDirectoryNameToExcludeMismatchMessage=DFS Replication Group "{0}" folder "{1}" has incorrect DirectoryNameToExclude. Change required.
-ReplicationGroupFolderDfsnPathMismatchMessage=DFS Replication Group "{0}" folder "{1}" has incorrect DfsnPath. Change required.
-'@
-}
+$script:ResourceRootPath = Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent)
 
+# Import the xCertificate Resource Module (to import the common modules)
+Import-Module -Name (Join-Path -Path $script:ResourceRootPath -ChildPath 'xDFS.psd1')
+
+# Import Localization Strings
+$localizedData = Get-LocalizedData `
+    -ResourceName 'MSFT_xDFSReplicationGroupFolder' `
+    -ResourcePath (Split-Path -Parent $Script:MyInvocation.MyCommand.Path)
 
 function Get-TargetResource
 {
@@ -32,7 +24,7 @@ function Get-TargetResource
         [String]
         $DomainName
     )
-    
+
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
         $($LocalizedData.GettingReplicationGroupFolderMessage) `
@@ -69,7 +61,7 @@ function Get-TargetResource
         }
     }
     else
-    {       
+    {
         # The Rep Group folder doesn't exist
         $errorId = 'RegGroupFolderMissingError'
         $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
@@ -202,7 +194,7 @@ function Test-TargetResource
                 ) -join '' )
             $desiredConfigurationMatch = $false
         }
-        
+
         # Check the FileNameToExclude
         if (($PSBoundParameters.ContainsKey('FileNameToExclude')) `
             -and ((Compare-Object `

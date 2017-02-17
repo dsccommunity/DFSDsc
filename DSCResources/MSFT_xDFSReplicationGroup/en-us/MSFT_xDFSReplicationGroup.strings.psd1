@@ -1,0 +1,29 @@
+ConvertFrom-StringData @'
+    GettingReplicationGroupMessage                    = Getting DFS Replication Group "{0}".
+    ReplicationGroupExistsMessage                     = DFS Replication Group "{0}" exists.
+    ReplicationGroupDoesNotExistMessage               = DFS Replication Group "{0}" does not exist.
+    SettingRegGroupMessage                            = Setting DFS Replication Group "{0}".
+    EnsureReplicationGroupExistsMessage               = Ensuring DFS Replication Group "{0}" exists.
+    EnsureReplicationGroupDoesNotExistMessage         = Ensuring DFS Replication Group "{0}" does not exist.
+    ReplicationGroupCreatedMessage                    = DFS Replication Group "{0}" has been created.
+    ReplicationGroupDescriptionUpdatedMessage         = DFS Replication Group "{0}" description has been updated.
+    ReplicationGroupMemberAddedMessage                = DFS Replication Group "{0}" added member "{2}".
+    ReplicationGroupMemberRemovedMessage              = DFS Replication Group "{0}" removed member "{2}".
+    ReplicationGroupFolderAddedMessage                = DFS Replication Group "{0}" added folder "{2}".
+    ReplicationGroupFolderRemovedMessage              = DFS Replication Group "{0}" removed folder "{2}".
+    ReplicationGroupContentPathUpdatedMessage         = DFS Replication Group "{0}" Content Path for "{2}" updated.
+    ReplicationGroupExistsRemovedMessage              = DFS Replication Group "{0}" existed, but has been removed.
+    ReplicationGroupFullMeshConnectionAddedMessage    = DFS Replication Group "{0}" Fullmesh Connection from "{2}" to "{3}" added.
+    ReplicationGroupFullMeshConnectionUpdatedMessage  = DFS Replication Group "{0}" Fullmesh Connection from "{2}" to "{3}" updated.
+    TestingRegGroupMessage                            = Testing DFS Replication Group "{0}".
+    ReplicationGroupDescriptionNeedsUpdateMessage     = DFS Replication Group "{0}" description is different. Change required.
+    ReplicationGroupMembersNeedUpdateMessage          = DFS Replication Group "{0}" members are different. Change required.
+    ReplicationGroupFoldersNeedUpdateMessage          = DFS Replication Group "{0}" folders are different. Change required.
+    ReplicationGroupContentPathNeedUpdateMessage      = DFS Replication Group "{0}" Content Path for "{2}" is different. Change required.
+    ReplicationGroupDoesNotExistButShouldMessage      = DFS Replication Group "{0}" does not exist but should. Change required.
+    ReplicationGroupExistsButShouldNotMessage         = DFS Replication Group "{0}" exists but should not. Change required.
+    ReplicationGroupDoesNotExistAndShouldNotMessage   = DFS Replication Group "{0}" does not exist and should not. Change not required.
+    ReplicationGroupFullMeshMissingConnectionMessage  = DFS Replication Group "{0}" Fullmesh Connection from "{2}" to "{3}" does not exist. Change required.
+    ReplicationGroupFullMeshDisabledConnectionMessage = DFS Replication Group "{0}" Fullmesh Connection from "{2}" to "{3}" is disabled. Change required.
+    ReplicationGroupDomainMismatchError               = DFS Replication Group "{0}" Domain name in Member "{1}" does not match DomainName "{2}". Configuration correction required.
+'@
