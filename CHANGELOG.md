@@ -4,7 +4,7 @@
 
 - Converted AppVeyor.yml to pull Pester from PSGallery instead of Chocolatey.
 - Changed AppVeyor.yml to use default image.
-- Converted AppVeyor build process to use AppVeyor.yml.
+- Converted AppVeyor build process to use AppVeyor.psm1.
 - Resolved PSSA violations.
 - Resolved Readme.md style violations.
 - Converted Integration Tests to use Test Drive and stop using Invoke-Pester.
