@@ -22,6 +22,13 @@ data parameterList
     )
 }
 
+<#
+    .SYNOPSIS
+    Returns the current state of a DFS Namespace Server Configuration.
+
+    .PARAMETER IsSingleInstance
+    Specifies the resource is a single instance, the value must be 'Yes'
+#>
 function Get-TargetResource
 {
     [CmdletBinding()]
@@ -60,6 +67,25 @@ function Get-TargetResource
     return $returnValue
 } # Get-TargetResource
 
+<#
+    .SYNOPSIS
+    Sets the DFS Namespace Server Configuration.
+
+    .PARAMETER IsSingleInstance
+    Specifies the resource is a single instance, the value must be 'Yes'.
+
+    .PARAMETER LdapTimeoutSec
+    Specifies a time-out value, in seconds, for Lightweight Directory
+    Access Protocol (LDAP) requests for the DFS namespace server.
+
+    .PARAMETER SyncIntervalSec
+    This interval controls how often domain-based DFS namespace root
+    servers and domain controllers connect to the PDC emulator to get
+    updates of DFS namespace metadata.
+
+    .PARAMETER UseFQDN
+    Indicates whether a DFS namespace server uses FQDNs in referrals.
+#>
 function Set-TargetResource
 {
     [CmdletBinding()]
@@ -150,6 +176,25 @@ function Set-TargetResource
     } # if
 } # Set-TargetResource
 
+<#
+    .SYNOPSIS
+    Tests the DFS Namespace Server Configuration.
+
+    .PARAMETER IsSingleInstance
+    Specifies the resource is a single instance, the value must be 'Yes'.
+
+    .PARAMETER LdapTimeoutSec
+    Specifies a time-out value, in seconds, for Lightweight Directory
+    Access Protocol (LDAP) requests for the DFS namespace server.
+
+    .PARAMETER SyncIntervalSec
+    This interval controls how often domain-based DFS namespace root
+    servers and domain controllers connect to the PDC emulator to get
+    updates of DFS namespace metadata.
+
+    .PARAMETER UseFQDN
+    Indicates whether a DFS namespace server uses FQDNs in referrals.
+#>
 function Test-TargetResource
 {
     [CmdletBinding()]
