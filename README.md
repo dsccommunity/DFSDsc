@@ -7,6 +7,19 @@ The **xDFS** module contains DSC resources for configuring Distributed File
 System Replication and Namespaces. Currently in this version only Replication
 folders are supported. Namespaces will be supported in a future release.
 
+The **xDFS** module contains the following resources:
+
+- **xDFSNamespaceFolder**: Create, edit or remove folders from DFS namespaces.
+- **xDFSNamespaceRoot**: Create, edit or remove standalone or domain based DFS
+  namespaces.
+- **xDFSNamespaceServerConfiguration**: Configure DFS Namespace server settings.
+- **xDFSReplicationGroup**: Create, edit or remove DFS Replication Groups.
+- **xDFSReplicationGroupConnection**: Create, edit and remove DFS Replication
+  Group connections.
+- **xDFSReplicationGroupFolder**: Configure DFS Replication Group folders.
+- **xDFSReplicationGroupMembership**: Configure Replication Group Folder
+  Membership.
+
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/)
 or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
