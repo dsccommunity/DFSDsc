@@ -63,29 +63,6 @@ try
     #region Pester Tests
     InModuleScope $script:DSCResourceName {
 
-        function New-TestException
-        {
-            [CmdLetBinding()]
-            param
-            (
-                [Parameter(Mandatory = $true)]
-                [System.String] $errorId,
-
-                [Parameter(Mandatory = $true)]
-                [System.Management.Automation.ErrorCategory] $errorCategory,
-
-                [Parameter(Mandatory = $true)]
-                [System.String] $errorMessage
-            )
-
-            $exception = New-Object -TypeName System.Exception `
-                -ArgumentList $errorMessage
-            $errorRecord = New-Object -TypeName System.Management.Automation.ErrorRecord `
-                -ArgumentList $exception, $errorId, $errorCategory, $null
-
-            return $errorRecord
-        } # New-TestException
-
         # Create the Mock Objects that will be used for running tests
         $ReplicationGroup = [PSObject]@{
             GroupName = 'Test Group'
