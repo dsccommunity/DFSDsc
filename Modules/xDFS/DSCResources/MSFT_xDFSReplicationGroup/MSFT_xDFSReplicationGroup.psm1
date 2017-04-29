@@ -642,7 +642,7 @@ function Test-TargetResource
                     {
                         foreach ($membership in $memberships)
                         {
-                            [System.Boolean]$primarymember = ($membership.ComputerName -eq $Members[0])
+                            [System.Boolean] $primarymember = ($membership.ComputerName -eq $Members[0])
 
                             if (($membership.FolderName -ne $Folders[$i]) `
                                 -or (($membership.ContentPath -eq $contentPath) `
@@ -804,13 +804,9 @@ function Get-FQDNMemberName
             }
             else
             {
-                $ExceptionParameters = @{
-                    errorId = 'ReplicationGroupDomainMismatchError'
-                    errorCategory = 'InvalidArgument'
-                    errorMessage = $($LocalizedData.ReplicationGroupDomainMismatchError `
-                        -f $GroupName,$ComputerName,$DomainName)
-                }
-                New-Exception @ExceptionParameters
+                New-InvalidOperationException `
+                    -Message ($($LocalizedData.ReplicationGroupDomainMismatchError `
+                        -f $GroupName,$ComputerName,$DomainName))
             } # if
         }
         else

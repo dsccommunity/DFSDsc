@@ -1286,14 +1286,12 @@ try
                         ComputerName = 'test.contoso.com'
                         DomainName = 'NOTMATCH.COM'
                     }
-                    $ExceptionParameters = @{
-                        errorId = 'ReplicationGroupDomainMismatchError'
-                        errorCategory = 'InvalidArgument'
-                        errorMessage = $($LocalizedData.ReplicationGroupDomainMismatchError `
-                            -f $Splat.GroupName,$Splat.ComputerName,$Splat.DomainName)
-                    }
-                    $Exception = New-TestException @ExceptionParameters
-                    { Get-FQDNMemberName @Splat } | Should Throw $Exception
+
+                    $errorRecord = Get-InvalidOperationRecord `
+                        -Message ($($LocalizedData.ReplicationGroupDomainMismatchError `
+                        -f $Splat.GroupName,$Splat.ComputerName,$Splat.DomainName))
+
+                    { Get-FQDNMemberName @Splat } | Should Throw $errorRecord
                 }
             }
             Context 'ComputerName passed does not include Domain Name and DomainName was passed' {
