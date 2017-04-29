@@ -8,6 +8,26 @@ $localizedData = Get-LocalizedData `
     -ResourceName 'MSFT_xDFSReplicationGroupMembership' `
     -ResourcePath (Split-Path -Parent $Script:MyInvocation.MyCommand.Path)
 
+<#
+    .SYNOPSIS
+    Returns the current state of a DFS Replication Group Membership.
+
+    .PARAMETER GroupName
+    The name of the DFS Replication Group.
+
+    .PARAMETER FolderName
+    The name of the DFS Replication Group Folder.
+
+    .PARAMETER ComputerName
+    The computer name of the Replication Group member. This can be
+    specified using either the ComputerName or FQDN name for the member.
+    If an FQDN name is used and the DomainName parameter is set, the FQDN
+    domain name must match.
+
+    .PARAMETER DomainName
+    The name of the AD Domain the DFS Replication Group this replication
+    group is in.
+#>
 function Get-TargetResource
 {
     [OutputType([System.Collections.Hashtable])]
@@ -37,54 +57,90 @@ function Get-TargetResource
         ) -join '' )
 
     # Lookup the existing Replication Group
-    $Splat = @{
+    $membershipParameters = @{
         GroupName = $GroupName
         ComputerName = $ComputerName
     }
-    $returnValue = $Splat
+
+    $returnValue = $membershipParameters
+
     if ($DomainName)
     {
-        $Splat += @{ DomainName = $DomainName }
+        $membershipParameters += @{
+            DomainName = $DomainName
+        }
     }
-    $returnValue += @{ FolderName = $FolderName }
-    $ReplicationGroupMembership = Get-DfsrMembership @Splat `
+
+    $returnValue += @{
+        FolderName = $FolderName
+    }
+
+    $replicationGroupMembership = Get-DfsrMembership @membershipParameters `
         -ErrorAction Stop `
         | Where-Object { $_.FolderName -eq $FolderName }
-    if ($ReplicationGroupMembership)
+
+    if ($replicationGroupMembership)
     {
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($LocalizedData.ReplicationGroupMembershipExistsMessage) `
                 -f $GroupName,$FolderName,$ComputerName,$DomainName
             ) -join '' )
-        $ReturnValue.ComputerName = $ReplicationGroupMembership.ComputerName
+        $returnValue.ComputerName = $replicationGroupMembership.ComputerName
         $returnValue += @{
-            ContentPath = $ReplicationGroupMembership.ContentPath
-            StagingPath = $ReplicationGroupMembership.StagingPath
-            ConflictAndDeletedPath = $ReplicationGroupMembership.ConflictAndDeletedPath
-            ReadOnly = $ReplicationGroupMembership.ReadOnly
-            PrimaryMember = $ReplicationGroupMembership.PrimaryMember
-            DomainName = $ReplicationGroupMembership.DomainName
+            ContentPath = $replicationGroupMembership.ContentPath
+            StagingPath = $replicationGroupMembership.StagingPath
+            ConflictAndDeletedPath = $replicationGroupMembership.ConflictAndDeletedPath
+            ReadOnly = $replicationGroupMembership.ReadOnly
+            PrimaryMember = $replicationGroupMembership.PrimaryMember
+            DomainName = $replicationGroupMembership.DomainName
         }
     }
     else
     {
         # The Rep Group membership doesn't exist
-        $errorId = 'RegGroupMembershipMissingError'
-        $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
-        $errorMessage = $($LocalizedData.ReplicationGroupMembershipMissingError) `
-            -f $GroupName,$FolderName,$ComputerName,$DomainName
-        $exception = New-Object -TypeName System.InvalidOperationException `
-            -ArgumentList $errorMessage
-        $errorRecord = New-Object -TypeName System.Management.Automation.ErrorRecord `
-            -ArgumentList $exception, $errorId, $errorCategory, $null
-
-        $PSCmdlet.ThrowTerminatingError($errorRecord)
+        New-InvalidOperationException `
+            -Message ($($LocalizedData.ReplicationGroupMembershipMissingError) `
+                -f $GroupName,$FolderName,$ComputerName,$DomainName)
     }
 
-    $returnValue
+    return $returnValue
 } # Get-TargetResource
 
+<#
+    .SYNOPSIS
+    Sets DFS Replication Group Membership.
+
+    .PARAMETER GroupName
+    The name of the DFS Replication Group.
+
+    .PARAMETER FolderName
+    The name of the DFS Replication Group Folder.
+
+    .PARAMETER ComputerName
+    The computer name of the Replication Group member. This can be
+    specified using either the ComputerName or FQDN name for the member.
+    If an FQDN name is used and the DomainName parameter is set, the FQDN
+    domain name must match.
+
+    .PARAMETER ContentPath
+    The local content path for the DFS Replication Group Folder.
+
+    .PARAMETER StagingPath
+    The local staging path for the DFS Replication Group Folder.
+
+    .PARAMETER ReadOnly
+    Specify if this content path should be read only.
+
+    .PARAMETER PrimaryMember
+    Used to configure this as the Primary Member. Every folder must
+    have at least one primary member for initial replication to take
+    place.
+
+    .PARAMETER DomainName
+    The name of the AD Domain the DFS Replication Group this replication
+    group is in.
+#>
 function Set-TargetResource
 {
     param
@@ -139,6 +195,40 @@ function Set-TargetResource
         ) -join '' )
 } # Set-TargetResource
 
+<#
+    .SYNOPSIS
+    Tests DFS Replication Group Membership.
+
+    .PARAMETER GroupName
+    The name of the DFS Replication Group.
+
+    .PARAMETER FolderName
+    The name of the DFS Replication Group Folder.
+
+    .PARAMETER ComputerName
+    The computer name of the Replication Group member. This can be
+    specified using either the ComputerName or FQDN name for the member.
+    If an FQDN name is used and the DomainName parameter is set, the FQDN
+    domain name must match.
+
+    .PARAMETER ContentPath
+    The local content path for the DFS Replication Group Folder.
+
+    .PARAMETER StagingPath
+    The local staging path for the DFS Replication Group Folder.
+
+    .PARAMETER ReadOnly
+    Specify if this content path should be read only.
+
+    .PARAMETER PrimaryMember
+    Used to configure this as the Primary Member. Every folder must
+    have at least one primary member for initial replication to take
+    place.
+
+    .PARAMETER DomainName
+    The name of the AD Domain the DFS Replication Group this replication
+    group is in.
+#>
 function Test-TargetResource
 {
     [OutputType([System.Boolean])]
@@ -187,18 +277,23 @@ function Test-TargetResource
         ) -join '' )
 
     # Lookup the existing Replication Group
-    $Splat = @{
+    $membershipParameters = @{
         GroupName = $GroupName
         ComputerName = $ComputerName
     }
+
     if ($DomainName)
     {
-        $Splat += @{ DomainName = $DomainName }
+        $membershipParameters += @{
+            DomainName = $DomainName
+        }
     }
-    $ReplicationGroupMembership = Get-DfsrMembership @Splat `
+
+    $replicationGroupMembership = Get-DfsrMembership @membershipParameters `
         -ErrorAction Stop `
         | Where-Object { $_.FolderName -eq $FolderName }
-    if ($ReplicationGroupMembership)
+
+    if ($replicationGroupMembership)
     {
         # The rep group folder is found
         Write-Verbose -Message ( @(
@@ -209,67 +304,63 @@ function Test-TargetResource
 
         # Check the ContentPath
         if (($PSBoundParameters.ContainsKey('ContentPath')) `
-            -and ($ReplicationGroupMembership.ContentPath -ne $ContentPath))
+            -and ($replicationGroupMembership.ContentPath -ne $ContentPath))
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupMembershipContentPathMismatchMessage) `
                     -f $GroupName,$FolderName,$ComputerName,$DomainName
                 ) -join '' )
+
             $desiredConfigurationMatch = $false
-        }
+        } # if
 
         # Check the StagingPath
         if (($PSBoundParameters.ContainsKey('StagingPath')) `
-            -and ($ReplicationGroupMembership.StagingPath -ne $StagingPath))
+            -and ($replicationGroupMembership.StagingPath -ne $StagingPath))
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupMembershipStagingPathMismatchMessage) `
                     -f $GroupName,$FolderName,$ComputerName,$DomainName
                 ) -join '' )
+
             $desiredConfigurationMatch = $false
-        }
+        } # if
 
         # Check the ReadOnly
         if (($PSBoundParameters.ContainsKey('ReadOnly')) `
-            -and ($ReplicationGroupMembership.ReadOnly -ne $ReadOnly))
+            -and ($replicationGroupMembership.ReadOnly -ne $ReadOnly))
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupMembershipReadOnlyMismatchMessage) `
                     -f $GroupName,$FolderName,$ComputerName,$DomainName
                 ) -join '' )
+
             $desiredConfigurationMatch = $false
-        }
+        } # if
 
         # Check the PrimaryMember
         if (($PSBoundParameters.ContainsKey('PrimaryMember')) `
-            -and ($ReplicationGroupMembership.PrimaryMember -ne $PrimaryMember))
+            -and ($replicationGroupMembership.PrimaryMember -ne $PrimaryMember))
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupMembershipPrimaryMemberMismatchMessage) `
                     -f $GroupName,$FolderName,$ComputerName,$DomainName
                 ) -join '' )
-            $desiredConfigurationMatch = $false
-        }
 
+            $desiredConfigurationMatch = $false
+        } # if
     }
     else
     {
         # The Rep Group membership doesn't exist
-        $errorId = 'RegGroupMembershipMissingError'
-        $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
-        $errorMessage = $($LocalizedData.ReplicationGroupMembershipMissingError) `
-            -f $GroupName,$FolderName,$ComputerName,$DomainName
-        $exception = New-Object -TypeName System.InvalidOperationException `
-            -ArgumentList $errorMessage
-        $errorRecord = New-Object -TypeName System.Management.Automation.ErrorRecord `
-            -ArgumentList $exception, $errorId, $errorCategory, $null
-
-        $PSCmdlet.ThrowTerminatingError($errorRecord)
-    }
+        New-InvalidOperationException `
+            -Message ($($LocalizedData.ReplicationGroupMembershipMissingError) `
+                -f $GroupName,$FolderName,$ComputerName,$DomainName)
+    } # if
 
     return $desiredConfigurationMatch
 } # Test-TargetResource

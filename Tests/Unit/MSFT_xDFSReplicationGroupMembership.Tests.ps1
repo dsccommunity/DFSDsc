@@ -146,14 +146,9 @@ try
                 Mock Get-DfsrMembership
 
                 It 'should throw RegGroupFolderMissingError error' {
-                    $errorId = 'RegGroupMembershipMissingError'
-                    $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
-                    $errorMessage = $($LocalizedData.ReplicationGroupMembershipMissingError) `
-                        -f $MockReplicationGroupMembership.GroupName,$MockReplicationGroupMembership.FolderName,$MockReplicationGroupMembership.ComputerName
-                    $exception = New-Object -TypeName System.InvalidOperationException `
-                        -ArgumentList $errorMessage
-                    $errorRecord = New-Object -TypeName System.Management.Automation.ErrorRecord `
-                        -ArgumentList $exception, $errorId, $errorCategory, $null
+                    $errorRecord = Get-InvalidOperationRecord `
+                        -Message ($($LocalizedData.ReplicationGroupMembershipMissingError) `
+                        -f $MockReplicationGroupMembership.GroupName,$MockReplicationGroupMembership.FolderName,$MockReplicationGroupMembership.ComputerName)
 
                     {
                         $Result = Get-TargetResource `
@@ -316,14 +311,10 @@ try
                 Mock Get-DfsrMembership
 
                 It 'should throw RegGroupMembershipMissingError error' {
-                    $errorId = 'RegGroupMembershipMissingError'
-                    $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
-                    $errorMessage = $($LocalizedData.ReplicationGroupMembershipMissingError) -f `
-                        $MockReplicationGroupMembership.GroupName,$MockReplicationGroupMembership.FolderName,$MockReplicationGroupMembership.ComputerName
-                    $exception = New-Object -TypeName System.InvalidOperationException `
-                        -ArgumentList $errorMessage
-                    $errorRecord = New-Object -TypeName System.Management.Automation.ErrorRecord `
-                        -ArgumentList $exception, $errorId, $errorCategory, $null
+                    $errorRecord = Get-InvalidOperationRecord `
+                        -Message ($($LocalizedData.ReplicationGroupMembershipMissingError) -f `
+                            $MockReplicationGroupMembership.GroupName,$MockReplicationGroupMembership.FolderName,$MockReplicationGroupMembership.ComputerName)
+
                     $Splat = $MockReplicationGroupMembership.Clone()
                     $Splat.Remove('ConflictAndDeletedPath')
                     { Test-TargetResource @Splat } | Should Throw $errorRecord
