@@ -10,7 +10,7 @@ $localizedData = Get-LocalizedData `
 
 function Get-TargetResource
 {
-    [OutputType([Hashtable])]
+    [OutputType([System.Collections.Hashtable])]
     param
     (
         [Parameter(Mandatory = $true)]

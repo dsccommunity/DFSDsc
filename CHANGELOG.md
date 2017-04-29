@@ -14,6 +14,8 @@
 - Convert Examples to pass tests and meet minimum standards.
 - Convert to Wiki and auto-documentation generation.
 - Convert to TestHarness test execution method.
+- Correct parameter block format to meet guidelines.
+- Replaced all type accelerators with full type names.
 
 ## 3.1.0.0
 

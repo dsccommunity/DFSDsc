@@ -11,7 +11,7 @@ $localizedData = Get-LocalizedData `
 function Get-TargetResource
 {
     [CmdletBinding()]
-    [OutputType([Hashtable])]
+    [OutputType([System.Collections.Hashtable])]
     param
     (
         [Parameter(Mandatory = $true)]
