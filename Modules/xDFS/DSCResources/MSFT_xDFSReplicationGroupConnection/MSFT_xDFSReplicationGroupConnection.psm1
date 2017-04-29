@@ -298,7 +298,7 @@ function Set-TargetResource
         if ($replicationGroupConnection)
         {
             # Remove the replication group
-            Remove-DfsrConnection @Splat -Force -ErrorAction Stop
+            Remove-DfsrConnection @connectionParameters -Force -ErrorAction Stop
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupConnectionExistsRemovedMessage) `
@@ -409,7 +409,7 @@ function Test-TargetResource
         }
     }
 
-    $replicationGroupConnection = Get-DfsrConnection @Splat `
+    $replicationGroupConnection = Get-DfsrConnection @connectionParameters `
         -ErrorAction Stop
 
     if ($Ensure -eq 'Present')
