@@ -672,29 +672,6 @@ try
                 }
             }
         }
-
-        Describe "MSFT_xDFSNamespaceFolder\New-TerminatingError" {
-
-            Context 'Create a TestError Exception' {
-
-                It 'should throw an TestError exception' {
-                    $errorId = 'TestError'
-                    $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidArgument
-                    $errorMessage = 'Test Error Message'
-                    $exception = New-Object `
-                        -TypeName System.InvalidOperationException `
-                        -ArgumentList $errorMessage
-                    $errorRecord = New-Object `
-                        -TypeName System.Management.Automation.ErrorRecord `
-                        -ArgumentList $exception, $errorId, $errorCategory, $null
-
-                    { New-TerminatingError `
-                        -ErrorId $errorId `
-                        -ErrorMessage $errorMessage `
-                        -ErrorCategory $errorCategory } | Should Throw $errorRecord
-                }
-            }
-        }
     }
     #endregion
 }

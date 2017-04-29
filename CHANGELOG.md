@@ -16,6 +16,7 @@
 - Convert to TestHarness test execution method.
 - Correct parameter block format to meet guidelines.
 - Replaced all type accelerators with full type names.
+- Updated Readme.md to contain resource list.
 
 ## 3.1.0.0
 
