@@ -387,10 +387,11 @@ function Set-TargetResource
         {
             'Fullmesh'
             {
-                $connectionParameters += @{
+                $replicationGroupParameters += @{
                     SourceComputerName = ''
                     DestinationComputerName = ''
                 }
+
                 # Scan through the combination of connections
                 foreach ($source in $fqdnMembers)
                 {
@@ -399,14 +400,15 @@ function Set-TargetResource
                         if ($source -eq $destination)
                         {
                             continue
-                        }
-                        $connectionParameters.SourceComputerName = $source
-                        $connectionParameters.DestinationComputerName = $destination
-                        $replicationGroupConnection = Get-DfsrConnection @connectionParameters `
+                        } # if
+
+                        $replicationGroupParameters.SourceComputerName = $source
+                        $replicationGroupParameters.DestinationComputerName = $destination
+                        $replicationGroupConnection = Get-DfsrConnection @replicationGroupParameters `
                             -ErrorAction Stop
                         if ($replicationGroupConnection) {
                             if (-not $replicationGroupConnection.Enabled) {
-                                Set-DfsrConnection @connectionParameters `
+                                Set-DfsrConnection @replicationGroupParameters `
                                     -DisableConnection $false `
                                     -ErrorAction Stop
                                 Write-Verbose -Message ( @(
@@ -418,7 +420,7 @@ function Set-TargetResource
                         }
                         else
                         {
-                            Add-DfsrConnection @connectionParameters `
+                            Add-DfsrConnection @replicationGroupParameters `
                                 -ErrorAction Stop
                             Write-Verbose -Message ( @(
                                 "$($MyInvocation.MyCommand): "
@@ -666,7 +668,7 @@ function Test-TargetResource
             {
                 'Fullmesh'
                 {
-                    $connectionParameters += @{
+                    $replicationGroupParameters += @{
                         SourceComputerName = ''
                         DestinationComputerName = ''
                     }
@@ -681,9 +683,9 @@ function Test-TargetResource
                                 continue
                             } # if
 
-                            $connectionParameters.SourceComputerName = $source
-                            $connectionParameters.DestinationComputerName = $destination
-                            $replicationGroupConnection = Get-DfsrConnection @connectionParameters `
+                            $replicationGroupParameters.SourceComputerName = $source
+                            $replicationGroupParameters.DestinationComputerName = $destination
+                            $replicationGroupConnection = Get-DfsrConnection @replicationGroupParameters `
                                 -ErrorAction Stop
 
                             if ($replicationGroupConnection)
