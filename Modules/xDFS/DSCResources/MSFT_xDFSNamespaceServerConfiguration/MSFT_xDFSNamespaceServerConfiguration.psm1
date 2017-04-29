@@ -59,9 +59,12 @@ function Get-TargetResource
     $returnValue = @{
         IsSingleInstance = 'Yes'
     }
+
     foreach ($parameter in $parameterList)
     {
-        $returnValue += @{ $parameter.Name = $serverConfiguration.$($parameter.name) }
+        $returnValue += @{
+            $parameter.Name = $serverConfiguration.$($parameter.name)
+        }
     } # foreach
 
     return $returnValue
@@ -126,6 +129,7 @@ function Set-TargetResource
     # Generate a list of parameters that will need to be changed.
     $changeParameters = @{}
     $restart = $False
+
     foreach ($parameter in $parameterList)
     {
         $parameterSource = $serverConfiguration.$($parameter.name)
@@ -136,17 +140,20 @@ function Set-TargetResource
             $changeParameters += @{
                 $($parameter.name) = $parameterNew
             }
+
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.NamespaceServerConfigurationUpdateParameterMessage) `
                     -f $parameter.Name,$parameterNew
                 ) -join '' )
+
             if ($parameter.Restart)
             {
                 $restart = $True
             } # if
         } # if
     } # foreach
+
     if ($changeParameters.Count -gt 0)
     {
         # Update any parameters that were identified as different
@@ -241,6 +248,7 @@ function Test-TargetResource
     {
         $parameterSource = $serverConfiguration.$($parameter.name)
         $parameterNew = (Get-Variable -Name ($parameter.name)).Value
+
         if ($PSBoundParameters.ContainsKey($parameter.Name) `
             -and ($parameterSource -ne $parameterNew)) {
             Write-Verbose -Message ( @(
@@ -248,6 +256,7 @@ function Test-TargetResource
                 $($LocalizedData.NamespaceServerConfigurationParameterNeedsUpdateMessage) `
                     -f $parameter.Name,$parameterSource,$parameterNew
                 ) -join '' )
+
             $desiredConfigurationMatch = $false
         } # if
     } # foreach

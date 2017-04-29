@@ -8,6 +8,19 @@ $localizedData = Get-LocalizedData `
     -ResourceName 'MSFT_xDFSReplicationGroupFolder' `
     -ResourcePath (Split-Path -Parent $Script:MyInvocation.MyCommand.Path)
 
+<#
+    .SYNOPSIS
+    Returns the current state of a DFS Replication Group Folder.
+
+    .PARAMETER GroupName
+    The name of the DFS Replication Group.
+
+    .PARAMETER FolderName
+    The name of the DFS Replication Group Folder.
+
+    .PARAMETER DomainName
+    The name of the AD Domain the DFS Replication Group Folder will be in.
+#>
 function Get-TargetResource
 {
     [OutputType([System.Collections.Hashtable])]
@@ -33,52 +46,79 @@ function Get-TargetResource
         ) -join '' )
 
     # Lookup the existing Replication Group
-    $Splat = @{
+    $replicatedFolderParameters = @{
         GroupName = $GroupName
         FolderName = $FolderName
     }
-    $returnValue = $splat.Clone()
+
+    $returnValue = $replicatedFolderParameters.Clone()
+
     if ($DomainName)
     {
-        $Splat += @{ DomainName = $DomainName }
-    }
-    $ReplicationGroupFolder = Get-DfsReplicatedFolder @Splat `
+        $replicatedFolderParameters += @{
+            DomainName = $DomainName
+        }
+    } # if
+
+    $replicationGroupFolder = Get-DfsReplicatedFolder @replicatedFolderParameters `
         -ErrorAction Stop
-    if ($ReplicationGroupFolder)
+
+    if ($replicationGroupFolder)
     {
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($LocalizedData.ReplicationGroupFolderExistsMessage) `
                 -f $GroupName,$FolderName,$DomainName
             ) -join '' )
+
         # Array paramters are disabled until this issue is resolved:
         # https://windowsserver.uservoice.com/forums/301869-powershell/suggestions/11088807-get-dscconfiguration-fails-with-embedded-cim-type
         $returnValue += @{
-            Description = $ReplicationGroupFolder.Description
+            Description = $replicationGroupFolder.Description
             # FilenameToExclude = $ReplicationGroupFolder.FilenameToExclude
             # DirectoryNameToExclude = $ReplicationGroupFolder.DirectoryNameToExclude
-            DfsnPath = $ReplicationGroupFolder.DfsnPath
-            DomainName = $ReplicationGroupFolder.DomainName
+            DfsnPath = $replicationGroupFolder.DfsnPath
+            DomainName = $replicationGroupFolder.DomainName
         }
     }
     else
     {
         # The Rep Group folder doesn't exist
-        $errorId = 'RegGroupFolderMissingError'
-        $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
-        $errorMessage = $($LocalizedData.ReplicationGroupFolderMissingError) `
-            -f $GroupName,$FolderName,$DomainName
-        $exception = New-Object -TypeName System.InvalidOperationException `
-            -ArgumentList $errorMessage
-        $errorRecord = New-Object -TypeName System.Management.Automation.ErrorRecord `
-            -ArgumentList $exception, $errorId, $errorCategory, $null
-
-        $PSCmdlet.ThrowTerminatingError($errorRecord)
+        New-InvalidOperationException `
+            -Message ($($LocalizedData.ReplicationGroupFolderMissingError) `
+                -f $GroupName,$FolderName,$DomainName)
     }
 
-    $returnValue
+    return $returnValue
 } # Get-TargetResource
 
+<#
+    .SYNOPSIS
+    Sets the current state of a DFS Replication Group Folder.
+
+    .PARAMETER GroupName
+    The name of the DFS Replication Group.
+
+    .PARAMETER FolderName
+    The name of the DFS Replication Group Folder.
+
+    .PARAMETER Description
+    A description for the DFS Replication Group Folder.
+
+    .PARAMETER FileNameToExclude
+    An array of file names to exclude from replication.
+
+    .PARAMETER DirectoryNameToExclude
+    An array of directory names to exclude from replication.
+
+    .PARAMETER DfsnPath
+    The DFS Namespace Path to this Replication Group folder is mapped to.
+    This does NOT create the Namespace folders, it only sets the name in
+    the folder object.
+
+    .PARAMETER DomainName
+    The name of the AD Domain the DFS Replication Group Folder will be in.
+#>
 function Set-TargetResource
 {
     param
@@ -127,9 +167,35 @@ function Set-TargetResource
         $($LocalizedData.ReplicationGroupFolderUpdatedMessage) `
             -f $GroupName,$FolderName,$DomainName
         ) -join '' )
-
 } # Set-TargetResource
 
+<#
+    .SYNOPSIS
+    Tests the current state of a DFS Replication Group Folder.
+
+    .PARAMETER GroupName
+    The name of the DFS Replication Group.
+
+    .PARAMETER FolderName
+    The name of the DFS Replication Group Folder.
+
+    .PARAMETER Description
+    A description for the DFS Replication Group Folder.
+
+    .PARAMETER FileNameToExclude
+    An array of file names to exclude from replication.
+
+    .PARAMETER DirectoryNameToExclude
+    An array of directory names to exclude from replication.
+
+    .PARAMETER DfsnPath
+    The DFS Namespace Path to this Replication Group folder is mapped to.
+    This does NOT create the Namespace folders, it only sets the name in
+    the folder object.
+
+    .PARAMETER DomainName
+    The name of the AD Domain the DFS Replication Group Folder will be in.
+#>
 function Test-TargetResource
 {
     [OutputType([System.Boolean])]
@@ -174,18 +240,22 @@ function Test-TargetResource
         ) -join '' )
 
     # Lookup the existing Replication Group Folder
-    $Splat = @{
+    $replicatedFolderParameters = @{
         GroupName = $GroupName
         FolderName = $FolderName
     }
+
     if ($DomainName)
     {
-        $Splat += @{ DomainName = $DomainName }
-    }
-    $ReplicationGroupFolder = Get-DfsReplicatedFolder @Splat `
+        $replicatedFolderParameters += @{
+            DomainName = $DomainName
+        }
+    } # if
+
+    $replicationGroupFolder = Get-DfsReplicatedFolder @replicatedFolderParameters `
         -ErrorAction Stop
 
-    if ($ReplicationGroupFolder)
+    if ($replicationGroupFolder)
     {
         # The rep group folder is found
         Write-Verbose -Message ( @(
@@ -196,7 +266,7 @@ function Test-TargetResource
 
         # Check the description
         if (($PSBoundParameters.ContainsKey('Description')) `
-            -and ($ReplicationGroupFolder.Description -ne $Description))
+            -and ($replicationGroupFolder.Description -ne $Description))
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
@@ -204,12 +274,12 @@ function Test-TargetResource
                     -f $GroupName,$FolderName,$DomainName
                 ) -join '' )
             $desiredConfigurationMatch = $false
-        }
+        } # if
 
         # Check the FileNameToExclude
         if (($PSBoundParameters.ContainsKey('FileNameToExclude')) `
             -and ((Compare-Object `
-                -ReferenceObject  $ReplicationGroupFolder.FileNameToExclude `
+                -ReferenceObject  $replicationGroupFolder.FileNameToExclude `
                 -DifferenceObject $FileNameToExclude).Count -ne 0))
         {
             Write-Verbose -Message ( @(
@@ -217,13 +287,14 @@ function Test-TargetResource
                 $($LocalizedData.ReplicationGroupFolderFileNameToExcludeMismatchMessage) `
                     -f $GroupName,$FolderName,$DomainName
                 ) -join '' )
+
             $desiredConfigurationMatch = $false
-        }
+        } # if
 
         # Check the DirectoryNameToExclude
         if (($PSBoundParameters.ContainsKey('DirectoryNameToExclude')) `
             -and ((Compare-Object `
-                -ReferenceObject  $ReplicationGroupFolder.DirectoryNameToExclude `
+                -ReferenceObject  $replicationGroupFolder.DirectoryNameToExclude `
                 -DifferenceObject $DirectoryNameToExclude).Count -ne 0))
         {
             Write-Verbose -Message ( @(
@@ -231,34 +302,29 @@ function Test-TargetResource
                 $($LocalizedData.ReplicationGroupFolderDirectoryNameToExcludeMismatchMessage) `
                     -f $GroupName,$FolderName,$DomainName
                 ) -join '' )
+
             $desiredConfigurationMatch = $false
-        }
+        } # if
 
         if (($PSBoundParameters.ContainsKey('DfsnPath')) `
-            -and ($ReplicationGroupFolder.DfsnPath -ne $DfsnPath))
+            -and ($replicationGroupFolder.DfsnPath -ne $DfsnPath))
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupFolderDfsnPathMismatchMessage) `
                     -f $GroupName,$FolderName,$DomainName
                 ) -join '' )
+
             $desiredConfigurationMatch = $false
-        }
+        } # if
     }
     else
     {
         # The Rep Group folder doesn't exist
-        $errorId = 'RegGroupFolderMissingError'
-        $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
-        $errorMessage = $($LocalizedData.ReplicationGroupFolderMissingError) `
-            -f $GroupName,$FolderName,$DomainName
-        $exception = New-Object -TypeName System.InvalidOperationException `
-            -ArgumentList $errorMessage
-        $errorRecord = New-Object -TypeName System.Management.Automation.ErrorRecord `
-            -ArgumentList $exception, $errorId, $errorCategory, $null
-
-        $PSCmdlet.ThrowTerminatingError($errorRecord)
-    }
+        New-InvalidOperationException `
+            -Message ($($LocalizedData.ReplicationGroupFolderMissingError) `
+                -f $GroupName,$FolderName,$DomainName)
+    } # if
 
     return $desiredConfigurationMatch
 } # Test-TargetResource

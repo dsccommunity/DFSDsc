@@ -88,7 +88,7 @@ function Get-TargetResource
                     -f $Type,$Path,$TargetPath
             ) -join '' )
         return $returnValue
-    }
+    } # if
 
     $returnValue += @{
         TimeToLiveSec                = $root.TimeToLiveSec
@@ -129,7 +129,7 @@ function Get-TargetResource
                 $($LocalizedData.NamespaceRootTargetDoesNotExistMessage) `
                     -f $Type,$Path,$TargetPath
             ) -join '' )
-    }
+    } # if
 
     return $returnValue
 } # Get-TargetResource
@@ -268,7 +268,7 @@ function Set-TargetResource
                     Description = $Description
                 }
                 $rootChange = $true
-            }
+            } # if
 
             if (($TimeToLiveSec) `
                 -and ($root.TimeToLiveSec -ne $TimeToLiveSec))
@@ -277,7 +277,7 @@ function Set-TargetResource
                     TimeToLiveSec = $TimeToLiveSec
                 }
                 $rootChange = $true
-            }
+            } # if
 
             if (($null -ne $EnableSiteCosting) `
                 -and (($root.Flags -contains 'Site Costing') -ne $EnableSiteCosting))
@@ -286,7 +286,7 @@ function Set-TargetResource
                     EnableSiteCosting = $EnableSiteCosting
                 }
                 $rootChange = $true
-            }
+            } # if
 
             if (($null -ne $EnableInsiteReferrals) `
                 -and (($root.Flags -contains 'Insite Referrals') -ne $EnableInsiteReferrals))
@@ -295,7 +295,7 @@ function Set-TargetResource
                     EnableInsiteReferrals = $EnableInsiteReferrals
                 }
                 $rootChange = $true
-            }
+            } # if
 
             if (($null -ne $EnableAccessBasedEnumeration) `
                 -and (($root.Flags -contains 'AccessBased Enumeration') -ne $EnableAccessBasedEnumeration))
@@ -304,7 +304,7 @@ function Set-TargetResource
                     EnableAccessBasedEnumeration = $EnableAccessBasedEnumeration
                 }
                 $rootChange = $true
-            }
+            } # if
 
             if (($null -ne $EnableRootScalability) `
                 -and (($root.Flags -contains 'Root Scalability') -ne $EnableRootScalability))
@@ -313,7 +313,7 @@ function Set-TargetResource
                     EnableRootScalability = $EnableRootScalability
                 }
                 $rootChange = $true
-            }
+            } # if
 
             if (($null -ne $EnableTargetFailback) `
                 -and (($root.Flags -contains 'Target Failback') -ne $EnableTargetFailback))
@@ -322,7 +322,7 @@ function Set-TargetResource
                     EnableTargetFailback = $EnableTargetFailback
                 }
                 $rootChange = $true
-            }
+            } # if
 
             if ($rootChange)
             {
@@ -339,7 +339,7 @@ function Set-TargetResource
                             -f $Type,$Path,$TargetPath,$_.name, $_.value
                     ) -join '' )
                 }
-            }
+            } # if
 
             # Get target
             $target = Get-RootTarget `
@@ -360,7 +360,7 @@ function Set-TargetResource
                     ReferralPriorityClass = ($ReferralPriorityClass -replace '-','')
                 }
                 $targetChange = $true
-            }
+            } # if
 
             if (($ReferralPriorityRank) `
                 -and ($target.ReferralPriorityRank -ne $ReferralPriorityRank))
@@ -369,7 +369,7 @@ function Set-TargetResource
                     ReferralPriorityRank = $ReferralPriorityRank
                 }
                 $targetChange = $true
-            }
+            } # if
 
             # Is the target a member of the namespace?
             if ($target)
@@ -393,7 +393,7 @@ function Set-TargetResource
                     -TargetPath $TargetPath `
                     @TargetProperties `
                     -ErrorAction Stop
-            }
+            } # if
 
             # Output the target parameters that were changed/set
             $targetProperties.GetEnumerator() | ForEach-Object -Process {
@@ -414,7 +414,7 @@ function Set-TargetResource
             if ($ReferralPriorityClass)
             {
                 $PSBoundParameters.ReferralPriorityClass = ($ReferralPriorityClass -replace '-','')
-            }
+            } # if
 
             # Create New-DfsnRoot
             $null = New-DfsnRoot `
@@ -428,7 +428,7 @@ function Set-TargetResource
                         -f $Type,$Path,$TargetPath,$_.name, $_.value
                 ) -join '' )
             }
-        }
+        } # if
     }
     else
     {
@@ -453,8 +453,8 @@ function Set-TargetResource
                 $($LocalizedData.NamespaceRootTargetRemovedMessage) `
                     -f $Type,$Path,$TargetPath
             ) -join '' )
-        }
-    }
+        } # if
+    } # if
 } # Set-TargetResource
 
 <#
@@ -589,7 +589,7 @@ function Test-TargetResource
                 New-InvalidOperationException `
                     -Message ($($LocalizedData.NamespaceRootTypeConversionError) `
                         -f $Type,$Path,$TargetPath,($root.Type -replace ' ',''))
-            }
+            } # if
 
             # Check the Namespace parameters
             if (($Description) `
@@ -599,8 +599,9 @@ function Test-TargetResource
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
                         -f $Type,$Path,$TargetPath,'Description'
                     ) -join '' )
+
                 $desiredConfigurationMatch = $false
-            }
+            } # if
 
             if (($TimeToLiveSec) `
                 -and ($root.TimeToLiveSec -ne $TimeToLiveSec)) {
@@ -609,8 +610,9 @@ function Test-TargetResource
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
                         -f $Type,$Path,$TargetPath,'TimeToLiveSec'
                     ) -join '' )
+
                 $desiredConfigurationMatch = $false
-            }
+            } # if
 
             if (($null -ne $EnableSiteCosting) `
                 -and (($root.Flags -contains 'Site Costing') -ne $EnableSiteCosting)) {
@@ -619,8 +621,9 @@ function Test-TargetResource
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
                         -f $Type,$Path,$TargetPath,'EnableSiteCosting'
                     ) -join '' )
+
                 $desiredConfigurationMatch = $false
-            }
+            } # if
 
             if (($null -ne $EnableInsiteReferrals) `
                 -and (($root.Flags -contains 'Insite Referrals') -ne $EnableInsiteReferrals)) {
@@ -629,8 +632,9 @@ function Test-TargetResource
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
                         -f $Type,$Path,$TargetPath,'EnableInsiteReferrals'
                     ) -join '' )
+
                 $desiredConfigurationMatch = $false
-            }
+            } # if
 
             if (($null -ne $EnableAccessBasedEnumeration) `
                 -and (($root.Flags -contains 'AccessBased Enumeration') -ne $EnableAccessBasedEnumeration)) {
@@ -639,8 +643,9 @@ function Test-TargetResource
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
                         -f $Type,$Path,$TargetPath,'EnableAccessBasedEnumeration'
                     ) -join '' )
+
                 $desiredConfigurationMatch = $false
-            }
+            } # if
 
             if (($null -ne $EnableRootScalability) `
                 -and (($root.Flags -contains 'Root Scalability') -ne $EnableRootScalability)) {
@@ -649,8 +654,9 @@ function Test-TargetResource
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
                         -f $Type,$Path,$TargetPath,'EnableRootScalability'
                     ) -join '' )
+
                 $desiredConfigurationMatch = $false
-            }
+            } # if
 
             if (($null -ne $EnableTargetFailback) `
                 -and (($root.Flags -contains 'Target Failback') -ne $EnableTargetFailback)) {
@@ -659,8 +665,9 @@ function Test-TargetResource
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
                         -f $Type,$Path,$TargetPath,'EnableTargetFailback'
                     ) -join '' )
+
                 $desiredConfigurationMatch = $false
-            }
+            } # if
 
             $target = Get-RootTarget `
                 -Path $Path `
@@ -676,7 +683,7 @@ function Test-TargetResource
                             -f $Type,$Path,$TargetPath,'ReferralPriorityClass'
                         ) -join '' )
                     $desiredConfigurationMatch = $false
-                }
+                } # if
 
                 if (($ReferralPriorityRank) `
                     -and ($target.ReferralPriorityRank -ne $ReferralPriorityRank)) {
@@ -686,7 +693,7 @@ function Test-TargetResource
                             -f $Type,$Path,$TargetPath,'ReferralPriorityRank'
                         ) -join '' )
                     $desiredConfigurationMatch = $false
-                }
+                } # if
             }
             else
             {
@@ -697,7 +704,7 @@ function Test-TargetResource
                         -f $Type,$Path,$TargetPath
                     ) -join '' )
                 $desiredConfigurationMatch = $false
-            }
+            } # if
         }
         else
         {
@@ -708,7 +715,7 @@ function Test-TargetResource
                     -f $Type,$Path,$TargetPath
                 ) -join '' )
             $desiredConfigurationMatch = $false
-        }
+        } # if
     }
     else
     {
@@ -737,7 +744,7 @@ function Test-TargetResource
                     $($LocalizedData.NamespaceRootTargetDoesNotExistAndShouldNotMessage) `
                         -f $Type,$Path,$TargetPath
                     ) -join '' )
-            }
+            } # if
         }
         else
         {
@@ -747,11 +754,10 @@ function Test-TargetResource
                  $($LocalizedData.NamespaceRootDoesNotExistAndShouldNotMessage) `
                     -f $Type,$Path,$TargetPath
                 ) -join '' )
-        }
+        } # if
     } # if
 
     return $desiredConfigurationMatch
-
 } # Test-TargetResource
 
 <#

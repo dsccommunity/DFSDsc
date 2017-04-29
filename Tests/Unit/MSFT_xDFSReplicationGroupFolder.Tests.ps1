@@ -129,13 +129,8 @@ try
                 Mock Get-DfsReplicatedFolder
 
                 It 'should throw RegGroupFolderMissingError error' {
-                    $errorId = 'RegGroupFolderMissingError'
-                    $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
-                    $errorMessage = $($LocalizedData.ReplicationGroupFolderMissingError) -f $MockReplicationGroupFolder[0].GroupName,$MockReplicationGroupFolder[0].FolderName
-                    $exception = New-Object -TypeName System.InvalidOperationException `
-                        -ArgumentList $errorMessage
-                    $errorRecord = New-Object -TypeName System.Management.Automation.ErrorRecord `
-                        -ArgumentList $exception, $errorId, $errorCategory, $null
+                    $errorRecord = Get-InvalidOperationRecord `
+                        -Message ($($LocalizedData.ReplicationGroupFolderMissingError) -f $MockReplicationGroupFolder[0].GroupName,$MockReplicationGroupFolder[0].FolderName)
 
                     {
                         $Result = Get-TargetResource `
@@ -238,13 +233,9 @@ try
                 Mock Get-DfsReplicatedFolder
 
                 It 'should throw RegGroupFolderMissingError error' {
-                    $errorId = 'RegGroupFolderMissingError'
-                    $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidOperation
-                    $errorMessage = $($LocalizedData.ReplicationGroupFolderMissingError) -f $MockReplicationGroupFolder[0].GroupName,$MockReplicationGroupFolder[0].FolderName
-                    $exception = New-Object -TypeName System.InvalidOperationException `
-                        -ArgumentList $errorMessage
-                    $errorRecord = New-Object -TypeName System.Management.Automation.ErrorRecord `
-                        -ArgumentList $exception, $errorId, $errorCategory, $null
+                    $errorRecord = Get-InvalidOperationRecord `
+                        -Message ($($LocalizedData.ReplicationGroupFolderMissingError) -f $MockReplicationGroupFolder[0].GroupName,$MockReplicationGroupFolder[0].FolderName)
+
                     $Splat = $MockReplicationGroupFolder[0].Clone()
                     { Test-TargetResource @Splat } | Should Throw $errorRecord
                 }
