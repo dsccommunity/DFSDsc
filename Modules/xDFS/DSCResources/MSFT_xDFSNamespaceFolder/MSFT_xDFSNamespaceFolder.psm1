@@ -648,7 +648,7 @@ Function Get-Folder
     {
         Throw $_
     }
-    Return $dfsnFolder
+    return $dfsnFolder
 }
 
 <#
@@ -689,7 +689,7 @@ Function Get-FolderTarget
     {
         Throw $_
     }
-    Return $dfsnTarget
+    return $dfsnTarget
 }
 
 Export-ModuleMember -Function *-TargetResource

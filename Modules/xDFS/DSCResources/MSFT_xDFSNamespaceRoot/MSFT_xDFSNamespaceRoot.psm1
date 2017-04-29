@@ -784,7 +784,7 @@ Function Get-Root
     {
         Throw $_
     }
-    Return $dfsnRoot
+    return $dfsnRoot
 }
 
 <#
@@ -825,7 +825,7 @@ Function Get-RootTarget
     {
         Throw $_
     }
-    Return $dfsnTarget
+    return $dfsnTarget
 }
 
 Export-ModuleMember -Function *-TargetResource
