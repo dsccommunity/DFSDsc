@@ -79,7 +79,7 @@ function Get-TargetResource
                     -f $Path,$TargetPath
             ) -join '' )
         return $returnValue
-    }
+    } # if
 
     $returnValue += @{
         TimeToLiveSec                = $folder.TimeToLiveSec
@@ -117,7 +117,7 @@ function Get-TargetResource
                 $($LocalizedData.NamespaceFolderTargetDoesNotExistMessage) `
                     -f $Path,$TargetPath
             ) -join '' )
-    }
+    } # if
 
     return $returnValue
 } # Get-TargetResource

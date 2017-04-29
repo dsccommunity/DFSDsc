@@ -67,49 +67,57 @@ function Get-TargetResource
         ) -join '' )
 
     # Lookup the existing Replication Group Connection
-    $Splat = @{
+    $connectionParameters = @{
         GroupName = $GroupName
         SourceComputerName = $SourceComputerName
         DestinationComputerName = $DestinationComputerName
-    }
-    $returnValue = $splat.Clone()
+    }   
+
+    $returnValue = $connectionParameters.Clone()
+
     if ($PSBoundParameters.ContainsKey('DomainName'))
     {
-        $Splat += @{ DomainName = $DomainName }
-    }
-    $ReplicationGroupConnection = Get-DfsrConnection @Splat `
+        $connectionParameters += @{
+            DomainName = $DomainName
+        }
+    } # if
+
+    $replicationGroupConnection = Get-DfsrConnection @connectionParameters `
         -ErrorAction Stop
-    if ($ReplicationGroupConnection)
+
+    if ($replicationGroupConnection)
     {
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($LocalizedData.ReplicationGroupConnectionExistsMessage) `
                 -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
             ) -join '' )
-        $returnValue.SourceComputerName = $ReplicationGroupConnection.SourceComputerName
-        $returnValue.DestinationComputerName = $ReplicationGroupConnection.DestinationComputerName
-        if ($ReplicationGroupConnection.Enabled)
+        $returnValue.SourceComputerName = $replicationGroupConnection.SourceComputerName
+        $returnValue.DestinationComputerName = $replicationGroupConnection.DestinationComputerName
+        if ($replicationGroupConnection.Enabled)
         {
-            $EnsureEnabled = 'Enabled'
+            $ensureEnabled = 'Enabled'
         }
         else
         {
-            $EnsureEnabled = 'Disabled'
+            $ensureEnabled = 'Disabled'
         } # if
-        if ($ReplicationGroupConnection.RdcEnabled)
+
+        if ($replicationGroupConnection.RdcEnabled)
         {
-            $EnsureRDCEnabled = 'Enabled'
+            $ensureRDCEnabled = 'Enabled'
         }
         else
         {
-            $EnsureRDCEnabled = 'Disabled'
+            $ensureRDCEnabled = 'Disabled'
         } # if
+
         $returnValue += @{
             Ensure = 'Present'
-            Description = $ReplicationGroupConnection.Description
-            DomainName = $ReplicationGroupConnection.DomainName
-            EnsureEnabled = $EnsureEnabled
-            EnsureRDCEnabled = $EnsureRDCEnabled
+            Description = $replicationGroupConnection.Description
+            DomainName = $replicationGroupConnection.DomainName
+            EnsureEnabled = $ensureEnabled
+            EnsureRDCEnabled = $ensureRDCEnabled
         }
     }
     else
@@ -119,10 +127,13 @@ function Get-TargetResource
             $($LocalizedData.ReplicationGroupConnectionDoesNotExistMessage) `
                 -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
             ) -join '' )
-        $returnValue += @{ Ensure = 'Absent' }
-    }
 
-    $returnValue
+        $returnValue += @{
+            Ensure = 'Absent'
+        }
+    } # if
+
+    return $returnValue
 } # Get-TargetResource
 
 <#
@@ -211,16 +222,20 @@ function Set-TargetResource
     $null = $PSBoundParameters.Remove('EnsureRDCEnabled')
 
     # Lookup the existing Replication Group Connection
-    $Splat = @{
+    $connectionParameters = @{
         GroupName = $GroupName
         SourceComputerName = $SourceComputerName
         DestinationComputerName = $DestinationComputerName
     }
+
     if ($PSBoundParameters.ContainsKey('DomainName'))
     {
-        $Splat += @{ DomainName = $DomainName }
-    }
-    $ReplicationGroupConnection = Get-DfsrConnection @Splat -ErrorAction Stop
+        $connectionParameters += @{
+            DomainName = $DomainName
+        }
+    } # if
+
+    $replicationGroupConnection = Get-DfsrConnection @connectionParameters -ErrorAction Stop
 
     if ($Ensure -eq 'Present')
     {
@@ -234,7 +249,7 @@ function Set-TargetResource
         $null = $PSBoundParameters.Add('DisableConnection',($EnsureEnabled -eq 'Disabled'))
         $null = $PSBoundParameters.Add('DisableRDC',($EnsureRDCEnabled -eq 'Disabled'))
 
-        if ($ReplicationGroupConnection)
+        if ($replicationGroupConnection)
         {
             # The RG connection exists already - update it
             Write-Verbose -Message ( @(
@@ -242,14 +257,15 @@ function Set-TargetResource
                 $($LocalizedData.ReplicationGroupConnectionExistsMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
                 ) -join '' )
+
             Set-DfsrConnection @PSBoundParameters `
                 -ErrorAction Stop
+
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupConnectionUpdatedMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
                 ) -join '' )
-
         }
         else
         {
@@ -259,15 +275,16 @@ function Set-TargetResource
                 $($LocalizedData.ReplicationGroupConnectionDoesNotExistMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
                 ) -join '' )
+
             Add-DfsrConnection @PSBoundParameters `
                 -ErrorAction Stop
+
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupConnectionCreatedMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
                 ) -join '' )
-
-        }
+        } # if
     }
     else
     {
@@ -277,7 +294,8 @@ function Set-TargetResource
             $($LocalizedData.EnsureReplicationGroupConnectionDoesNotExistMessage) `
                 -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
             ) -join '' )
-        if ($ReplicationGroup)
+
+        if ($replicationGroupConnection)
         {
             # Remove the replication group
             Remove-DfsrConnection @Splat -Force -ErrorAction Stop
@@ -378,22 +396,26 @@ function Test-TargetResource
     $null = $PSBoundParameters.Remove('Ensure')
 
     # Lookup the existing Replication Group Connection
-    $Splat = @{
+    $connectionParameters = @{
         GroupName = $GroupName
         SourceComputerName = $SourceComputerName
         DestinationComputerName = $DestinationComputerName
     }
+
     if ($PSBoundParameters.ContainsKey('DomainName'))
     {
-        $Splat += @{ DomainName = $DomainName }
+        $connectionParameters += @{
+            DomainName = $DomainName
+        }
     }
-    $ReplicationGroupConnection = Get-DfsrConnection @Splat `
+
+    $replicationGroupConnection = Get-DfsrConnection @Splat `
         -ErrorAction Stop
 
     if ($Ensure -eq 'Present')
     {
         # The RG should exist
-        if ($ReplicationGroupConnection)
+        if ($replicationGroupConnection)
         {
             # The RG exists already
             Write-Verbose -Message ( @(
@@ -404,7 +426,7 @@ function Test-TargetResource
 
             # Check if any of the non-key paramaters are different.
             if (($PSBoundParameters.ContainsKey('Description')) -and `
-                ($ReplicationGroupConnection.Description -ne $Description))
+                ($replicationGroupConnection.Description -ne $Description))
             {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
@@ -412,13 +434,14 @@ function Test-TargetResource
                         -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName, `
                         'Description'
                     ) -join '' )
+
                 $desiredConfigurationMatch = $false
-            }
+            } # if
 
             if (($EnsureEnabled -eq 'Enabled') `
-                -and (-not $ReplicationGroupConnection.Enabled) `
+                -and (-not $replicationGroupConnection.Enabled) `
                 -or ($EnsureEnabled -eq 'Disabled') `
-                -and ($ReplicationGroupConnection.Enabled))
+                -and ($replicationGroupConnection.Enabled))
             {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
@@ -426,13 +449,14 @@ function Test-TargetResource
                         -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName, `
                         'Enabled'
                     ) -join '' )
+
                 $desiredConfigurationMatch = $false
-            }
+            } # if
 
             if (($EnsureRDCEnabled -eq 'Enabled') `
-                -and (-not $ReplicationGroupConnection.RDCEnabled) `
+                -and (-not $replicationGroupConnection.RDCEnabled) `
                 -or ($EnsureRDCEnabled -eq 'Disabled') `
-                -and ($ReplicationGroupConnection.RDCEnabled))
+                -and ($replicationGroupConnection.RDCEnabled))
             {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
@@ -440,8 +464,9 @@ function Test-TargetResource
                         -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName, `
                         'RDC Enabled'
                     ) -join '' )
+
                 $desiredConfigurationMatch = $false
-            }
+            } # if
         }
         else
         {
@@ -451,13 +476,14 @@ function Test-TargetResource
                  $($LocalizedData.ReplicationGroupConnectionDoesNotExistButShouldMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
                 ) -join '' )
+
             $desiredConfigurationMatch = $false
-        }
+        } # if
     }
     else
     {
         # The RG should not exist
-        if ($ReplicationGroupConnection)
+        if ($replicationGroupConnection)
         {
             # The RG exists but should not
             Write-Verbose -Message ( @(
@@ -475,8 +501,9 @@ function Test-TargetResource
                 $($LocalizedData.ReplicationGroupConnectionDoesNotExistAndShouldNotMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
                 ) -join '' )
-        }
+        } # if
     } # if
+
     return $desiredConfigurationMatch
 } # Test-TargetResource
 
