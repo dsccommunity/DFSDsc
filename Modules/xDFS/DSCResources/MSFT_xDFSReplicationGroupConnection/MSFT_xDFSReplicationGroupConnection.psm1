@@ -8,6 +8,31 @@ $localizedData = Get-LocalizedData `
     -ResourceName 'MSFT_xDFSReplicationGroupConnection' `
     -ResourcePath (Split-Path -Parent $Script:MyInvocation.MyCommand.Path)
 
+<#
+    .SYNOPSIS
+    Returns the current state of a DFS Replication Group Connection.
+
+    .PARAMETER GroupName
+    The name of the DFS Replication Group.
+
+    .PARAMETER SourceComputerName
+    The name of the Replication Group source computer for the
+    connection. This can be specified using either the ComputerName
+    or FQDN name for the member. If an FQDN name is used and the
+    DomainName parameter is set, the FQDN domain name must match.
+
+    .PARAMETER DestinationComputerName
+    The name of the Replication Group destination computer for the
+    connection. This can be specified using either the ComputerName
+    or FQDN name for the member. If an FQDN name is used and the
+    DomainName parameter is set, the FQDN domain name must match.
+
+    .PARAMETER Ensure
+    Specifies whether the DSF Replication Group should exist.
+
+    .PARAMETER DomainName
+    The name of the AD Domain the DFS Replication Group connection should be in.
+#>
 function Get-TargetResource
 {
     [OutputType([System.Collections.Hashtable])]
@@ -100,6 +125,40 @@ function Get-TargetResource
     $returnValue
 } # Get-TargetResource
 
+<#
+    .SYNOPSIS
+    Sets the current state of a DFS Replication Group Connection.
+
+    .PARAMETER GroupName
+    The name of the DFS Replication Group.
+
+    .PARAMETER SourceComputerName
+    The name of the Replication Group source computer for the
+    connection. This can be specified using either the ComputerName
+    or FQDN name for the member. If an FQDN name is used and the
+    DomainName parameter is set, the FQDN domain name must match.
+
+    .PARAMETER DestinationComputerName
+    The name of the Replication Group destination computer for the
+    connection. This can be specified using either the ComputerName
+    or FQDN name for the member. If an FQDN name is used and the
+    DomainName parameter is set, the FQDN domain name must match.
+
+    .PARAMETER Ensure
+    Specifies whether the DSF Replication Group should exist.
+
+    .PARAMETER Description
+    A description for the DFS Replication Group connection.
+
+    .PARAMETER EnsureEnabled
+    Ensures that connection is either Enabled or Disabled.
+
+    .PARAMETER EnsureRDCEnabled
+    Ensures remote differential compression is Enabled or Disabled.
+
+    .PARAMETER DomainName
+    The name of the AD Domain the DFS Replication Group connection should be in.
+#>
 function Set-TargetResource
 {
     param
@@ -231,6 +290,40 @@ function Set-TargetResource
     } # if
 } # Set-TargetResource
 
+<#
+    .SYNOPSIS
+    Tests the current state of a DFS Replication Group Connection.
+
+    .PARAMETER GroupName
+    The name of the DFS Replication Group.
+
+    .PARAMETER SourceComputerName
+    The name of the Replication Group source computer for the
+    connection. This can be specified using either the ComputerName
+    or FQDN name for the member. If an FQDN name is used and the
+    DomainName parameter is set, the FQDN domain name must match.
+
+    .PARAMETER DestinationComputerName
+    The name of the Replication Group destination computer for the
+    connection. This can be specified using either the ComputerName
+    or FQDN name for the member. If an FQDN name is used and the
+    DomainName parameter is set, the FQDN domain name must match.
+
+    .PARAMETER Ensure
+    Specifies whether the DSF Replication Group should exist.
+
+    .PARAMETER Description
+    A description for the DFS Replication Group connection.
+
+    .PARAMETER EnsureEnabled
+    Ensures that connection is either Enabled or Disabled.
+
+    .PARAMETER EnsureRDCEnabled
+    Ensures remote differential compression is Enabled or Disabled.
+
+    .PARAMETER DomainName
+    The name of the AD Domain the DFS Replication Group connection should be in.
+#>
 function Test-TargetResource
 {
     [OutputType([System.Boolean])]

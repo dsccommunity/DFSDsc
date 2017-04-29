@@ -19,7 +19,7 @@ $localizedData = Get-LocalizedData `
     Specifies whether the DSF Replication Group should exist.
 
     .PARAMETER DomainName
-    A description for the DFS Replication Group.
+    The AD domain the Replication Group should created in.
 #>
 function Get-TargetResource
 {
