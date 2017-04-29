@@ -27,7 +27,7 @@ function Test-Command
     param
     (
         [Parameter()]
-        [String]
+        [System.String]
         $Name
     )
 
@@ -51,12 +51,12 @@ function New-InvalidArgumentException
     (
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [String]
+        [System.String]
         $Message,
 
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [String]
+        [System.String]
         $ArgumentName
     )
 
@@ -88,7 +88,7 @@ function New-InvalidOperationException
     (
         [Parameter()]
         [ValidateNotNullOrEmpty()]
-        [String]
+        [System.String]
         $Message,
 
         [Parameter()]
@@ -145,12 +145,12 @@ function Get-LocalizedData
     (
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [String]
+        [System.String]
         $ResourceName,
 
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [String]
+        [System.String]
         $ResourcePath
     )
 

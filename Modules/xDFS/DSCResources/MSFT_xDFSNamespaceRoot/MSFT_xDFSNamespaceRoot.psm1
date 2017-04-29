@@ -14,22 +14,22 @@ function Get-TargetResource
     [OutputType([Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $Path,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $TargetPath,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]
+        [System.String]
         $Ensure,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]
-        [String]
+        [System.String]
         $Type
     )
 
@@ -123,50 +123,59 @@ function Set-TargetResource
     [CmdletBinding()]
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $Path,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $TargetPath,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]
+        [System.String]
         $Ensure,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]
-        [String]
+        [System.String]
         $Type,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $Description,
 
-        [Uint32]
+        [Parameter()]
+        [System.UInt32]
         $TimeToLiveSec,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $EnableSiteCosting,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $EnableInsiteReferrals,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $EnableAccessBasedEnumeration,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $EnableRootScalability,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $EnableTargetFailback,
 
+        [Parameter()]
         [ValidateSet('Global-High','SiteCost-High','SiteCost-Normal','SiteCost-Low','Global-Low')]
-        [String]
+        [System.String]
         $ReferralPriorityClass,
 
-        [Uint32]
+        [Parameter()]
+        [System.UInt32]
         $ReferralPriorityRank
     )
 
@@ -186,7 +195,7 @@ function Set-TargetResource
         if ($Root)
         {
             # Does the root need to be updated?
-            [boolean] $RootChange = $false
+            [System.Boolean] $RootChange = $false
 
             # The root properties that will be updated
             $RootProperties = @{
@@ -279,7 +288,7 @@ function Set-TargetResource
                 -TargetPath $TargetPath
 
             # Does the target need to be updated?
-            [boolean] $TargetChange = $false
+            [System.Boolean] $TargetChange = $false
 
             # The Target properties that will be updated
             $TargetProperties = @{}
@@ -395,50 +404,59 @@ function Test-TargetResource
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $Path,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $TargetPath,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]
+        [System.String]
         $Ensure,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]
-        [String]
+        [System.String]
         $Type,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $Description,
 
-        [Uint32]
+        [Parameter()]
+        [System.UInt32]
         $TimeToLiveSec,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $EnableSiteCosting,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $EnableInsiteReferrals,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $EnableAccessBasedEnumeration,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $EnableRootScalability,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $EnableTargetFailback,
 
+        [Parameter()]
         [ValidateSet('Global-High','SiteCost-High','SiteCost-Normal','SiteCost-Low','Global-Low')]
-        [String]
+        [System.String]
         $ReferralPriorityClass,
 
-        [Uint32]
+        [Parameter()]
+        [System.UInt32]
         $ReferralPriorityRank
     )
 
@@ -449,7 +467,7 @@ function Test-TargetResource
         ) -join '' )
 
     # Flag to signal whether settings are correct
-    [Boolean] $DesiredConfigurationMatch = $true
+    [System.Boolean] $DesiredConfigurationMatch = $true
 
     # Lookup the existing Namespace root
     $Root = Get-Root `
@@ -640,11 +658,12 @@ function Test-TargetResource
 } # Test-TargetResource
 
 # Helper Functions
-Function Get-Root {
+Function Get-Root
+{
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $Path
     )
     # Lookup the DFSN Root.
@@ -666,15 +685,16 @@ Function Get-Root {
     Return $DfsnRoot
 }
 
-Function Get-RootTarget {
+Function Get-RootTarget
+{
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $Path,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $TargetPath
     )
     # Lookup the DFSN Root Target in a namespace.
@@ -702,14 +722,17 @@ function New-TerminatingError
     [CmdletBinding()]
     param
     (
-        [Parameter(Mandatory)]
-        [String] $ErrorId,
+        [Parameter(Mandatory = $true)]
+        [System.String]
+        $ErrorId,
 
-        [Parameter(Mandatory)]
-        [String] $ErrorMessage,
+        [Parameter(Mandatory = $true)]
+        [System.String]
+        $ErrorMessage,
 
-        [Parameter(Mandatory)]
-        [System.Management.Automation.ErrorCategory] $ErrorCategory
+        [Parameter(Mandatory = $true)]
+        [System.Management.Automation.ErrorCategory]
+        $ErrorCategory
     )
 
     $exception = New-Object `

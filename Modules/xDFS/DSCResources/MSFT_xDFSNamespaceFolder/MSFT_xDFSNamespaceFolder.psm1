@@ -14,17 +14,17 @@ function Get-TargetResource
     [OutputType([Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $Path,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $TargetPath,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]
+        [System.String]
         $Ensure
     )
 
@@ -114,36 +114,42 @@ function Set-TargetResource
     [CmdletBinding()]
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $Path,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $TargetPath,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]
+        [System.String]
         $Ensure,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $Description,
 
-        [Uint32]
+        [Parameter()]
+        [System.UInt32]
         $TimeToLiveSec,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $EnableInsiteReferrals,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $EnableTargetFailback,
 
+        [Parameter()]
         [ValidateSet('Global-High','SiteCost-High','SiteCost-Normal','SiteCost-Low','Global-Low')]
-        [String]
+        [System.String]
         $ReferralPriorityClass,
 
-        [Uint32]
+        [Parameter()]
+        [System.UInt32]
         $ReferralPriorityRank
     )
 
@@ -163,7 +169,7 @@ function Set-TargetResource
         if ($Folder)
         {
             # Does the Folder need to be updated?
-            [boolean] $FolderChange = $false
+            [System.Boolean] $FolderChange = $false
 
             # The Folder properties that will be updated
             $FolderProperties = @{
@@ -229,7 +235,7 @@ function Set-TargetResource
                 -TargetPath $TargetPath
 
             # Does the target need to be updated?
-            [boolean] $TargetChange = $false
+            [System.Boolean] $TargetChange = $false
 
             # The Target properties that will be updated
             $TargetProperties = @{}
@@ -345,36 +351,42 @@ function Test-TargetResource
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $Path,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $TargetPath,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]
+        [System.String]
         $Ensure,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $Description,
 
-        [Uint32]
+        [Parameter()]
+        [System.UInt32]
         $TimeToLiveSec,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $EnableInsiteReferrals,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $EnableTargetFailback,
 
+        [Parameter()]
         [ValidateSet('Global-High','SiteCost-High','SiteCost-Normal','SiteCost-Low','Global-Low')]
-        [String]
+        [System.String]
         $ReferralPriorityClass,
 
-        [Uint32]
+        [Parameter()]
+        [System.UInt32]
         $ReferralPriorityRank
     )
 
@@ -385,7 +397,7 @@ function Test-TargetResource
         ) -join '' )
 
     # Flag to signal whether settings are correct
-    [Boolean] $DesiredConfigurationMatch = $true
+    [System.Boolean] $DesiredConfigurationMatch = $true
 
     # Lookup the existing Namespace Folder
     $Folder = Get-Folder `
@@ -532,11 +544,12 @@ function Test-TargetResource
 } # Test-TargetResource
 
 # Helper Functions
-Function Get-Folder {
+Function Get-Folder
+{
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $Path
     )
     # Lookup the DFSN Folder.
@@ -558,15 +571,16 @@ Function Get-Folder {
     Return $DfsnFolder
 }
 
-Function Get-FolderTarget {
+Function Get-FolderTarget
+{
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $Path,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $TargetPath
     )
     # Lookup the DFSN Folder Target in a namespace.
@@ -594,14 +608,17 @@ function New-TerminatingError
     [CmdletBinding()]
     param
     (
-        [Parameter(Mandatory)]
-        [String] $ErrorId,
+        [Parameter(Mandatory = $true)]
+        [System.String]
+        $ErrorId,
 
-        [Parameter(Mandatory)]
-        [String] $ErrorMessage,
+        [Parameter(Mandatory = $true)]
+        [System.String]
+        $ErrorMessage,
 
-        [Parameter(Mandatory)]
-        [System.Management.Automation.ErrorCategory] $ErrorCategory
+        [Parameter(Mandatory = $true)]
+        [System.Management.Automation.ErrorCategory]
+        $ErrorCategory
     )
 
     $exception = New-Object `

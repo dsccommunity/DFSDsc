@@ -13,15 +13,16 @@ function Get-TargetResource
     [OutputType([Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $GroupName,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $FolderName,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $DomainName
     )
 
@@ -82,27 +83,32 @@ function Set-TargetResource
 {
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $GroupName,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $FolderName,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $Description,
 
-        [String[]]
+        [Parameter()]
+        [System.String[]]
         $FileNameToExclude,
 
-        [String[]]
+        [Parameter()]
+        [System.String[]]
         $DirectoryNameToExclude,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $DfsnPath,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $DomainName
     )
 
@@ -129,32 +135,37 @@ function Test-TargetResource
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $GroupName,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $FolderName,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $Description,
 
-        [String[]]
+        [Parameter()]
+        [System.String[]]
         $FileNameToExclude,
 
-        [String[]]
+        [Parameter()]
+        [System.String[]]
         $DirectoryNameToExclude,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $DfsnPath,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $DomainName
     )
 
     # Flag to signal whether settings are correct
-    [Boolean] $desiredConfigurationMatch = $true
+    [System.Boolean] $desiredConfigurationMatch = $true
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "

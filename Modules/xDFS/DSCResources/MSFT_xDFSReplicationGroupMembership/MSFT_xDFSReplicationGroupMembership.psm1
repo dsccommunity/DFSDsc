@@ -13,19 +13,20 @@ function Get-TargetResource
     [OutputType([Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $GroupName,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $FolderName,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $ComputerName,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $DomainName
     )
 
@@ -88,31 +89,36 @@ function Set-TargetResource
 {
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $GroupName,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $FolderName,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $ComputerName,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $ContentPath,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $StagingPath,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $ReadOnly,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $PrimaryMember,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $DomainName
     )
 
@@ -138,36 +144,41 @@ function Test-TargetResource
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $GroupName,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $FolderName,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $ComputerName,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $ContentPath,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $StagingPath,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $ReadOnly,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $PrimaryMember,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $DomainName
     )
 
     # Flag to signal whether settings are correct
-    [Boolean] $desiredConfigurationMatch = $true
+    [System.Boolean] $desiredConfigurationMatch = $true
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "

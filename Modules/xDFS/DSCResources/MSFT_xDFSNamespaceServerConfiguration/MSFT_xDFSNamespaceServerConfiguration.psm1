@@ -28,9 +28,9 @@ function Get-TargetResource
     [OutputType([Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Yes')]
-        [String]
+        [System.String]
         $IsSingleInstance
     )
 
@@ -65,18 +65,21 @@ function Set-TargetResource
     [CmdletBinding()]
     param
     (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Yes')]
-        [String]
+        [System.String]
         $IsSingleInstance,
 
-        [Uint32]
+        [Parameter()]
+        [System.UInt32]
         $LdapTimeoutSec,
 
-        [Uint32]
+        [Parameter()]
+        [System.UInt32]
         $SyncIntervalSec,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $UseFQDN
     )
 
@@ -153,18 +156,21 @@ function Test-TargetResource
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Yes')]
-        [String]
+        [System.String]
         $IsSingleInstance,
 
-        [Uint32]
+        [Parameter()]
+        [System.UInt32]
         $LdapTimeoutSec,
 
-        [Uint32]
+        [Parameter()]
+        [System.UInt32]
         $SyncIntervalSec,
 
-        [Boolean]
+        [Parameter()]
+        [System.Boolean]
         $UseFQDN
     )
 
@@ -178,7 +184,7 @@ function Test-TargetResource
     $ComputerName = 'LocalHost'
 
     # Flag to signal whether settings are correct
-    [Boolean] $DesiredConfigurationMatch = $true
+    [System.Boolean] $DesiredConfigurationMatch = $true
 
     # Get the current DFSN Server Configuration
     $ServerConfiguration = Get-DfsnServerConfiguration `
@@ -210,14 +216,17 @@ function New-TerminatingError
     [CmdletBinding()]
     param
     (
-        [Parameter(Mandatory)]
-        [String] $ErrorId,
+        [Parameter(Mandatory = $true)]
+        [System.String]
+        $ErrorId,
 
-        [Parameter(Mandatory)]
-        [String] $ErrorMessage,
+        [Parameter(Mandatory = $true)]
+        [System.String]
+        $ErrorMessage,
 
-        [Parameter(Mandatory)]
-        [System.Management.Automation.ErrorCategory] $ErrorCategory
+        [Parameter(Mandatory = $true)]
+        [System.Management.Automation.ErrorCategory]
+        $ErrorCategory
     )
 
     $exception = New-Object `

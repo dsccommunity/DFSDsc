@@ -13,24 +13,25 @@ function Get-TargetResource
     [OutputType([Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $GroupName,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $SourceComputerName,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $DestinationComputerName,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]
+        [System.String]
         $Ensure,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $DomainName
     )
 
@@ -103,35 +104,39 @@ function Set-TargetResource
 {
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $GroupName,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $SourceComputerName,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $DestinationComputerName,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]
+        [System.String]
         $Ensure,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $Description,
 
+        [Parameter()]
         [ValidateSet('Enabled','Disabled')]
-        [String]
+        [System.String]
         $EnsureEnabled = 'Enabled',
 
+        [Parameter()]
         [ValidateSet('Enabled','Disabled')]
-        [String]
+        [System.String]
         $EnsureRDCEnabled = 'Enabled',
 
-        [String]
+        [Parameter()]
+        [System.String]
         $DomainName
     )
 
@@ -231,40 +236,44 @@ function Test-TargetResource
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $GroupName,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $SourceComputerName,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $DestinationComputerName,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]
+        [System.String]
         $Ensure,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $Description,
 
+        [Parameter()]
         [ValidateSet('Enabled','Disabled')]
-        [String]
+        [System.String]
         $EnsureEnabled = 'Enabled',
 
+        [Parameter()]
         [ValidateSet('Enabled','Disabled')]
-        [String]
+        [System.String]
         $EnsureRDCEnabled = 'Enabled',
 
-        [String]
+        [Parameter()]
+        [System.String]
         $DomainName
     )
 
     # Flag to signal whether settings are correct
-    [Boolean] $desiredConfigurationMatch = $true
+    [System.Boolean] $desiredConfigurationMatch = $true
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "

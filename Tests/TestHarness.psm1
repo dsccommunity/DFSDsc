@@ -22,7 +22,7 @@ function Invoke-TestHarness
     }
 
     $testResultSettings = @{ }
-    if ([String]::IsNullOrEmpty($TestResultsFile) -eq $false) {
+    if ([System.String]::IsNullOrEmpty($TestResultsFile) -eq $false) {
         $testResultSettings.Add('OutputFormat', 'NUnitXml' )
         $testResultSettings.Add('OutputFile', $TestResultsFile)
     }

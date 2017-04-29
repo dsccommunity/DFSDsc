@@ -1,4 +1,4 @@
-[string] $repoRoot = Split-Path -Path (Split-Path -Path $Script:MyInvocation.MyCommand.Path)
+[System.String] $repoRoot = Split-Path -Path (Split-Path -Path $Script:MyInvocation.MyCommand.Path)
 if ( (-not (Test-Path -Path (Join-Path -Path $repoRoot -ChildPath 'DSCResource.Tests'))) -or `
      (-not (Test-Path -Path (Join-Path -Path $repoRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
 {

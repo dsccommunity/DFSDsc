@@ -13,16 +13,17 @@ function Get-TargetResource
     [OutputType([Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $GroupName,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]
+        [System.String]
         $Ensure,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $DomainName
     )
 
@@ -73,37 +74,42 @@ function Get-TargetResource
     $returnValue
 } # Get-TargetResource
 
-
 function Set-TargetResource
 {
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $GroupName,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]
+        [System.String]
         $Ensure,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $Description,
 
-        [String[]]
+        [Parameter()]
+        [System.String[]]
         $Members,
 
-        [String[]]
+        [Parameter()]
+        [System.String[]]
         $Folders,
 
+        [Parameter()]
         [ValidateSet('Fullmesh','Manual')]
-        [String]
+        [System.String]
         $Topology = 'Manual',
 
-        [String[]]
+        [Parameter()]
+        [System.String[]]
         $ContentPaths,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $DomainName
     )
 
@@ -275,10 +281,10 @@ function Set-TargetResource
                      foreach ($membership in $memberships)
                      {
 
-                        [String] $FQDNMemberName = Get-FQDNMemberName `
+                        [System.String] $FQDNMemberName = Get-FQDNMemberName `
                             @Splat `
                             -ComputerName $membership.ComputerName
-                        [Boolean] $primarymember = ($FQDNMemberName -eq $FQDNMembers[0])
+                        [System.Boolean] $primarymember = ($FQDNMemberName -eq $FQDNMembers[0])
                         if (($membership.FolderName -ne $Folders[$i]) `
                             -or (($membership.ContentPath -eq $ContentPath) `
                             -and ($membership.PrimaryMember -eq $primarymember)))
@@ -375,43 +381,48 @@ function Set-TargetResource
     } # if
 } # Set-TargetResource
 
-
 function Test-TargetResource
 {
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $GroupName,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]
+        [System.String]
         $Ensure,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $Description,
 
-        [String[]]
+        [Parameter()]
+        [System.String[]]
         $Members,
 
-        [String[]]
+        [Parameter()]
+        [System.String[]]
         $Folders,
 
+        [Parameter()]
         [ValidateSet('Fullmesh','Manual')]
-        [String]
+        [System.String]
         $Topology = 'Manual',
 
-        [String[]]
+        [Parameter()]
+        [System.String[]]
         $ContentPaths,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $DomainName
     )
 
     # Flag to signal whether settings are correct
-    [Boolean] $desiredConfigurationMatch = $true
+    [System.Boolean] $desiredConfigurationMatch = $true
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
@@ -504,7 +515,7 @@ function Test-TargetResource
                     {
                         Foreach ($membership in $memberships)
                         {
-                            [Boolean]$primarymember = ($membership.ComputerName -eq $Members[0])
+                            [System.Boolean]$primarymember = ($membership.ComputerName -eq $Members[0])
                             if (($membership.FolderName -ne $Folders[$i]) `
                                 -or (($membership.ContentPath -eq $ContentPath) `
                                 -and ($membership.PrimaryMember -eq $primarymember)))
@@ -631,15 +642,16 @@ function Get-FQDNMemberName
     [OutputType([System.String])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $GroupName,
 
-        [parameter(Mandatory = $true)]
-        [String]
+        [Parameter(Mandatory = $true)]
+        [System.String]
         $ComputerName,
 
-        [String]
+        [Parameter()]
+        [System.String]
         $DomainName
     )
 
@@ -690,14 +702,17 @@ function New-Exception
     [CmdLetBinding()]
     param
     (
-        [Parameter(Mandatory)]
-        [String] $errorId,
+        [Parameter(Mandatory = $true)]
+        [System.String]
+        $errorId,
 
-        [Parameter(Mandatory)]
-        [System.Management.Automation.ErrorCategory] $errorCategory,
+        [Parameter(Mandatory = $true)]
+        [System.Management.Automation.ErrorCategory]
+        $errorCategory,
 
-        [Parameter(Mandatory)]
-        [String] $errorMessage
+        [Parameter(Mandatory = $true)]
+        [System.String]
+        $errorMessage
     )
 
     $exception = New-Object -TypeName System.Exception `

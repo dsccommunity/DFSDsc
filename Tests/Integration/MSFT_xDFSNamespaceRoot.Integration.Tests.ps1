@@ -3,7 +3,7 @@ $script:DSCResourceName = 'MSFT_xDFSNamespaceRoot'
 
 #region HEADER
 # Integration Test Template Version: 1.1.0
-[string] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\xDFS'
+[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\xDFS'
 
 if ( (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
      (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
@@ -55,8 +55,8 @@ try
 
     Describe "$($script:DSCResourceName)_Integration" {
         # Create a SMB share for the Namespace
-        [String] $RandomFileName = [System.IO.Path]::GetRandomFileName()
-        [String] $ShareFolderRoot = Join-Path -Path $env:Temp -ChildPath "$($script:DSCResourceName)_$RandomFileName"
+        [System.String] $RandomFileName = [System.IO.Path]::GetRandomFileName()
+        [System.String] $ShareFolderRoot = Join-Path -Path $env:Temp -ChildPath "$($script:DSCResourceName)_$RandomFileName"
         New-Item `
             -Path $ShareFolderRoot `
             -Type Directory
