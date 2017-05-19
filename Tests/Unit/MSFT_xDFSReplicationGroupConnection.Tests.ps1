@@ -66,7 +66,7 @@ try
     InModuleScope $script:DSCResourceName {
 
         # Create the Mock Objects that will be used for running tests
-        $ReplicationGroup = [PSObject]@{
+        $replicationGroup = [PSObject]@{
             GroupName = 'Test Group'
             Ensure = 'Present'
             Description = 'Test Description'
@@ -76,11 +76,11 @@ try
             DomainName = 'CONTOSO.COM'
         }
 
-        $ReplicationGroupConnections = @(
+        $replicationGroupConnections = @(
             [PSObject]@{
                 GroupName = 'Test Group'
-                SourceComputerName = $ReplicationGroup.Members[0]
-                DestinationComputerName = $ReplicationGroup.Members[1]
+                SourceComputerName = $replicationGroup.Members[0]
+                DestinationComputerName = $replicationGroup.Members[1]
                 Ensure = 'Present'
                 Description = 'Connection Description'
                 EnsureEnabled = 'Enabled'
@@ -89,8 +89,8 @@ try
             },
             [PSObject]@{
                 GroupName = 'Test Group'
-                SourceComputerName = $ReplicationGroup.Members[1]
-                DestinationComputerName = $ReplicationGroup.Members[0]
+                SourceComputerName = $replicationGroup.Members[1]
+                DestinationComputerName = $replicationGroup.Members[0]
                 Ensure = 'Present'
                 Description = 'Connection Description'
                 EnsureEnabled = 'Enabled'
@@ -99,17 +99,17 @@ try
             }
         )
 
-        $ReplicationGroupConnectionDisabled = $ReplicationGroupConnections[0].Clone()
-        $ReplicationGroupConnectionDisabled.EnsureEnabled = 'Disabled'
+        $replicationGroupConnectionDisabled = $replicationGroupConnections[0].Clone()
+        $replicationGroupConnectionDisabled.EnsureEnabled = 'Disabled'
 
-        $MockReplicationGroupConnection = [PSObject]@{
-            GroupName = $ReplicationGroupConnections[0].GroupName
-            SourceComputerName = $ReplicationGroupConnections[0].SourceComputerName
-            DestinationComputerName = $ReplicationGroupConnections[0].DestinationComputerName
-            Description = $ReplicationGroupConnections[0].Description
-            Enabled = ($ReplicationGroupConnections[0].EnsureEnabled -eq 'Enabled')
-            RDCEnabled = ($ReplicationGroupConnections[0].EnsureRDCEnabled -eq 'Enabled')
-            DomainName = $ReplicationGroupConnections[0].DomainName
+        $mockReplicationGroupConnection = [PSObject]@{
+            GroupName = $replicationGroupConnections[0].GroupName
+            SourceComputerName = $replicationGroupConnections[0].SourceComputerName
+            DestinationComputerName = $replicationGroupConnections[0].DestinationComputerName
+            Description = $replicationGroupConnections[0].Description
+            Enabled = ($replicationGroupConnections[0].EnsureEnabled -eq 'Enabled')
+            RDCEnabled = ($replicationGroupConnections[0].EnsureRDCEnabled -eq 'Enabled')
+            DomainName = $replicationGroupConnections[0].DomainName
         }
 
         Describe "MSFT_xDFSReplicationGroupConnection\Get-TargetResource" {
@@ -118,9 +118,9 @@ try
 
                 It 'should return absent replication group connection' {
                     $result = Get-TargetResource `
-                        -GroupName $ReplicationGroupConnections[0].GroupName `
-                        -SourceComputerName $ReplicationGroupConnections[0].SourceComputerName `
-                        -DestinationComputerName $ReplicationGroupConnections[0].DestinationComputerName `
+                        -GroupName $replicationGroupConnections[0].GroupName `
+                        -SourceComputerName $replicationGroupConnections[0].SourceComputerName `
+                        -DestinationComputerName $replicationGroupConnections[0].DestinationComputerName `
                         -Ensure Present
                     $result.Ensure | Should Be 'Absent'
                 }
@@ -131,23 +131,23 @@ try
             }
 
             Context 'Requested replication group connection does exist' {
-                Mock Get-DfsrConnection -MockWith { return @($MockReplicationGroupConnection) }
+                Mock Get-DfsrConnection -MockWith { return @($mockReplicationGroupConnection) }
 
                 It 'should return correct replication group' {
                     $result = Get-TargetResource `
-                        -GroupName $ReplicationGroupConnections[0].GroupName `
-                        -SourceComputerName $ReplicationGroupConnections[0].SourceComputerName `
-                        -DestinationComputerName $ReplicationGroupConnections[0].DestinationComputerName `
+                        -GroupName $replicationGroupConnections[0].GroupName `
+                        -SourceComputerName $replicationGroupConnections[0].SourceComputerName `
+                        -DestinationComputerName $replicationGroupConnections[0].DestinationComputerName `
                         -Ensure Present
 
                     $result.Ensure | Should Be 'Present'
-                    $result.GroupName | Should Be $ReplicationGroupConnections[0].GroupName
-                    $result.SourceComputerName | Should Be $ReplicationGroupConnections[0].SourceComputerName
-                    $result.DestinationComputerName | Should Be $ReplicationGroupConnections[0].DestinationComputerName
-                    $result.Description | Should Be $ReplicationGroupConnections[0].Description
-                    $result.EnsureEnabled | Should Be $ReplicationGroupConnections[0].EnsureEnabled
-                    $result.EnsureRDCEnabled | Should Be $ReplicationGroupConnections[0].EnsureRDCEnabled
-                    $result.DomainName | Should Be $ReplicationGroupConnections[0].DomainName
+                    $result.GroupName | Should Be $replicationGroupConnections[0].GroupName
+                    $result.SourceComputerName | Should Be $replicationGroupConnections[0].SourceComputerName
+                    $result.DestinationComputerName | Should Be $replicationGroupConnections[0].DestinationComputerName
+                    $result.Description | Should Be $replicationGroupConnections[0].Description
+                    $result.EnsureEnabled | Should Be $replicationGroupConnections[0].EnsureEnabled
+                    $result.EnsureRDCEnabled | Should Be $replicationGroupConnections[0].EnsureRDCEnabled
+                    $result.DomainName | Should Be $replicationGroupConnections[0].DomainName
                 }
 
                 It 'should call the expected mocks' {
@@ -156,23 +156,23 @@ try
             }
 
             Context 'Requested replication group connection does exist but ComputerNames passed as FQDN' {
-                Mock Get-DfsrConnection -MockWith { return @($MockReplicationGroupConnection) }
+                Mock Get-DfsrConnection -MockWith { return @($mockReplicationGroupConnection) }
 
                 It 'should return correct replication group' {
                     $result = Get-TargetResource `
-                        -GroupName $ReplicationGroupConnections[0].GroupName `
-                        -SourceComputerName "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)" `
-                        -DestinationComputerName "$($ReplicationGroupConnections[0].DestinationComputerName).$($ReplicationGroupConnections[0].DomainName)" `
+                        -GroupName $replicationGroupConnections[0].GroupName `
+                        -SourceComputerName "$($replicationGroupConnections[0].SourceComputerName).$($replicationGroupConnections[0].DomainName)" `
+                        -DestinationComputerName "$($replicationGroupConnections[0].DestinationComputerName).$($replicationGroupConnections[0].DomainName)" `
                         -Ensure Present
 
                     $result.Ensure | Should Be 'Present'
-                    $result.GroupName | Should Be $ReplicationGroupConnections[0].GroupName
-                    $result.SourceComputerName | Should Be $ReplicationGroupConnections[0].SourceComputerName
-                    $result.DestinationComputerName | Should Be $ReplicationGroupConnections[0].DestinationComputerName
-                    $result.Description | Should Be $ReplicationGroupConnections[0].Description
-                    $result.EnsureEnabled | Should Be $ReplicationGroupConnections[0].EnsureEnabled
-                    $result.EnsureRDCEnabled | Should Be $ReplicationGroupConnections[0].EnsureRDCEnabled
-                    $result.DomainName | Should Be $ReplicationGroupConnections[0].DomainName
+                    $result.GroupName | Should Be $replicationGroupConnections[0].GroupName
+                    $result.SourceComputerName | Should Be $replicationGroupConnections[0].SourceComputerName
+                    $result.DestinationComputerName | Should Be $replicationGroupConnections[0].DestinationComputerName
+                    $result.Description | Should Be $replicationGroupConnections[0].Description
+                    $result.EnsureEnabled | Should Be $replicationGroupConnections[0].EnsureEnabled
+                    $result.EnsureRDCEnabled | Should Be $replicationGroupConnections[0].EnsureRDCEnabled
+                    $result.DomainName | Should Be $replicationGroupConnections[0].DomainName
                 }
 
                 It 'should call the expected mocks' {
@@ -190,7 +190,7 @@ try
 
                 It 'should not throw error' {
                     {
-                        $splat = $ReplicationGroupConnections[0].Clone()
+                        $splat = $replicationGroupConnections[0].Clone()
                         Set-TargetResource @splat
                     } | Should Not Throw
                 }
@@ -204,14 +204,14 @@ try
             }
 
             Context 'Replication Group connection exists and there are no differences' {
-                Mock Get-DfsrConnection -MockWith { return @($MockReplicationGroupConnection) }
+                Mock Get-DfsrConnection -MockWith { return @($mockReplicationGroupConnection) }
                 Mock Set-DfsrConnection
                 Mock Add-DfsrConnection
                 Mock Remove-DfsrConnection
 
                 It 'should not throw error' {
                     {
-                        $splat = $ReplicationGroupConnections[0].Clone()
+                        $splat = $replicationGroupConnections[0].Clone()
                         Set-TargetResource @splat
                     } | Should Not Throw
                 }
@@ -225,14 +225,14 @@ try
             }
 
             Context 'Replication Group connection exists and there are no differences but ComputerNames passed as FQDN' {
-                Mock Get-DfsrConnection -MockWith { return @($MockReplicationGroupConnection) }
+                Mock Get-DfsrConnection -MockWith { return @($mockReplicationGroupConnection) }
                 Mock Set-DfsrConnection
                 Mock Add-DfsrConnection
                 Mock Remove-DfsrConnection
 
                 It 'should not throw error' {
                     {
-                        $splat = $ReplicationGroupConnections[0].Clone()
+                        $splat = $replicationGroupConnections[0].Clone()
                         $splat.SourceComputerName = "$($splat.SourceComputerName).$($splat.DomainName)"
                         $splat.DestinationComputerName = "$($splat.DestinationComputerName).$($splat.DomainName)"
                         Set-TargetResource @splat
@@ -248,14 +248,14 @@ try
             }
 
             Context 'Replication Group connection exists but has different Description' {
-                Mock Get-DfsrConnection -MockWith { return @($MockReplicationGroupConnection) }
+                Mock Get-DfsrConnection -MockWith { return @($mockReplicationGroupConnection) }
                 Mock Set-DfsrConnection
                 Mock Add-DfsrConnection
                 Mock Remove-DfsrConnection
 
                 It 'should not throw error' {
                     {
-                        $splat = $ReplicationGroupConnections[0].Clone()
+                        $splat = $replicationGroupConnections[0].Clone()
                         $splat.Description = 'Changed'
                         Set-TargetResource @splat
                     } | Should Not Throw
@@ -270,14 +270,14 @@ try
             }
 
             Context 'Replication Group connection exists but has different EnsureEnabled' {
-                Mock Get-DfsrConnection -MockWith { return @($MockReplicationGroupConnection) }
+                Mock Get-DfsrConnection -MockWith { return @($mockReplicationGroupConnection) }
                 Mock Set-DfsrConnection
                 Mock Add-DfsrConnection
                 Mock Remove-DfsrConnection
 
                 It 'should not throw error' {
                     {
-                        $splat = $ReplicationGroupConnections[0].Clone()
+                        $splat = $replicationGroupConnections[0].Clone()
                         $splat.EnsureEnabled = 'Disabled'
                         Set-TargetResource @splat
                     } | Should Not Throw
@@ -292,14 +292,14 @@ try
             }
 
             Context 'Replication Group connection exists but has different EnsureRDCEnabled' {
-                Mock Get-DfsrConnection -MockWith { return @($MockReplicationGroupConnection) }
+                Mock Get-DfsrConnection -MockWith { return @($mockReplicationGroupConnection) }
                 Mock Set-DfsrConnection
                 Mock Add-DfsrConnection
                 Mock Remove-DfsrConnection
 
                 It 'should not throw error' {
                     {
-                        $splat = $ReplicationGroupConnections[0].Clone()
+                        $splat = $replicationGroupConnections[0].Clone()
                         $splat.EnsureRDCEnabled = 'Disabled'
                         $splat.Description = 'Changed'
                         Set-TargetResource @splat
@@ -316,14 +316,14 @@ try
 
 
             Context 'Replication Group connection exists but should not' {
-                Mock Get-DfsrConnection -MockWith { return @($MockReplicationGroupConnection) }
+                Mock Get-DfsrConnection -MockWith { return @($mockReplicationGroupConnection) }
                 Mock Set-DfsrConnection
                 Mock Add-DfsrConnection
                 Mock Remove-DfsrConnection
 
                 It 'should not throw error' {
                     {
-                        $splat = $ReplicationGroupConnections[0].Clone()
+                        $splat = $replicationGroupConnections[0].Clone()
                         $splat.Ensure = 'Absent'
                         Set-TargetResource @splat
                     } | Should Not Throw
@@ -338,14 +338,14 @@ try
             }
 
             Context 'Replication Group connection exists and is correct' {
-                Mock Get-DfsrConnection -MockWith { return @($MockReplicationGroupConnection) }
+                Mock Get-DfsrConnection -MockWith { return @($mockReplicationGroupConnection) }
                 Mock Set-DfsrConnection
                 Mock Add-DfsrConnection
                 Mock Remove-DfsrConnection
 
                 It 'should not throw error' {
                     {
-                        $splat = $ReplicationGroupConnections[0].Clone()
+                        $splat = $replicationGroupConnections[0].Clone()
                         Set-TargetResource @splat
                     } | Should Not Throw
                 }
@@ -364,7 +364,7 @@ try
                 Mock Get-DfsrConnection
 
                 It 'should return false' {
-                    $splat = $ReplicationGroupConnections[0].Clone()
+                    $splat = $replicationGroupConnections[0].Clone()
                     Test-TargetResource @splat | Should Be $False
                 }
 
@@ -374,10 +374,10 @@ try
             }
 
             Context 'Replication Group Connection exists and there are no differences' {
-                Mock Get-DfsrConnection -MockWith { @($MockReplicationGroupConnection) }
+                Mock Get-DfsrConnection -MockWith { @($mockReplicationGroupConnection) }
 
                 It 'should return false' {
-                    $splat = $ReplicationGroupConnections[0].Clone()
+                    $splat = $replicationGroupConnections[0].Clone()
                     Test-TargetResource @splat | Should Be $True
                 }
 
@@ -387,10 +387,10 @@ try
             }
 
             Context 'Replication Group Connection exists and there are no differences but ComputerNames passed as FQDN' {
-                Mock Get-DfsrConnection -MockWith { @($MockReplicationGroupConnection) }
+                Mock Get-DfsrConnection -MockWith { @($mockReplicationGroupConnection) }
 
                 It 'should return false' {
-                    $splat = $ReplicationGroupConnections[0].Clone()
+                    $splat = $replicationGroupConnections[0].Clone()
                     $splat.SourceComputerName = "$($splat.SourceComputerName).$($splat.DomainName)"
                     $splat.DestinationComputerName = "$($splat.DestinationComputerName).$($splat.DomainName)"
                     Test-TargetResource @splat | Should Be $True
@@ -402,10 +402,10 @@ try
             }
 
             Context 'Replication Group Connection exists but has different Description' {
-                Mock Get-DfsrConnection -MockWith { @($MockReplicationGroupConnection) }
+                Mock Get-DfsrConnection -MockWith { @($mockReplicationGroupConnection) }
 
                 It 'should return false' {
-                    $splat = $ReplicationGroupConnections[0].Clone()
+                    $splat = $replicationGroupConnections[0].Clone()
                     $splat.Description = 'Changed'
                     Test-TargetResource @splat | Should Be $False
                 }
@@ -416,10 +416,10 @@ try
             }
 
             Context 'Replication Group Connection exists but has different EnsureEnabled' {
-                Mock Get-DfsrConnection -MockWith { @($MockReplicationGroupConnection) }
+                Mock Get-DfsrConnection -MockWith { @($mockReplicationGroupConnection) }
 
                 It 'should return false' {
-                    $splat = $ReplicationGroupConnections[0].Clone()
+                    $splat = $replicationGroupConnections[0].Clone()
                     $splat.EnsureEnabled = 'Disabled'
                     Test-TargetResource @splat | Should Be $False
                 }
@@ -430,10 +430,10 @@ try
             }
 
             Context 'Replication Group Connection exists but has different EnsureRDCEnabled' {
-                Mock Get-DfsrConnection -MockWith { @($MockReplicationGroupConnection) }
+                Mock Get-DfsrConnection -MockWith { @($mockReplicationGroupConnection) }
 
                 It 'should return false' {
-                    $splat = $ReplicationGroupConnections[0].Clone()
+                    $splat = $replicationGroupConnections[0].Clone()
                     $splat.EnsureRDCEnabled = 'Disabled'
                     Test-TargetResource @splat | Should Be $False
                 }
@@ -444,10 +444,10 @@ try
             }
 
             Context 'Replication Group Connection exists but should not' {
-                Mock Get-DfsrConnection -MockWith { @($MockReplicationGroupConnection) }
+                Mock Get-DfsrConnection -MockWith { @($mockReplicationGroupConnection) }
 
                 It 'should return false' {
-                    $splat = $ReplicationGroupConnections[0].Clone()
+                    $splat = $replicationGroupConnections[0].Clone()
                     $splat.Ensure = 'Absent'
                     Test-TargetResource @splat | Should Be $False
                 }
@@ -458,10 +458,10 @@ try
             }
 
             Context 'Replication Group Connection exists and is correct' {
-                Mock Get-DfsrConnection -MockWith { @($MockReplicationGroupConnection) }
+                Mock Get-DfsrConnection -MockWith { @($mockReplicationGroupConnection) }
 
                 It 'should return true' {
-                    $splat = $ReplicationGroupConnections[0].Clone()
+                    $splat = $replicationGroupConnections[0].Clone()
                     Test-TargetResource @splat | Should Be $True
                 }
 
