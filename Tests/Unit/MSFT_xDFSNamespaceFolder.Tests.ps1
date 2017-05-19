@@ -53,7 +53,7 @@ try
     InModuleScope $script:DSCResourceName {
 
         # Create the Mock Objects that will be used for running tests
-        $Namespace = [PSObject]@{
+        $namespace = [PSObject]@{
             Path                         = '\\contoso.com\UnitTestNamespace\Folder'
             TargetPath                   = '\\server1\UnitTestNamespace\Folder'
             Ensure                       = 'Present'
@@ -65,29 +65,29 @@ try
             ReferralPriorityRank         = 10
         }
 
-        $NamespaceSplat = [PSObject]@{
-            Path                         = $Namespace.Path
-            TargetPath                   = $Namespace.TargetPath
-            Ensure                       = $Namespace.Ensure
+        $namespaceSplat = [PSObject]@{
+            Path                         = $namespace.Path
+            TargetPath                   = $namespace.TargetPath
+            Ensure                       = $namespace.Ensure
         }
 
-        $NamespaceFolder = [PSObject]@{
-            Path                         = $Namespace.Path
-            TimeToLiveSec                = $Namespace.TimeToLiveSec
+        $namespaceFolder = [PSObject]@{
+            Path                         = $namespace.Path
+            TimeToLiveSec                = $namespace.TimeToLiveSec
             State                        = 'Online'
             Flags                        = @('Insite Referrals','Target Failback')
-            Description                  = $Namespace.Description
-            NamespacePath                = $Namespace.Path
+            Description                  = $namespace.Description
+            NamespacePath                = $namespace.Path
             TimeToLive                   = 500
         }
 
-        $NamespaceTarget = [PSObject]@{
-            Path                         = $Namespace.Path
+        $namespaceTarget = [PSObject]@{
+            Path                         = $namespace.Path
             State                        = 'Online'
-            ReferralPriorityClass        = $Namespace.ReferralPriorityClass
-            NamespacePath                = $Namespace.Path
-            ReferralPriorityRank         = $Namespace.ReferralPriorityRank
-            TargetPath                   = $Namespace.TargetPath
+            ReferralPriorityClass        = $namespace.ReferralPriorityClass
+            NamespacePath                = $namespace.Path
+            ReferralPriorityRank         = $namespace.ReferralPriorityRank
+            TargetPath                   = $namespace.TargetPath
         }
 
         Describe "MSFT_xDFSNamespaceFolder\Get-TargetResource" {
@@ -96,7 +96,7 @@ try
                 Mock Get-DFSNFolderTarget
 
                 It 'should return absent namespace' {
-                    $result = Get-TargetResource @NamespaceSplat
+                    $result = Get-TargetResource @namespaceSplat
                     $result.Ensure | Should Be 'Absent'
                 }
 
@@ -107,19 +107,19 @@ try
             }
 
             Context 'Namespace Folder does exist but Target does not' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
                 It 'should return correct replication group' {
-                    $result = Get-TargetResource @NamespaceSplat
-                    $result.Path                         | Should Be $Namespace.Path
-                    $result.TargetPath                   | Should Be $Namespace.TargetPath
+                    $result = Get-TargetResource @namespaceSplat
+                    $result.Path                         | Should Be $namespace.Path
+                    $result.TargetPath                   | Should Be $namespace.TargetPath
                     $result.Ensure                       | Should Be 'Absent'
-                    $result.TimeToLiveSec                | Should Be $NamespaceFolder.TimeToLiveSec
-                    $result.State                        | Should Be $NamespaceFolder.State
-                    $result.Description                  | Should Be $NamespaceFolder.Description
-                    $result.EnableInsiteReferrals        | Should Be ($NamespaceFolder.Flags -contains 'Insite Referrals')
-                    $result.EnableTargetFailback         | Should Be ($NamespaceFolder.Flags -contains 'Target Failback')
+                    $result.TimeToLiveSec                | Should Be $namespaceFolder.TimeToLiveSec
+                    $result.State                        | Should Be $namespaceFolder.State
+                    $result.Description                  | Should Be $namespaceFolder.Description
+                    $result.EnableInsiteReferrals        | Should Be ($namespaceFolder.Flags -contains 'Insite Referrals')
+                    $result.EnableTargetFailback         | Should Be ($namespaceFolder.Flags -contains 'Target Failback')
                     $result.ReferralPriorityClass        | Should Be $null
                     $result.ReferralPriorityRank         | Should Be $null
                 }
@@ -131,21 +131,21 @@ try
             }
 
             Context 'Namespace Folder and Target exists' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
-                Mock Get-DFSNFolderTarget -MockWith { $NamespaceTarget }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
+                Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
                 It 'should return correct replication group' {
-                    $result = Get-TargetResource @NamespaceSplat
-                    $result.Path                         | Should Be $Namespace.Path
-                    $result.TargetPath                   | Should Be $Namespace.TargetPath
+                    $result = Get-TargetResource @namespaceSplat
+                    $result.Path                         | Should Be $namespace.Path
+                    $result.TargetPath                   | Should Be $namespace.TargetPath
                     $result.Ensure                       | Should Be 'Present'
-                    $result.TimeToLiveSec                | Should Be $NamespaceFolder.TimeToLiveSec
-                    $result.State                        | Should Be $NamespaceFolder.State
-                    $result.Description                  | Should Be $NamespaceFolder.Description
-                    $result.EnableInsiteReferrals        | Should Be ($NamespaceFolder.Flags -contains 'Insite Referrals')
-                    $result.EnableTargetFailback         | Should Be ($NamespaceFolder.Flags -contains 'Target Failback')
-                    $result.ReferralPriorityClass        | Should Be $NamespaceTarget.ReferralPriorityClass
-                    $result.ReferralPriorityRank         | Should Be $NamespaceTarget.ReferralPriorityRank
+                    $result.TimeToLiveSec                | Should Be $namespaceFolder.TimeToLiveSec
+                    $result.State                        | Should Be $namespaceFolder.State
+                    $result.Description                  | Should Be $namespaceFolder.Description
+                    $result.EnableInsiteReferrals        | Should Be ($namespaceFolder.Flags -contains 'Insite Referrals')
+                    $result.EnableTargetFailback         | Should Be ($namespaceFolder.Flags -contains 'Target Failback')
+                    $result.ReferralPriorityClass        | Should Be $namespaceTarget.ReferralPriorityClass
+                    $result.ReferralPriorityRank         | Should Be $namespaceTarget.ReferralPriorityRank
                 }
 
                 It 'should call the expected mocks' {
@@ -168,8 +168,8 @@ try
 
                 It 'should not throw error' {
                     {
-                        $Splat = $Namespace.Clone()
-                        Set-TargetResource @Splat
+                        $splat = $namespace.Clone()
+                        Set-TargetResource @splat
                     } | Should Not Throw
                 }
 
@@ -185,13 +185,13 @@ try
             }
 
             Context 'Namespace Folder exists and should but Target does not' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
                 It 'should not throw error' {
                     {
-                        $Splat = $Namespace.Clone()
-                        Set-TargetResource @Splat
+                        $splat = $namespace.Clone()
+                        Set-TargetResource @splat
                     } | Should Not Throw
                 }
 
@@ -207,14 +207,14 @@ try
             }
 
             Context 'Namespace Folder exists and should but has a different Description' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
                 It 'should not throw error' {
                     {
-                        $Splat = $Namespace.Clone()
-                        $Splat.Description = 'A new description'
-                        Set-TargetResource @Splat
+                        $splat = $namespace.Clone()
+                        $splat.Description = 'A new description'
+                        Set-TargetResource @splat
                     } | Should Not Throw
                 }
 
@@ -230,14 +230,14 @@ try
             }
 
             Context 'Namespace Folder exists and should but has a different TimeToLiveSec' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
                 It 'should not throw error' {
                     {
-                        $Splat = $Namespace.Clone()
-                        $Splat.TimeToLiveSec = $Splat.TimeToLiveSec + 1
-                        Set-TargetResource @Splat
+                        $splat = $namespace.Clone()
+                        $splat.TimeToLiveSec = $splat.TimeToLiveSec + 1
+                        Set-TargetResource @splat
                     } | Should Not Throw
                 }
 
@@ -253,14 +253,14 @@ try
             }
 
             Context 'Namespace Folder exists and should but has a different EnableInsiteReferrals' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
                 It 'should not throw error' {
                     {
-                        $Splat = $Namespace.Clone()
-                        $Splat.EnableInsiteReferrals = $False
-                        Set-TargetResource @Splat
+                        $splat = $namespace.Clone()
+                        $splat.EnableInsiteReferrals = $False
+                        Set-TargetResource @splat
                     } | Should Not Throw
                 }
 
@@ -276,14 +276,14 @@ try
             }
 
             Context 'Namespace Folder exists and should but has a different EnableTargetFailback' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
                 It 'should not throw error' {
                     {
-                        $Splat = $Namespace.Clone()
-                        $Splat.EnableTargetFailback = $False
-                        Set-TargetResource @Splat
+                        $splat = $namespace.Clone()
+                        $splat.EnableTargetFailback = $False
+                        Set-TargetResource @splat
                     } | Should Not Throw
                 }
 
@@ -299,13 +299,13 @@ try
             }
 
             Context 'Namespace Folder and Target exists and should' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
-                Mock Get-DFSNFolderTarget -MockWith { $NamespaceTarget }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
+                Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
                 It 'should not throw error' {
                     {
-                        $Splat = $Namespace.Clone()
-                        Set-TargetResource @Splat
+                        $splat = $namespace.Clone()
+                        Set-TargetResource @splat
                     } | Should Not Throw
                 }
 
@@ -321,14 +321,14 @@ try
             }
 
             Context 'Namespace Folder and Target exists and should but has different ReferralPriorityClass' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
-                Mock Get-DFSNFolderTarget -MockWith { $NamespaceTarget }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
+                Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
                 It 'should not throw error' {
                     {
-                        $Splat = $Namespace.Clone()
-                        $Splat.ReferralPriorityClass = 'SiteCost-High'
-                        Set-TargetResource @Splat
+                        $splat = $namespace.Clone()
+                        $splat.ReferralPriorityClass = 'SiteCost-High'
+                        Set-TargetResource @splat
                     } | Should Not Throw
                 }
 
@@ -344,14 +344,14 @@ try
             }
 
             Context 'Namespace Folder and Target exists and should but has different ReferralPriorityRank' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
-                Mock Get-DFSNFolderTarget -MockWith { $NamespaceTarget }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
+                Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
                 It 'should not throw error' {
                     {
-                        $Splat = $Namespace.Clone()
-                        $Splat.ReferralPriorityRank++
-                        Set-TargetResource @Splat
+                        $splat = $namespace.Clone()
+                        $splat.ReferralPriorityRank++
+                        Set-TargetResource @splat
                     } | Should Not Throw
                 }
 
@@ -367,14 +367,14 @@ try
             }
 
             Context 'Namespace Folder and Target exists but should not' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
-                Mock Get-DFSNFolderTarget -MockWith { $NamespaceTarget }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
+                Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
                 It 'should not throw error' {
                     {
-                        $Splat = $Namespace.Clone()
-                        $Splat.Ensure = 'Absent'
-                        Set-TargetResource @Splat
+                        $splat = $namespace.Clone()
+                        $splat.Ensure = 'Absent'
+                        Set-TargetResource @splat
                     } | Should Not Throw
                 }
 
@@ -390,14 +390,14 @@ try
             }
 
             Context 'Namespace Folder exists but target does not exist and should not' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
                 It 'should not throw error' {
                     {
-                        $Splat = $Namespace.Clone()
-                        $Splat.Ensure = 'Absent'
-                        Set-TargetResource @Splat
+                        $splat = $namespace.Clone()
+                        $splat.Ensure = 'Absent'
+                        Set-TargetResource @splat
                     } | Should Not Throw
                 }
 
@@ -419,8 +419,8 @@ try
                 Mock Get-DFSNFolderTarget
 
                 It 'should return false' {
-                    $Splat = $Namespace.Clone()
-                    Test-TargetResource @Splat | Should Be $False
+                    $splat = $namespace.Clone()
+                    Test-TargetResource @splat | Should Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -430,12 +430,12 @@ try
             }
 
             Context 'Namespace Folder exists and should but Target does not' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
                 It 'should return false' {
-                    $Splat = $Namespace.Clone()
-                    Test-TargetResource @Splat | Should Be $false
+                    $splat = $namespace.Clone()
+                    Test-TargetResource @splat | Should Be $false
                 }
 
                 It 'should call expected Mocks' {
@@ -445,13 +445,13 @@ try
             }
 
             Context 'Namespace Folder exists and should but has a different Description' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
                 It 'should return false' {
-                    $Splat = $Namespace.Clone()
-                    $Splat.Description = 'A new description'
-                    Test-TargetResource @Splat | Should Be $False
+                    $splat = $namespace.Clone()
+                    $splat.Description = 'A new description'
+                    Test-TargetResource @splat | Should Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -461,13 +461,13 @@ try
             }
 
             Context 'Namespace Folder exists and should but has a different TimeToLiveSec' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
                 It 'should return false' {
-                    $Splat = $Namespace.Clone()
-                    $Splat.TimeToLiveSec = $Splat.TimeToLiveSec + 1
-                    Test-TargetResource @Splat | Should Be $False
+                    $splat = $namespace.Clone()
+                    $splat.TimeToLiveSec = $splat.TimeToLiveSec + 1
+                    Test-TargetResource @splat | Should Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -477,13 +477,13 @@ try
             }
 
             Context 'Namespace Folder exists and should but has a different EnableInsiteReferrals' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
                 It 'should return false' {
-                    $Splat = $Namespace.Clone()
-                    $Splat.EnableInsiteReferrals = $False
-                    Test-TargetResource @Splat | Should Be $False
+                    $splat = $namespace.Clone()
+                    $splat.EnableInsiteReferrals = $False
+                    Test-TargetResource @splat | Should Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -493,13 +493,13 @@ try
             }
 
             Context 'Namespace Folder exists and should but has a different EnableTargetFailback' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
                 It 'should return false' {
-                    $Splat = $Namespace.Clone()
-                    $Splat.EnableTargetFailback = $False
-                    Test-TargetResource @Splat | Should Be $False
+                    $splat = $namespace.Clone()
+                    $splat.EnableTargetFailback = $False
+                    Test-TargetResource @splat | Should Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -509,13 +509,13 @@ try
             }
 
             Context 'Namespace Folder exists and should but has a different ReferralPriorityClass' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
-                Mock Get-DFSNFolderTarget -MockWith { $NamespaceTarget }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
+                Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
                 It 'should return false' {
-                    $Splat = $Namespace.Clone()
-                    $Splat.ReferralPriorityClass = 'SiteCost-Normal'
-                    Test-TargetResource @Splat | Should Be $False
+                    $splat = $namespace.Clone()
+                    $splat.ReferralPriorityClass = 'SiteCost-Normal'
+                    Test-TargetResource @splat | Should Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -525,13 +525,13 @@ try
             }
 
             Context 'Namespace Folder exists and should but has a different ReferralPriorityRank' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
-                Mock Get-DFSNFolderTarget -MockWith { $NamespaceTarget }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
+                Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
                 It 'should return false' {
-                    $Splat = $Namespace.Clone()
-                    $Splat.ReferralPriorityRank++
-                    Test-TargetResource @Splat | Should Be $False
+                    $splat = $namespace.Clone()
+                    $splat.ReferralPriorityRank++
+                    Test-TargetResource @splat | Should Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -541,12 +541,12 @@ try
             }
 
             Context 'Namespace Folder and Target exists and should' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
-                Mock Get-DFSNFolderTarget -MockWith { $NamespaceTarget }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
+                Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
                 It 'should return true' {
-                    $Splat = $Namespace.Clone()
-                    Test-TargetResource @Splat | Should Be $True
+                    $splat = $namespace.Clone()
+                    Test-TargetResource @splat | Should Be $True
                 }
 
                 It 'should call expected Mocks' {
@@ -556,13 +556,13 @@ try
             }
 
             Context 'Namespace Folder and Target exists but should not' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
-                Mock Get-DFSNFolderTarget -MockWith { $NamespaceTarget }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
+                Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
                 It 'should return false' {
-                    $Splat = $Namespace.Clone()
-                    $Splat.Ensure = 'Absent'
-                    Test-TargetResource @Splat | Should Be $False
+                    $splat = $namespace.Clone()
+                    $splat.Ensure = 'Absent'
+                    Test-TargetResource @splat | Should Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -572,13 +572,13 @@ try
             }
 
             Context 'Namespace Folder exists but Target does not exist and should not' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
                 It 'should return true' {
-                    $Splat = $Namespace.Clone()
-                    $Splat.Ensure = 'Absent'
-                    Test-TargetResource @Splat | Should Be $True
+                    $splat = $namespace.Clone()
+                    $splat.Ensure = 'Absent'
+                    Test-TargetResource @splat | Should Be $True
                 }
 
                 It 'should call expected Mocks' {
@@ -590,7 +590,7 @@ try
 
         Describe "MSFT_xDFSNamespaceFolder\Get-Folder" {
             Context 'DFSN Folder does not exist' {
-                $errorId = 'Cannot get DFS folder properites on "{0}"' -f $NamespaceFolder.Path
+                $errorId = 'Cannot get DFS folder properites on "{0}"' -f $namespaceFolder.Path
                 $errorCategory = 'NotSpecified'
                 $exception = New-Object `
                     -TypeName Microsoft.Management.Infrastructure.CimException `
@@ -604,7 +604,7 @@ try
                 It 'should return null' {
 
                     $result = Get-Folder `
-                        -Path $NamespaceFolder.Path
+                        -Path $namespaceFolder.Path
                     $result | Should Be $null
                 }
 
@@ -614,13 +614,13 @@ try
             }
 
             Context 'DFSN Folder exists' {
-                Mock Get-DFSNFolder -MockWith { $NamespaceFolder }
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
 
                 It 'should return the expected folder' {
 
                     $result = Get-Folder `
-                        -Path $NamespaceFolder.Path
-                    $result | Should Be $NamespaceFolder
+                        -Path $namespaceFolder.Path
+                    $result | Should Be $namespaceFolder
                 }
 
                 It 'should call expected Mocks' {
@@ -631,7 +631,7 @@ try
 
         Describe "MSFT_xDFSNamespaceFolder\Get-FolderTarget" {
             Context 'DFSN Folder Target does not exist' {
-                $errorId = 'Cannot get DFS target properites on "{0}"' -f $NamespaceTarget.TargetPath
+                $errorId = 'Cannot get DFS target properites on "{0}"' -f $namespaceTarget.TargetPath
                 $errorCategory = 'NotSpecified'
                 $exception = New-Object `
                     -TypeName Microsoft.Management.Infrastructure.CimException `
@@ -645,8 +645,8 @@ try
                 It 'should return null' {
 
                     $result = Get-FolderTarget `
-                        -Path $NamespaceTarget.Path `
-                        -TargetPath $NamespaceTarget.TargetPath
+                        -Path $namespaceTarget.Path `
+                        -TargetPath $namespaceTarget.TargetPath
                     $result | Should Be $null
                 }
 
@@ -656,14 +656,14 @@ try
             }
 
             Context 'DFSN Folder Target exists' {
-                Mock Get-DFSNFolderTarget -MockWith { $NamespaceTarget }
+                Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
                 It 'should return the expected target' {
 
                     $result = Get-FolderTarget `
-                        -Path $NamespaceTarget.Path `
-                        -TargetPath $NamespaceTarget.TargetPath
-                    $result | Should Be $NamespaceTarget
+                        -Path $namespaceTarget.Path `
+                        -TargetPath $namespaceTarget.TargetPath
+                    $result | Should Be $namespaceTarget
                 }
 
                 It 'should call expected Mocks' {
