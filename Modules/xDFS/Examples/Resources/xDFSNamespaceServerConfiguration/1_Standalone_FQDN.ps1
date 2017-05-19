@@ -37,7 +37,7 @@ Configuration Example
             Ensure = 'Present'
         }
 
-       # Configure the namespace server
+        # Configure the namespace server
         xDFSNamespaceServerConfiguration DFSNamespaceConfig
         {
             IsSingleInstance          = 'Yes'

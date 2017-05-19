@@ -580,10 +580,11 @@ function Test-TargetResource
         # The Namespace root should exist
         if ($root)
         {
-            # The Namespace root exists and should
-
-            # Changing the namespace type is not possible - the namespace
-            # can only be recreated if the type should change.
+            <#
+                The Namespace root exists and should
+                Changing the namespace type is not possible - the namespace
+                can only be recreated if the type should change.
+            #>
             if (($root.Type -replace ' ','') -ne $Type)
             {
                 New-InvalidOperationException `
@@ -752,7 +753,7 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                  $($LocalizedData.NamespaceRootDoesNotExistAndShouldNotMessage) `
-                    -f $Type,$Path,$TargetPath
+                    -f $Type,$Path
                 ) -join '' )
         } # if
     } # if

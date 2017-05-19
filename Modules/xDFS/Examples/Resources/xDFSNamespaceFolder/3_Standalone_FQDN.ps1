@@ -37,7 +37,7 @@ Configuration Example
             Ensure = 'Present'
         }
 
-       # Configure the namespace server
+        # Configure the namespace server
         xDFSNamespaceServerConfiguration DFSNamespaceConfig
         {
             IsSingleInstance          = 'Yes'
@@ -45,7 +45,7 @@ Configuration Example
             PsDscRunAsCredential      = $Credential
         } # End of xDFSNamespaceServerConfiguration Resource
 
-       # Configure the namespace
+        # Configure the namespace
         xDFSNamespaceRoot DFSNamespaceRoot_Standalone_Public
         {
             Path                 = '\\fileserver1.contoso.com\public'
@@ -56,7 +56,7 @@ Configuration Example
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceRoot Resource
 
-       # Configure the namespace folder
+        # Configure the namespace folder
         xDFSNamespaceFolder DFSNamespaceFolder_Standalone_PublicBrochures
         {
             Path                 = '\\fileserver1.contoso.com\public\brochures'

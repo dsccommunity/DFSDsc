@@ -21,8 +21,10 @@ Configuration Example
 
     Node $NodeName
     {
-        # Install the Prerequisite features first
-        # Requires Windows Server 2012 R2 Full install
+        <#
+            Install the Prerequisite features first
+            Requires Windows Server 2012 R2 Full install
+        #>
         WindowsFeature RSATDFSMgmtConInstall
         {
             Ensure = 'Present'

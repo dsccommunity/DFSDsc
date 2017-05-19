@@ -21,8 +21,10 @@ Configuration Example
 
     Node $NodeName
     {
-        # Install the Prerequisite features first
-        # Requires Windows Server 2012 R2 Full install
+        <#
+            Install the Prerequisite features first
+            Requires Windows Server 2012 R2 Full install
+        #>
         WindowsFeature RSATDFSMgmtConInstall
         {
             Ensure = 'Present'
@@ -35,7 +37,7 @@ Configuration Example
             Ensure = 'Present'
         }
 
-       # Configure the namespace
+        # Configure the namespace
         xDFSNamespaceRoot DFSNamespaceRoot_Domain_Departments
         {
             Path                 = '\\contoso.com\departments'
@@ -47,7 +49,7 @@ Configuration Example
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceRoot Resource
 
-       # Configure the namespace folders
+        # Configure the namespace folders
         xDFSNamespaceFolder DFSNamespaceFolder_Domain_Finance
         {
             Path                 = '\\contoso.com\departments\finance'

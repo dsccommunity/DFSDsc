@@ -568,7 +568,7 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                  $($LocalizedData.NamespaceFolderDoesNotExistButShouldMessage) `
-                    -f $Path,$TargetPath
+                    -f $Path
                 ) -join '' )
             $desiredConfigurationMatch = $false
         }
@@ -608,7 +608,7 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                  $($LocalizedData.NamespaceFolderDoesNotExistAndShouldNotMessage) `
-                    -f $Path,$TargetPath
+                    -f $Path
                 ) -join '' )
         }
     } # if
