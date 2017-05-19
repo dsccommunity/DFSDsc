@@ -54,7 +54,7 @@ try
         $Namespace = [PSObject]@{
             Path                         = '\\contoso.com\UnitTestNamespace\Folder'
             TargetPath                   = '\\server1\UnitTestNamespace\Folder'
-            Ensure                       = 'present'
+            Ensure                       = 'Present'
             Description                  = 'Unit Test Namespace Description'
             TimeToLiveSec                = 500
             EnableInsiteReferrals        = $true

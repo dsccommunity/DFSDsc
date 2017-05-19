@@ -53,7 +53,7 @@ function Get-TargetResource
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
         $($LocalizedData.GettingReplicationGroupMembershipMessage) `
-            -f $GroupName,$FolderName,$ComputerName,$DomainName
+            -f $GroupName,$FolderName,$ComputerName
         ) -join '' )
 
     # Lookup the existing Replication Group
@@ -84,9 +84,11 @@ function Get-TargetResource
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($LocalizedData.ReplicationGroupMembershipExistsMessage) `
-                -f $GroupName,$FolderName,$ComputerName,$DomainName
+                -f $GroupName,$FolderName,$ComputerName
             ) -join '' )
+
         $returnValue.ComputerName = $replicationGroupMembership.ComputerName
+
         $returnValue += @{
             ContentPath = $replicationGroupMembership.ContentPath
             StagingPath = $replicationGroupMembership.StagingPath
@@ -101,7 +103,7 @@ function Get-TargetResource
         # The Rep Group membership doesn't exist
         New-InvalidOperationException `
             -Message ($($LocalizedData.ReplicationGroupMembershipMissingError) `
-                -f $GroupName,$FolderName,$ComputerName,$DomainName)
+                -f $GroupName,$FolderName,$ComputerName)
     }
 
     return $returnValue
@@ -181,7 +183,7 @@ function Set-TargetResource
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
         $($LocalizedData.SettingRegGroupMembershipMessage) `
-            -f $GroupName,$FolderName,$ComputerName,$DomainName
+            -f $GroupName,$FolderName,$ComputerName
         ) -join '' )
 
     # Now apply the changes
@@ -191,7 +193,7 @@ function Set-TargetResource
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
         $($LocalizedData.ReplicationGroupMembershipUpdatedMessage) `
-            -f $GroupName,$FolderName,$ComputerName,$DomainName
+            -f $GroupName,$FolderName,$ComputerName
         ) -join '' )
 } # Set-TargetResource
 
@@ -273,7 +275,7 @@ function Test-TargetResource
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
         $($LocalizedData.TestingRegGroupMembershipMessage) `
-            -f $GroupName,$FolderName,$ComputerName,$DomainName
+            -f $GroupName,$FolderName,$ComputerName
         ) -join '' )
 
     # Lookup the existing Replication Group
@@ -299,7 +301,7 @@ function Test-TargetResource
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($LocalizedData.ReplicationGroupMembershipExistsMessage) `
-                -f $GroupName,$FolderName,$ComputerName,$DomainName
+                -f $GroupName,$FolderName,$ComputerName
             ) -join '' )
 
         # Check the ContentPath
@@ -309,7 +311,7 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupMembershipContentPathMismatchMessage) `
-                    -f $GroupName,$FolderName,$ComputerName,$DomainName
+                    -f $GroupName,$FolderName,$ComputerName
                 ) -join '' )
 
             $desiredConfigurationMatch = $false
@@ -322,7 +324,7 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupMembershipStagingPathMismatchMessage) `
-                    -f $GroupName,$FolderName,$ComputerName,$DomainName
+                    -f $GroupName,$FolderName,$ComputerName
                 ) -join '' )
 
             $desiredConfigurationMatch = $false
@@ -335,7 +337,7 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupMembershipReadOnlyMismatchMessage) `
-                    -f $GroupName,$FolderName,$ComputerName,$DomainName
+                    -f $GroupName,$FolderName,$ComputerName
                 ) -join '' )
 
             $desiredConfigurationMatch = $false
@@ -348,7 +350,7 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupMembershipPrimaryMemberMismatchMessage) `
-                    -f $GroupName,$FolderName,$ComputerName,$DomainName
+                    -f $GroupName,$FolderName,$ComputerName
                 ) -join '' )
 
             $desiredConfigurationMatch = $false
@@ -359,7 +361,7 @@ function Test-TargetResource
         # The Rep Group membership doesn't exist
         New-InvalidOperationException `
             -Message ($($LocalizedData.ReplicationGroupMembershipMissingError) `
-                -f $GroupName,$FolderName,$ComputerName,$DomainName)
+                -f $GroupName,$FolderName,$ComputerName)
     } # if
 
     return $desiredConfigurationMatch

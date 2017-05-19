@@ -13,7 +13,7 @@ Configuration Example
         $NodeName = 'localhost',
 
         [Parameter()]
-        [pscredential]
+        [PSCredential]
         $Credential
     )
 
@@ -25,8 +25,8 @@ Configuration Example
         # Requires Windows Server 2012 R2 Full install
         WindowsFeature RSATDFSMgmtConInstall
         {
-            Ensure = "Present"
-            Name = "RSAT-DFS-Mgmt-Con"
+            Ensure = 'Present'
+            Name = 'RSAT-DFS-Mgmt-Con'
         }
 
         WindowsFeature DFS
@@ -40,7 +40,7 @@ Configuration Example
         {
             Path                 = '\\contoso.com\software'
             TargetPath           = '\\ca-fileserver\software'
-            Ensure               = 'present'
+            Ensure               = 'Present'
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
             PsDscRunAsCredential = $Credential
@@ -50,7 +50,7 @@ Configuration Example
         {
             Path                 = '\\contoso.com\software'
             TargetPath           = '\\ma-fileserver\software'
-            Ensure               = 'present'
+            Ensure               = 'Present'
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
             PsDscRunAsCredential = $Credential
@@ -59,8 +59,8 @@ Configuration Example
         xDFSNamespaceRoot DFSNamespaceRoot_Domain_Software_NY
         {
             Path                 = '\\contoso.com\software'
-            TargetPath           = '\\ma-fileserver\software'
-            Ensure               = 'present'
+            TargetPath           = '\\ny-fileserver\software'
+            Ensure               = 'Present'
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
             PsDscRunAsCredential = $Credential
@@ -71,7 +71,7 @@ Configuration Example
         {
             Path                 = '\\contoso.com\software\it'
             TargetPath           = '\\ca-fileserver\it'
-            Ensure               = 'present'
+            Ensure               = 'Present'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
             PsDscRunAsCredential = $Credential
         } # End of xDFSNamespaceFolder Resource
@@ -80,7 +80,7 @@ Configuration Example
         {
             Path                 = '\\contoso.com\software\it'
             TargetPath           = '\\ma-fileserver\it'
-            Ensure               = 'present'
+            Ensure               = 'Present'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
             PsDscRunAsCredential = $Credential
         } # End of xDFSNamespaceFolder Resource
@@ -88,8 +88,8 @@ Configuration Example
         xDFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_NY
         {
             Path                 = '\\contoso.com\software\it'
-            TargetPath           = '\\ma-fileserver\it'
-            Ensure               = 'present'
+            TargetPath           = '\\ny-fileserver\it'
+            Ensure               = 'Present'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
             PsDscRunAsCredential = $Credential
         } # End of xDFSNamespaceFolder Resource

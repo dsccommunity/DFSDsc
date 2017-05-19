@@ -1,8 +1,8 @@
 <#
     .EXAMPLE
     Create a standalone DFS namespace using FQDN called public on the server
-    fileserver1.contoso.com. A namespace folder called Brochures is also created in this
-    namespace that targets the \\fileserver2.contoso.com\brochures share.
+    fileserver1.contoso.com. A sub-folcer called brochures is also created in
+    this namespace that targets the \\fileserver2.contoso.com\brochures share.
 #>
 Configuration Example
 {
@@ -13,7 +13,7 @@ Configuration Example
         $NodeName = 'localhost',
 
         [Parameter()]
-        [pscredential]
+        [PSCredential]
         $Credential
     )
 
@@ -21,12 +21,14 @@ Configuration Example
 
     Node $NodeName
     {
-        # Install the Prerequisite features first
-        # Requires Windows Server 2012 R2 Full install
+        <#
+            Install the Prerequisite features first
+            Requires Windows Server 2012 R2 Full install
+        #>
         WindowsFeature RSATDFSMgmtConInstall
         {
-            Ensure = "Present"
-            Name = "RSAT-DFS-Mgmt-Con"
+            Ensure = 'Present'
+            Name = 'RSAT-DFS-Mgmt-Con'
         }
 
         WindowsFeature DFS
@@ -48,7 +50,7 @@ Configuration Example
         {
             Path                 = '\\fileserver1.contoso.com\public'
             TargetPath           = '\\fileserver1.contoso.com\public'
-            Ensure               = 'present'
+            Ensure               = 'Present'
             Type                 = 'Standalone'
             Description          = 'Standalone DFS namespace for storing public files'
             PsDscRunAsCredential = $Credential
@@ -59,7 +61,7 @@ Configuration Example
         {
             Path                 = '\\fileserver1.contoso.com\public\brochures'
             TargetPath           = '\\fileserver2.contoso.com\brochures'
-            Ensure               = 'present'
+            Ensure               = 'Present'
             Description          = 'Standalone DFS namespace for storing public brochure files'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceFolder Resource

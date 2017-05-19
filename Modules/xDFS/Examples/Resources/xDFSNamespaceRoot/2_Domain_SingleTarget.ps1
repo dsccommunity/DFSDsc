@@ -1,8 +1,8 @@
 <#
     .EXAMPLE
     Create an AD Domain V2 based DFS namespace called departments in the domain contoso.com
-    with a single root target on the computer fs_1. Two subfolders are defined with targets
-    that direct to shares on servers fs_3 and fs_8.
+    with a single root target on the computer fs_1. Two sub-folders are defined under the
+    departments folder with targets that direct to shares on servers fs_3 and fs_8.
 #>
 Configuration Example
 {
@@ -13,7 +13,7 @@ Configuration Example
         $NodeName = 'localhost',
 
         [Parameter()]
-        [pscredential]
+        [PSCredential]
         $Credential
     )
 
@@ -25,8 +25,8 @@ Configuration Example
         # Requires Windows Server 2012 R2 Full install
         WindowsFeature RSATDFSMgmtConInstall
         {
-            Ensure = "Present"
-            Name = "RSAT-DFS-Mgmt-Con"
+            Ensure = 'Present'
+            Name = 'RSAT-DFS-Mgmt-Con'
         }
 
         WindowsFeature DFS
@@ -40,7 +40,7 @@ Configuration Example
         {
             Path                 = '\\contoso.com\departments'
             TargetPath           = '\\fs_1\departments'
-            Ensure               = 'present'
+            Ensure               = 'Present'
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing departmental files'
             TimeToLiveSec        = 600
@@ -52,7 +52,7 @@ Configuration Example
         {
             Path                 = '\\contoso.com\departments\finance'
             TargetPath           = '\\fs_3\Finance'
-            Ensure               = 'present'
+            Ensure               = 'Present'
             Description          = 'AD Domain based DFS namespace folder for storing finance files'
             TimeToLiveSec        = 600
             PsDscRunAsCredential = $Credential
@@ -62,7 +62,7 @@ Configuration Example
         {
             Path                 = '\\contoso.com\departments\management'
             TargetPath           = '\\fs_8\Management'
-            Ensure               = 'present'
+            Ensure               = 'Present'
             Description          = 'AD Domain based DFS namespace folder for storing management files'
             TimeToLiveSec        = 600
             PsDscRunAsCredential = $Credential

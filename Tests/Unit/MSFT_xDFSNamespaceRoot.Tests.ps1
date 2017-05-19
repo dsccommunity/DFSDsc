@@ -57,7 +57,7 @@ try
             Path                         = '\\contoso.com\UnitTestNamespace'
             TargetPath                   = '\\server1\UnitTestNamespace'
             Type                         = 'DomainV2'
-            Ensure                       = 'present'
+            Ensure                       = 'Present'
             Description                  = 'Unit Test Namespace Description'
             TimeToLiveSec                = 500
             EnableSiteCosting            = $true

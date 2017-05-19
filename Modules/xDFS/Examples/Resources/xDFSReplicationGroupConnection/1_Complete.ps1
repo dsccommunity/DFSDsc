@@ -14,7 +14,7 @@ Configuration Example
         $NodeName = 'localhost',
 
         [Parameter()]
-        [pscredential]
+        [PSCredential]
         $Credential
     )
 
@@ -26,8 +26,8 @@ Configuration Example
         # Requires Windows Server 2012 R2 Full install
         WindowsFeature RSATDFSMgmtConInstall
         {
-            Ensure = "Present"
-            Name = "RSAT-DFS-Mgmt-Con"
+            Ensure = 'Present'
+            Name = 'RSAT-DFS-Mgmt-Con'
         }
 
         # Configure the Replication Group
@@ -39,7 +39,7 @@ Configuration Example
             Members = 'FileServer1','FileServer2.contoso.com'
             Folders = 'Software'
             PSDSCRunAsCredential = $Credential
-            DependsOn = "[WindowsFeature]RSATDFSMgmtConInstall"
+            DependsOn = '[WindowsFeature]RSATDFSMgmtConInstall'
         } # End of RGPublic Resource
 
         xDFSReplicationGroupConnection RGPublicC1
