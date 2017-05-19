@@ -42,7 +42,7 @@ function Get-TargetResource
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
         $($LocalizedData.GettingReplicationGroupFolderMessage) `
-            -f $GroupName,$FolderName,$DomainName
+            -f $GroupName,$FolderName
         ) -join '' )
 
     # Lookup the existing Replication Group
@@ -68,15 +68,19 @@ function Get-TargetResource
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($LocalizedData.ReplicationGroupFolderExistsMessage) `
-                -f $GroupName,$FolderName,$DomainName
+                -f $GroupName,$FolderName
             ) -join '' )
 
-        # Array paramters are disabled until this issue is resolved:
-        # https://windowsserver.uservoice.com/forums/301869-powershell/suggestions/11088807-get-dscconfiguration-fails-with-embedded-cim-type
+        <#
+            Array paramters are disabled until this issue is resolved:
+            https://windowsserver.uservoice.com/forums/301869-powershell/suggestions/11088807-get-dscconfiguration-fails-with-embedded-cim-type
+            FilenameToExclude = $ReplicationGroupFolder.FilenameToExclude
+            DirectoryNameToExclude = $ReplicationGroupFolder.DirectoryNameToExclude
+        #>
         $returnValue += @{
             Description = $replicationGroupFolder.Description
-            # FilenameToExclude = $ReplicationGroupFolder.FilenameToExclude
-            # DirectoryNameToExclude = $ReplicationGroupFolder.DirectoryNameToExclude
+            FilenameToExclude = ''
+            DirectoryNameToExclude = ''
             DfsnPath = $replicationGroupFolder.DfsnPath
             DomainName = $replicationGroupFolder.DomainName
         }
@@ -86,7 +90,7 @@ function Get-TargetResource
         # The Rep Group folder doesn't exist
         New-InvalidOperationException `
             -Message ($($LocalizedData.ReplicationGroupFolderMissingError) `
-                -f $GroupName,$FolderName,$DomainName)
+                -f $GroupName,$FolderName)
     }
 
     return $returnValue
@@ -154,8 +158,8 @@ function Set-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.SettingRegGroupFolderMessage) `
-            -f $GroupName,$FolderName,$DomainName
+        $($LocalizedData.SettingReplicationGroupFolderMessage) `
+            -f $GroupName,$FolderName
         ) -join '' )
 
     # Now apply the changes
@@ -165,7 +169,7 @@ function Set-TargetResource
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
         $($LocalizedData.ReplicationGroupFolderUpdatedMessage) `
-            -f $GroupName,$FolderName,$DomainName
+            -f $GroupName,$FolderName
         ) -join '' )
 } # Set-TargetResource
 
@@ -235,8 +239,8 @@ function Test-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.TestingRegGroupFolderMessage) `
-            -f $GroupName,$FolderName,$DomainName
+        $($LocalizedData.TestingReplicationGroupFolderMessage) `
+            -f $GroupName,$FolderName
         ) -join '' )
 
     # Lookup the existing Replication Group Folder
@@ -261,7 +265,7 @@ function Test-TargetResource
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($LocalizedData.ReplicationGroupFolderExistsMessage) `
-                -f $GroupName,$FolderName,$DomainName
+                -f $GroupName,$FolderName
             ) -join '' )
 
         # Check the description
@@ -271,8 +275,9 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupFolderDescriptionMismatchMessage) `
-                    -f $GroupName,$FolderName,$DomainName
+                    -f $GroupName,$FolderName
                 ) -join '' )
+
             $desiredConfigurationMatch = $false
         } # if
 
@@ -285,7 +290,7 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupFolderFileNameToExcludeMismatchMessage) `
-                    -f $GroupName,$FolderName,$DomainName
+                    -f $GroupName,$FolderName
                 ) -join '' )
 
             $desiredConfigurationMatch = $false
@@ -300,7 +305,7 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupFolderDirectoryNameToExcludeMismatchMessage) `
-                    -f $GroupName,$FolderName,$DomainName
+                    -f $GroupName,$FolderName
                 ) -join '' )
 
             $desiredConfigurationMatch = $false
@@ -312,7 +317,7 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupFolderDfsnPathMismatchMessage) `
-                    -f $GroupName,$FolderName,$DomainName
+                    -f $GroupName,$FolderName
                 ) -join '' )
 
             $desiredConfigurationMatch = $false
@@ -323,7 +328,7 @@ function Test-TargetResource
         # The Rep Group folder doesn't exist
         New-InvalidOperationException `
             -Message ($($LocalizedData.ReplicationGroupFolderMissingError) `
-                -f $GroupName,$FolderName,$DomainName)
+                -f $GroupName,$FolderName)
     } # if
 
     return $desiredConfigurationMatch

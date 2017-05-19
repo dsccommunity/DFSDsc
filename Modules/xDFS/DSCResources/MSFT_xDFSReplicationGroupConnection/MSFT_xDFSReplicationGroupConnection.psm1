@@ -63,7 +63,7 @@ function Get-TargetResource
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
         $($LocalizedData.GettingReplicationGroupConnectionMessage) `
-            -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
+            -f $GroupName,$SourceComputerName,$DestinationComputerName
         ) -join '' )
 
     # Lookup the existing Replication Group Connection
@@ -71,7 +71,7 @@ function Get-TargetResource
         GroupName = $GroupName
         SourceComputerName = $SourceComputerName
         DestinationComputerName = $DestinationComputerName
-    }   
+    }
 
     $returnValue = $connectionParameters.Clone()
 
@@ -90,10 +90,12 @@ function Get-TargetResource
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($LocalizedData.ReplicationGroupConnectionExistsMessage) `
-                -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
+                -f $GroupName,$SourceComputerName,$DestinationComputerName
             ) -join '' )
+
         $returnValue.SourceComputerName = $replicationGroupConnection.SourceComputerName
         $returnValue.DestinationComputerName = $replicationGroupConnection.DestinationComputerName
+
         if ($replicationGroupConnection.Enabled)
         {
             $ensureEnabled = 'Enabled'
@@ -125,7 +127,7 @@ function Get-TargetResource
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($LocalizedData.ReplicationGroupConnectionDoesNotExistMessage) `
-                -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
+                -f $GroupName,$SourceComputerName,$DestinationComputerName
             ) -join '' )
 
         $returnValue += @{
@@ -212,8 +214,8 @@ function Set-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.SettingRegGroupConnectionMessage) `
-            -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
+        $($LocalizedData.SettingReplicationGroupConnectionMessage) `
+            -f $GroupName,$SourceComputerName,$DestinationComputerName
         ) -join '' )
 
     # Remove Ensure so the PSBoundParameters can be used to splat
@@ -243,7 +245,7 @@ function Set-TargetResource
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($LocalizedData.EnsureReplicationGroupConnectionExistsMessage) `
-                -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
+                -f $GroupName,$SourceComputerName,$DestinationComputerName
             ) -join '' )
 
         $null = $PSBoundParameters.Add('DisableConnection',($EnsureEnabled -eq 'Disabled'))
@@ -255,7 +257,7 @@ function Set-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupConnectionExistsMessage) `
-                    -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
+                    -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
 
             Set-DfsrConnection @PSBoundParameters `
@@ -264,7 +266,7 @@ function Set-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupConnectionUpdatedMessage) `
-                    -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
+                    -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
         }
         else
@@ -273,7 +275,7 @@ function Set-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupConnectionDoesNotExistMessage) `
-                    -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
+                    -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
 
             Add-DfsrConnection @PSBoundParameters `
@@ -282,7 +284,7 @@ function Set-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupConnectionCreatedMessage) `
-                    -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
+                    -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
         } # if
     }
@@ -292,17 +294,18 @@ function Set-TargetResource
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($LocalizedData.EnsureReplicationGroupConnectionDoesNotExistMessage) `
-                -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
+                -f $GroupName,$SourceComputerName,$DestinationComputerName
             ) -join '' )
 
         if ($replicationGroupConnection)
         {
             # Remove the replication group
             Remove-DfsrConnection @connectionParameters -Force -ErrorAction Stop
+
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupConnectionExistsRemovedMessage) `
-                    -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
+                    -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
         }
     } # if
@@ -388,8 +391,8 @@ function Test-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.TestingRegGroupConnectionMessage) `
-            -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
+        $($LocalizedData.TestingReplicationGroupConnectionMessage) `
+            -f $GroupName,$SourceComputerName,$DestinationComputerName
         ) -join '' )
 
     # Remove Ensure so the PSBoundParameters can be used to splat
@@ -421,7 +424,7 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupConnectionExistsMessage) `
-                    -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
+                    -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
 
             # Check if any of the non-key paramaters are different.
@@ -431,8 +434,7 @@ function Test-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.ReplicationGroupConnectionNeedsUpdateMessage) `
-                        -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName, `
-                        'Description'
+                        -f $GroupName,$SourceComputerName,$DestinationComputerName,'Description'
                     ) -join '' )
 
                 $desiredConfigurationMatch = $false
@@ -446,8 +448,7 @@ function Test-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.ReplicationGroupConnectionNeedsUpdateMessage) `
-                        -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName, `
-                        'Enabled'
+                        -f $GroupName,$SourceComputerName,$DestinationComputerName,'Enabled'
                     ) -join '' )
 
                 $desiredConfigurationMatch = $false
@@ -461,8 +462,7 @@ function Test-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.ReplicationGroupConnectionNeedsUpdateMessage) `
-                        -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName, `
-                        'RDC Enabled'
+                        -f $GroupName,$SourceComputerName,$DestinationComputerName,'RDC Enabled'
                     ) -join '' )
 
                 $desiredConfigurationMatch = $false
@@ -474,7 +474,7 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                  $($LocalizedData.ReplicationGroupConnectionDoesNotExistButShouldMessage) `
-                    -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
+                    -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
 
             $desiredConfigurationMatch = $false
@@ -489,8 +489,9 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                  $($LocalizedData.ReplicationGroupConnectionExistsButShouldNotMessage) `
-                    -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
+                    -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
+
             $desiredConfigurationMatch = $false
         }
         else
@@ -499,7 +500,7 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupConnectionDoesNotExistAndShouldNotMessage) `
-                    -f $GroupName,$SourceComputerName,$DestinationComputerName,$DomainName
+                    -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
         } # if
     } # if
