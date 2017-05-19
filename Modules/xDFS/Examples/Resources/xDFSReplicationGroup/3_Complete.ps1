@@ -3,7 +3,8 @@
     Create a DFS Replication Group called Public containing two members, FileServer1 and
     FileServer2. The Replication Group contains a single folder called Software. A description
     will be set on the Software folder and it will be set to exclude the directory Temp from
-    replication. A manual topology is assigned to the replication connections.
+    replication. The resource group topology is left set to 'Manual' so that the replication
+    group connections can be defined.
 #>
 Configuration Example
 {
@@ -22,8 +23,10 @@ Configuration Example
 
     Node $NodeName
     {
-        # Install the Prerequisite features first
-        # Requires Windows Server 2012 R2 Full install
+        <#
+            Install the Prerequisite features first
+            Requires Windows Server 2012 R2 Full install
+        #>
         WindowsFeature RSATDFSMgmtConInstall
         {
             Ensure = 'Present'
@@ -36,7 +39,7 @@ Configuration Example
             GroupName = 'Public'
             Description = 'Public files for use by all departments'
             Ensure = 'Present'
-            Members = 'FileServer1','FileServer2.contoso.com'
+            Members = 'FileServer1.contoso.com','FileServer2.contoso.com'
             Folders = 'Software'
             PSDSCRunAsCredential = $Credential
             DependsOn = '[WindowsFeature]RSATDFSMgmtConInstall'
@@ -46,8 +49,8 @@ Configuration Example
         {
             GroupName = 'Public'
             Ensure = 'Present'
-            SourceComputerName = 'FileServer1'
-            DestinationComputerName = 'FileServer2'
+            SourceComputerName = 'FileServer1.contoso.com'
+            DestinationComputerName = 'FileServer2.contoso.com'
             PSDSCRunAsCredential = $Credential
         } # End of xDFSReplicationGroupConnection Resource
 
@@ -55,7 +58,7 @@ Configuration Example
         {
             GroupName = 'Public'
             Ensure = 'Present'
-            SourceComputerName = 'FileServer2'
+            SourceComputerName = 'FileServer2.contoso.com'
             DestinationComputerName = 'FileServer1.contoso.com'
             PSDSCRunAsCredential = $Credential
         } # End of xDFSReplicationGroupConnection Resource
@@ -74,7 +77,7 @@ Configuration Example
         {
             GroupName = 'Public'
             FolderName = 'Software'
-            ComputerName = 'FileServer1'
+            ComputerName = 'FileServer1.contoso.com'
             ContentPath = 'd:\Public\Software'
             PrimaryMember = $true
             PSDSCRunAsCredential = $Credential
@@ -85,7 +88,7 @@ Configuration Example
         {
             GroupName = 'Public'
             FolderName = 'Software'
-            ComputerName = 'FileServer2'
+            ComputerName = 'FileServer2.contoso.com'
             ContentPath = 'e:\Data\Public\Software'
             PSDSCRunAsCredential = $Credential
             DependsOn = '[xDFSReplicationGroupFolder]RGSoftwareFolder'

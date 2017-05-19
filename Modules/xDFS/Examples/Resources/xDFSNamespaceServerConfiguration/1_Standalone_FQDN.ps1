@@ -1,7 +1,7 @@
 <#
     .EXAMPLE
     Create a standalone DFS namespace using FQDN called public on the server
-    fileserver1.contoso.com. A namespace folder called Brochures is also created in this
+    fileserver1.contoso.com. A namespace folder called brochures is also created in this
     namespace that targets the \\fileserver2.contoso.com\brochures share.
 #>
 Configuration Example
@@ -21,8 +21,10 @@ Configuration Example
 
     Node $NodeName
     {
-        # Install the Prerequisite features first
-        # Requires Windows Server 2012 R2 Full install
+        <#
+            Install the Prerequisite features first
+            Requires Windows Server 2012 R2 Full install
+        #>
         WindowsFeature RSATDFSMgmtConInstall
         {
             Ensure = 'Present'
@@ -43,7 +45,7 @@ Configuration Example
             PsDscRunAsCredential      = $Credential
         } # End of xDFSNamespaceServerConfiguration Resource
 
-       # Configure the namespace
+        # Configure the namespace
         xDFSNamespaceRoot DFSNamespaceRoot_Standalone_Public
         {
             Path                 = '\\fileserver1.contoso.com\public'
@@ -54,7 +56,7 @@ Configuration Example
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceRoot Resource
 
-       # Configure the namespace folder
+        # Configure the namespace folder
         xDFSNamespaceFolder DFSNamespaceFolder_Standalone_PublicBrochures
         {
             Path                 = '\\fileserver1.contoso.com\public\brochures'
