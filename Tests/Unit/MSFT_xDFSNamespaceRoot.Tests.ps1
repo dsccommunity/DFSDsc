@@ -538,7 +538,7 @@ try
                 It 'should throw exception' {
                     $errorRecord = Get-InvalidOperationRecord `
                         -Message ($($LocalizedData.NamespaceRootTypeConversionError) `
-                            -f 'Standalone',$Namespace.Path,$Namespace.TargetPath,'DomainV2')
+                            -f 'Standalone',$Namespace.Path,'DomainV2')
 
                     $Splat = $Namespace.Clone()
                     $Splat.Type = 'Standalone'

@@ -56,7 +56,6 @@ it is only required that this resource is run on a computer that is registered
 in AD. It doesn't need to be run on one of the File Servers participating
 in the Distributed File System or Namespace.
 
-
 ## Contributing
 
 Please check out common DSC Resources [contributing guidelines](https://github.com/PowerShell/DscResource.Kit/blob/master/CONTRIBUTING.md).
