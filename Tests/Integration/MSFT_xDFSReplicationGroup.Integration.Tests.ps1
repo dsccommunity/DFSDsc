@@ -32,8 +32,9 @@ $script:DSCModuleName   = 'xDFS'
 $script:DSCResourceName = 'MSFT_xDFSReplicationGroup'
 
 # Test to see if the config file is available.
-$ConfigFile = "$([System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path))\$($script:DSCResourceName).config.json"
-if (! (Test-Path -Path $ConfigFile))
+$configFile = "$([System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path))\$($script:DSCResourceName).config.json"
+
+if (! (Test-Path -Path $configFile))
 {
     return
 }
@@ -60,12 +61,12 @@ $TestEnvironment = Initialize-TestEnvironment `
 try
 {
     #region Integration Tests
-    $ConfigFile = Join-Path -Path $PSScriptRoot -ChildPath "$($script:DSCResourceName).config.ps1"
-    . $ConfigFile
+    $configFile = Join-Path -Path $PSScriptRoot -ChildPath "$($script:DSCResourceName).config.ps1"
+    . $configFile
 
     Describe "$($script:DSCResourceName)_Integration" {
         #region DEFAULT TESTS
-        It 'Should compile without throwing' {
+        It 'should compile and apply the MOF without throwing' {
             {
                 $ConfigData = @{
                     AllNodes = @(
@@ -75,6 +76,7 @@ try
                         }
                     )
                 }
+
                 & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive -ConfigurationData $ConfigData
                 Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
             } | Should not throw
@@ -85,12 +87,13 @@ try
         }
         #endregion
 
-        It 'Should have set the resource and all the parameters should match' {
+        It 'should have set the resource and all the parameters should match' {
             $ReplicationGroupNew = Get-DfsReplicationGroup `
                 -GroupName $ReplicationGroup.GroupName `
                 -ErrorAction Stop
             $ReplicationGroupNew.GroupName                 | Should Be $ReplicationGroup.GroupName
             $ReplicationGroupNew.Description               | Should Be $ReplicationGroup.Description
+
             # Check the members are in the Replication Group
             foreach ($Member in $ReplicationGroup.Members)
             {
@@ -99,6 +102,7 @@ try
                     -ComputerName $Member `
                     -ErrorAction Stop
                 $ReplicationGroupMemberNew.GroupName       | Should Be $ReplicationGroup.GroupName
+
                 # If Member name was an FQDN then match the DNSName property, otherwise the ComputerName property
                 if ($Member.Contains('.'))
                 {
@@ -109,6 +113,7 @@ try
                     $ReplicationGroupMemberNew.ComputerName    | Should Be $Member
                 }
             }
+
             # Check the folders are in the Replication Group
             foreach ($Folder in $ReplicationGroup.Folders)
             {

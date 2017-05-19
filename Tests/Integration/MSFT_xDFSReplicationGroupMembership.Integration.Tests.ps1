@@ -32,8 +32,9 @@ $script:DSCModuleName   = 'xDFS'
 $script:DSCResourceName = 'MSFT_xDFSReplicationGroupMembership'
 
 # Test to see if the config file is available.
-$ConfigFile = "$([System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path))\$($script:DSCResourceName).config.json"
-if (! (Test-Path -Path $ConfigFile))
+$configFile = "$([System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path))\$($script:DSCResourceName).config.json"
+
+if (! (Test-Path -Path $configFile))
 {
     return
 }
@@ -60,19 +61,21 @@ $TestEnvironment = Initialize-TestEnvironment `
 try
 {
     #region Integration Tests
-    $ConfigFile = Join-Path -Path $PSScriptRoot -ChildPath "$($script:DSCResourceName).config.ps1"
-    . $ConfigFile
+    $configFile = Join-Path -Path $PSScriptRoot -ChildPath "$($script:DSCResourceName).config.ps1"
+    . $configFile
 
     Describe "$($script:DSCResourceName)_Integration" {
         # Create the Replication group to work with
         New-DFSReplicationGroup `
             -GroupName $ReplicationGroupMembership.GroupName
+
         foreach ($Member in $ReplicationGroupMembership.Members)
         {
             Add-DFSRMember `
                 -GroupName $ReplicationGroupMembership.GroupName `
                 -ComputerName $Member
         }
+
         foreach ($Folder in $ReplicationGroupMembership.Folders)
         {
             New-DFSReplicatedFolder `
@@ -81,7 +84,7 @@ try
         }
 
         #region DEFAULT TESTS
-        It 'Should compile without throwing' {
+        It 'should compile and apply the MOF without throwing' {
             {
                 $ConfigData = @{
                     AllNodes = @(
@@ -91,6 +94,7 @@ try
                         }
                     )
                 }
+
                 & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive -ConfigurationData $ConfigData
                 Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
             } | Should not throw
@@ -101,7 +105,7 @@ try
         }
         #endregion
 
-        It 'Should have set the resource and all the parameters should match' {
+        It 'should have set the resource and all the parameters should match' {
             $ReplicationGroupMembershipNew = Get-DfsrMembership `
                 -GroupName $ReplicationGroupMembership.GroupName `
                 -ComputerName $ReplicationGroupMembership.Members[0] `

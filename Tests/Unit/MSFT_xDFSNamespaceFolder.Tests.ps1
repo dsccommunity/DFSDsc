@@ -21,30 +21,32 @@ $TestEnvironment = Initialize-TestEnvironment `
 try
 {
     # Ensure that the tests can be performed on this computer
-    $ProductType = (Get-CimInstance Win32_OperatingSystem).ProductType
+    $productType = (Get-CimInstance Win32_OperatingSystem).ProductType
     Describe 'Environment' {
         Context 'Operating System' {
-            It 'Should be a Server OS' {
-                $ProductType | Should Be 3
+            It 'should be a Server OS' {
+                $productType | Should Be 3
             }
         }
-    }
-    if ($ProductType -ne 3)
-    {
-        Break
     }
 
-    $Installed = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
+    if ($productType -ne 3)
+    {
+        break
+    }
+
+    $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'Should have the DFS Namespace Feature Installed' {
-                $Installed | Should Be $true
+            It 'should have the DFS Namespace Feature Installed' {
+                $featureInstalled | Should Be $true
             }
         }
     }
-    if ($Installed -eq $false)
+
+    if ($featureInstalled -eq $false)
     {
-        Break
+        break
     }
 
     #region Pester Tests
@@ -62,11 +64,13 @@ try
             ReferralPriorityClass        = 'Global-Low'
             ReferralPriorityRank         = 10
         }
+
         $NamespaceSplat = [PSObject]@{
             Path                         = $Namespace.Path
             TargetPath                   = $Namespace.TargetPath
             Ensure                       = $Namespace.Ensure
         }
+
         $NamespaceFolder = [PSObject]@{
             Path                         = $Namespace.Path
             TimeToLiveSec                = $Namespace.TimeToLiveSec
@@ -76,6 +80,7 @@ try
             NamespacePath                = $Namespace.Path
             TimeToLive                   = 500
         }
+
         $NamespaceTarget = [PSObject]@{
             Path                         = $Namespace.Path
             State                        = 'Online'
@@ -93,8 +98,8 @@ try
                 Mock Get-DFSNFolderTarget
 
                 It 'should return absent namespace' {
-                    $Result = Get-TargetResource @NamespaceSplat
-                    $Result.Ensure | Should Be 'Absent'
+                    $result = Get-TargetResource @NamespaceSplat
+                    $result.Ensure | Should Be 'Absent'
                 }
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
@@ -108,17 +113,17 @@ try
                 Mock Get-DFSNFolderTarget
 
                 It 'should return correct replication group' {
-                    $Result = Get-TargetResource @NamespaceSplat
-                    $Result.Path                         | Should Be $Namespace.Path
-                    $Result.TargetPath                   | Should Be $Namespace.TargetPath
-                    $Result.Ensure                       | Should Be 'Absent'
-                    $Result.TimeToLiveSec                | Should Be $NamespaceFolder.TimeToLiveSec
-                    $Result.State                        | Should Be $NamespaceFolder.State
-                    $Result.Description                  | Should Be $NamespaceFolder.Description
-                    $Result.EnableInsiteReferrals        | Should Be ($NamespaceFolder.Flags -contains 'Insite Referrals')
-                    $Result.EnableTargetFailback         | Should Be ($NamespaceFolder.Flags -contains 'Target Failback')
-                    $Result.ReferralPriorityClass        | Should Be $null
-                    $Result.ReferralPriorityRank         | Should Be $null
+                    $result = Get-TargetResource @NamespaceSplat
+                    $result.Path                         | Should Be $Namespace.Path
+                    $result.TargetPath                   | Should Be $Namespace.TargetPath
+                    $result.Ensure                       | Should Be 'Absent'
+                    $result.TimeToLiveSec                | Should Be $NamespaceFolder.TimeToLiveSec
+                    $result.State                        | Should Be $NamespaceFolder.State
+                    $result.Description                  | Should Be $NamespaceFolder.Description
+                    $result.EnableInsiteReferrals        | Should Be ($NamespaceFolder.Flags -contains 'Insite Referrals')
+                    $result.EnableTargetFailback         | Should Be ($NamespaceFolder.Flags -contains 'Target Failback')
+                    $result.ReferralPriorityClass        | Should Be $null
+                    $result.ReferralPriorityRank         | Should Be $null
 
                 }
                 It 'should call the expected mocks' {
@@ -133,17 +138,17 @@ try
                 Mock Get-DFSNFolderTarget -MockWith { $NamespaceTarget }
 
                 It 'should return correct replication group' {
-                    $Result = Get-TargetResource @NamespaceSplat
-                    $Result.Path                         | Should Be $Namespace.Path
-                    $Result.TargetPath                   | Should Be $Namespace.TargetPath
-                    $Result.Ensure                       | Should Be 'Present'
-                    $Result.TimeToLiveSec                | Should Be $NamespaceFolder.TimeToLiveSec
-                    $Result.State                        | Should Be $NamespaceFolder.State
-                    $Result.Description                  | Should Be $NamespaceFolder.Description
-                    $Result.EnableInsiteReferrals        | Should Be ($NamespaceFolder.Flags -contains 'Insite Referrals')
-                    $Result.EnableTargetFailback         | Should Be ($NamespaceFolder.Flags -contains 'Target Failback')
-                    $Result.ReferralPriorityClass        | Should Be $NamespaceTarget.ReferralPriorityClass
-                    $Result.ReferralPriorityRank         | Should Be $NamespaceTarget.ReferralPriorityRank
+                    $result = Get-TargetResource @NamespaceSplat
+                    $result.Path                         | Should Be $Namespace.Path
+                    $result.TargetPath                   | Should Be $Namespace.TargetPath
+                    $result.Ensure                       | Should Be 'Present'
+                    $result.TimeToLiveSec                | Should Be $NamespaceFolder.TimeToLiveSec
+                    $result.State                        | Should Be $NamespaceFolder.State
+                    $result.Description                  | Should Be $NamespaceFolder.Description
+                    $result.EnableInsiteReferrals        | Should Be ($NamespaceFolder.Flags -contains 'Insite Referrals')
+                    $result.EnableTargetFailback         | Should Be ($NamespaceFolder.Flags -contains 'Target Failback')
+                    $result.ReferralPriorityClass        | Should Be $NamespaceTarget.ReferralPriorityClass
+                    $result.ReferralPriorityRank         | Should Be $NamespaceTarget.ReferralPriorityRank
                 }
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
@@ -604,9 +609,9 @@ try
 
                 It 'should return null' {
 
-                    $Result = Get-Folder `
+                    $result = Get-Folder `
                         -Path $NamespaceFolder.Path
-                    $Result | Should Be $null
+                    $result | Should Be $null
                 }
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
@@ -619,9 +624,9 @@ try
 
                 It 'should return the expected folder' {
 
-                    $Result = Get-Folder `
+                    $result = Get-Folder `
                         -Path $NamespaceFolder.Path
-                    $Result | Should Be $NamespaceFolder
+                    $result | Should Be $NamespaceFolder
                 }
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
@@ -646,10 +651,10 @@ try
 
                 It 'should return null' {
 
-                    $Result = Get-FolderTarget `
+                    $result = Get-FolderTarget `
                         -Path $NamespaceTarget.Path `
                         -TargetPath $NamespaceTarget.TargetPath
-                    $Result | Should Be $null
+                    $result | Should Be $null
                 }
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
@@ -662,10 +667,10 @@ try
 
                 It 'should return the expected target' {
 
-                    $Result = Get-FolderTarget `
+                    $result = Get-FolderTarget `
                         -Path $NamespaceTarget.Path `
                         -TargetPath $NamespaceTarget.TargetPath
-                    $Result | Should Be $NamespaceTarget
+                    $result | Should Be $NamespaceTarget
                 }
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1

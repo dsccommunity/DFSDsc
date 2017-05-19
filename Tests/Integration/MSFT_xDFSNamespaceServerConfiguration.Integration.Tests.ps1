@@ -23,30 +23,32 @@ $TestEnvironment = Initialize-TestEnvironment `
 try
 {
     # Ensure that the tests can be performed on this computer
-    $ProductType = (Get-CimInstance Win32_OperatingSystem).ProductType
+    $productType = (Get-CimInstance Win32_OperatingSystem).ProductType
     Describe 'Environment' {
         Context 'Operating System' {
-            It 'Should be a Server OS' {
-                $ProductType | Should Be 3
+            It 'should be a Server OS' {
+                $productType | Should Be 3
             }
         }
-    }
-    if ($ProductType -ne 3)
-    {
-        Break
     }
 
-    $Installed = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
+    if ($productType -ne 3)
+    {
+        break
+    }
+
+    $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'Should have the DFS Namespace Feature Installed' {
-                $Installed | Should Be $true
+            It 'should have the DFS Namespace Feature Installed' {
+                $featureInstalled | Should Be $true
             }
         }
     }
-    if ($Installed -eq $false)
+
+    if ($featureInstalled -eq $false)
     {
-        Break
+        break
     }
 
     # Backup the existing settings
@@ -54,12 +56,12 @@ try
         -ComputerName localhost
 
     #region Integration Tests
-    $ConfigFile = Join-Path -Path $PSScriptRoot -ChildPath "$($script:DSCResourceName).config.ps1"
-    . $ConfigFile
+    $configFile = Join-Path -Path $PSScriptRoot -ChildPath "$($script:DSCResourceName).config.ps1"
+    . $configFile
 
     Describe "$($script:DSCResourceName)_Integration" {
         #region DEFAULT TESTS
-        It 'Should compile without throwing' {
+        It 'should compile and apply the MOF without throwing' {
             {
                 & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive
                 Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
@@ -71,7 +73,7 @@ try
         }
         #endregion
 
-        It 'Should have set the resource and all the parameters should match' {
+        It 'should have set the resource and all the parameters should match' {
             # Get the Rule details
             $NamespaceServerConfigurationNew = Get-DfsnServerConfiguration -ComputerName localhost
             $NamespaceServerConfigurationNew.LdapTimeoutSec            = $NamespaceServerConfiguration.LdapTimeoutSec

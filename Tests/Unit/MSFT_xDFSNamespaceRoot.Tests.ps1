@@ -23,30 +23,32 @@ $TestEnvironment = Initialize-TestEnvironment `
 try
 {
     # Ensure that the tests can be performed on this computer
-    $ProductType = (Get-CimInstance Win32_OperatingSystem).ProductType
+    $productType = (Get-CimInstance Win32_OperatingSystem).ProductType
     Describe 'Environment' {
         Context 'Operating System' {
-            It 'Should be a Server OS' {
-                $ProductType | Should Be 3
+            It 'should be a Server OS' {
+                $productType | Should Be 3
             }
         }
-    }
-    if ($ProductType -ne 3)
-    {
-        Break
     }
 
-    $Installed = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
+    if ($productType -ne 3)
+    {
+        break
+    }
+
+    $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'Should have the DFS Namespace Feature Installed' {
-                $Installed | Should Be $true
+            It 'should have the DFS Namespace Feature Installed' {
+                $featureInstalled | Should Be $true
             }
         }
     }
-    if ($Installed -eq $false)
+
+    if ($featureInstalled -eq $false)
     {
-        Break
+        break
     }
 
     #region Pester Tests
@@ -68,12 +70,14 @@ try
             ReferralPriorityClass        = 'Global-Low'
             ReferralPriorityRank         = 10
         }
+
         $NamespaceSplat = [PSObject]@{
             Path                         = $Namespace.Path
             TargetPath                   = $Namespace.TargetPath
             Ensure                       = $Namespace.Ensure
             Type                         = $Namespace.Type
         }
+
         $NamespaceRoot = [PSObject]@{
             Path                         = $Namespace.Path
             TimeToLiveSec                = $Namespace.TimeToLiveSec
@@ -84,8 +88,10 @@ try
             NamespacePath                = $Namespace.Path
             TimeToLive                   = 500
         }
+
         $NamespaceStandaloneRoot = $NamespaceRoot.Clone()
         $NamespaceStandaloneRoot.Type = 'Standalone'
+
         $NamespaceTarget = [PSObject]@{
             Path                         = $Namespace.Path
             State                        = 'Online'
@@ -103,8 +109,8 @@ try
                 Mock Get-DFSNRootTarget
 
                 It 'should return absent namespace root' {
-                    $Result = Get-TargetResource @NamespaceSplat
-                    $Result.Ensure | Should Be 'Absent'
+                    $result = Get-TargetResource @NamespaceSplat
+                    $result.Ensure | Should Be 'Absent'
                 }
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
@@ -118,21 +124,21 @@ try
                 Mock Get-DFSNRootTarget
 
                 It 'should return correct namespace root' {
-                    $Result = Get-TargetResource @NamespaceSplat
-                    $Result.Path                         | Should Be $Namespace.Path
-                    $Result.TargetPath                   | Should Be $Namespace.TargetPath
-                    $Result.Ensure                       | Should Be 'Absent'
-                    $Result.Type                         | Should Be $Namespace.Type
-                    $Result.TimeToLiveSec                | Should Be $NamespaceRoot.TimeToLiveSec
-                    $Result.State                        | Should Be $NamespaceRoot.State
-                    $Result.Description                  | Should Be $NamespaceRoot.Description
-                    $Result.EnableSiteCosting            | Should Be ($NamespaceRoot.Flags -contains 'Site Costing')
-                    $Result.EnableInsiteReferrals        | Should Be ($NamespaceRoot.Flags -contains 'Insite Referrals')
-                    $Result.EnableAccessBasedEnumeration | Should Be ($NamespaceRoot.Flags -contains 'AccessBased Enumeration')
-                    $Result.EnableRootScalability        | Should Be ($NamespaceRoot.Flags -contains 'Root Scalability')
-                    $Result.EnableTargetFailback         | Should Be ($NamespaceRoot.Flags -contains 'Target Failback')
-                    $Result.ReferralPriorityClass        | Should Be $null
-                    $Result.ReferralPriorityRank         | Should Be $null
+                    $result = Get-TargetResource @NamespaceSplat
+                    $result.Path                         | Should Be $Namespace.Path
+                    $result.TargetPath                   | Should Be $Namespace.TargetPath
+                    $result.Ensure                       | Should Be 'Absent'
+                    $result.Type                         | Should Be $Namespace.Type
+                    $result.TimeToLiveSec                | Should Be $NamespaceRoot.TimeToLiveSec
+                    $result.State                        | Should Be $NamespaceRoot.State
+                    $result.Description                  | Should Be $NamespaceRoot.Description
+                    $result.EnableSiteCosting            | Should Be ($NamespaceRoot.Flags -contains 'Site Costing')
+                    $result.EnableInsiteReferrals        | Should Be ($NamespaceRoot.Flags -contains 'Insite Referrals')
+                    $result.EnableAccessBasedEnumeration | Should Be ($NamespaceRoot.Flags -contains 'AccessBased Enumeration')
+                    $result.EnableRootScalability        | Should Be ($NamespaceRoot.Flags -contains 'Root Scalability')
+                    $result.EnableTargetFailback         | Should Be ($NamespaceRoot.Flags -contains 'Target Failback')
+                    $result.ReferralPriorityClass        | Should Be $null
+                    $result.ReferralPriorityRank         | Should Be $null
 
                 }
                 It 'should call the expected mocks' {
@@ -147,21 +153,21 @@ try
                 Mock Get-DFSNRootTarget -MockWith { $NamespaceTarget }
 
                 It 'should return correct namespace root and target' {
-                    $Result = Get-TargetResource @NamespaceSplat
-                    $Result.Path                         | Should Be $Namespace.Path
-                    $Result.TargetPath                   | Should Be $Namespace.TargetPath
-                    $Result.Ensure                       | Should Be 'Present'
-                    $Result.Type                         | Should Be $Namespace.Type
-                    $Result.TimeToLiveSec                | Should Be $NamespaceRoot.TimeToLiveSec
-                    $Result.State                        | Should Be $NamespaceRoot.State
-                    $Result.Description                  | Should Be $NamespaceRoot.Description
-                    $Result.EnableSiteCosting            | Should Be ($NamespaceRoot.Flags -contains 'Site Costing')
-                    $Result.EnableInsiteReferrals        | Should Be ($NamespaceRoot.Flags -contains 'Insite Referrals')
-                    $Result.EnableAccessBasedEnumeration | Should Be ($NamespaceRoot.Flags -contains 'AccessBased Enumeration')
-                    $Result.EnableRootScalability        | Should Be ($NamespaceRoot.Flags -contains 'Root Scalability')
-                    $Result.EnableTargetFailback         | Should Be ($NamespaceRoot.Flags -contains 'Target Failback')
-                    $Result.ReferralPriorityClass        | Should Be $NamespaceTarget.ReferralPriorityClass
-                    $Result.ReferralPriorityRank         | Should Be $NamespaceTarget.ReferralPriorityRank
+                    $result = Get-TargetResource @NamespaceSplat
+                    $result.Path                         | Should Be $Namespace.Path
+                    $result.TargetPath                   | Should Be $Namespace.TargetPath
+                    $result.Ensure                       | Should Be 'Present'
+                    $result.Type                         | Should Be $Namespace.Type
+                    $result.TimeToLiveSec                | Should Be $NamespaceRoot.TimeToLiveSec
+                    $result.State                        | Should Be $NamespaceRoot.State
+                    $result.Description                  | Should Be $NamespaceRoot.Description
+                    $result.EnableSiteCosting            | Should Be ($NamespaceRoot.Flags -contains 'Site Costing')
+                    $result.EnableInsiteReferrals        | Should Be ($NamespaceRoot.Flags -contains 'Insite Referrals')
+                    $result.EnableAccessBasedEnumeration | Should Be ($NamespaceRoot.Flags -contains 'AccessBased Enumeration')
+                    $result.EnableRootScalability        | Should Be ($NamespaceRoot.Flags -contains 'Root Scalability')
+                    $result.EnableTargetFailback         | Should Be ($NamespaceRoot.Flags -contains 'Target Failback')
+                    $result.ReferralPriorityClass        | Should Be $NamespaceTarget.ReferralPriorityClass
+                    $result.ReferralPriorityRank         | Should Be $NamespaceTarget.ReferralPriorityRank
                 }
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
@@ -759,9 +765,9 @@ try
 
                 It 'should return null' {
 
-                    $Result = Get-Root `
+                    $result = Get-Root `
                         -Path $NamespaceRoot.Path
-                    $Result | Should Be $null
+                    $result | Should Be $null
                 }
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsnRoot -Exactly 1
@@ -774,9 +780,9 @@ try
 
                 It 'should return the expected root' {
 
-                    $Result = Get-Root `
+                    $result = Get-Root `
                         -Path $NamespaceRoot.Path
-                    $Result | Should Be $NamespaceRoot
+                    $result | Should Be $NamespaceRoot
                 }
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsnRoot -Exactly 1
@@ -801,10 +807,10 @@ try
 
                 It 'should return null' {
 
-                    $Result = Get-RootTarget `
+                    $result = Get-RootTarget `
                         -Path $NamespaceTarget.Path `
                         -TargetPath $NamespaceTarget.TargetPath
-                    $Result | Should Be $null
+                    $result | Should Be $null
                 }
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsnRootTarget -Exactly 1
@@ -817,10 +823,10 @@ try
 
                 It 'should return the expected target' {
 
-                    $Result = Get-RootTarget `
+                    $result = Get-RootTarget `
                         -Path $NamespaceTarget.Path `
                         -TargetPath $NamespaceTarget.TargetPath
-                    $Result | Should Be $NamespaceTarget
+                    $result | Should Be $NamespaceTarget
                 }
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsnRootTarget -Exactly 1

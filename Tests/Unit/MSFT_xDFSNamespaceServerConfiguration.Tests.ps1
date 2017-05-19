@@ -21,30 +21,32 @@ $TestEnvironment = Initialize-TestEnvironment `
 try
 {
     # Ensure that the tests can be performed on this computer
-    $ProductType = (Get-CimInstance Win32_OperatingSystem).ProductType
+    $productType = (Get-CimInstance Win32_OperatingSystem).ProductType
     Describe 'Environment' {
         Context 'Operating System' {
-            It 'Should be a Server OS' {
-                $ProductType | Should Be 3
+            It 'should be a Server OS' {
+                $productType | Should Be 3
             }
         }
-    }
-    if ($ProductType -ne 3)
-    {
-        Break
     }
 
-    $Installed = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
+    if ($productType -ne 3)
+    {
+        break
+    }
+
+    $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'Should have the DFS Namespace Feature Installed' {
-                $Installed | Should Be $true
+            It 'should have the DFS Namespace Feature Installed' {
+                $featureInstalled | Should Be $true
             }
         }
     }
-    if ($Installed -eq $false)
+
+    if ($featureInstalled -eq $false)
     {
-        Break
+        break
     }
 
     #region Pester Tests
@@ -56,6 +58,7 @@ try
             SyncIntervalSec              = 5000
             UseFQDN                      = $True
         }
+
         $NamespaceServerConfigurationSplat = [PSObject]@{
             IsSingleInstance             = 'Yes'
             LdapTimeoutSec               = $NamespaceServerConfiguration.LdapTimeoutSec
@@ -70,10 +73,10 @@ try
                 Mock Get-DFSNServerConfiguration -MockWith { $NamespaceServerConfiguration }
 
                 It 'should return correct namespace server configuration values' {
-                    $Result = Get-TargetResource -IsSingleInstance 'Yes'
-                    $Result.LdapTimeoutSec            | Should Be $NamespaceServerConfiguration.LdapTimeoutSec
-                    $Result.SyncIntervalSec           | Should Be $NamespaceServerConfiguration.SyncIntervalSec
-                    $Result.UseFQDN                   | Should Be $NamespaceServerConfiguration.UseFQDN
+                    $result = Get-TargetResource -IsSingleInstance 'Yes'
+                    $result.LdapTimeoutSec            | Should Be $NamespaceServerConfiguration.LdapTimeoutSec
+                    $result.SyncIntervalSec           | Should Be $NamespaceServerConfiguration.SyncIntervalSec
+                    $result.UseFQDN                   | Should Be $NamespaceServerConfiguration.UseFQDN
                 }
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1

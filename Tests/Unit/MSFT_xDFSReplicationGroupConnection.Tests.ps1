@@ -21,43 +21,45 @@ $TestEnvironment = Initialize-TestEnvironment `
 try
 {
     # Ensure that the tests can be performed on this computer
-    $ProductType = (Get-CimInstance Win32_OperatingSystem).ProductType
+    $productType = (Get-CimInstance Win32_OperatingSystem).ProductType
     Describe 'Environment' {
         Context 'Operating System' {
-            It 'Should be a Server OS' {
-                $ProductType | Should Be 3
+            It 'should be a Server OS' {
+                $productType | Should Be 3
             }
         }
-    }
-    if ($ProductType -ne 3)
-    {
-        Break
     }
 
-    $Installed = (Get-WindowsFeature -Name FS-DFS-Replication).Installed
-    Describe 'Environment' {
-        Context 'Windows Features' {
-            It 'Should have the DFS Replication Feature Installed' {
-                $Installed | Should Be $true
-            }
-        }
-    }
-    if ($Installed -eq $false)
+    if ($productType -ne 3)
     {
-        Break
+        break
     }
 
-    $Installed = (Get-WindowsFeature -Name RSAT-DFS-Mgmt-Con).Installed
+    $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Replication).Installed
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'Should have the DFS Management Tools Feature Installed' {
-                $Installed | Should Be $true
+            It 'should have the DFS Replication Feature Installed' {
+                $featureInstalled | Should Be $true
             }
         }
     }
-    if ($Installed -eq $false)
+
+    if ($featureInstalled -eq $false)
     {
-        Break
+        break
+    }
+
+    $featureInstalled = (Get-WindowsFeature -Name RSAT-DFS-Mgmt-Con).Installed
+    Describe 'Environment' {
+        Context 'Windows Features' {
+            It 'should have the DFS Management Tools Feature Installed' {
+                $featureInstalled | Should Be $true
+            }
+        }
+    }
+    if ($featureInstalled -eq $false)
+    {
+        break
     }
 
     #region Pester Tests
@@ -73,6 +75,7 @@ try
             Topology = 'Manual'
             DomainName = 'CONTOSO.COM'
         }
+
         $ReplicationGroupConnections = @(
             [PSObject]@{
                 GroupName = 'Test Group'
@@ -95,55 +98,10 @@ try
                 DomainName = 'CONTOSO.COM'
             }
         )
+
         $ReplicationGroupConnectionDisabled = $ReplicationGroupConnections[0].Clone()
         $ReplicationGroupConnectionDisabled.EnsureEnabled = 'Disabled'
-        $MockReplicationGroup = [PSObject]@{
-            GroupName = $ReplicationGroup.GroupName
-            DomainName = $ReplicationGroup.DomainName
-            Description = $ReplicationGroup.Description
-        }
-        $MockReplicationGroupMember = @(
-            [PSObject]@{
-                GroupName = $ReplicationGroup.GroupName
-                DomainName = $ReplicationGroup.DomainName
-                ComputerName = $ReplicationGroup.Members[0]
-                DnsName = "$($ReplicationGroup.Members[0]).$($ReplicationGroup.DomainName)"
-            },
-            [PSObject]@{
-                GroupName = $ReplicationGroup.GroupName
-                DomainName = $ReplicationGroup.DomainName
-                ComputerName = $ReplicationGroup.Members[1]
-                DnsName = "$($ReplicationGroup.Members[1]).$($ReplicationGroup.DomainName)"
-            }
-        )
-        $MockReplicationGroupFolder = @(
-            [PSObject]@{
-                GroupName = $ReplicationGroup.GroupName
-                DomainName = $ReplicationGroup.DomainName
-                FolderName = $ReplicationGroup.Folders[0]
-                Description = 'Description 1'
-                FileNameToExclude = @('~*','*.bak','*.tmp')
-                DirectoryNameToExclude = @()
-            },
-            [PSObject]@{
-                GroupName = $ReplicationGroup.GroupName
-                DomainName = $ReplicationGroup.DomainName
-                FolderName = $ReplicationGroup.Folders[1]
-                Description = 'Description 2'
-                FileNameToExclude = @('~*','*.bak','*.tmp')
-                DirectoryNameToExclude = @()
-            }
-        )
-        $MockReplicationGroupMembership = [PSObject]@{
-            GroupName = $ReplicationGroup.GroupName
-            DomainName = $ReplicationGroup.DomainName
-            FolderName = $ReplicationGroup.Folders[0]
-            ComputerName = $ReplicationGroup.ComputerName
-            ContentPath = 'd:\public\software\'
-            StagingPath = 'd:\public\software\DfsrPrivate\Staging\'
-            ConflictAndDeletedPath = 'd:\public\software\DfsrPrivate\ConflictAndDeleted\'
-            ReadOnly = $False
-        }
+
         $MockReplicationGroupConnection = [PSObject]@{
             GroupName = $ReplicationGroupConnections[0].GroupName
             SourceComputerName = $ReplicationGroupConnections[0].SourceComputerName
@@ -161,12 +119,12 @@ try
                 Mock Get-DfsrConnection
 
                 It 'should return absent replication group connection' {
-                    $Result = Get-TargetResource `
+                    $result = Get-TargetResource `
                         -GroupName $ReplicationGroupConnections[0].GroupName `
                         -SourceComputerName $ReplicationGroupConnections[0].SourceComputerName `
                         -DestinationComputerName $ReplicationGroupConnections[0].DestinationComputerName `
                         -Ensure Present
-                    $Result.Ensure | Should Be 'Absent'
+                    $result.Ensure | Should Be 'Absent'
                 }
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
@@ -178,19 +136,19 @@ try
                 Mock Get-DfsrConnection -MockWith { return @($MockReplicationGroupConnection) }
 
                 It 'should return correct replication group' {
-                    $Result = Get-TargetResource `
+                    $result = Get-TargetResource `
                         -GroupName $ReplicationGroupConnections[0].GroupName `
                         -SourceComputerName $ReplicationGroupConnections[0].SourceComputerName `
                         -DestinationComputerName $ReplicationGroupConnections[0].DestinationComputerName `
                         -Ensure Present
-                    $Result.Ensure | Should Be 'Present'
-                    $Result.GroupName | Should Be $ReplicationGroupConnections[0].GroupName
-                    $Result.SourceComputerName | Should Be $ReplicationGroupConnections[0].SourceComputerName
-                    $Result.DestinationComputerName | Should Be $ReplicationGroupConnections[0].DestinationComputerName
-                    $Result.Description | Should Be $ReplicationGroupConnections[0].Description
-                    $Result.EnsureEnabled | Should Be $ReplicationGroupConnections[0].EnsureEnabled
-                    $Result.EnsureRDCEnabled | Should Be $ReplicationGroupConnections[0].EnsureRDCEnabled
-                    $Result.DomainName | Should Be $ReplicationGroupConnections[0].DomainName
+                    $result.Ensure | Should Be 'Present'
+                    $result.GroupName | Should Be $ReplicationGroupConnections[0].GroupName
+                    $result.SourceComputerName | Should Be $ReplicationGroupConnections[0].SourceComputerName
+                    $result.DestinationComputerName | Should Be $ReplicationGroupConnections[0].DestinationComputerName
+                    $result.Description | Should Be $ReplicationGroupConnections[0].Description
+                    $result.EnsureEnabled | Should Be $ReplicationGroupConnections[0].EnsureEnabled
+                    $result.EnsureRDCEnabled | Should Be $ReplicationGroupConnections[0].EnsureRDCEnabled
+                    $result.DomainName | Should Be $ReplicationGroupConnections[0].DomainName
                 }
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
@@ -202,19 +160,19 @@ try
                 Mock Get-DfsrConnection -MockWith { return @($MockReplicationGroupConnection) }
 
                 It 'should return correct replication group' {
-                    $Result = Get-TargetResource `
+                    $result = Get-TargetResource `
                         -GroupName $ReplicationGroupConnections[0].GroupName `
                         -SourceComputerName "$($ReplicationGroupConnections[0].SourceComputerName).$($ReplicationGroupConnections[0].DomainName)" `
                         -DestinationComputerName "$($ReplicationGroupConnections[0].DestinationComputerName).$($ReplicationGroupConnections[0].DomainName)" `
                         -Ensure Present
-                    $Result.Ensure | Should Be 'Present'
-                    $Result.GroupName | Should Be $ReplicationGroupConnections[0].GroupName
-                    $Result.SourceComputerName | Should Be $ReplicationGroupConnections[0].SourceComputerName
-                    $Result.DestinationComputerName | Should Be $ReplicationGroupConnections[0].DestinationComputerName
-                    $Result.Description | Should Be $ReplicationGroupConnections[0].Description
-                    $Result.EnsureEnabled | Should Be $ReplicationGroupConnections[0].EnsureEnabled
-                    $Result.EnsureRDCEnabled | Should Be $ReplicationGroupConnections[0].EnsureRDCEnabled
-                    $Result.DomainName | Should Be $ReplicationGroupConnections[0].DomainName
+                    $result.Ensure | Should Be 'Present'
+                    $result.GroupName | Should Be $ReplicationGroupConnections[0].GroupName
+                    $result.SourceComputerName | Should Be $ReplicationGroupConnections[0].SourceComputerName
+                    $result.DestinationComputerName | Should Be $ReplicationGroupConnections[0].DestinationComputerName
+                    $result.Description | Should Be $ReplicationGroupConnections[0].Description
+                    $result.EnsureEnabled | Should Be $ReplicationGroupConnections[0].EnsureEnabled
+                    $result.EnsureRDCEnabled | Should Be $ReplicationGroupConnections[0].EnsureRDCEnabled
+                    $result.DomainName | Should Be $ReplicationGroupConnections[0].DomainName
                 }
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1

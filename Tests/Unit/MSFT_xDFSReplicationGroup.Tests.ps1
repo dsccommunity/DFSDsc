@@ -21,43 +21,45 @@ $TestEnvironment = Initialize-TestEnvironment `
 try
 {
     # Ensure that the tests can be performed on this computer
-    $ProductType = (Get-CimInstance Win32_OperatingSystem).ProductType
+    $productType = (Get-CimInstance Win32_OperatingSystem).ProductType
     Describe 'Environment' {
         Context 'Operating System' {
-            It 'Should be a Server OS' {
-                $ProductType | Should Be 3
+            It 'should be a Server OS' {
+                $productType | Should Be 3
             }
         }
-    }
-    if ($ProductType -ne 3)
-    {
-        Break
     }
 
-    $Installed = (Get-WindowsFeature -Name FS-DFS-Replication).Installed
-    Describe 'Environment' {
-        Context 'Windows Features' {
-            It 'Should have the DFS Replication Feature Installed' {
-                $Installed | Should Be $true
-            }
-        }
-    }
-    if ($Installed -eq $false)
+    if ($productType -ne 3)
     {
-        Break
+        break
     }
 
-    $Installed = (Get-WindowsFeature -Name RSAT-DFS-Mgmt-Con).Installed
+    $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Replication).Installed
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'Should have the DFS Management Tools Feature Installed' {
-                $Installed | Should Be $true
+            It 'should have the DFS Replication Feature Installed' {
+                $featureInstalled | Should Be $true
             }
         }
     }
-    if ($Installed -eq $false)
+
+    if ($featureInstalled -eq $false)
     {
-        Break
+        break
+    }
+
+    $featureInstalled = (Get-WindowsFeature -Name RSAT-DFS-Mgmt-Con).Installed
+    Describe 'Environment' {
+        Context 'Windows Features' {
+            It 'should have the DFS Management Tools Feature Installed' {
+                $featureInstalled | Should Be $true
+            }
+        }
+    }
+    if ($featureInstalled -eq $false)
+    {
+        break
     }
 
     #region Pester Tests
@@ -73,6 +75,7 @@ try
             Topology = 'Manual'
             DomainName = 'CONTOSO.COM'
         }
+
         $ReplicationGroupAllFQDN = [PSObject]@{
             GroupName = 'Test Group'
             Ensure = 'Present'
@@ -82,6 +85,7 @@ try
             Topology = 'Manual'
             DomainName = 'CONTOSO.COM'
         }
+
         $ReplicationGroupSomeDns = [PSObject]@{
             GroupName = 'Test Group'
             Ensure = 'Present'
@@ -91,6 +95,7 @@ try
             Topology = 'Manual'
             DomainName = 'CONTOSO.COM'
         }
+
         $ReplicationGroupConnections = @(
             [PSObject]@{
                 GroupName = 'Test Group'
@@ -113,13 +118,16 @@ try
                 DomainName = 'CONTOSO.COM'
             }
         )
+
         $ReplicationGroupConnectionDisabled = $ReplicationGroupConnections[0].Clone()
         $ReplicationGroupConnectionDisabled.EnsureEnabled = 'Disabled'
+
         $MockReplicationGroup = [PSObject]@{
             GroupName = $ReplicationGroup.GroupName
             DomainName = $ReplicationGroup.DomainName
             Description = $ReplicationGroup.Description
         }
+
         $MockReplicationGroupMember = @(
             [PSObject]@{
                 GroupName = $ReplicationGroup.GroupName
@@ -134,6 +142,7 @@ try
                 DnsName = "$($ReplicationGroup.Members[1]).$($ReplicationGroup.DomainName)"
             }
         )
+
         $MockReplicationGroupFolder = @(
             [PSObject]@{
                 GroupName = $ReplicationGroup.GroupName
@@ -152,6 +161,7 @@ try
                 DirectoryNameToExclude = @()
             }
         )
+
         $MockReplicationGroupMembership = [PSObject]@{
             GroupName = $ReplicationGroup.GroupName
             DomainName = $ReplicationGroup.DomainName
@@ -163,6 +173,7 @@ try
             ReadOnly = $False
             PrimaryMember = $True
         }
+
         $MockReplicationGroupMembershipNotPrimary = $MockReplicationGroupMembership.Clone()
         $MockReplicationGroupMembershipNotPrimary.PrimaryMember = $False
 
@@ -186,6 +197,7 @@ try
                 DomainName = $ReplicationGroupConnections[1].DomainName
             }
         )
+
         $MockReplicationGroupConnectionDisabled = [PSObject]@{
             GroupName = $ReplicationGroupConnections[0].GroupName
             SourceComputerName = $ReplicationGroupConnections[0].SourceComputerName
@@ -195,6 +207,7 @@ try
             RDCEnabled = ($ReplicationGroupConnections[0].EnsureRDCEnabled -eq 'Enabled')
             DomainName = $ReplicationGroupConnections[0].DomainName
         }
+
         $ReplicationGroupContentPath = $ReplicationGroup.Clone()
         $ReplicationGroupContentPath += @{ ContentPaths = @($MockReplicationGroupMembership.ContentPath) }
 
@@ -207,10 +220,10 @@ try
                 Mock Get-DfsReplicatedFolder
 
                 It 'should return absent replication group' {
-                    $Result = Get-TargetResource `
+                    $result = Get-TargetResource `
                         -GroupName $ReplicationGroup.GroupName `
                         -Ensure Present
-                    $Result.Ensure | Should Be 'Absent'
+                    $result.Ensure | Should Be 'Absent'
                 }
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
@@ -226,17 +239,17 @@ try
                 Mock Get-DfsReplicatedFolder -MockWith { return $MockReplicationGroupFolder }
 
                 It 'should return correct replication group' {
-                    $Result = Get-TargetResource `
+                    $result = Get-TargetResource `
                         -GroupName $ReplicationGroup.GroupName `
                         -Ensure Present
-                    $Result.Ensure | Should Be 'Present'
-                    $Result.GroupName | Should Be $ReplicationGroup.GroupName
-                    $Result.Description | Should Be $ReplicationGroup.Description
-                    $Result.DomainName | Should Be $ReplicationGroup.DomainName
+                    $result.Ensure | Should Be 'Present'
+                    $result.GroupName | Should Be $ReplicationGroup.GroupName
+                    $result.Description | Should Be $ReplicationGroup.Description
+                    $result.DomainName | Should Be $ReplicationGroup.DomainName
                     # Tests disabled until this issue is resolved:
                     # https://windowsserver.uservoice.com/forums/301869-powershell/suggestions/11088807-get-dscconfiguration-fails-with-embedded-cim-type
-                    # $Result.Members | Should Be $ReplicationGroup.Members
-                    # $Result.Folders | Should Be $ReplicationGroup.Folders
+                    # $result.Members | Should Be $ReplicationGroup.Members
+                    # $result.Folders | Should Be $ReplicationGroup.Folders
                 }
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1

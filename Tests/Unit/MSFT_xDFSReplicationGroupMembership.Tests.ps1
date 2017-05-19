@@ -21,43 +21,45 @@ $TestEnvironment = Initialize-TestEnvironment `
 try
 {
     # Ensure that the tests can be performed on this computer
-    $ProductType = (Get-CimInstance Win32_OperatingSystem).ProductType
+    $productType = (Get-CimInstance Win32_OperatingSystem).ProductType
     Describe 'Environment' {
         Context 'Operating System' {
-            It 'Should be a Server OS' {
-                $ProductType | Should Be 3
+            It 'should be a Server OS' {
+                $productType | Should Be 3
             }
         }
-    }
-    if ($ProductType -ne 3)
-    {
-        Break
     }
 
-    $Installed = (Get-WindowsFeature -Name FS-DFS-Replication).Installed
-    Describe 'Environment' {
-        Context 'Windows Features' {
-            It 'Should have the DFS Replication Feature Installed' {
-                $Installed | Should Be $true
-            }
-        }
-    }
-    if ($Installed -eq $false)
+    if ($productType -ne 3)
     {
-        Break
+        break
     }
 
-    $Installed = (Get-WindowsFeature -Name RSAT-DFS-Mgmt-Con).Installed
+    $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Replication).Installed
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'Should have the DFS Management Tools Feature Installed' {
-                $Installed | Should Be $true
+            It 'should have the DFS Replication Feature Installed' {
+                $featureInstalled | Should Be $true
             }
         }
     }
-    if ($Installed -eq $false)
+
+    if ($featureInstalled -eq $false)
     {
-        Break
+        break
+    }
+
+    $featureInstalled = (Get-WindowsFeature -Name RSAT-DFS-Mgmt-Con).Installed
+    Describe 'Environment' {
+        Context 'Windows Features' {
+            It 'should have the DFS Management Tools Feature Installed' {
+                $featureInstalled | Should Be $true
+            }
+        }
+    }
+    if ($featureInstalled -eq $false)
+    {
+        break
     }
 
     #region Pester Tests
@@ -72,61 +74,7 @@ try
             Members = @('FileServer1','FileServer2')
             Folders = @('Folder1','Folder2')
         }
-        $MockReplicationGroup = [PSObject]@{
-            GroupName = $ReplicationGroup.GroupName
-            DomainName = $ReplicationGroup.DomainName
-            Description = $ReplicationGroup.Description
-        }
-        $ReplicationGroupAllFQDN = [PSObject]@{
-            GroupName = 'Test Group'
-            Ensure = 'Present'
-            Description = 'Test Description'
-            Members = @('FileServer1.CONTOSO.COM','FileServer2.CONTOSO.COM')
-            Folders = @('Folder1','Folder2')
-            Topology = 'Manual'
-            DomainName = 'CONTOSO.COM'
-        }
-        $ReplicationGroupSomelDns = [PSObject]@{
-            GroupName = 'Test Group'
-            Ensure = 'Present'
-            Description = 'Test Description'
-            Members = @('FileServer1.CONTOSO.COM','FileServer2')
-            Folders = @('Folder1','Folder2')
-            Topology = 'Manual'
-            DomainName = 'CONTOSO.COM'
-        }
-        $MockReplicationGroupMember = @(
-            [PSObject]@{
-                GroupName = $ReplicationGroup.GroupName
-                DomainName = $ReplicationGroup.DomainName
-                ComputerName = $ReplicationGroup.Members[0]
-                DnsName = "$($ReplicationGroup.Members[0]).$($ReplicationGroup.DomainName)"
-            },
-            [PSObject]@{
-                GroupName = $ReplicationGroup.GroupName
-                DomainName = $ReplicationGroup.DomainName
-                ComputerName = $ReplicationGroup.Members[1]
-                DnsName = "$($ReplicationGroup.Members[1]).$($ReplicationGroup.DomainName)"
-            }
-        )
-        $MockReplicationGroupFolder = @(
-            [PSObject]@{
-                GroupName = $ReplicationGroup.GroupName
-                DomainName = $ReplicationGroup.DomainName
-                FolderName = $ReplicationGroup.Folders[0]
-                Description = 'Description 1'
-                FileNameToExclude = @('~*','*.bak','*.tmp')
-                DirectoryNameToExclude = @()
-            },
-            [PSObject]@{
-                GroupName = $ReplicationGroup.GroupName
-                DomainName = $ReplicationGroup.DomainName
-                FolderName = $ReplicationGroup.Folders[1]
-                Description = 'Description 2'
-                FileNameToExclude = @('~*','*.bak','*.tmp')
-                DirectoryNameToExclude = @()
-            }
-        )
+
         $MockReplicationGroupMembership = [PSObject]@{
             GroupName = $ReplicationGroup.GroupName
             DomainName = $ReplicationGroup.DomainName
@@ -151,7 +99,7 @@ try
                         -f $MockReplicationGroupMembership.GroupName,$MockReplicationGroupMembership.FolderName,$MockReplicationGroupMembership.ComputerName)
 
                     {
-                        $Result = Get-TargetResource `
+                        $result = Get-TargetResource `
                             -GroupName $MockReplicationGroupMembership.GroupName `
                             -FolderName $MockReplicationGroupMembership.FolderName `
                             -ComputerName $MockReplicationGroupMembership.ComputerName
@@ -167,19 +115,19 @@ try
                 Mock Get-DfsrMembership -MockWith { return @($MockReplicationGroupMembership) }
 
                 It 'should return correct replication group' {
-                    $Result = Get-TargetResource `
+                    $result = Get-TargetResource `
                             -GroupName $MockReplicationGroupMembership.GroupName `
                             -FolderName $MockReplicationGroupMembership.FolderName `
                             -ComputerName $MockReplicationGroupMembership.ComputerName
-                    $Result.GroupName | Should Be $MockReplicationGroupMembership.GroupName
-                    $Result.FolderName | Should Be $MockReplicationGroupMembership.FolderName
-                    $Result.ComputerName | Should Be $MockReplicationGroupMembership.ComputerName
-                    $Result.ContentPath | Should Be $MockReplicationGroupMembership.ContentPath
-                    $Result.StagingPath | Should Be $MockReplicationGroupMembership.StagingPath
-                    $Result.ConflictAndDeletedPath | Should Be $MockReplicationGroupMembership.ConflictAndDeletedPath
-                    $Result.ReadOnly | Should Be $MockReplicationGroupMembership.ReadOnly
-                    $Result.PrimaryMember | Should Be $MockReplicationGroupMembership.PrimaryMember
-                    $Result.DomainName | Should Be $MockReplicationGroupMembership.DomainName
+                    $result.GroupName | Should Be $MockReplicationGroupMembership.GroupName
+                    $result.FolderName | Should Be $MockReplicationGroupMembership.FolderName
+                    $result.ComputerName | Should Be $MockReplicationGroupMembership.ComputerName
+                    $result.ContentPath | Should Be $MockReplicationGroupMembership.ContentPath
+                    $result.StagingPath | Should Be $MockReplicationGroupMembership.StagingPath
+                    $result.ConflictAndDeletedPath | Should Be $MockReplicationGroupMembership.ConflictAndDeletedPath
+                    $result.ReadOnly | Should Be $MockReplicationGroupMembership.ReadOnly
+                    $result.PrimaryMember | Should Be $MockReplicationGroupMembership.PrimaryMember
+                    $result.DomainName | Should Be $MockReplicationGroupMembership.DomainName
                 }
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
@@ -191,19 +139,19 @@ try
                 Mock Get-DfsrMembership -MockWith { return @($MockReplicationGroupMembership) }
 
                 It 'should return correct replication group' {
-                    $Result = Get-TargetResource `
+                    $result = Get-TargetResource `
                             -GroupName $MockReplicationGroupMembership.GroupName `
                             -FolderName $MockReplicationGroupMembership.FolderName `
                             -ComputerName "$($MockReplicationGroupMembership.ComputerName).$($MockReplicationGroupMembership.DomainName)"
-                    $Result.GroupName | Should Be $MockReplicationGroupMembership.GroupName
-                    $Result.FolderName | Should Be $MockReplicationGroupMembership.FolderName
-                    $Result.ComputerName | Should Be $MockReplicationGroupMembership.ComputerName
-                    $Result.ContentPath | Should Be $MockReplicationGroupMembership.ContentPath
-                    $Result.StagingPath | Should Be $MockReplicationGroupMembership.StagingPath
-                    $Result.ConflictAndDeletedPath | Should Be $MockReplicationGroupMembership.ConflictAndDeletedPath
-                    $Result.ReadOnly | Should Be $MockReplicationGroupMembership.ReadOnly
-                    $Result.PrimaryMember | Should Be $MockReplicationGroupMembership.PrimaryMember
-                    $Result.DomainName | Should Be $MockReplicationGroupMembership.DomainName
+                    $result.GroupName | Should Be $MockReplicationGroupMembership.GroupName
+                    $result.FolderName | Should Be $MockReplicationGroupMembership.FolderName
+                    $result.ComputerName | Should Be $MockReplicationGroupMembership.ComputerName
+                    $result.ContentPath | Should Be $MockReplicationGroupMembership.ContentPath
+                    $result.StagingPath | Should Be $MockReplicationGroupMembership.StagingPath
+                    $result.ConflictAndDeletedPath | Should Be $MockReplicationGroupMembership.ConflictAndDeletedPath
+                    $result.ReadOnly | Should Be $MockReplicationGroupMembership.ReadOnly
+                    $result.PrimaryMember | Should Be $MockReplicationGroupMembership.PrimaryMember
+                    $result.DomainName | Should Be $MockReplicationGroupMembership.DomainName
                 }
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1

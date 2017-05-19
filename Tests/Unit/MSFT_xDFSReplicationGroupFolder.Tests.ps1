@@ -21,43 +21,45 @@ $TestEnvironment = Initialize-TestEnvironment `
 try
 {
     # Ensure that the tests can be performed on this computer
-    $ProductType = (Get-CimInstance Win32_OperatingSystem).ProductType
+    $productType = (Get-CimInstance Win32_OperatingSystem).ProductType
     Describe 'Environment' {
         Context 'Operating System' {
-            It 'Should be a Server OS' {
-                $ProductType | Should Be 3
+            It 'should be a Server OS' {
+                $productType | Should Be 3
             }
         }
-    }
-    if ($ProductType -ne 3)
-    {
-        Break
     }
 
-    $Installed = (Get-WindowsFeature -Name FS-DFS-Replication).Installed
-    Describe 'Environment' {
-        Context 'Windows Features' {
-            It 'Should have the DFS Replication Feature Installed' {
-                $Installed | Should Be $true
-            }
-        }
-    }
-    if ($Installed -eq $false)
+    if ($productType -ne 3)
     {
-        Break
+        break
     }
 
-    $Installed = (Get-WindowsFeature -Name RSAT-DFS-Mgmt-Con).Installed
+    $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Replication).Installed
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'Should have the DFS Management Tools Feature Installed' {
-                $Installed | Should Be $true
+            It 'should have the DFS Replication Feature Installed' {
+                $featureInstalled | Should Be $true
             }
         }
     }
-    if ($Installed -eq $false)
+
+    if ($featureInstalled -eq $false)
     {
-        Break
+        break
+    }
+
+    $featureInstalled = (Get-WindowsFeature -Name RSAT-DFS-Mgmt-Con).Installed
+    Describe 'Environment' {
+        Context 'Windows Features' {
+            It 'should have the DFS Management Tools Feature Installed' {
+                $featureInstalled | Should Be $true
+            }
+        }
+    }
+    if ($featureInstalled -eq $false)
+    {
+        break
     }
 
     #region Pester Tests
@@ -72,25 +74,7 @@ try
             Members = @('FileServer1','FileServer2')
             Folders = @('Folder1','Folder2')
         }
-        $MockReplicationGroup = [PSObject]@{
-            GroupName = $ReplicationGroup.GroupName
-            DomainName = $ReplicationGroup.DomainName
-            Description = $ReplicationGroup.Description
-        }
-        $MockReplicationGroupMember = @(
-            [PSObject]@{
-                GroupName = $ReplicationGroup.GroupName
-                DomainName = $ReplicationGroup.DomainName
-                ComputerName = $ReplicationGroup.Members[0]
-                DnsName = "$($ReplicationGroup.Members[0]).$($ReplicationGroup.DomainName)"
-            },
-            [PSObject]@{
-                GroupName = $ReplicationGroup.GroupName
-                DomainName = $ReplicationGroup.DomainName
-                ComputerName = $ReplicationGroup.Members[1]
-                DnsName = "$($ReplicationGroup.Members[1]).$($ReplicationGroup.DomainName)"
-            }
-        )
+
         $MockReplicationGroupFolder = @(
             [PSObject]@{
                 GroupName = $ReplicationGroup.GroupName
@@ -111,16 +95,6 @@ try
                 DfsnPath = "\\CONTOSO.COM\Namespace\$($ReplicationGroup.Folders[1])"
             }
         )
-        $MockReplicationGroupMembership = [PSObject]@{
-            GroupName = $ReplicationGroup.GroupName
-            DomainName = $ReplicationGroup.DomainName
-            FolderName = $ReplicationGroup.Folders[0]
-            ComputerName = $ReplicationGroup.ComputerName
-            ContentPath = 'd:\public\software\'
-            StagingPath = 'd:\public\software\DfsrPrivate\Staging\'
-            ConflictAndDeletedPath = 'd:\public\software\DfsrPrivate\ConflictAndDeleted\'
-            ReadOnly = $False
-        }
 
         Describe "MSFT_xDFSReplicationGroupFolder\Get-TargetResource" {
 
@@ -133,7 +107,7 @@ try
                         -Message ($($LocalizedData.ReplicationGroupFolderMissingError) -f $MockReplicationGroupFolder[0].GroupName,$MockReplicationGroupFolder[0].FolderName)
 
                     {
-                        $Result = Get-TargetResource `
+                        $result = Get-TargetResource `
                             -GroupName $MockReplicationGroupFolder[0].GroupName `
                             -FolderName $MockReplicationGroupFolder[0].FolderName
                     } | Should Throw $errorRecord
@@ -148,17 +122,17 @@ try
                 Mock Get-DfsReplicatedFolder -MockWith { return @($MockReplicationGroupFolder[0]) }
 
                 It 'should return correct replication group' {
-                    $Result = Get-TargetResource `
+                    $result = Get-TargetResource `
                         -GroupName $MockReplicationGroupFolder[0].GroupName `
                         -FolderName $MockReplicationGroupFolder[0].FolderName
-                    $Result.GroupName | Should Be $MockReplicationGroupFolder[0].GroupName
-                    $Result.FolderName | Should Be $MockReplicationGroupFolder[0].FolderName
-                    $Result.Description | Should Be $MockReplicationGroupFolder[0].Description
-                    $Result.DomainName | Should Be $MockReplicationGroupFolder[0].DomainName
+                    $result.GroupName | Should Be $MockReplicationGroupFolder[0].GroupName
+                    $result.FolderName | Should Be $MockReplicationGroupFolder[0].FolderName
+                    $result.Description | Should Be $MockReplicationGroupFolder[0].Description
+                    $result.DomainName | Should Be $MockReplicationGroupFolder[0].DomainName
                     # Tests disabled until this issue is resolved:
                     # https://windowsserver.uservoice.com/forums/301869-powershell/suggestions/11088807-get-dscconfiguration-fails-with-embedded-cim-type
-                    # $Result.FileNameToExclude | Should Be $MockReplicationGroupFolder[0].FileNameToExclude
-                    # $Result.DirectoryNameToExclude | Should Be $MockReplicationGroupFolder[0].DirectoryNameToExclude
+                    # $result.FileNameToExclude | Should Be $MockReplicationGroupFolder[0].FileNameToExclude
+                    # $result.DirectoryNameToExclude | Should Be $MockReplicationGroupFolder[0].DirectoryNameToExclude
                 }
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
