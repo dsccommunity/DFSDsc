@@ -9,16 +9,26 @@ $localizedData = Get-LocalizedData `
     -ResourcePath (Split-Path -Parent $Script:MyInvocation.MyCommand.Path)
 
 <#
-    This is an array of all the parameters used by this resource
+    This is an array of all the parameters used by this resource.
     If the property Restart is true then when this property is updated the service
-    Will be restarted.
+    will be restarted.
 #>
 data parameterList
 {
     @(
-        @{ Name = 'LdapTimeoutSec';            Type = 'Uint32'  },
-        @{ Name = 'SyncIntervalSec';           Type = 'String'  },
-        @{ Name = 'UseFQDN';                   Type = 'Uint32'; Restart = $True }
+        @{
+            Name = 'LdapTimeoutSec'
+            Type = 'Uint32'
+        },
+        @{
+            Name = 'SyncIntervalSec'
+            Type = 'String'
+        },
+        @{
+            Name = 'UseFQDN'
+            Type = 'Uint32'
+            Restart = $True
+        }
     )
 }
 
@@ -46,9 +56,11 @@ function Get-TargetResource
             $($LocalizedData.GettingNamespaceServerConfigurationMessage)
         ) -join '' )
 
-    # The ComputerName will always be LocalHost unless a good reason can be provided to
-    # enable it as a parameter.
-    $computerName = 'LocalHost'
+    <#
+        The ComputerName will always be localhost unless a good reason can be provided to
+        enable it as a parameter.
+    #>
+    $computerName = 'localhost'
 
     # Get the current DFSN Server Configuration
     $serverConfiguration = Get-DfsnServerConfiguration `
@@ -117,9 +129,11 @@ function Set-TargetResource
             $($LocalizedData.SettingNamespaceServerConfigurationMessage)
         ) -join '' )
 
-    # The ComputerName will always be LocalHost unless a good reason can be provided to
-    # enable it as a parameter.
-    $computerName = 'LocalHost'
+    <#
+        The ComputerName will always be localhost unless a good reason can be provided to
+        enable it as a parameter.
+    #>
+    $computerName = 'localhost'
 
     # Get the current DFSN Server Configuration
     $serverConfiguration = Get-DfsnServerConfiguration `
@@ -231,9 +245,11 @@ function Test-TargetResource
             $($LocalizedData.TestingNamespaceServerConfigurationMessage)
         ) -join '' )
 
-    # The ComputerName will always be LocalHost unless a good reason can be provided to
-    # enable it as a parameter.
-    $computerName = 'LocalHost'
+    <#
+        The ComputerName will always be localhost unless a good reason can be provided to
+        enable it as a parameter.
+    #>
+    $computerName = 'localhost'
 
     # Flag to signal whether settings are correct
     [System.Boolean] $desiredConfigurationMatch = $true

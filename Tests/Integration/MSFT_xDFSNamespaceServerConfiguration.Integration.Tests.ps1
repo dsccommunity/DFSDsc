@@ -51,7 +51,7 @@ try
 
     # Backup the existing settings
     $ServerConfigurationBackup = Get-DFSNServerConfiguration `
-        -ComputerName LocalHost
+        -ComputerName localhost
 
     #region Integration Tests
     $ConfigFile = Join-Path -Path $PSScriptRoot -ChildPath "$($script:DSCResourceName).config.ps1"
@@ -73,7 +73,7 @@ try
 
         It 'Should have set the resource and all the parameters should match' {
             # Get the Rule details
-            $NamespaceServerConfigurationNew = Get-DfsnServerConfiguration -ComputerName LocalHost
+            $NamespaceServerConfigurationNew = Get-DfsnServerConfiguration -ComputerName localhost
             $NamespaceServerConfigurationNew.LdapTimeoutSec            = $NamespaceServerConfiguration.LdapTimeoutSec
             $NamespaceServerConfigurationNew.SyncIntervalSec           = $NamespaceServerConfiguration.SyncIntervalSec
             $NamespaceServerConfigurationNew.UseFQDN                   = $NamespaceServerConfiguration.UseFQDN
@@ -81,7 +81,7 @@ try
 
         # Clean up
         Set-DFSNServerConfiguration `
-            -ComputerName LocalHost `
+            -ComputerName localhost `
             -LdapTimeoutSec $ServerConfigurationBackup.LdapTimeoutSec `
             -SyncIntervalSec $ServerConfigurationBackup.SyncIntervalSec `
             -UseFQDN $ServerConfigurationBackup.UseFQDN

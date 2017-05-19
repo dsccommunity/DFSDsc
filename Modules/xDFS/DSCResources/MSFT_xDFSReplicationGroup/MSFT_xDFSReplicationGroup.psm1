@@ -43,7 +43,7 @@ function Get-TargetResource
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
         $($LocalizedData.GettingReplicationGroupMessage) `
-            -f $GroupName,$DomainName
+            -f $GroupName
         ) -join '' )
 
     # Lookup the existing Replication Group
@@ -68,18 +68,23 @@ function Get-TargetResource
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($LocalizedData.ReplicationGroupExistsMessage) `
-                -f $GroupName,$DomainName
+                -f $GroupName
             ) -join '' )
 
-        # Array paramters are disabled until this issue is resolved:
-        # https://windowsserver.uservoice.com/forums/301869-powershell/suggestions/11088807-get-dscconfiguration-fails-with-embedded-cim-type
+        <#
+            Array paramters are disabled until this issue is resolved:
+            https://windowsserver.uservoice.com/forums/301869-powershell/suggestions/11088807-get-dscconfiguration-fails-with-embedded-cim-type
+            When resolved these parameters can be added into return value
+            Members = @((Get-DfsrMember @replicationGroupParameters -ErrorAction Stop).ComputerName)
+            Folders = @((Get-DfsReplicatedFolder @replicationGroupParameters -ErrorAction Stop).FolderName)
+        #>
         $returnValue += @{
             Ensure = 'Present'
             Description = $replicationGroup.Description
             DomainName = $replicationGroup.DomainName
-            # Members = @((Get-DfsrMember @replicationGroupParameters -ErrorAction Stop).ComputerName)
-            # Folders = @((Get-DfsReplicatedFolder @replicationGroupParameters -ErrorAction Stop).FolderName)
-            # ContentPaths = @()
+            Members = @()
+            Folders = @()
+            ContentPaths = @()
         }
     }
     else
@@ -87,8 +92,9 @@ function Get-TargetResource
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($LocalizedData.ReplicationGroupDoesNotExistMessage) `
-                -f $GroupName,$DomainName
+                -f $GroupName
             ) -join '' )
+
         $returnValue += @{
             Ensure = 'Absent'
         }
@@ -177,7 +183,7 @@ function Set-TargetResource
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
         $($LocalizedData.SettingRegGroupMessage) `
-            -f $GroupName,$DomainName
+            -f $GroupName
         ) -join '' )
 
     # Lookup the existing Replication Group
@@ -201,7 +207,7 @@ function Set-TargetResource
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($LocalizedData.EnsureReplicationGroupExistsMessage) `
-                -f $GroupName,$DomainName
+                -f $GroupName
             ) -join '' )
 
         if ($Description)
@@ -217,16 +223,18 @@ function Set-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupExistsMessage) `
-                    -f $GroupName,$DomainName
+                    -f $GroupName
                 ) -join '' )
+
             # Check the description
             if (($Description) -and ($replicationGroup.Description -ne $Description))
             {
                 Set-DfsReplicationGroup @replicationGroupParameters -ErrorAction Stop
+
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.ReplicationGroupDescriptionUpdatedMessage) `
-                        -f $GroupName,$DomainName
+                        -f $GroupName
                     ) -join '' )
             } # if
         }
@@ -236,13 +244,15 @@ function Set-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupDoesNotExistMessage) `
-                    -f $GroupName,$DomainName
+                    -f $GroupName
                 ) -join '' )
+
             New-DfsReplicationGroup @replicationGroupParameters -ErrorAction Stop
+
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupCreatedMessage) `
-                    -f $GroupName,$DomainName
+                    -f $GroupName
                 ) -join '' )
         } # if
 
@@ -276,10 +286,11 @@ function Set-TargetResource
                 Add-DfsrMember @replicationGroupParameters `
                     -ComputerName $member `
                     -ErrorAction Stop
+
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.ReplicationGroupMemberAddedMessage) `
-                        -f $GroupName,$DomainName,$member
+                        -f $GroupName,$member
                     ) -join '' )
             } # if
         } # foreach
@@ -294,10 +305,11 @@ function Set-TargetResource
                     -ComputerName $existingMember `
                     -Force `
                     -ErrorAction Stop
+
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.ReplicationGroupMemberRemovedMessage) `
-                        -f $GroupName,$DomainName,$existingMember
+                        -f $GroupName,$existingMember
                     ) -join '' )
             } # if
         } # foreach
@@ -314,10 +326,11 @@ function Set-TargetResource
                 New-DfsReplicatedFolder @replicationGroupParameters `
                     -FolderName $folder `
                     -ErrorAction Stop
+
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.ReplicationGroupFolderAddedMessage) `
-                        -f $GroupName,$DomainName,$folder
+                        -f $GroupName,$folder
                     ) -join '' )
             } # if
         } # foreach
@@ -332,10 +345,11 @@ function Set-TargetResource
                     -Folder $existingFolder `
                     -Force `
                     -ErrorAction Stop
+
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.ReplicationGroupFolderRemovedMessage) `
-                        -f $GroupName,$DomainName,$existingFolder
+                        -f $GroupName,$existingFolder
                     ) -join '' )
             } # if
         } # foreach
@@ -346,6 +360,7 @@ function Set-TargetResource
             # Get the current memberships for this rep group
             $memberships = Get-DfsrMembership @replicationGroupParameters `
                 -ErrorAction Stop
+
             # Scan through the content paths array
             for ($i=0; $i -lt $Folders.Count; $i++)
             {
@@ -354,28 +369,31 @@ function Set-TargetResource
                 {
                      foreach ($membership in $memberships)
                      {
-
                         [System.String] $fqdnMemberName = Get-FQDNMemberName `
                             @replicationGroupParameters `
                             -ComputerName $membership.ComputerName
-                        [System.Boolean] $primarymember = ($fqdnMemberName -eq $fqdnMembers[0])
+
+                        [System.Boolean] $primaryMember = ($fqdnMemberName -eq $fqdnMembers[0])
+
                         if (($membership.FolderName -ne $Folders[$i]) `
                             -or (($membership.ContentPath -eq $ContentPath) `
-                            -and ($membership.PrimaryMember -eq $primarymember)))
+                            -and ($membership.PrimaryMember -eq $primaryMember)))
                         {
                             # Don't update this membership
                             continue
                         }
+
                         # The Content Path for this member needs to be set
                         Set-DfsrMembership @replicationGroupParameters `
                             -FolderName $membership.FolderName `
                             -ComputerName $membership.ComputerName `
-                            -PrimaryMember $primarymember `
+                            -PrimaryMember $primaryMember `
                             -ContentPath $ContentPath
+
                         Write-Verbose -Message ( @(
                             "$($MyInvocation.MyCommand): "
                             $($LocalizedData.ReplicationGroupContentPathUpdatedMessage) `
-                                -f $GroupName,$DomainName,$membership.ComputerName
+                                -f $GroupName,$membership.ComputerName
                             ) -join '' )
                     } # foreach
                 } # if
@@ -404,17 +422,20 @@ function Set-TargetResource
 
                         $replicationGroupParameters.SourceComputerName = $source
                         $replicationGroupParameters.DestinationComputerName = $destination
+
                         $replicationGroupConnection = Get-DfsrConnection @replicationGroupParameters `
                             -ErrorAction Stop
+
                         if ($replicationGroupConnection) {
                             if (-not $replicationGroupConnection.Enabled) {
                                 Set-DfsrConnection @replicationGroupParameters `
                                     -DisableConnection $false `
                                     -ErrorAction Stop
+
                                 Write-Verbose -Message ( @(
                                     "$($MyInvocation.MyCommand): "
                                         $($LocalizedData.ReplicationGroupFullMeshConnectionUpdatedMessage) `
-                                        -f  $GroupName,$DomainName,$source,$destination
+                                        -f  $GroupName,$source,$destination
                                     ) -join '' )
                             } # if
                         }
@@ -422,10 +443,11 @@ function Set-TargetResource
                         {
                             Add-DfsrConnection @replicationGroupParameters `
                                 -ErrorAction Stop
+
                             Write-Verbose -Message ( @(
                                 "$($MyInvocation.MyCommand): "
                                     $($LocalizedData.ReplicationGroupFullMeshConnectionAddedMessage) `
-                                    -f  $GroupName,$DomainName,$source,$destination
+                                    -f  $GroupName,$source,$destination
                                 ) -join '' )
                         } # if
                     } # foreach
@@ -439,8 +461,9 @@ function Set-TargetResource
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($LocalizedData.EnsureReplicationGroupDoesNotExistMessage) `
-                -f $GroupName,$DomainName
+                -f $GroupName
             ) -join '' )
+
         if ($replicationGroup)
         {
             # Remove the replication group
@@ -448,10 +471,11 @@ function Set-TargetResource
                 -RemoveReplicatedFolders `
                 -Force `
                 -ErrorAction Stop
+
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupExistsRemovedMessage) `
-                    -f $GroupName,$DomainName
+                    -f $GroupName
                 ) -join '' )
         }
     } # if
@@ -541,7 +565,7 @@ function Test-TargetResource
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
         $($LocalizedData.TestingRegGroupMessage) `
-            -f $GroupName,$DomainName
+            -f $GroupName
         ) -join '' )
 
     # Lookup the existing Replication Group
@@ -568,7 +592,7 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupExistsMessage) `
-                    -f $GroupName,$DomainName
+                    -f $GroupName
                 ) -join '' )
 
             # Check the description
@@ -577,8 +601,9 @@ function Test-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.ReplicationGroupDescriptionNeedsUpdateMessage) `
-                        -f $GroupName,$DomainName
+                        -f $GroupName
                     ) -join '' )
+
                 $desiredConfigurationMatch = $false
             } # if
 
@@ -605,8 +630,9 @@ function Test-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.ReplicationGroupMembersNeedUpdateMessage) `
-                        -f $GroupName,$DomainName
+                        -f $GroupName
                     ) -join '' )
+
                 $desiredConfigurationMatch = $false
             } # if
 
@@ -621,8 +647,9 @@ function Test-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.ReplicationGroupFoldersNeedUpdateMessage) `
-                        -f $GroupName,$DomainName
+                        -f $GroupName
                     ) -join '' )
+
                 $desiredConfigurationMatch = $false
             }
 
@@ -642,11 +669,11 @@ function Test-TargetResource
                     {
                         foreach ($membership in $memberships)
                         {
-                            [System.Boolean] $primarymember = ($membership.ComputerName -eq $Members[0])
+                            [System.Boolean] $primaryMember = ($membership.ComputerName -eq $Members[0])
 
                             if (($membership.FolderName -ne $Folders[$i]) `
                                 -or (($membership.ContentPath -eq $contentPath) `
-                                -and ($membership.PrimaryMember -eq $primarymember)))
+                                -and ($membership.PrimaryMember -eq $primaryMember)))
                             {
                                 # This membership is in the correct state.
                                 continue
@@ -655,8 +682,9 @@ function Test-TargetResource
                             Write-Verbose -Message ( @(
                                 "$($MyInvocation.MyCommand): "
                                 $($LocalizedData.ReplicationGroupContentPathNeedUpdateMessage) `
-                                    -f $GroupName,$DomainName,$membership.ComputerName
+                                    -f $GroupName,$membership.ComputerName
                                 ) -join '' )
+
                             $desiredConfigurationMatch = $false
                         } # if
                     } # if
@@ -685,6 +713,7 @@ function Test-TargetResource
 
                             $replicationGroupParameters.SourceComputerName = $source
                             $replicationGroupParameters.DestinationComputerName = $destination
+
                             $replicationGroupConnection = Get-DfsrConnection @replicationGroupParameters `
                                 -ErrorAction Stop
 
@@ -695,8 +724,9 @@ function Test-TargetResource
                                     Write-Verbose -Message ( @(
                                         "$($MyInvocation.MyCommand): "
                                          $($LocalizedData.ReplicationGroupFullMeshDisabledConnectionMessage) `
-                                            -f  $GroupName,$DomainName,$source,$destination
+                                            -f  $GroupName,$source,$destination
                                         ) -join '' )
+
                                     $desiredConfigurationMatch = $false
                                 } # if
                             }
@@ -705,8 +735,9 @@ function Test-TargetResource
                                 Write-Verbose -Message ( @(
                                     "$($MyInvocation.MyCommand): "
                                      $($LocalizedData.ReplicationGroupFullMeshMissingConnectionMessage) `
-                                        -f  $GroupName,$DomainName,$source,$destination
+                                        -f  $GroupName,$source,$destination
                                     ) -join '' )
+
                                 $desiredConfigurationMatch = $false
                             } # if
                         } # foreach
@@ -720,8 +751,9 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                  $($LocalizedData.ReplicationGroupDoesNotExistButShouldMessage) `
-                    -f  $GroupName,$DomainName
+                    -f  $GroupName
                 ) -join '' )
+
             $desiredConfigurationMatch = $false
         } # if
     }
@@ -734,8 +766,9 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                  $($LocalizedData.ReplicationGroupExistsButShouldNotMessage) `
-                    -f $GroupName,$DomainName
+                    -f $GroupName
                 ) -join '' )
+
             $desiredConfigurationMatch = $false
         }
         else
@@ -744,10 +777,11 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupDoesNotExistAndShouldNotMessage) `
-                    -f $GroupName,$DomainName
+                    -f $GroupName
                 ) -join '' )
         } # if
     } # if
+
     return $desiredConfigurationMatch
 } # Test-TargetResource
 

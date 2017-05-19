@@ -63,9 +63,6 @@ function Get-TargetResource
         Type = $Type
     }
 
-    # Remove the Ensue parmeter from the bound parameters
-    $null = $PSBoundParameters.Remove('Ensure')
-
     # Lookup the existing Namespace root
     $root = Get-Root `
         -Path $Path
@@ -76,7 +73,7 @@ function Get-TargetResource
         Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.NamespaceRootExistsMessage) `
-                    -f $Type,$Path,$TargetPath
+                    -f $Type,$Path
             ) -join '' )
     }
     else
@@ -85,7 +82,7 @@ function Get-TargetResource
         Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.NamespaceRootDoesNotExistMessage) `
-                    -f $Type,$Path,$TargetPath
+                    -f $Type,$Path
             ) -join '' )
         return $returnValue
     } # if
@@ -336,7 +333,7 @@ function Set-TargetResource
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
                         $($LocalizedData.NamespaceRootUpdateParameterMessage) `
-                            -f $Type,$Path,$TargetPath,$_.name, $_.value
+                            -f $Type,$Path,$_.name, $_.value
                     ) -join '' )
                 }
             } # if
@@ -406,8 +403,10 @@ function Set-TargetResource
         }
         else
         {
-            # Prepare to use the PSBoundParameters as a splat to created
-            # The new DFS Namespace root.
+            <#
+                Prepare to use the PSBoundParameters as a splat to created
+                The new DFS Namespace root.
+            #>
             $null = $PSBoundParameters.Remove('Ensure')
 
             # Correct the ReferralPriorityClass field
@@ -425,16 +424,17 @@ function Set-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceRootUpdateParameterMessage) `
-                        -f $Type,$Path,$TargetPath,$_.name, $_.value
+                        -f $Type,$Path,$_.name, $_.value
                 ) -join '' )
             }
         } # if
     }
     else
     {
-        # The Namespace Target should not exist
-
-        # Get root target
+        <#
+            The Namespace Target should not exist
+            Get root target
+        #>
         $target = Get-RootTarget `
             -Path $Path `
             -TargetPath $TargetPath
@@ -588,7 +588,7 @@ function Test-TargetResource
             {
                 New-InvalidOperationException `
                     -Message ($($LocalizedData.NamespaceRootTypeConversionError) `
-                        -f $Type,$Path,$TargetPath,($root.Type -replace ' ',''))
+                        -f $Type,($root.Type -replace ' ',''))
             } # if
 
             # Check the Namespace parameters
@@ -597,7 +597,7 @@ function Test-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
-                        -f $Type,$Path,$TargetPath,'Description'
+                        -f $Type,$Path,'Description'
                     ) -join '' )
 
                 $desiredConfigurationMatch = $false
@@ -608,7 +608,7 @@ function Test-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
-                        -f $Type,$Path,$TargetPath,'TimeToLiveSec'
+                        -f $Type,$Path,'TimeToLiveSec'
                     ) -join '' )
 
                 $desiredConfigurationMatch = $false
@@ -619,7 +619,7 @@ function Test-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
-                        -f $Type,$Path,$TargetPath,'EnableSiteCosting'
+                        -f $Type,$Path,'EnableSiteCosting'
                     ) -join '' )
 
                 $desiredConfigurationMatch = $false
@@ -630,7 +630,7 @@ function Test-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
-                        -f $Type,$Path,$TargetPath,'EnableInsiteReferrals'
+                        -f $Type,$Path,'EnableInsiteReferrals'
                     ) -join '' )
 
                 $desiredConfigurationMatch = $false
@@ -641,7 +641,7 @@ function Test-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
-                        -f $Type,$Path,$TargetPath,'EnableAccessBasedEnumeration'
+                        -f $Type,$Path,'EnableAccessBasedEnumeration'
                     ) -join '' )
 
                 $desiredConfigurationMatch = $false
@@ -652,7 +652,7 @@ function Test-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
-                        -f $Type,$Path,$TargetPath,'EnableRootScalability'
+                        -f $Type,$Path,'EnableRootScalability'
                     ) -join '' )
 
                 $desiredConfigurationMatch = $false
@@ -663,7 +663,7 @@ function Test-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
-                        -f $Type,$Path,$TargetPath,'EnableTargetFailback'
+                        -f $Type,$Path,'EnableTargetFailback'
                     ) -join '' )
 
                 $desiredConfigurationMatch = $false
@@ -712,7 +712,7 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                  $($LocalizedData.NamespaceRootDoesNotExistButShouldMessage) `
-                    -f $Type,$Path,$TargetPath
+                    -f $Type,$Path
                 ) -join '' )
             $desiredConfigurationMatch = $false
         } # if
@@ -788,7 +788,7 @@ Function Get-Root
     }
     catch
     {
-        Throw $_
+        throw $_
     }
     return $dfsnRoot
 }
@@ -829,7 +829,7 @@ Function Get-RootTarget
     }
     catch
     {
-        Throw $_
+        throw $_
     }
     return $dfsnTarget
 }

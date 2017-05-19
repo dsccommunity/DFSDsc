@@ -37,9 +37,7 @@
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
     PrivateData = @{
-
         PSData = @{
-
             # Tags applied to this module. These help with module discovery in online galleries.
             Tags = @( 'DSC','DesiredStateConfiguration','DSCResourceKit','DSCResource','DFS','DistributedFileSystem' )
 
@@ -53,12 +51,7 @@
             ReleaseNotes = '* MSFT_xDFSNamespaceServerConfiguration- resource added.
 * Corrected names of DFS Namespace sample files to indicate that they are setting Namespace roots and folders.
 * Removed Pester version from AppVeyor.yml.
-
 '
-
         } # End of PSData hashtable
-
     } # End of PrivateData hashtable
-
 }
-

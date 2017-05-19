@@ -54,9 +54,6 @@ function Get-TargetResource
         Ensure = 'Absent'
     }
 
-    # Remove the Ensue parmeter from the bound parameters
-    $null = $PSBoundParameters.Remove('Ensure')
-
     # Lookup the existing Namespace Folder
     $folder = Get-Folder `
         -Path $Path
@@ -67,7 +64,7 @@ function Get-TargetResource
         Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.NamespaceFolderExistsMessage) `
-                    -f $Path,$TargetPath
+                    -f $Path
             ) -join '' )
     }
     else
@@ -76,7 +73,7 @@ function Get-TargetResource
         Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.NamespaceFolderDoesNotExistMessage) `
-                    -f $Path,$TargetPath
+                    -f $Path
             ) -join '' )
         return $returnValue
     } # if
@@ -90,17 +87,17 @@ function Get-TargetResource
     }
 
     # DFS Folder exists but does target exist?
-    $target = Get-FolderTarget `
+    $targetFolder = Get-FolderTarget `
         -Path $Path `
         -TargetPath $TargetPath
 
-    if ($target)
+    if ($targetFolder)
     {
         # The target exists in this namespace
         $returnValue.Ensure = 'Present'
         $returnValue += @{
-            ReferralPriorityClass        = $target.ReferralPriorityClass
-            ReferralPriorityRank         = $target.ReferralPriorityRank
+            ReferralPriorityClass        = $targetFolder.ReferralPriorityClass
+            ReferralPriorityRank         = $targetFolder.ReferralPriorityRank
         }
 
         Write-Verbose -Message ( @(
@@ -268,13 +265,13 @@ function Set-TargetResource
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
                         $($LocalizedData.NamespaceFolderUpdateParameterMessage) `
-                            -f $Path,$TargetPath,$_.name, $_.value
+                            -f $Path,$_.name, $_.value
                     ) -join '' )
                 }
             }
 
             # Get target
-            $target = Get-FolderTarget `
+            $targetFolder = Get-FolderTarget `
                 -Path $Path `
                 -TargetPath $TargetPath
 
@@ -286,7 +283,7 @@ function Set-TargetResource
 
             # Check the target properties
             if (($ReferralPriorityClass) `
-                -and ($target.ReferralPriorityClass -ne $ReferralPriorityClass))
+                -and ($targetFolder.ReferralPriorityClass -ne $ReferralPriorityClass))
             {
                 $targetProperties += @{
                     ReferralPriorityClass = ($ReferralPriorityClass -replace '-','')
@@ -295,7 +292,7 @@ function Set-TargetResource
             }
 
             if (($ReferralPriorityRank) `
-                -and ($target.ReferralPriorityRank -ne $ReferralPriorityRank))
+                -and ($targetFolder.ReferralPriorityRank -ne $ReferralPriorityRank))
             {
                 $targetProperties += @{
                     ReferralPriorityRank = $ReferralPriorityRank
@@ -304,7 +301,7 @@ function Set-TargetResource
             }
 
             # Is the target a member of the namespace?
-            if ($target)
+            if ($targetFolder)
             {
                 # Does the target need to be changed?
                 if ($targetChange)
@@ -338,8 +335,10 @@ function Set-TargetResource
         }
         else
         {
-            # Prepare to use the PSBoundParameters as a splat to created
-            # The new DFS Namespace Folder.
+            <#
+                Prepare to use the PSBoundParameters as a splat to created
+                The new DFS Namespace Folder.
+            #>
             $null = $PSBoundParameters.Remove('Ensure')
 
             # Correct the ReferralPriorityClass field
@@ -367,11 +366,11 @@ function Set-TargetResource
         # The Namespace Folder Target should not exist
 
         # Get Folder target
-        $target = Get-FolderTarget `
+        $targetFolder = Get-FolderTarget `
             -Path $Path `
             -TargetPath $TargetPath
 
-        if ($target)
+        if ($targetFolder)
         {
             # Remove the target from the Namespace Folder
             $null = Remove-DfsnFolderTarget `
@@ -491,7 +490,7 @@ function Test-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceFolderParameterNeedsUpdateMessage) `
-                        -f $Path,$TargetPath,'Description'
+                        -f $Path,'Description'
                     ) -join '' )
                 $desiredConfigurationMatch = $false
             }
@@ -501,7 +500,7 @@ function Test-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceFolderParameterNeedsUpdateMessage) `
-                        -f $Path,$TargetPath,'TimeToLiveSec'
+                        -f $Path,'TimeToLiveSec'
                     ) -join '' )
                 $desiredConfigurationMatch = $false
             }
@@ -511,7 +510,7 @@ function Test-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceFolderParameterNeedsUpdateMessage) `
-                        -f $Path,$TargetPath,'EnableInsiteReferrals'
+                        -f $Path,'EnableInsiteReferrals'
                     ) -join '' )
                 $desiredConfigurationMatch = $false
             }
@@ -521,19 +520,19 @@ function Test-TargetResource
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceFolderParameterNeedsUpdateMessage) `
-                        -f $Path,$TargetPath,'EnableTargetFailback'
+                        -f $Path,'EnableTargetFailback'
                     ) -join '' )
                 $desiredConfigurationMatch = $false
             }
 
-            $targe = Get-FolderTarget `
+            $targetFolder = Get-FolderTarget `
                 -Path $Path `
                 -TargetPath $TargetPath
 
-            if ($targe)
+            if ($targetFolder)
             {
                 if (($ReferralPriorityClass) `
-                    -and ($targe.ReferralPriorityClass -ne $ReferralPriorityClass)) {
+                    -and ($targetFolder.ReferralPriorityClass -ne $ReferralPriorityClass)) {
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
                         $($LocalizedData.NamespaceFolderTargetParameterNeedsUpdateMessage) `
@@ -543,7 +542,7 @@ function Test-TargetResource
                 }
 
                 if (($ReferralPriorityRank) `
-                    -and ($targe.ReferralPriorityRank -ne $ReferralPriorityRank)) {
+                    -and ($targetFolder.ReferralPriorityRank -ne $ReferralPriorityRank)) {
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
                         $($LocalizedData.NamespaceFolderTargetParameterNeedsUpdateMessage) `
@@ -579,11 +578,11 @@ function Test-TargetResource
         # The Namespace target should not exist
         if ($folder)
         {
-            $targe = Get-FolderTarget `
+            $targetFolder = Get-FolderTarget `
                 -Path $Path `
                 -TargetPath $TargetPath
 
-            if ($targe)
+            if ($targetFolder)
             {
                 # The Folder target exists but should not - change required
                 Write-Verbose -Message ( @(
@@ -646,7 +645,7 @@ Function Get-Folder
     }
     catch
     {
-        Throw $_
+        throw $_
     }
     return $dfsnFolder
 }
@@ -687,7 +686,7 @@ Function Get-FolderTarget
     }
     catch
     {
-        Throw $_
+        throw $_
     }
     return $dfsnTarget
 }
