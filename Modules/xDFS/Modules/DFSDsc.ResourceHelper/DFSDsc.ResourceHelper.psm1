@@ -8,8 +8,8 @@ function Test-IsNanoServer
     {
         $computerInfo = Get-ComputerInfo
 
-        if ("Server" -eq $computerInfo.OsProductType `
-            -and "NanoServer" -eq $computerInfo.OsServerLevel)
+        if ('Server' -eq $computerInfo.OsProductType `
+            -and 'NanoServer' -eq $computerInfo.OsServerLevel)
         {
             return $true
         }
@@ -21,6 +21,9 @@ function Test-IsNanoServer
 <#
     .SYNOPSIS
         Tests if the the specified command is found.
+
+    .PARAMETER Name
+        The name of the command to find.
 #>
 function Test-Command
 {

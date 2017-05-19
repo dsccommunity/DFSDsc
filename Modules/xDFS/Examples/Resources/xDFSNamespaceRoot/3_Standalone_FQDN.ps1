@@ -1,7 +1,7 @@
 <#
     .EXAMPLE
     Create a standalone DFS namespace using FQDN called public on the server
-    fileserver1.contoso.com. A sub-folcer called brochures is also created in
+    fileserver1.contoso.com. A sub-folder called brochures is also created in
     this namespace that targets the \\fileserver2.contoso.com\brochures share.
 #>
 Configuration Example

@@ -30,6 +30,7 @@ function Get-InvalidArgumentRecord
         TypeName = 'System.Management.Automation.ErrorRecord'
         ArgumentList = @( $argumentException, $ArgumentName, 'InvalidArgument', $null )
     }
+
     return New-Object @newObjectParams
 }
 
@@ -78,6 +79,7 @@ function Get-InvalidOperationRecord
         ArgumentList = @( $invalidOperationException.ToString(), 'MachineStateIncorrect',
             'InvalidOperation', $null )
     }
+
     return New-Object @newObjectParams
 }
 
