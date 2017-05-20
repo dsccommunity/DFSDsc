@@ -10,7 +10,7 @@ If the above are available then to allow these tests to be run a
 MSFT_xDFSReplicationGroup.config.json file must be created in the same folder as
 this file. The content should be a customized version of the following:
 {
-    "Username":  "CONTOSO.COM\\Administrator",
+    "Username":  "contoso.com\\Administrator",
     "Folders":  [
                     "TestFolder1",
                     "TestFolder2"

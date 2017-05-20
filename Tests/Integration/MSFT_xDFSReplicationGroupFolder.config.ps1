@@ -8,7 +8,7 @@ else
 {
     # Example config parameters.
     $TestConfig = @{
-        Username = 'CONTOSO.COM\Administrator'
+        Username = 'contoso.com\Administrator'
         Password = 'MyP@ssw0rd!1'
         Members = @('Server1','Server1')
         Folders = @('TestFolder1','TestFolder2')

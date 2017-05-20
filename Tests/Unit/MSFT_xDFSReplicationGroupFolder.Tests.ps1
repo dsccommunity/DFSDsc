@@ -57,6 +57,7 @@ try
             }
         }
     }
+
     if ($featureInstalled -eq $false)
     {
         break
@@ -64,12 +65,11 @@ try
 
     #region Pester Tests
     InModuleScope $script:DSCResourceName {
-
         # Create the Mock Objects that will be used for running tests
         $replicationGroup = [PSObject]@{
             GroupName = 'Test Group'
             Ensure = 'Present'
-            DomainName = 'CONTOSO.COM'
+            DomainName = 'contoso.com'
             Description = 'Test Description'
             Members = @('FileServer1','FileServer2')
             Folders = @('Folder1','Folder2')
@@ -83,7 +83,7 @@ try
                 Description = 'Description 1'
                 FileNameToExclude = @('~*','*.bak','*.tmp')
                 DirectoryNameToExclude = @()
-                DfsnPath = "\\CONTOSO.COM\Namespace\$($replicationGroup.Folders[0])"
+                DfsnPath = "\\contoso.com\Namespace\$($replicationGroup.Folders[0])"
             },
             [PSObject]@{
                 GroupName = $replicationGroup.GroupName
@@ -92,7 +92,7 @@ try
                 Description = 'Description 2'
                 FileNameToExclude = @('~*','*.bak','*.tmp')
                 DirectoryNameToExclude = @()
-                DfsnPath = "\\CONTOSO.COM\Namespace\$($replicationGroup.Folders[1])"
+                DfsnPath = "\\contoso.com\Namespace\$($replicationGroup.Folders[1])"
             }
         )
 
@@ -191,7 +191,7 @@ try
 
                 It 'should not throw error' {
                     $splat = $mockReplicationGroupFolder[0].Clone()
-                    $splat.DfsnPath = '\\CONTOSO.COM\Public\Different'
+                    $splat.DfsnPath = '\\contoso.com\Public\Different'
                     { Set-TargetResource @splat } | Should Not Throw
                 }
 
@@ -278,7 +278,7 @@ try
 
                 It 'should return false' {
                     $splat = $mockReplicationGroupFolder[0].Clone()
-                    $splat.DfsnPath = '\\CONTOSO.COM\Public\Different'
+                    $splat.DfsnPath = '\\contoso.com\Public\Different'
                     Test-TargetResource @splat | Should Be $False
                 }
 

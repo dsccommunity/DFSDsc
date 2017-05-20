@@ -53,7 +53,6 @@ try
 
     #region Pester Tests
     InModuleScope $script:DSCResourceName {
-
         # Create the Mock Objects that will be used for running tests
         $namespace = [PSObject]@{
             Path                         = '\\contoso.com\UnitTestNamespace'
@@ -760,7 +759,6 @@ try
                 Mock Get-DfsnRoot { throw $errorRecord }
 
                 It 'should return null' {
-
                     $result = Get-Root `
                         -Path $namespaceRoot.Path
                     $result | Should Be $null
@@ -775,7 +773,6 @@ try
                 Mock Get-DfsnRoot -MockWith { $namespaceRoot }
 
                 It 'should return the expected root' {
-
                     $result = Get-Root `
                         -Path $namespaceRoot.Path
                     $result | Should Be $namespaceRoot
@@ -816,7 +813,6 @@ try
                 Mock Get-DfsnRootTarget -MockWith { $namespaceTarget }
 
                 It 'should return the expected target' {
-
                     $result = Get-RootTarget `
                         -Path $namespaceTarget.Path `
                         -TargetPath $namespaceTarget.TargetPath

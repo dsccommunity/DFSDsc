@@ -51,7 +51,6 @@ try
 
     #region Pester Tests
     InModuleScope $script:DSCResourceName {
-
         # Create the Mock Objects that will be used for running tests
         $namespace = [PSObject]@{
             Path                         = '\\contoso.com\UnitTestNamespace\Folder'

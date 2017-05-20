@@ -57,6 +57,7 @@ try
             }
         }
     }
+
     if ($featureInstalled -eq $false)
     {
         break
@@ -64,12 +65,11 @@ try
 
     #region Pester Tests
     InModuleScope $script:DSCResourceName {
-
         # Create the Mock Objects that will be used for running tests
         $replicationGroup = [PSObject]@{
             GroupName = 'Test Group'
             Ensure = 'Present'
-            DomainName = 'CONTOSO.COM'
+            DomainName = 'contoso.com'
             Description = 'Test Description'
             Members = @('FileServer1','FileServer2')
             Folders = @('Folder1','Folder2')

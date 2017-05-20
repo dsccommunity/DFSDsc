@@ -31,6 +31,7 @@ try
             }
         }
     }
+
     if ($productType -ne 3)
     {
         break
