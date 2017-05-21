@@ -1,19 +1,19 @@
-$Global:DSCModuleName   = 'xDFS'
-$Global:DSCResourceName = 'MSFT_xDFSNamespaceServerConfiguration'
+$script:DSCModuleName   = 'xDFS'
+$script:DSCResourceName = 'MSFT_xDFSnamespaceServerConfiguration'
 
 #region HEADER
 # Unit Test Template Version: 1.1.0
-[String] $moduleRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))
-if ( (-not (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
-     (-not (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
+[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\xDFS'
+if ( (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
+     (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
 {
-    & git @('clone','https://github.com/PowerShell/DscResource.Tests.git',(Join-Path -Path $moduleRoot -ChildPath '\DSCResource.Tests\'))
+    & git @('clone','https://github.com/PowerShell/DscResource.Tests.git',(Join-Path -Path $script:moduleRoot -ChildPath '\DSCResource.Tests\'))
 }
 
-Import-Module (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1') -Force
+Import-Module (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1') -Force
 $TestEnvironment = Initialize-TestEnvironment `
-    -DSCModuleName $Global:DSCModuleName `
-    -DSCResourceName $Global:DSCResourceName `
+    -DSCModuleName $script:DSCModuleName `
+    -DSCResourceName $script:DSCResourceName `
     -TestType Unit
 #endregion HEADER
 
@@ -21,78 +21,79 @@ $TestEnvironment = Initialize-TestEnvironment `
 try
 {
     # Ensure that the tests can be performed on this computer
-    $ProductType = (Get-CimInstance Win32_OperatingSystem).ProductType
+    $productType = (Get-CimInstance Win32_OperatingSystem).ProductType
     Describe 'Environment' {
         Context 'Operating System' {
-            It 'Should be a Server OS' {
-                $ProductType | Should Be 3
+            It 'should be a Server OS' {
+                $productType | Should Be 3
             }
         }
-    }
-    if ($ProductType -ne 3)
-    {
-        Break
     }
 
-    $Installed = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
+    if ($productType -ne 3)
+    {
+        break
+    }
+
+    $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'Should have the DFS Namespace Feature Installed' {
-                $Installed | Should Be $true
+            It 'should have the DFS Namespace Feature Installed' {
+                $featureInstalled | Should Be $true
             }
         }
     }
-    if ($Installed -eq $false)
+
+    if ($featureInstalled -eq $false)
     {
-        Break
+        break
     }
 
     #region Pester Tests
-    InModuleScope $Global:DSCResourceName {
-
+    InModuleScope $script:DSCResourceName {
         # Create the Mock Objects that will be used for running tests
-        $NamespaceServerConfiguration = [PSObject]@{
+        $namespaceServerConfiguration = [PSObject]@{
             LdapTimeoutSec               = 45
             SyncIntervalSec              = 5000
             UseFQDN                      = $True
         }
-        $NamespaceServerConfigurationSplat = [PSObject]@{
+
+        $namespaceServerConfigurationSplat = [PSObject]@{
             IsSingleInstance             = 'Yes'
-            LdapTimeoutSec               = $NamespaceServerConfiguration.LdapTimeoutSec
-            SyncIntervalSec              = $NamespaceServerConfiguration.SyncIntervalSec
-            UseFQDN                      = $NamespaceServerConfiguration.UseFQDN
+            LdapTimeoutSec               = $namespaceServerConfiguration.LdapTimeoutSec
+            SyncIntervalSec              = $namespaceServerConfiguration.SyncIntervalSec
+            UseFQDN                      = $namespaceServerConfiguration.UseFQDN
         }
 
-        Describe "$($Global:DSCResourceName)\Get-TargetResource" {
-
+        Describe "MSFT_xDFSnamespaceServerConfiguration\Get-TargetResource" {
             Context 'Namespace Server Configuration Exists' {
-
-                Mock Get-DFSNServerConfiguration -MockWith { $NamespaceServerConfiguration }
+                Mock Get-DFSNServerConfiguration -MockWith { $namespaceServerConfiguration }
 
                 It 'should return correct namespace server configuration values' {
-                    $Result = Get-TargetResource -IsSingleInstance 'Yes'
-                    $Result.LdapTimeoutSec            | Should Be $NamespaceServerConfiguration.LdapTimeoutSec
-                    $Result.SyncIntervalSec           | Should Be $NamespaceServerConfiguration.SyncIntervalSec
-                    $Result.UseFQDN                   | Should Be $NamespaceServerConfiguration.UseFQDN
+                    $result = Get-TargetResource -IsSingleInstance 'Yes'
+                    $result.LdapTimeoutSec            | Should Be $namespaceServerConfiguration.LdapTimeoutSec
+                    $result.SyncIntervalSec           | Should Be $namespaceServerConfiguration.SyncIntervalSec
+                    $result.UseFQDN                   | Should Be $namespaceServerConfiguration.UseFQDN
                 }
+
                 It 'should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
                 }
             }
         }
 
-        Describe "$($Global:DSCResourceName)\Set-TargetResource" {
-
-            Mock Get-DFSNServerConfiguration -MockWith { $NamespaceServerConfiguration }
+        Describe "MSFT_xDFSnamespaceServerConfiguration\Set-TargetResource" {
+            Mock Get-DFSNServerConfiguration -MockWith { $namespaceServerConfiguration }
             Mock Set-DFSNServerConfiguration
 
             Context 'Namespace Server Configuration all parameters are the same' {
                 It 'should not throw error' {
                     {
-                        $Splat = $NamespaceServerConfigurationSplat.Clone()
-                        Set-TargetResource @Splat
+                        $splat = $namespaceServerConfigurationSplat.Clone()
+                        Set-TargetResource @splat
                     } | Should Not Throw
                 }
+
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
                     Assert-MockCalled -commandName Set-DFSNServerConfiguration -Exactly 0
@@ -102,11 +103,12 @@ try
             Context 'Namespace Server Configuration LdapTimeoutSec is different' {
                 It 'should not throw error' {
                     {
-                        $Splat = $NamespaceServerConfigurationSplat.Clone()
-                        $Splat.LdapTimeoutSec = $Splat.LdapTimeoutSec + 1
-                        Set-TargetResource @Splat
+                        $splat = $namespaceServerConfigurationSplat.Clone()
+                        $splat.LdapTimeoutSec = $splat.LdapTimeoutSec + 1
+                        Set-TargetResource @splat
                     } | Should Not Throw
                 }
+
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
                     Assert-MockCalled -commandName Set-DFSNServerConfiguration -Exactly 1
@@ -116,11 +118,12 @@ try
             Context 'Namespace Server Configuration SyncIntervalSec is different' {
                 It 'should not throw error' {
                     {
-                        $Splat = $NamespaceServerConfigurationSplat.Clone()
-                        $Splat.SyncIntervalSec = $Splat.SyncIntervalSec + 1
-                        Set-TargetResource @Splat
+                        $splat = $namespaceServerConfigurationSplat.Clone()
+                        $splat.SyncIntervalSec = $splat.SyncIntervalSec + 1
+                        Set-TargetResource @splat
                     } | Should Not Throw
                 }
+
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
                     Assert-MockCalled -commandName Set-DFSNServerConfiguration -Exactly 1
@@ -130,11 +133,12 @@ try
             Context 'Namespace Server Configuration UseFQDN is different' {
                 It 'should not throw error' {
                     {
-                        $Splat = $NamespaceServerConfigurationSplat.Clone()
-                        $Splat.UseFQDN = -not $Splat.UseFQDN
-                        Set-TargetResource @Splat
+                        $splat = $namespaceServerConfigurationSplat.Clone()
+                        $splat.UseFQDN = -not $splat.UseFQDN
+                        Set-TargetResource @splat
                     } | Should Not Throw
                 }
+
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
                     Assert-MockCalled -commandName Set-DFSNServerConfiguration -Exactly 1
@@ -142,15 +146,15 @@ try
             }
         }
 
-        Describe "$($Global:DSCResourceName)\Test-TargetResource" {
-
-            Mock Get-DFSNServerConfiguration -MockWith { $NamespaceServerConfiguration }
+        Describe "MSFT_xDFSnamespaceServerConfiguration\Test-TargetResource" {
+            Mock Get-DFSNServerConfiguration -MockWith { $namespaceServerConfiguration }
 
             Context 'Namespace Server Configuration all parameters are the same' {
                 It 'should return true' {
-                    $Splat = $NamespaceServerConfigurationSplat.Clone()
-                    Test-TargetResource @Splat | Should Be $True
+                    $splat = $namespaceServerConfigurationSplat.Clone()
+                    Test-TargetResource @splat | Should Be $True
                 }
+
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
                 }
@@ -158,10 +162,11 @@ try
 
             Context 'Namespace Server Configuration LdapTimeoutSec is different' {
                 It 'should return false' {
-                    $Splat = $NamespaceServerConfigurationSplat.Clone()
-                    $Splat.LdapTimeoutSec = $Splat.LdapTimeoutSec + 1
-                    Test-TargetResource @Splat | Should Be $False
+                    $splat = $namespaceServerConfigurationSplat.Clone()
+                    $splat.LdapTimeoutSec = $splat.LdapTimeoutSec + 1
+                    Test-TargetResource @splat | Should Be $False
                 }
+
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
                 }
@@ -169,10 +174,11 @@ try
 
             Context 'Namespace Server Configuration SyncIntervalSec is different' {
                 It 'should return false' {
-                    $Splat = $NamespaceServerConfigurationSplat.Clone()
-                    $Splat.SyncIntervalSec = $Splat.SyncIntervalSec + 1
-                    Test-TargetResource @Splat | Should Be $False
+                    $splat = $namespaceServerConfigurationSplat.Clone()
+                    $splat.SyncIntervalSec = $splat.SyncIntervalSec + 1
+                    Test-TargetResource @splat | Should Be $False
                 }
+
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
                 }
@@ -180,35 +186,13 @@ try
 
             Context 'Namespace Server Configuration UseFQDN is different' {
                 It 'should return false' {
-                    $Splat = $NamespaceServerConfigurationSplat.Clone()
-                    $Splat.UseFQDN = -not $Splat.UseFQDN
-                    Test-TargetResource @Splat | Should Be $False
+                    $splat = $namespaceServerConfigurationSplat.Clone()
+                    $splat.UseFQDN = -not $splat.UseFQDN
+                    Test-TargetResource @splat | Should Be $False
                 }
+
                 It 'should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
-                }
-            }
-        }
-
-        Describe "$($Global:DSCResourceName)\New-TerminatingError" {
-
-            Context 'Create a TestError Exception' {
-
-                It 'should throw an TestError exception' {
-                    $errorId = 'TestError'
-                    $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidArgument
-                    $errorMessage = 'Test Error Message'
-                    $exception = New-Object `
-                        -TypeName System.InvalidOperationException `
-                        -ArgumentList $errorMessage
-                    $errorRecord = New-Object `
-                        -TypeName System.Management.Automation.ErrorRecord `
-                        -ArgumentList $exception, $errorId, $errorCategory, $null
-
-                    { New-TerminatingError `
-                        -ErrorId $errorId `
-                        -ErrorMessage $errorMessage `
-                        -ErrorCategory $errorCategory } | Should Throw $errorRecord
                 }
             }
         }

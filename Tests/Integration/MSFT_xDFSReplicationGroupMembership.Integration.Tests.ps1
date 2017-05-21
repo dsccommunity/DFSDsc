@@ -10,7 +10,7 @@ If the above are available then to allow these tests to be run a
 MSFT_xDFSReplicationGroupMembership.config.json file must be created in the same folder as
 this file. The content should be a customized version of the following:
 {
-    "Username":  "CONTOSO.COM\\Administrator",
+    "Username":  "contoso.com\\Administrator",
     "Folders":  [
                     "TestFolder1",
                     "TestFolder2"
@@ -28,58 +28,63 @@ this file. The content should be a customized version of the following:
 
 If the above are available and configured these integration tests will run.
 #>
-$Global:DSCModuleName   = 'xDFS'
-$Global:DSCResourceName = 'MSFT_xDFSReplicationGroupMembership'
+$script:DSCModuleName   = 'xDFS'
+$script:DSCResourceName = 'MSFT_xDFSReplicationGroupMembership'
 
 # Test to see if the config file is available.
-$ConfigFile = "$([System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path))\$($Global:DSCResourceName).config.json"
-if (! (Test-Path -Path $ConfigFile))
+$configFile = "$([System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path))\$($script:DSCResourceName).config.json"
+
+if (! (Test-Path -Path $configFile))
 {
     return
 }
 
 #region HEADER
 # Integration Test Template Version: 1.1.0
-[String] $moduleRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))
-if ( (-not (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
-     (-not (Test-Path -Path (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
+[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\xDFS'
+
+if ( (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
+     (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
 {
-    & git @('clone','https://github.com/PowerShell/DscResource.Tests.git',(Join-Path -Path $moduleRoot -ChildPath '\DSCResource.Tests\'))
+    & git @('clone','https://github.com/PowerShell/DscResource.Tests.git',(Join-Path -Path $script:moduleRoot -ChildPath '\DSCResource.Tests\'))
 }
 
-Import-Module (Join-Path -Path $moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1') -Force
+Import-Module (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1') -Force
+Import-Module (Join-Path -Path $script:moduleRoot -ChildPath "$($script:DSCModuleName).psd1") -Force
 $TestEnvironment = Initialize-TestEnvironment `
-    -DSCModuleName $Global:DSCModuleName `
-    -DSCResourceName $Global:DSCResourceName `
-    -TestType Integration 
+    -DSCModuleName $script:DSCModuleName `
+    -DSCResourceName $script:DSCResourceName `
+    -TestType Integration
 #endregion
 
 # Using try/finally to always cleanup even if something awful happens.
 try
 {
     #region Integration Tests
-    $ConfigFile = Join-Path -Path $PSScriptRoot -ChildPath "$($Global:DSCResourceName).config.ps1" 
-    . $ConfigFile
+    $configFile = Join-Path -Path $PSScriptRoot -ChildPath "$($script:DSCResourceName).config.ps1"
+    . $configFile
 
-    Describe "$($Global:DSCResourceName)_Integration" {           
+    Describe "$($script:DSCResourceName)_Integration" {
         # Create the Replication group to work with
         New-DFSReplicationGroup `
             -GroupName $ReplicationGroupMembership.GroupName
+
         foreach ($Member in $ReplicationGroupMembership.Members)
         {
             Add-DFSRMember `
                 -GroupName $ReplicationGroupMembership.GroupName `
                 -ComputerName $Member
         }
+
         foreach ($Folder in $ReplicationGroupMembership.Folders)
         {
             New-DFSReplicatedFolder `
                 -GroupName $ReplicationGroupMembership.GroupName `
                 -FolderName $Folder
         }
-            
+
         #region DEFAULT TESTS
-        It 'Should compile without throwing' {
+        It 'should compile and apply the MOF without throwing' {
             {
                 $ConfigData = @{
                     AllNodes = @(
@@ -89,8 +94,9 @@ try
                         }
                     )
                 }
-                Invoke-Expression -Command "$($Global:DSCResourceName)_Config -OutputPath `$TestEnvironment.WorkingFolder -ConfigurationData `$ConfigData"
-                Start-DscConfiguration -Path $TestEnvironment.WorkingFolder -ComputerName localhost -Wait -Verbose -Force
+
+                & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive -ConfigurationData $ConfigData
+                Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
             } | Should not throw
         }
 
@@ -99,7 +105,7 @@ try
         }
         #endregion
 
-        It 'Should have set the resource and all the parameters should match' {
+        It 'should have set the resource and all the parameters should match' {
             $ReplicationGroupMembershipNew = Get-DfsrMembership `
                 -GroupName $ReplicationGroupMembership.GroupName `
                 -ComputerName $ReplicationGroupMembership.Members[0] `
@@ -111,7 +117,7 @@ try
             $ReplicationGroupMembershipNew.ReadOnly               | Should Be $ReplicationGroupMembership.ReadOnly
             $ReplicationGroupMembershipNew.PrimaryMember          | Should Be $ReplicationGroupMembership.PrimaryMember
         }
-        
+
         # Clean up
         Remove-DFSReplicationGroup `
             -GroupName $ReplicationGroupMembership.GroupName `
