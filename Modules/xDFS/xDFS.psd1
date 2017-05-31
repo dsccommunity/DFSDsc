@@ -1,6 +1,6 @@
 @{
     # Version number of this module.
-    ModuleVersion = '3.1.0.0'
+    ModuleVersion = '3.2.0.0'
 
     # ID used to uniquely identify this module
     GUID = '3bcb9c66-ea0b-4675-bd46-c390a382c388'
@@ -48,10 +48,24 @@
             ProjectUri = 'https://github.com/PowerShell/xDFS'
 
             # ReleaseNotes of this module
-            ReleaseNotes = '* MSFT_xDFSNamespaceServerConfiguration- resource added.
-* Corrected names of DFS Namespace sample files to indicate that they are setting Namespace roots and folders.
-* Removed Pester version from AppVeyor.yml.
+        ReleaseNotes = '- Converted AppVeyor.yml to pull Pester from PSGallery instead of Chocolatey.
+- Changed AppVeyor.yml to use default image.
+- Converted AppVeyor build process to use AppVeyor.psm1.
+- Resolved PSSA violations.
+- Resolved Readme.md style violations.
+- Converted Integration Tests to use Test Drive and stop using Invoke-Pester.
+- Move strings into separate language files.
+- Added CodeCov support.
+- Clean up manifest file by removing commented out sections.
+- Convert Examples to pass tests and meet minimum standards.
+- Convert to Wiki and auto-documentation generation.
+- Convert to TestHarness test execution method.
+- Correct parameter block format to meet guidelines.
+- Replaced all type accelerators with full type names.
+- Updated Readme.md to contain resource list.
+
 '
         } # End of PSData hashtable
     } # End of PrivateData hashtable
 }
+

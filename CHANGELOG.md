@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 3.2.0.0
+
 - Converted AppVeyor.yml to pull Pester from PSGallery instead of Chocolatey.
 - Changed AppVeyor.yml to use default image.
 - Converted AppVeyor build process to use AppVeyor.psm1.
