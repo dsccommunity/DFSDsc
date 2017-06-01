@@ -52,8 +52,8 @@ try
     }
 
     # Backup the existing settings
-    $script:ServerConfigurationBackup = Get-DFSNServerConfiguration `
-        -ComputerName localhost
+    $script:ServerConfigurationBackup = Get-DFSNServerConfiguration
+
     Write-Verbose -Verbose -Message ($script:ServerConfigurationBackup | Out-String)
 
     #region Integration Tests
@@ -76,7 +76,7 @@ try
 
         It 'should have set the resource and all the parameters should match' {
             # Get the Rule details
-            $NamespaceServerConfigurationNew = Get-DfsnServerConfiguration -ComputerName localhost
+            $NamespaceServerConfigurationNew = Get-DfsnServerConfiguration #-ComputerName localhost
             $NamespaceServerConfigurationNew.LdapTimeoutSec            = $NamespaceServerConfiguration.LdapTimeoutSec
             $NamespaceServerConfigurationNew.SyncIntervalSec           = $NamespaceServerConfiguration.SyncIntervalSec
             $NamespaceServerConfigurationNew.UseFQDN                   = $NamespaceServerConfiguration.UseFQDN
@@ -84,7 +84,6 @@ try
 
         # Clean up
         Set-DFSNServerConfiguration `
-            -ComputerName localhost `
             -LdapTimeoutSec $script:ServerConfigurationBackup.LdapTimeoutSec `
             -SyncIntervalSec $script:ServerConfigurationBackup.SyncIntervalSec `
             -UseFQDN $script:ServerConfigurationBackup.UseFQDN
