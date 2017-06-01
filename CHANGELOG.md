@@ -2,12 +2,6 @@
 
 ## Unreleased
 
-- Fixed xDFSNamespaceServerConfiguration by converting LocalHost to ComputerName
-  instead.
-- Added integration test to test for conflicts with other common resource kit modules.
-- Prevented ResourceHelper and Common module cmdlets from being exported to resolve
-  conflicts with other resource modules.
-
 ## 3.2.0.0
 
 - Converted AppVeyor.yml to pull Pester from PSGallery instead of Chocolatey.
@@ -25,6 +19,11 @@
 - Correct parameter block format to meet guidelines.
 - Replaced all type accelerators with full type names.
 - Updated Readme.md to contain resource list.
+- Fixed xDFSNamespaceServerConfiguration by converting LocalHost to ComputerName
+  instead.
+- Added integration test to test for conflicts with other common resource kit modules.
+- Prevented ResourceHelper and Common module cmdlets from being exported to resolve
+  conflicts with other resource modules.
 
 ## 3.1.0.0
 
