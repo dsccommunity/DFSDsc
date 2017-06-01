@@ -53,7 +53,7 @@ try
 
     # Backup the existing settings
     $script:ServerConfigurationBackup = Get-DFSNServerConfiguration `
-        -ComputerName $ENV:COMPUTERNAME
+        -ComputerName $($ENV:COMPUTERNAME)
 
     #region Integration Tests
     $configFile = Join-Path -Path $PSScriptRoot -ChildPath "$($script:DSCResourceName).config.ps1"

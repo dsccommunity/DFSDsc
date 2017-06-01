@@ -160,7 +160,7 @@ function Set-TargetResource
     {
         # Update any parameters that were identified as different
         $null = Set-DfsnServerConfiguration `
-            -ComputerName $computerName `
+            -ComputerName $ENV:COMPUTERNAME `
             @changeParameters `
             -ErrorAction Stop
 
