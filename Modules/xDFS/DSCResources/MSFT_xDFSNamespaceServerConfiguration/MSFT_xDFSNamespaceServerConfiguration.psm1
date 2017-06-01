@@ -57,10 +57,10 @@ function Get-TargetResource
         ) -join '' )
 
     <#
-        The ComputerName will always be localhost unless a good reason can be provided to
-        enable it as a parameter.
+        The ComputerName will always be LocalHost unless a good reason can be provided to
+        enable it as a parameter. The case must be exactly 'LocalHost' - do not change.
     #>
-    $computerName = 'localhost'
+    $computerName = 'LocalHost'
 
     # Get the current DFSN Server Configuration
     $serverConfiguration = Get-DfsnServerConfiguration `
@@ -130,10 +130,10 @@ function Set-TargetResource
         ) -join '' )
 
     <#
-        The ComputerName will always be localhost unless a good reason can be provided to
-        enable it as a parameter.
+        The ComputerName will always be LocalHost unless a good reason can be provided to
+        enable it as a parameter. The case must be exactly 'LocalHost' - do not change.
     #>
-    $computerName = 'localhost'
+    $computerName = 'LocalHost'
 
     # Get the current DFSN Server Configuration
     $serverConfiguration = Get-DfsnServerConfiguration `
@@ -246,10 +246,10 @@ function Test-TargetResource
         ) -join '' )
 
     <#
-        The ComputerName will always be localhost unless a good reason can be provided to
-        enable it as a parameter.
+        The ComputerName will always be LocalHost unless a good reason can be provided to
+        enable it as a parameter. The case must be exactly 'LocalHost' - do not change.
     #>
-    $computerName = 'localhost'
+    $computerName = 'LocalHost'
 
     # Flag to signal whether settings are correct
     [System.Boolean] $desiredConfigurationMatch = $true

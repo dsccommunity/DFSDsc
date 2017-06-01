@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Fixed integration tests for xDFSNamespaceServerConfiguration.
+
 ## 3.2.0.0
 
 - Converted AppVeyor.yml to pull Pester from PSGallery instead of Chocolatey.
