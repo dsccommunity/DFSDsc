@@ -27,7 +27,7 @@
     ProcessorArchitecture = 'None'
 
     # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-    NestedModules = @('Modules\DFSDsc.ResourceHelper\DFSDsc.ResourceHelper.psm1')
+    # NestedModules = @()
 
     # Functions to export from this module
     FunctionsToExport = '*'

@@ -1,7 +1,9 @@
-$script:ResourceRootPath = Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent)
+$modulePath = Join-Path -Path (Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent) -ChildPath 'Modules'
 
-# Import the xCertificate Resource Module (to import the common modules)
-Import-Module -Name (Join-Path -Path $script:ResourceRootPath -ChildPath 'xDFS.psd1')
+# Import the Certificate Resource Helper Module
+Import-Module -Name (Join-Path -Path $modulePath `
+                               -ChildPath (Join-Path -Path 'DFSDsc.ResourceHelper' `
+                                                     -ChildPath 'DFSDsc.ResourceHelper.psm1'))
 
 # Import Localization Strings
 $localizedData = Get-LocalizedData `
