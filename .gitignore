@@ -1,2 +1,15 @@
-DSCResource.Tests
+*.suo
+*.user
+*.coverage
+.vs
+.psproj
+.sln
+DscResource.Tests
+DscResource.Tests/*
+Modules/xDFS/DscResource.Tests
+Modules/xDFS/DscResource.Tests/*
+node_modules
+node_modules/*
+markdownissues.txt
+TestResults.xml
 *.config.json
