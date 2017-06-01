@@ -58,7 +58,7 @@ function Get-TargetResource
 
     # Get the current DFSN Server Configuration
     $serverConfiguration = Get-DfsnServerConfiguration `
-        -ComputerName $ENV:COMPUTERNAME `
+        -ComputerName $env:COMPUTERNAME `
         -ErrorAction Stop
 
     # Generate the return object.
@@ -125,7 +125,7 @@ function Set-TargetResource
 
     # Get the current DFSN Server Configuration
     $serverConfiguration = Get-DfsnServerConfiguration `
-        -ComputerName $ENV:COMPUTERNAME `
+        -ComputerName $env:COMPUTERNAME `
         -ErrorAction Stop
 
     # Generate a list of parameters that will need to be changed.
@@ -160,7 +160,7 @@ function Set-TargetResource
     {
         # Update any parameters that were identified as different
         $null = Set-DfsnServerConfiguration `
-            -ComputerName $ENV:COMPUTERNAME `
+            -ComputerName $env:COMPUTERNAME `
             @changeParameters `
             -ErrorAction Stop
 
@@ -238,7 +238,7 @@ function Test-TargetResource
 
     # Get the current DFSN Server Configuration
     $serverConfiguration = Get-DfsnServerConfiguration `
-        -ComputerName $ENV:COMPUTERNAME `
+        -ComputerName $env:COMPUTERNAME `
         -ErrorAction Stop
 
     # Check each parameter

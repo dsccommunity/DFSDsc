@@ -1,7 +1,7 @@
 $NamespaceRootName = 'IntegrationTestNamespace'
 $NamespaceRoot = @{
-    Path                         = "\\$($ENV:ComputerName)\$NamespaceRootName"
-    TargetPath                   = "\\$($ENV:ComputerName)\$NamespaceRootName" 
+    Path                         = "\\$($env:COMPUTERNAME)\$NamespaceRootName"
+    TargetPath                   = "\\$($env:COMPUTERNAME)\$NamespaceRootName" 
     Ensure                       = 'Present'
     Type                         = 'Standalone'
     Description                  = 'Integration test namespace'
