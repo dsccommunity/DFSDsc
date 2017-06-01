@@ -63,7 +63,11 @@
 - Correct parameter block format to meet guidelines.
 - Replaced all type accelerators with full type names.
 - Updated Readme.md to contain resource list.
-
+- Fixed xDFSNamespaceServerConfiguration by converting LocalHost to ComputerName
+  instead.
+- Added integration test to test for conflicts with other common resource kit modules.
+- Prevented ResourceHelper and Common module cmdlets from being exported to resolve
+  conflicts with other resource modules.
 '
         } # End of PSData hashtable
     } # End of PrivateData hashtable
