@@ -52,7 +52,7 @@ try
     }
 
     # Backup the existing settings
-    $script:ServerConfigurationBackup = Get-DFSNServerConfiguration `
+    $ServerConfigurationBackup = Get-DFSNServerConfiguration `
         -ComputerName $($ENV:COMPUTERNAME)
 
     #region Integration Tests
@@ -84,9 +84,9 @@ try
         # Clean up
         Set-DFSNServerConfiguration `
             -ComputerName $ENV:COMPUTERNAME `
-            -LdapTimeoutSec $script:ServerConfigurationBackup.LdapTimeoutSec `
-            -SyncIntervalSec $script:ServerConfigurationBackup.SyncIntervalSec `
-            -UseFQDN $script:ServerConfigurationBackup.UseFQDN
+            -LdapTimeoutSec $ServerConfigurationBackup.LdapTimeoutSec `
+            -SyncIntervalSec $ServerConfigurationBackup.SyncIntervalSec `
+            -UseFQDN $ServerConfigurationBackup.UseFQDN
     }
     #endregion
 }
