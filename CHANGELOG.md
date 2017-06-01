@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Fixed xDFSNamespaceServerConfiguration by converting LocalHost to ComputerName
+  instead.
+
 ## 3.2.0.0
 
 - Converted AppVeyor.yml to pull Pester from PSGallery instead of Chocolatey.

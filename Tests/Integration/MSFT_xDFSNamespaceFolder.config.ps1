@@ -1,12 +1,12 @@
 $NamespaceRootName = 'IntegrationTestNamespace'
 $NamespaceFolderName = 'TestFolder'
 $NamespaceRoot = @{
-    Path                         = "\\$($ENV:ComputerName)\$NamespaceRootName"
-    TargetPath                   = "\\$($ENV:ComputerName)\$NamespaceRootName"
+    Path                         = "\\$($env:COMPUTERNAME)\$NamespaceRootName"
+    TargetPath                   = "\\$($env:COMPUTERNAME)\$NamespaceRootName"
 }
 $NamespaceFolder = @{
     Path                         = "$($NamespaceRoot.Path)\$NamespaceFolderName"
-    TargetPath                   = "\\$($ENV:ComputerName)\$NamespaceFolderName"
+    TargetPath                   = "\\$($env:COMPUTERNAME)\$NamespaceFolderName"
     Ensure                       = 'Present'
     Description                  = 'Integration test namespace folder'
     EnableInsiteReferrals        = $true
