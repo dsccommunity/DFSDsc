@@ -56,15 +56,9 @@ function Get-TargetResource
             $($LocalizedData.GettingNamespaceServerConfigurationMessage)
         ) -join '' )
 
-    <#
-        The ComputerName will always be LocalHost unless a good reason can be provided to
-        enable it as a parameter. The case must be exactly 'LocalHost' - do not change.
-    #>
-    $computerName = 'LocalHost'
-
     # Get the current DFSN Server Configuration
     $serverConfiguration = Get-DfsnServerConfiguration `
-        -ComputerName $computerName `
+        -ComputerName $ENV:COMPUTERNAME `
         -ErrorAction Stop
 
     # Generate the return object.
@@ -129,15 +123,9 @@ function Set-TargetResource
             $($LocalizedData.SettingNamespaceServerConfigurationMessage)
         ) -join '' )
 
-    <#
-        The ComputerName will always be LocalHost unless a good reason can be provided to
-        enable it as a parameter. The case must be exactly 'LocalHost' - do not change.
-    #>
-    $computerName = 'LocalHost'
-
     # Get the current DFSN Server Configuration
     $serverConfiguration = Get-DfsnServerConfiguration `
-        -ComputerName $computerName `
+        -ComputerName $ENV:COMPUTERNAME `
         -ErrorAction Stop
 
     # Generate a list of parameters that will need to be changed.
@@ -245,18 +233,12 @@ function Test-TargetResource
             $($LocalizedData.TestingNamespaceServerConfigurationMessage)
         ) -join '' )
 
-    <#
-        The ComputerName will always be LocalHost unless a good reason can be provided to
-        enable it as a parameter. The case must be exactly 'LocalHost' - do not change.
-    #>
-    $computerName = 'LocalHost'
-
     # Flag to signal whether settings are correct
     [System.Boolean] $desiredConfigurationMatch = $true
 
     # Get the current DFSN Server Configuration
     $serverConfiguration = Get-DfsnServerConfiguration `
-        -ComputerName $computerName `
+        -ComputerName $ENV:COMPUTERNAME `
         -ErrorAction Stop
 
     # Check each parameter
