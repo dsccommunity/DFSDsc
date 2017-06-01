@@ -1,9 +1,9 @@
-$script:DSCModuleName      = 'xStorage'
+$script:DSCModuleName      = 'xDFS'
 <#
     These integration tests ensure that exported cmdlets names do not conflict
     with any other names that are exposed by other common resource kit modules.
 #>
-$script:ModulesToTest = @( 'xNetworking','xComputerManagement','xDFS' )
+$script:ModulesToTest = @( 'xNetworking','xComputerManagement' )
 
 #region HEADER
 # Integration Test Template Version: 1.1.0
