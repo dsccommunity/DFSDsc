@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added the VS Code PowerShell extension formatting settings that cause PowerShell
+  files to be formatted as per the DSC Resource kit style guidelines.
+
 ## 3.2.0.0
 
 - Converted AppVeyor.yml to pull Pester from PSGallery instead of Chocolatey.
