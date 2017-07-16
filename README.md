@@ -1,7 +1,9 @@
 # xDFS
 
-[![Build status](https://ci.appveyor.com/api/projects/status/5hkcpe757hhe4583?svg=true)](https://ci.appveyor.com/project/PowerShell/xdfs)
-[![codecov](https://codecov.io/gh/PowerShell/xDFS/branch/master/graph/badge.svg)](https://codecov.io/gh/PowerShell/xDFS)
+| Branch | Build Status | Code Coverage |
+| --- | --- | --- |
+| master | [![Build status](https://ci.appveyor.com/api/projects/status/5hkcpe757hhe4583/branch/master?svg=true)](https://ci.appveyor.com/project/PowerShell/xDFS/branch/master) | [![codecov](https://codecov.io/gh/PowerShell/xDFS/branch/master/graph/badge.svg)](https://codecov.io/gh/PowerShell/xDFS/branch/master) |
+| dev | [![Build status](https://ci.appveyor.com/api/projects/status/5hkcpe757hhe4583/branch/dev?svg=true)](https://ci.appveyor.com/project/PowerShell/xDFS/branch/dev) | [![codecov](https://codecov.io/gh/PowerShell/xDFS/branch/dev/graph/badge.svg)](https://codecov.io/gh/PowerShell/xDFS/branch/dev) |
 
 The **xDFS** module contains DSC resources for configuring Distributed File
 System Replication and Namespaces. Currently in this version only Replication
