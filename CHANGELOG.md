@@ -4,6 +4,7 @@
 
 - Added the VS Code PowerShell extension formatting settings that cause PowerShell
   files to be formatted as per the DSC Resource kit style guidelines.
+- Improve layout of badge area in README.MD.
 
 ## 3.2.0.0
 
