@@ -1,8 +1,5 @@
 # xDFS
 
-[![Build status](https://ci.appveyor.com/api/projects/status/5hkcpe757hhe4583?svg=true)](https://ci.appveyor.com/project/PowerShell/xdfs)
-[![codecov](https://codecov.io/gh/PowerShell/xDFS/branch/master/graph/badge.svg)](https://codecov.io/gh/PowerShell/xDFS)
-
 The **xDFS** module contains DSC resources for configuring Distributed File
 System Replication and Namespaces. Currently in this version only Replication
 folders are supported. Namespaces will be supported in a future release.
@@ -28,6 +25,25 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/)
 or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
+
+## Branches
+
+### master
+
+[![Build status](https://ci.appveyor.com/api/projects/status/5hkcpe757hhe4583/branch/master?svg=true)](https://ci.appveyor.com/project/PowerShell/xDFS/branch/master)
+[![codecov](https://codecov.io/gh/PowerShell/xDFS/branch/master/graph/badge.svg)](https://codecov.io/gh/PowerShell/xDFS/branch/master)
+
+This is the branch containing the latest release - no contributions should be made
+directly to this branch.
+
+### dev
+
+[![Build status](https://ci.appveyor.com/api/projects/status/5hkcpe757hhe4583/branch/dev?svg=true)](https://ci.appveyor.com/project/PowerShell/xDFS/branch/dev)
+[![codecov](https://codecov.io/gh/PowerShell/xDFS/branch/dev/graph/badge.svg)](https://codecov.io/gh/PowerShell/xDFS/branch/dev)
+
+This is the development branch to which contributions should be proposed by contributors
+as pull requests. This development branch will periodically be merged to the master
+branch, and be released to [PowerShell Gallery](https://www.powershellgallery.com/).
 
 ## Requirements
 
