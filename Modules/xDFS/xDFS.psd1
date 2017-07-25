@@ -12,7 +12,7 @@
     CompanyName = 'Microsoft Corporation'
 
     # Copyright statement for this module
-    Copyright = '(c) 2015 Microsoft Corporation. All rights reserved.'
+    Copyright = '(c) 2017 Microsoft Corporation. All rights reserved.'
 
     # Description of the functionality provided by this module
     Description = 'DSC resources for configuring Distributed File System Replication and Namespaces.'
