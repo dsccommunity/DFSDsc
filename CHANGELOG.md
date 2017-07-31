@@ -7,6 +7,10 @@
 - Improve layout of badge area in README.MD.
 - Disabled MD013 rule checking to enable badge table.
 - Updated Year to 2017 in License and Manifest.
+- Added .github support files:
+  - CONTRIBUTING.md
+  - ISSUE_TEMPLATE.md
+  - PULL_REQUEST_TEMPLATE.md
 
 ## 3.2.0.0
 
