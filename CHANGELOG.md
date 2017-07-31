@@ -6,6 +6,7 @@
   files to be formatted as per the DSC Resource kit style guidelines.
 - Improve layout of badge area in README.MD.
 - Disabled MD013 rule checking to enable badge table.
+- Updated Year to 2017 in License and Manifest.
 
 ## 3.2.0.0
 
