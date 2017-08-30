@@ -31,11 +31,6 @@ additional questions or comments.
 For a full list of resources in xDFS and examples on their use, check out
 the [xDFS wiki](https://github.com/PowerShell/xDFS/wiki).
 
-You can also review the `examples` directory in the xDFS module for some
-general use scenarios for all of the resources that are in the module. If
-you have installed this module from the PowerShell Gallery, the `en-US`
-directory in the contains locally available copies of the resource documentation.
-
 ## Branches
 
 ### master
