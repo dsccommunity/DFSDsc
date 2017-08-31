@@ -26,6 +26,11 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
+## Documentation and Examples
+
+For a full list of resources in xDFS and examples on their use, check out
+the [xDFS wiki](https://github.com/PowerShell/xDFS/wiki).
+
 ## Branches
 
 ### master
