@@ -12,9 +12,11 @@
   - ISSUE_TEMPLATE.md
   - PULL_REQUEST_TEMPLATE.md
 - Opted into Common Tests 'Validate Module Files' and 'Validate Script Files'.
-- Converted files with UTF8 with BOM over to UTF8 - fixes [Issue 250](https://github.com/PowerShell/xNetworking/issues/250).
+- Converted files with UTF8 with BOM over to UTF8 - fixes [Issue #47](https://github.com/PowerShell/xDFS/issues/47).
 - Added `Documentation and Examples` section to Readme.md file - see
   [issue #49](https://github.com/PowerShell/xDFS/issues/49).
+- Prevent unit tests from DSCResource.Tests from running during test
+  execution - fixes [Issue #51](https://github.com/PowerShell/xDFS/issues/51).
 
 ## 3.2.0.0
 
