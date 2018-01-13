@@ -66,7 +66,7 @@ try
 
     Describe "$($script:DSCResourceName)_Integration" {
         #region DEFAULT TESTS
-        It 'should compile and apply the MOF without throwing' {
+        It 'Should compile and apply the MOF without throwing' {
             {
                 $ConfigData = @{
                     AllNodes = @(
@@ -82,12 +82,12 @@ try
             } | Should -Not -Throw
         }
 
-        It 'should be able to call Get-DscConfiguration without throwing' {
+        It 'Should be able to call Get-DscConfiguration without throwing' {
             { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should -Not -Throw
         }
         #endregion
 
-        It 'should have set the resource and all the parameters should match' {
+        It 'Should have set the resource and all the parameters should match' {
             $ReplicationGroupNew = Get-DfsReplicationGroup `
                 -GroupName $ReplicationGroup.GroupName `
                 -ErrorAction Stop

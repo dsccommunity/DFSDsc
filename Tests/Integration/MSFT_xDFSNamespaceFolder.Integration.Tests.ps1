@@ -26,7 +26,7 @@ try
     $productType = (Get-CimInstance Win32_OperatingSystem).ProductType
     Describe 'Environment' {
         Context 'Operating System' {
-            It 'should be a Server OS' {
+            It 'Should be a Server OS' {
                 $productType | Should -Be 3
             }
         }
@@ -40,7 +40,7 @@ try
     $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'should have the DFS Namespace Feature Installed' {
+            It 'Should have the DFS Namespace Feature Installed' {
                 $featureInstalled | Should -Be $true
             }
         }
@@ -88,19 +88,19 @@ try
             -Type Standalone
 
         #region DEFAULT TESTS
-        It 'should compile and apply the MOF without throwing' {
+        It 'Should compile and apply the MOF without throwing' {
             {
                 & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive
                 Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
             } | Should -Not -Throw
         }
 
-        It 'should be able to call Get-DscConfiguration without throwing' {
+        It 'Should be able to call Get-DscConfiguration without throwing' {
             { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should -Not -Throw
         }
         #endregion
 
-        It 'should have set the resource and all the folder parameters should match' {
+        It 'Should have set the resource and all the folder parameters should match' {
             # Get the Rule details
             $NamespaceFolderNew = Get-DfsnFolder -Path $NamespaceFolder.Path
             $NamespaceFolderNew.Path                          | Should -Be $NamespaceFolder.Path
@@ -111,7 +111,7 @@ try
             $NamespaceFolderNew.Flags                         | Should -Be @('Target Failback','Insite Referrals')
         }
 
-        It 'should have set the resource and all the folder target parameters should match' {
+        It 'Should have set the resource and all the folder target parameters should match' {
             $NamespaceFolderTargetNew = Get-DfsnFolderTarget -Path $NamespaceFolder.Path -TargetPath $NamespaceFolder.TargetPath
             $NamespaceFolderTargetNew.Path                    | Should -Be $NamespaceFolder.Path
             $NamespaceFolderTargetNew.NamespacePath           | Should -Be $NamespaceFolder.Path

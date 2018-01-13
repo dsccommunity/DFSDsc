@@ -24,7 +24,7 @@ try
     $productType = (Get-CimInstance Win32_OperatingSystem).ProductType
     Describe 'Environment' {
         Context 'Operating System' {
-            It 'should be a Server OS' {
+            It 'Should be a Server OS' {
                 $productType | Should -Be 3
             }
         }
@@ -38,7 +38,7 @@ try
     $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Replication).Installed
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'should have the DFS Replication Feature Installed' {
+            It 'Should have the DFS Replication Feature Installed' {
                 $featureInstalled | Should -Be $true
             }
         }
@@ -52,7 +52,7 @@ try
     $featureInstalled = (Get-WindowsFeature -Name RSAT-DFS-Mgmt-Con).Installed
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'should have the DFS Management Tools Feature Installed' {
+            It 'Should have the DFS Management Tools Feature Installed' {
                 $featureInstalled | Should -Be $true
             }
         }
@@ -217,14 +217,14 @@ try
                 Mock Get-DfsrMember
                 Mock Get-DfsReplicatedFolder
 
-                It 'should return absent replication group' {
+                It 'Should return absent replication group' {
                     $result = Get-TargetResource `
                         -GroupName $replicationGroup.GroupName `
                         -Ensure Present
                     $result.Ensure | Should -Be 'Absent'
                 }
 
-                It 'should call the expected mocks' {
+                It 'Should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 0
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 0
@@ -236,7 +236,7 @@ try
                 Mock Get-DfsrMember -MockWith { return $mockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $mockReplicationGroupFolder }
 
-                It 'should return correct replication group' {
+                It 'Should return correct replication group' {
                     $result = Get-TargetResource `
                         -GroupName $replicationGroup.GroupName `
                         -Ensure Present
@@ -254,7 +254,7 @@ try
                     }
                 }
 
-                It 'should call the expected mocks' {
+                It 'Should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 0
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 0
@@ -283,14 +283,14 @@ try
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $replicationGroup.Clone()
                         Set-TargetResource @splat
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
@@ -316,7 +316,7 @@ try
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $replicationGroup.Clone()
                         $splat.Description = 'Changed'
@@ -324,7 +324,7 @@ try
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
                     Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 1
@@ -350,14 +350,14 @@ try
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $replicationGroupAllFQDN.Clone()
                         Set-TargetResource @splat
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
                     Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
@@ -383,14 +383,14 @@ try
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $replicationGroupSomeDns.Clone()
                         Set-TargetResource @splat
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
                     Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
@@ -416,7 +416,7 @@ try
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $replicationGroup.Clone()
                         $splat.Members = @('FileServer2','FileServer1','FileServerNew')
@@ -424,7 +424,7 @@ try
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
                     Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
@@ -450,7 +450,7 @@ try
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $replicationGroup.Clone()
                         $splat.Members = @('FileServer2')
@@ -458,7 +458,7 @@ try
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
                     Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
@@ -484,7 +484,7 @@ try
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $replicationGroup.Clone()
                         $splat.Folders = @('Folder2','Folder1','FolderNew')
@@ -492,7 +492,7 @@ try
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
                     Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
@@ -518,7 +518,7 @@ try
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $replicationGroup.Clone()
                         $splat.Folders = @('Folder2')
@@ -526,7 +526,7 @@ try
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
                     Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
@@ -552,7 +552,7 @@ try
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $replicationGroup.Clone()
                         $splat.Ensure = 'Absent'
@@ -560,7 +560,7 @@ try
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
                     Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
@@ -586,14 +586,14 @@ try
                 Mock New-DfsReplicatedFolder
                 Mock Remove-DfsReplicatedFolder
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $replicationGroup.Clone()
                         Set-TargetResource @splat
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
                     Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
@@ -633,7 +633,7 @@ try
                         $SourceComputerName -eq "$($replicationGroupConnections[1].SourceComputerName).$($replicationGroupConnections[1].DomainName)"
                     }
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $replicationGroup.Clone()
                         $splat.Topology = 'Fullmesh'
@@ -641,7 +641,7 @@ try
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
                     Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
@@ -684,7 +684,7 @@ try
                         $SourceComputerName -eq "$($replicationGroupConnections[1].SourceComputerName).$($replicationGroupConnections[1].DomainName)"
                     }
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $replicationGroup.Clone()
                         $splat.Topology = 'Fullmesh'
@@ -692,7 +692,7 @@ try
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
                     Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
@@ -735,7 +735,7 @@ try
                         $SourceComputerName -eq "$($replicationGroupConnections[1].SourceComputerName).$($replicationGroupConnections[1].DomainName)"
                     }
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $replicationGroup.Clone()
                         $splat.Topology = 'Fullmesh'
@@ -743,7 +743,7 @@ try
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
                     Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
@@ -786,7 +786,7 @@ try
                         $SourceComputerName -eq "$($replicationGroupConnections[1].SourceComputerName).$($replicationGroupConnections[1].DomainName)"
                     }
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $replicationGroup.Clone()
                         $splat.Topology = 'Fullmesh'
@@ -794,7 +794,7 @@ try
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
                     Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
@@ -825,7 +825,7 @@ try
                 Mock Get-DfsrMembership -MockWith { @($mockReplicationGroupMembership) }
                 Mock Set-DfsrMembership
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $replicationGroupContentPath.Clone()
                         $splat.ContentPaths = @('Different')
@@ -833,7 +833,7 @@ try
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
                     Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
@@ -863,14 +863,14 @@ try
                 Mock Get-DfsrMembership -MockWith { @($mockReplicationGroupMembership) }
                 Mock Set-DfsrMembership
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $replicationGroupContentPath.Clone()
                         Set-TargetResource @splat
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
                     Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
@@ -900,14 +900,14 @@ try
                 Mock Get-DfsrMembership -MockWith { @($mockReplicationGroupMembershipNotPrimary) }
                 Mock Set-DfsrMembership
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $replicationGroupContentPath.Clone()
                         Set-TargetResource @splat
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
                     Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
@@ -930,12 +930,12 @@ try
                 Mock Get-DfsrMember
                 Mock Get-DfsReplicatedFolder
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $replicationGroup.Clone()
                     Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 0
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 0
@@ -947,13 +947,13 @@ try
                 Mock Get-DfsrMember -MockWith { return $mockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $mockReplicationGroupFolder }
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Description = 'Changed'
                     Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
@@ -965,12 +965,12 @@ try
                 Mock Get-DfsrMember -MockWith { return $mockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $mockReplicationGroupFolder }
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $replicationGroupAllFQDN.Clone()
                     Test-TargetResource @splat | Should -Be $True
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
@@ -982,12 +982,12 @@ try
                 Mock Get-DfsrMember -MockWith { return $mockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $mockReplicationGroupFolder }
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $replicationGroupSomeDns.Clone()
                     Test-TargetResource @splat | Should -Be $True
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
@@ -999,13 +999,13 @@ try
                 Mock Get-DfsrMember -MockWith { return $mockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $mockReplicationGroupFolder }
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Members = @('FileServer2','FileServer1','FileServerNew')
                     Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
@@ -1017,13 +1017,13 @@ try
                 Mock Get-DfsrMember -MockWith { return $mockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $mockReplicationGroupFolder }
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Members = @('FileServer2')
                     Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
@@ -1035,13 +1035,13 @@ try
                 Mock Get-DfsrMember -MockWith { return $mockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $mockReplicationGroupFolder }
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Folders = @('Folder2','Folder1','FolderNew')
                     Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
@@ -1053,13 +1053,13 @@ try
                 Mock Get-DfsrMember -MockWith { return $mockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $mockReplicationGroupFolder }
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Folders = @('Folder2')
                     Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
@@ -1071,13 +1071,13 @@ try
                 Mock Get-DfsrMember -MockWith { return $mockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $mockReplicationGroupFolder }
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Ensure = 'Absent'
                     Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 0
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 0
@@ -1089,12 +1089,12 @@ try
                 Mock Get-DfsrMember -MockWith { return $mockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $mockReplicationGroupFolder }
 
-                It 'should return true' {
+                It 'Should return true' {
                     $splat = $replicationGroup.Clone()
                     Test-TargetResource @splat | Should -Be $True
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
@@ -1118,13 +1118,13 @@ try
                         $SourceComputerName -eq "$($replicationGroupConnections[1].SourceComputerName).$($replicationGroupConnections[1].DomainName)"
                     }
 
-                It 'should return true' {
+                It 'Should return true' {
                     $splat = $replicationGroup.Clone()
                     $splat.Topology = 'Fullmesh'
                     Test-TargetResource @splat | Should -Be $True
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
@@ -1149,13 +1149,13 @@ try
                         $SourceComputerName -eq "$($replicationGroupConnections[1].SourceComputerName).$($replicationGroupConnections[1].DomainName)"
                     }
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Topology = 'Fullmesh'
                     Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
@@ -1180,13 +1180,13 @@ try
                         $SourceComputerName -eq "$($replicationGroupConnections[1].SourceComputerName).$($replicationGroupConnections[1].DomainName)"
                     }
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Topology = 'Fullmesh'
                     Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
@@ -1211,13 +1211,13 @@ try
                         $SourceComputerName -eq "$($replicationGroupConnections[1].SourceComputerName).$($replicationGroupConnections[1].DomainName)"
                     }
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Topology = 'Fullmesh'
                     Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
@@ -1231,13 +1231,13 @@ try
                 Mock Get-DfsReplicatedFolder -MockWith { return $mockReplicationGroupFolder }
                 Mock Get-DfsrMembership -MockWith { @($mockReplicationGroupMembership) }
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $replicationGroupContentPath.Clone()
                     $splat.ContentPaths = @('Different')
                     Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
@@ -1251,12 +1251,12 @@ try
                 Mock Get-DfsReplicatedFolder -MockWith { return $mockReplicationGroupFolder }
                 Mock Get-DfsrMembership -MockWith { @($mockReplicationGroupMembership) }
 
-                It 'should return true' {
+                It 'Should return true' {
                     $splat = $replicationGroupContentPath.Clone()
                     Test-TargetResource @splat | Should -Be $True
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
@@ -1270,12 +1270,12 @@ try
                 Mock Get-DfsReplicatedFolder -MockWith { return $mockReplicationGroupFolder }
                 Mock Get-DfsrMembership -MockWith { @($mockReplicationGroupMembershipNotPrimary) }
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $replicationGroupContentPath.Clone()
                     Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
@@ -1286,7 +1286,7 @@ try
 
         Describe "MSFT_xDFSReplicationGroup\Get-FQDNMemberName" {
             Context 'ComputerName passed includes Domain Name that matches DomainName' {
-                It 'should return correct FQDN' {
+                It 'Should return correct FQDN' {
                     $splat = @{
                         GroupName = 'UnitTest'
                         ComputerName = 'test.contoso.com'
@@ -1298,7 +1298,7 @@ try
             }
 
             Context 'ComputerName passed includes Domain Name that does not match DomainName' {
-                It 'should throw ReplicationGroupDomainMismatchError exception' {
+                It 'Should throw ReplicationGroupDomainMismatchError exception' {
                     $splat = @{
                         GroupName = 'UnitTest'
                         ComputerName = 'test.contoso.com'
@@ -1314,7 +1314,7 @@ try
             }
 
             Context 'ComputerName passed does not include Domain Name and DomainName was passed' {
-                It 'should return correct FQDN' {
+                It 'Should return correct FQDN' {
                     $splat = @{
                         GroupName = 'UnitTest'
                         ComputerName = 'test'
@@ -1326,7 +1326,7 @@ try
             }
 
             Context 'ComputerName passed does not include Domain Name and DomainName was not passed' {
-                It 'should return correct FQDN' {
+                It 'Should return correct FQDN' {
                     $splat = @{
                         GroupName = 'UnitTest'
                         ComputerName = 'test'

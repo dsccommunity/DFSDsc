@@ -24,7 +24,7 @@ try
     $productType = (Get-CimInstance Win32_OperatingSystem).ProductType
     Describe 'Environment' {
         Context 'Operating System' {
-            It 'should be a Server OS' {
+            It 'Should be a Server OS' {
                 $productType | Should -Be 3
             }
         }
@@ -38,7 +38,7 @@ try
     $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'should have the DFS Namespace Feature Installed' {
+            It 'Should have the DFS Namespace Feature Installed' {
                 $featureInstalled | Should -Be $true
             }
         }
@@ -69,14 +69,14 @@ try
             Context 'Namespace Server Configuration Exists' {
                 Mock Get-DFSNServerConfiguration -MockWith { $namespaceServerConfiguration }
 
-                It 'should return correct namespace server configuration values' {
+                It 'Should return correct namespace server configuration values' {
                     $result = Get-TargetResource -IsSingleInstance 'Yes'
                     $result.LdapTimeoutSec            | Should -Be $namespaceServerConfiguration.LdapTimeoutSec
                     $result.SyncIntervalSec           | Should -Be $namespaceServerConfiguration.SyncIntervalSec
                     $result.UseFQDN                   | Should -Be $namespaceServerConfiguration.UseFQDN
                 }
 
-                It 'should call the expected mocks' {
+                It 'Should call the expected mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
                 }
             }
@@ -87,21 +87,21 @@ try
             Mock Set-DFSNServerConfiguration
 
             Context 'Namespace Server Configuration all parameters are the same' {
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $namespaceServerConfigurationSplat.Clone()
                         Set-TargetResource @splat
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
                     Assert-MockCalled -commandName Set-DFSNServerConfiguration -Exactly 0
                 }
             }
 
             Context 'Namespace Server Configuration LdapTimeoutSec is different' {
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $namespaceServerConfigurationSplat.Clone()
                         $splat.LdapTimeoutSec = $splat.LdapTimeoutSec + 1
@@ -109,14 +109,14 @@ try
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
                     Assert-MockCalled -commandName Set-DFSNServerConfiguration -Exactly 1
                 }
             }
 
             Context 'Namespace Server Configuration SyncIntervalSec is different' {
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $namespaceServerConfigurationSplat.Clone()
                         $splat.SyncIntervalSec = $splat.SyncIntervalSec + 1
@@ -124,14 +124,14 @@ try
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
                     Assert-MockCalled -commandName Set-DFSNServerConfiguration -Exactly 1
                 }
             }
 
             Context 'Namespace Server Configuration UseFQDN is different' {
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $namespaceServerConfigurationSplat.Clone()
                         $splat.UseFQDN = -not $splat.UseFQDN
@@ -139,7 +139,7 @@ try
                     } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
                     Assert-MockCalled -commandName Set-DFSNServerConfiguration -Exactly 1
                 }
@@ -150,48 +150,48 @@ try
             Mock Get-DFSNServerConfiguration -MockWith { $namespaceServerConfiguration }
 
             Context 'Namespace Server Configuration all parameters are the same' {
-                It 'should return true' {
+                It 'Should return true' {
                     $splat = $namespaceServerConfigurationSplat.Clone()
                     Test-TargetResource @splat | Should -Be $True
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
                 }
             }
 
             Context 'Namespace Server Configuration LdapTimeoutSec is different' {
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $namespaceServerConfigurationSplat.Clone()
                     $splat.LdapTimeoutSec = $splat.LdapTimeoutSec + 1
                     Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
                 }
             }
 
             Context 'Namespace Server Configuration SyncIntervalSec is different' {
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $namespaceServerConfigurationSplat.Clone()
                     $splat.SyncIntervalSec = $splat.SyncIntervalSec + 1
                     Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
                 }
             }
 
             Context 'Namespace Server Configuration UseFQDN is different' {
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $namespaceServerConfigurationSplat.Clone()
                     $splat.UseFQDN = -not $splat.UseFQDN
                     Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
+                It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly 1
                 }
             }
