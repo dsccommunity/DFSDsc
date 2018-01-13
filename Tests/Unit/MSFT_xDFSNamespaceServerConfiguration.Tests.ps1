@@ -25,7 +25,7 @@ try
     Describe 'Environment' {
         Context 'Operating System' {
             It 'should be a Server OS' {
-                $productType | Should Be 3
+                $productType | Should -Be 3
             }
         }
     }
@@ -39,7 +39,7 @@ try
     Describe 'Environment' {
         Context 'Windows Features' {
             It 'should have the DFS Namespace Feature Installed' {
-                $featureInstalled | Should Be $true
+                $featureInstalled | Should -Be $true
             }
         }
     }
@@ -71,9 +71,9 @@ try
 
                 It 'should return correct namespace server configuration values' {
                     $result = Get-TargetResource -IsSingleInstance 'Yes'
-                    $result.LdapTimeoutSec            | Should Be $namespaceServerConfiguration.LdapTimeoutSec
-                    $result.SyncIntervalSec           | Should Be $namespaceServerConfiguration.SyncIntervalSec
-                    $result.UseFQDN                   | Should Be $namespaceServerConfiguration.UseFQDN
+                    $result.LdapTimeoutSec            | Should -Be $namespaceServerConfiguration.LdapTimeoutSec
+                    $result.SyncIntervalSec           | Should -Be $namespaceServerConfiguration.SyncIntervalSec
+                    $result.UseFQDN                   | Should -Be $namespaceServerConfiguration.UseFQDN
                 }
 
                 It 'should call the expected mocks' {
@@ -91,7 +91,7 @@ try
                     {
                         $splat = $namespaceServerConfigurationSplat.Clone()
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -106,7 +106,7 @@ try
                         $splat = $namespaceServerConfigurationSplat.Clone()
                         $splat.LdapTimeoutSec = $splat.LdapTimeoutSec + 1
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -121,7 +121,7 @@ try
                         $splat = $namespaceServerConfigurationSplat.Clone()
                         $splat.SyncIntervalSec = $splat.SyncIntervalSec + 1
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -136,7 +136,7 @@ try
                         $splat = $namespaceServerConfigurationSplat.Clone()
                         $splat.UseFQDN = -not $splat.UseFQDN
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -152,7 +152,7 @@ try
             Context 'Namespace Server Configuration all parameters are the same' {
                 It 'should return true' {
                     $splat = $namespaceServerConfigurationSplat.Clone()
-                    Test-TargetResource @splat | Should Be $True
+                    Test-TargetResource @splat | Should -Be $True
                 }
 
                 It 'should call expected Mocks' {
@@ -164,7 +164,7 @@ try
                 It 'should return false' {
                     $splat = $namespaceServerConfigurationSplat.Clone()
                     $splat.LdapTimeoutSec = $splat.LdapTimeoutSec + 1
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -176,7 +176,7 @@ try
                 It 'should return false' {
                     $splat = $namespaceServerConfigurationSplat.Clone()
                     $splat.SyncIntervalSec = $splat.SyncIntervalSec + 1
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -188,7 +188,7 @@ try
                 It 'should return false' {
                     $splat = $namespaceServerConfigurationSplat.Clone()
                     $splat.UseFQDN = -not $splat.UseFQDN
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {

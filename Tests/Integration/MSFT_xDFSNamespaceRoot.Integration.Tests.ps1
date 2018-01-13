@@ -27,7 +27,7 @@ try
     Describe 'Environment' {
         Context 'Operating System' {
             It 'should be a Server OS' {
-                $productType | Should Be 3
+                $productType | Should -Be 3
             }
         }
     }
@@ -41,7 +41,7 @@ try
     Describe 'Environment' {
         Context 'Windows Features' {
             It 'should have the DFS Namespace Feature Installed' {
-                $featureInstalled | Should Be $true
+                $featureInstalled | Should -Be $true
             }
         }
     }
@@ -75,33 +75,33 @@ try
             {
                 & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive
                 Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
-            } | Should not throw
+            } | Should -not -throw
         }
 
         It 'should be able to call Get-DscConfiguration without throwing' {
-            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should Not throw
+            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should -Not -throw
         }
         #endregion
 
         It 'should have set the resource and all the folder parameters should match' {
             # Get the Rule details
             $NamespaceRootNew = Get-DfsnRoot -Path $NamespaceRoot.Path
-            $NamespaceRootNew.Path                          | Should Be $NamespaceRoot.Path
-            $NamespaceRootNew.Type                          | Should Be $NamespaceRoot.Type
-            $NamespaceRootNew.TimeToLiveSec                 | Should Be $NamespaceRoot.TimeToLiveSec
-            $NamespaceRootNew.State                         | Should Be 'Online'
-            $NamespaceRootNew.Description                   | Should Be $NamespaceRoot.Description
-            $NamespaceRootNew.NamespacePath                 | Should Be $NamespaceRoot.Path
-            $NamespaceRootNew.Flags                         | Should Be @('Target Failback','Site Costing','Insite Referrals','AccessBased Enumeration')
+            $NamespaceRootNew.Path                          | Should -Be $NamespaceRoot.Path
+            $NamespaceRootNew.Type                          | Should -Be $NamespaceRoot.Type
+            $NamespaceRootNew.TimeToLiveSec                 | Should -Be $NamespaceRoot.TimeToLiveSec
+            $NamespaceRootNew.State                         | Should -Be 'Online'
+            $NamespaceRootNew.Description                   | Should -Be $NamespaceRoot.Description
+            $NamespaceRootNew.NamespacePath                 | Should -Be $NamespaceRoot.Path
+            $NamespaceRootNew.Flags                         | Should -Be @('Target Failback','Site Costing','Insite Referrals','AccessBased Enumeration')
         }
 
         It 'should have set the resource and all the folder target parameters should match' {
             $NamespaceRootTargetNew = Get-DfsnRootTarget -Path $NamespaceRoot.Path -TargetPath $NamespaceRoot.TargetPath
-            $NamespaceRootTargetNew.Path                    | Should Be $NamespaceRoot.Path
-            $NamespaceRootTargetNew.NamespacePath           | Should Be $NamespaceRoot.Path
-            $NamespaceRootTargetNew.TargetPath              | Should Be $NamespaceRoot.TargetPath
-            $NamespaceRootTargetNew.ReferralPriorityClass   | Should Be $NamespaceRoot.ReferralPriorityClass
-            $NamespaceRootTargetNew.ReferralPriorityRank    | Should Be $NamespaceRoot.ReferralPriorityRank
+            $NamespaceRootTargetNew.Path                    | Should -Be $NamespaceRoot.Path
+            $NamespaceRootTargetNew.NamespacePath           | Should -Be $NamespaceRoot.Path
+            $NamespaceRootTargetNew.TargetPath              | Should -Be $NamespaceRoot.TargetPath
+            $NamespaceRootTargetNew.ReferralPriorityClass   | Should -Be $NamespaceRoot.ReferralPriorityClass
+            $NamespaceRootTargetNew.ReferralPriorityRank    | Should -Be $NamespaceRoot.ReferralPriorityRank
         }
 
         # Clean up

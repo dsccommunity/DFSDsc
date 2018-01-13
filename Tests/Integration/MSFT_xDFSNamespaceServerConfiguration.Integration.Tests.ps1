@@ -27,7 +27,7 @@ try
     Describe 'Environment' {
         Context 'Operating System' {
             It 'should be a Server OS' {
-                $productType | Should Be 3
+                $productType | Should -Be 3
             }
         }
     }
@@ -41,7 +41,7 @@ try
     Describe 'Environment' {
         Context 'Windows Features' {
             It 'should have the DFS Namespace Feature Installed' {
-                $featureInstalled | Should Be $true
+                $featureInstalled | Should -Be $true
             }
         }
     }
@@ -65,11 +65,11 @@ try
             {
                 & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive
                 Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
-            } | Should not throw
+            } | Should -not -throw
         }
 
         It 'should be able to call Get-DscConfiguration without throwing' {
-            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should Not throw
+            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should -Not -throw
         }
         #endregion
 

@@ -97,11 +97,11 @@ try
 
                 & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive -ConfigurationData $ConfigData
                 Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
-            } | Should not throw
+            } | Should -not -throw
         }
 
         It 'should be able to call Get-DscConfiguration without throwing' {
-            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should Not throw
+            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should -Not -throw
         }
         #endregion
 
@@ -110,11 +110,11 @@ try
                 -GroupName $ReplicationGroupFolder.GroupName `
                 -FolderName $ReplicationGroupFolder.FolderName `
                 -ErrorAction Stop
-            $ReplicationGroupFolderNew.GroupName              | Should Be $ReplicationGroupFolder.GroupName
-            $ReplicationGroupFolderNew.FolderName             | Should Be $ReplicationGroupFolder.FolderName
-            $ReplicationGroupFolderNew.Description            | Should Be $ReplicationGroupFolder.Description
-            $ReplicationGroupFolderNew.DirectoryNameToExclude | Should Be $ReplicationGroupFolder.DirectoryNameToExclude
-            $ReplicationGroupFolderNew.FilenameToExclude      | Should Be $ReplicationGroupFolder.FilenameToExclude
+            $ReplicationGroupFolderNew.GroupName              | Should -Be $ReplicationGroupFolder.GroupName
+            $ReplicationGroupFolderNew.FolderName             | Should -Be $ReplicationGroupFolder.FolderName
+            $ReplicationGroupFolderNew.Description            | Should -Be $ReplicationGroupFolder.Description
+            $ReplicationGroupFolderNew.DirectoryNameToExclude | Should -Be $ReplicationGroupFolder.DirectoryNameToExclude
+            $ReplicationGroupFolderNew.FilenameToExclude      | Should -Be $ReplicationGroupFolder.FilenameToExclude
         }
 
         # Clean up

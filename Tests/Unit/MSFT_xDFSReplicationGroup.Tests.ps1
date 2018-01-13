@@ -25,7 +25,7 @@ try
     Describe 'Environment' {
         Context 'Operating System' {
             It 'should be a Server OS' {
-                $productType | Should Be 3
+                $productType | Should -Be 3
             }
         }
     }
@@ -39,7 +39,7 @@ try
     Describe 'Environment' {
         Context 'Windows Features' {
             It 'should have the DFS Replication Feature Installed' {
-                $featureInstalled | Should Be $true
+                $featureInstalled | Should -Be $true
             }
         }
     }
@@ -53,7 +53,7 @@ try
     Describe 'Environment' {
         Context 'Windows Features' {
             It 'should have the DFS Management Tools Feature Installed' {
-                $featureInstalled | Should Be $true
+                $featureInstalled | Should -Be $true
             }
         }
     }
@@ -221,7 +221,7 @@ try
                     $result = Get-TargetResource `
                         -GroupName $replicationGroup.GroupName `
                         -Ensure Present
-                    $result.Ensure | Should Be 'Absent'
+                    $result.Ensure | Should -Be 'Absent'
                 }
 
                 It 'should call the expected mocks' {
@@ -240,17 +240,17 @@ try
                     $result = Get-TargetResource `
                         -GroupName $replicationGroup.GroupName `
                         -Ensure Present
-                    $result.Ensure | Should Be 'Present'
-                    $result.GroupName | Should Be $replicationGroup.GroupName
-                    $result.Description | Should Be $replicationGroup.Description
-                    $result.DomainName | Should Be $replicationGroup.DomainName
+                    $result.Ensure | Should -Be 'Present'
+                    $result.GroupName | Should -Be $replicationGroup.GroupName
+                    $result.Description | Should -Be $replicationGroup.Description
+                    $result.DomainName | Should -Be $replicationGroup.DomainName
                     <#
                         Tests disabled until this issue is resolved:
                         https://windowsserver.uservoice.com/forums/301869-powershell/suggestions/11088807-get-dscconfiguration-fails-with-embedded-cim-type
                     #>
                     if ($false) {
-                        $result.Members | Should Be $replicationGroup.Members
-                        $result.Folders | Should Be $replicationGroup.Folders
+                        $result.Members | Should -Be $replicationGroup.Members
+                        $result.Folders | Should -Be $replicationGroup.Folders
                     }
                 }
 
@@ -287,7 +287,7 @@ try
                     {
                         $splat = $replicationGroup.Clone()
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -321,7 +321,7 @@ try
                         $splat = $replicationGroup.Clone()
                         $splat.Description = 'Changed'
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -354,7 +354,7 @@ try
                     {
                         $splat = $replicationGroupAllFQDN.Clone()
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -387,7 +387,7 @@ try
                     {
                         $splat = $replicationGroupSomeDns.Clone()
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -421,7 +421,7 @@ try
                         $splat = $replicationGroup.Clone()
                         $splat.Members = @('FileServer2','FileServer1','FileServerNew')
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -455,7 +455,7 @@ try
                         $splat = $replicationGroup.Clone()
                         $splat.Members = @('FileServer2')
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -489,7 +489,7 @@ try
                         $splat = $replicationGroup.Clone()
                         $splat.Folders = @('Folder2','Folder1','FolderNew')
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -523,7 +523,7 @@ try
                         $splat = $replicationGroup.Clone()
                         $splat.Folders = @('Folder2')
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -557,7 +557,7 @@ try
                         $splat = $replicationGroup.Clone()
                         $splat.Ensure = 'Absent'
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -590,7 +590,7 @@ try
                     {
                         $splat = $replicationGroup.Clone()
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -638,7 +638,7 @@ try
                         $splat = $replicationGroup.Clone()
                         $splat.Topology = 'Fullmesh'
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -689,7 +689,7 @@ try
                         $splat = $replicationGroup.Clone()
                         $splat.Topology = 'Fullmesh'
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -740,7 +740,7 @@ try
                         $splat = $replicationGroup.Clone()
                         $splat.Topology = 'Fullmesh'
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -791,7 +791,7 @@ try
                         $splat = $replicationGroup.Clone()
                         $splat.Topology = 'Fullmesh'
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -830,7 +830,7 @@ try
                         $splat = $replicationGroupContentPath.Clone()
                         $splat.ContentPaths = @('Different')
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -867,7 +867,7 @@ try
                     {
                         $splat = $replicationGroupContentPath.Clone()
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -904,7 +904,7 @@ try
                     {
                         $splat = $replicationGroupContentPath.Clone()
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -932,7 +932,7 @@ try
 
                 It 'should return false' {
                     $splat = $replicationGroup.Clone()
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -950,7 +950,7 @@ try
                 It 'should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Description = 'Changed'
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -967,7 +967,7 @@ try
 
                 It 'should return false' {
                     $splat = $replicationGroupAllFQDN.Clone()
-                    Test-TargetResource @splat | Should Be $True
+                    Test-TargetResource @splat | Should -Be $True
                 }
 
                 It 'should call expected Mocks' {
@@ -984,7 +984,7 @@ try
 
                 It 'should return false' {
                     $splat = $replicationGroupSomeDns.Clone()
-                    Test-TargetResource @splat | Should Be $True
+                    Test-TargetResource @splat | Should -Be $True
                 }
 
                 It 'should call expected Mocks' {
@@ -1002,7 +1002,7 @@ try
                 It 'should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Members = @('FileServer2','FileServer1','FileServerNew')
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -1020,7 +1020,7 @@ try
                 It 'should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Members = @('FileServer2')
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -1038,7 +1038,7 @@ try
                 It 'should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Folders = @('Folder2','Folder1','FolderNew')
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -1056,7 +1056,7 @@ try
                 It 'should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Folders = @('Folder2')
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -1074,7 +1074,7 @@ try
                 It 'should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Ensure = 'Absent'
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -1091,7 +1091,7 @@ try
 
                 It 'should return true' {
                     $splat = $replicationGroup.Clone()
-                    Test-TargetResource @splat | Should Be $True
+                    Test-TargetResource @splat | Should -Be $True
                 }
 
                 It 'should call expected Mocks' {
@@ -1121,7 +1121,7 @@ try
                 It 'should return true' {
                     $splat = $replicationGroup.Clone()
                     $splat.Topology = 'Fullmesh'
-                    Test-TargetResource @splat | Should Be $True
+                    Test-TargetResource @splat | Should -Be $True
                 }
 
                 It 'should call expected Mocks' {
@@ -1152,7 +1152,7 @@ try
                 It 'should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Topology = 'Fullmesh'
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -1183,7 +1183,7 @@ try
                 It 'should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Topology = 'Fullmesh'
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -1214,7 +1214,7 @@ try
                 It 'should return false' {
                     $splat = $replicationGroup.Clone()
                     $splat.Topology = 'Fullmesh'
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -1234,7 +1234,7 @@ try
                 It 'should return false' {
                     $splat = $replicationGroupContentPath.Clone()
                     $splat.ContentPaths = @('Different')
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -1253,7 +1253,7 @@ try
 
                 It 'should return true' {
                     $splat = $replicationGroupContentPath.Clone()
-                    Test-TargetResource @splat | Should Be $True
+                    Test-TargetResource @splat | Should -Be $True
                 }
 
                 It 'should call expected Mocks' {
@@ -1272,7 +1272,7 @@ try
 
                 It 'should return false' {
                     $splat = $replicationGroupContentPath.Clone()
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -1293,7 +1293,7 @@ try
                         DomainName = 'contoso.com'
                     }
 
-                    Get-FQDNMemberName @splat | Should Be 'test.contoso.com'
+                    Get-FQDNMemberName @splat | Should -Be 'test.contoso.com'
                 }
             }
 
@@ -1309,7 +1309,7 @@ try
                         -Message ($($LocalizedData.ReplicationGroupDomainMismatchError `
                         -f $splat.GroupName,$splat.ComputerName,$splat.DomainName))
 
-                    { Get-FQDNMemberName @splat } | Should Throw $errorRecord
+                    { Get-FQDNMemberName @splat } | Should -Throw $errorRecord
                 }
             }
 
@@ -1321,7 +1321,7 @@ try
                         DomainName = 'contoso.com'
                     }
 
-                    Get-FQDNMemberName @splat | Should Be 'test.contoso.com'
+                    Get-FQDNMemberName @splat | Should -Be 'test.contoso.com'
                 }
             }
 
@@ -1332,7 +1332,7 @@ try
                         ComputerName = 'test'
                     }
 
-                    Get-FQDNMemberName @splat | Should Be 'test'
+                    Get-FQDNMemberName @splat | Should -Be 'test'
                 }
             }
         }

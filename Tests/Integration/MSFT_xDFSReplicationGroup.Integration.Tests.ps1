@@ -79,11 +79,11 @@ try
 
                 & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive -ConfigurationData $ConfigData
                 Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
-            } | Should not throw
+            } | Should -not -throw
         }
 
         It 'should be able to call Get-DscConfiguration without throwing' {
-            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should Not throw
+            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should -Not -throw
         }
         #endregion
 
@@ -91,8 +91,8 @@ try
             $ReplicationGroupNew = Get-DfsReplicationGroup `
                 -GroupName $ReplicationGroup.GroupName `
                 -ErrorAction Stop
-            $ReplicationGroupNew.GroupName                 | Should Be $ReplicationGroup.GroupName
-            $ReplicationGroupNew.Description               | Should Be $ReplicationGroup.Description
+            $ReplicationGroupNew.GroupName                 | Should -Be $ReplicationGroup.GroupName
+            $ReplicationGroupNew.Description               | Should -Be $ReplicationGroup.Description
 
             # Check the members are in the Replication Group
             foreach ($Member in $ReplicationGroup.Members)
@@ -101,16 +101,16 @@ try
                     -GroupName $ReplicationGroup.GroupName `
                     -ComputerName $Member `
                     -ErrorAction Stop
-                $ReplicationGroupMemberNew.GroupName       | Should Be $ReplicationGroup.GroupName
+                $ReplicationGroupMemberNew.GroupName       | Should -Be $ReplicationGroup.GroupName
 
                 # If Member name was an FQDN then match the DNSName property, otherwise the ComputerName property
                 if ($Member.Contains('.'))
                 {
-                    $ReplicationGroupMemberNew.DnsName    | Should Be $Member
+                    $ReplicationGroupMemberNew.DnsName    | Should -Be $Member
                 }
                 else
                 {
-                    $ReplicationGroupMemberNew.ComputerName    | Should Be $Member
+                    $ReplicationGroupMemberNew.ComputerName    | Should -Be $Member
                 }
             }
 
@@ -121,8 +121,8 @@ try
                     -GroupName $ReplicationGroup.GroupName `
                     -FolderName $Folder `
                     -ErrorAction Stop
-                $ReplicationGroupFolderNew.GroupName       | Should Be $ReplicationGroup.GroupName
-                $ReplicationGroupFolderNew.FolderName      | Should Be $Folder
+                $ReplicationGroupFolderNew.GroupName       | Should -Be $ReplicationGroup.GroupName
+                $ReplicationGroupFolderNew.FolderName      | Should -Be $Folder
             }
         }
 

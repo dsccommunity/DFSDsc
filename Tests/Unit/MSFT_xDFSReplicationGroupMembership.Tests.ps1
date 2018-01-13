@@ -25,7 +25,7 @@ try
     Describe 'Environment' {
         Context 'Operating System' {
             It 'should be a Server OS' {
-                $productType | Should Be 3
+                $productType | Should -Be 3
             }
         }
     }
@@ -39,7 +39,7 @@ try
     Describe 'Environment' {
         Context 'Windows Features' {
             It 'should have the DFS Replication Feature Installed' {
-                $featureInstalled | Should Be $true
+                $featureInstalled | Should -Be $true
             }
         }
     }
@@ -53,7 +53,7 @@ try
     Describe 'Environment' {
         Context 'Windows Features' {
             It 'should have the DFS Management Tools Feature Installed' {
-                $featureInstalled | Should Be $true
+                $featureInstalled | Should -Be $true
             }
         }
     }
@@ -101,7 +101,7 @@ try
                             -GroupName $mockReplicationGroupMembership.GroupName `
                             -FolderName $mockReplicationGroupMembership.FolderName `
                             -ComputerName $mockReplicationGroupMembership.ComputerName
-                    } | Should Throw $errorRecord
+                    } | Should -Throw $errorRecord
                 }
 
                 It 'should call the expected mocks' {
@@ -118,15 +118,15 @@ try
                             -FolderName $mockReplicationGroupMembership.FolderName `
                             -ComputerName $mockReplicationGroupMembership.ComputerName
 
-                    $result.GroupName | Should Be $mockReplicationGroupMembership.GroupName
-                    $result.FolderName | Should Be $mockReplicationGroupMembership.FolderName
-                    $result.ComputerName | Should Be $mockReplicationGroupMembership.ComputerName
-                    $result.ContentPath | Should Be $mockReplicationGroupMembership.ContentPath
-                    $result.StagingPath | Should Be $mockReplicationGroupMembership.StagingPath
-                    $result.ConflictAndDeletedPath | Should Be $mockReplicationGroupMembership.ConflictAndDeletedPath
-                    $result.ReadOnly | Should Be $mockReplicationGroupMembership.ReadOnly
-                    $result.PrimaryMember | Should Be $mockReplicationGroupMembership.PrimaryMember
-                    $result.DomainName | Should Be $mockReplicationGroupMembership.DomainName
+                    $result.GroupName | Should -Be $mockReplicationGroupMembership.GroupName
+                    $result.FolderName | Should -Be $mockReplicationGroupMembership.FolderName
+                    $result.ComputerName | Should -Be $mockReplicationGroupMembership.ComputerName
+                    $result.ContentPath | Should -Be $mockReplicationGroupMembership.ContentPath
+                    $result.StagingPath | Should -Be $mockReplicationGroupMembership.StagingPath
+                    $result.ConflictAndDeletedPath | Should -Be $mockReplicationGroupMembership.ConflictAndDeletedPath
+                    $result.ReadOnly | Should -Be $mockReplicationGroupMembership.ReadOnly
+                    $result.PrimaryMember | Should -Be $mockReplicationGroupMembership.PrimaryMember
+                    $result.DomainName | Should -Be $mockReplicationGroupMembership.DomainName
                 }
 
                 It 'should call the expected mocks' {
@@ -143,15 +143,15 @@ try
                             -FolderName $mockReplicationGroupMembership.FolderName `
                             -ComputerName "$($mockReplicationGroupMembership.ComputerName).$($mockReplicationGroupMembership.DomainName)"
 
-                    $result.GroupName | Should Be $mockReplicationGroupMembership.GroupName
-                    $result.FolderName | Should Be $mockReplicationGroupMembership.FolderName
-                    $result.ComputerName | Should Be $mockReplicationGroupMembership.ComputerName
-                    $result.ContentPath | Should Be $mockReplicationGroupMembership.ContentPath
-                    $result.StagingPath | Should Be $mockReplicationGroupMembership.StagingPath
-                    $result.ConflictAndDeletedPath | Should Be $mockReplicationGroupMembership.ConflictAndDeletedPath
-                    $result.ReadOnly | Should Be $mockReplicationGroupMembership.ReadOnly
-                    $result.PrimaryMember | Should Be $mockReplicationGroupMembership.PrimaryMember
-                    $result.DomainName | Should Be $mockReplicationGroupMembership.DomainName
+                    $result.GroupName | Should -Be $mockReplicationGroupMembership.GroupName
+                    $result.FolderName | Should -Be $mockReplicationGroupMembership.FolderName
+                    $result.ComputerName | Should -Be $mockReplicationGroupMembership.ComputerName
+                    $result.ContentPath | Should -Be $mockReplicationGroupMembership.ContentPath
+                    $result.StagingPath | Should -Be $mockReplicationGroupMembership.StagingPath
+                    $result.ConflictAndDeletedPath | Should -Be $mockReplicationGroupMembership.ConflictAndDeletedPath
+                    $result.ReadOnly | Should -Be $mockReplicationGroupMembership.ReadOnly
+                    $result.PrimaryMember | Should -Be $mockReplicationGroupMembership.PrimaryMember
+                    $result.DomainName | Should -Be $mockReplicationGroupMembership.DomainName
                 }
 
                 It 'should call the expected mocks' {
@@ -167,7 +167,7 @@ try
                 It 'should not throw error' {
                     $splat = $mockReplicationGroupMembership.Clone()
                     $splat.Remove('ConflictAndDeletedPath')
-                    { Set-TargetResource @splat } | Should Not Throw
+                    { Set-TargetResource @splat } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -182,7 +182,7 @@ try
                     $splat = $mockReplicationGroupMembership.Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.ComputerName = "$($splat.ComputerName).$($splat.DomainName)"
-                    { Set-TargetResource @splat } | Should Not Throw
+                    { Set-TargetResource @splat } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -197,7 +197,7 @@ try
                     $splat = $mockReplicationGroupMembership.Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.ContentPath = 'Different'
-                    { Set-TargetResource @splat } | Should Not Throw
+                    { Set-TargetResource @splat } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -212,7 +212,7 @@ try
                     $splat = $mockReplicationGroupMembership.Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.StagingPath = 'Different'
-                    { Set-TargetResource @splat } | Should Not Throw
+                    { Set-TargetResource @splat } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -227,7 +227,7 @@ try
                     $splat = $mockReplicationGroupMembership.Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.ReadOnly = (-not $splat.ReadOnly)
-                    { Set-TargetResource @splat } | Should Not Throw
+                    { Set-TargetResource @splat } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -242,7 +242,7 @@ try
                     $splat = $mockReplicationGroupMembership.Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.PrimaryMember = (-not $splat.PrimaryMember)
-                    { Set-TargetResource @splat } | Should Not Throw
+                    { Set-TargetResource @splat } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -262,7 +262,7 @@ try
 
                     $splat = $mockReplicationGroupMembership.Clone()
                     $splat.Remove('ConflictAndDeletedPath')
-                    { Test-TargetResource @splat } | Should Throw $errorRecord
+                    { Test-TargetResource @splat } | Should -Throw $errorRecord
                 }
 
                 It 'should call expected Mocks' {
@@ -276,7 +276,7 @@ try
                 It 'should return true' {
                     $splat = $mockReplicationGroupMembership.Clone()
                     $splat.Remove('ConflictAndDeletedPath')
-                    Test-TargetResource @splat | Should Be $True
+                    Test-TargetResource @splat | Should -Be $True
                 }
 
                 It 'should call expected Mocks' {
@@ -291,7 +291,7 @@ try
                     $splat = $mockReplicationGroupMembership.Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.ComputerName = "$($splat.ComputerName).$($splat.DomainName)"
-                    Test-TargetResource @splat | Should Be $True
+                    Test-TargetResource @splat | Should -Be $True
                 }
 
                 It 'should call expected Mocks' {
@@ -306,7 +306,7 @@ try
                     $splat = $mockReplicationGroupMembership.Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.ContentPath = 'Different'
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -321,7 +321,7 @@ try
                     $splat = $mockReplicationGroupMembership.Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.StagingPath = 'Different'
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -336,7 +336,7 @@ try
                     $splat = $mockReplicationGroupMembership.Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.ReadOnly = (-not $splat.ReadOnly)
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -351,7 +351,7 @@ try
                     $splat = $mockReplicationGroupMembership.Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.PrimaryMember = (-not $splat.PrimaryMember)
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {

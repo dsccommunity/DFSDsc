@@ -25,7 +25,7 @@ try
     Describe 'Environment' {
         Context 'Operating System' {
             It 'should be a Server OS' {
-                $productType | Should Be 3
+                $productType | Should -Be 3
             }
         }
     }
@@ -39,7 +39,7 @@ try
     Describe 'Environment' {
         Context 'Windows Features' {
             It 'should have the DFS Replication Feature Installed' {
-                $featureInstalled | Should Be $true
+                $featureInstalled | Should -Be $true
             }
         }
     }
@@ -53,7 +53,7 @@ try
     Describe 'Environment' {
         Context 'Windows Features' {
             It 'should have the DFS Management Tools Feature Installed' {
-                $featureInstalled | Should Be $true
+                $featureInstalled | Should -Be $true
             }
         }
     }
@@ -108,7 +108,7 @@ try
                         $result = Get-TargetResource `
                             -GroupName $mockReplicationGroupFolder[0].GroupName `
                             -FolderName $mockReplicationGroupFolder[0].FolderName
-                    } | Should Throw $errorRecord
+                    } | Should -Throw $errorRecord
                 }
 
                 It 'should call the expected mocks' {
@@ -123,17 +123,17 @@ try
                     $result = Get-TargetResource `
                         -GroupName $mockReplicationGroupFolder[0].GroupName `
                         -FolderName $mockReplicationGroupFolder[0].FolderName
-                    $result.GroupName | Should Be $mockReplicationGroupFolder[0].GroupName
-                    $result.FolderName | Should Be $mockReplicationGroupFolder[0].FolderName
-                    $result.Description | Should Be $mockReplicationGroupFolder[0].Description
-                    $result.DomainName | Should Be $mockReplicationGroupFolder[0].DomainName
+                    $result.GroupName | Should -Be $mockReplicationGroupFolder[0].GroupName
+                    $result.FolderName | Should -Be $mockReplicationGroupFolder[0].FolderName
+                    $result.Description | Should -Be $mockReplicationGroupFolder[0].Description
+                    $result.DomainName | Should -Be $mockReplicationGroupFolder[0].DomainName
                     <#
                         Tests disabled until this issue is resolved:
                         https://windowsserver.uservoice.com/forums/301869-powershell/suggestions/11088807-get-dscconfiguration-fails-with-embedded-cim-type
                     #>
                     if ($false) {
-                        $result.FileNameToExclude | Should Be $mockReplicationGroupFolder[0].FileNameToExclude
-                        $result.DirectoryNameToExclude | Should Be $mockReplicationGroupFolder[0].DirectoryNameToExclude
+                        $result.FileNameToExclude | Should -Be $mockReplicationGroupFolder[0].FileNameToExclude
+                        $result.DirectoryNameToExclude | Should -Be $mockReplicationGroupFolder[0].DirectoryNameToExclude
                     }
                 }
 
@@ -150,7 +150,7 @@ try
                 It 'should not throw error' {
                     $splat = $mockReplicationGroupFolder[0].Clone()
                     $splat.Description = 'Different'
-                    { Set-TargetResource @splat } | Should Not Throw
+                    { Set-TargetResource @splat } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -164,7 +164,7 @@ try
                 It 'should not throw error' {
                     $splat = $mockReplicationGroupFolder[0].Clone()
                     $splat.FileNameToExclude = @('*.tmp')
-                    { Set-TargetResource @splat } | Should Not Throw
+                    { Set-TargetResource @splat } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -178,7 +178,7 @@ try
                 It 'should not throw error' {
                     $splat = $mockReplicationGroupFolder[0].Clone()
                     $splat.DirectoryNameToExclude = @('*.tmp')
-                    { Set-TargetResource @splat } | Should Not Throw
+                    { Set-TargetResource @splat } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -192,7 +192,7 @@ try
                 It 'should not throw error' {
                     $splat = $mockReplicationGroupFolder[0].Clone()
                     $splat.DfsnPath = '\\contoso.com\Public\Different'
-                    { Set-TargetResource @splat } | Should Not Throw
+                    { Set-TargetResource @splat } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -210,7 +210,7 @@ try
                         -Message ($($LocalizedData.ReplicationGroupFolderMissingError) -f $mockReplicationGroupFolder[0].GroupName,$mockReplicationGroupFolder[0].FolderName)
 
                     $splat = $mockReplicationGroupFolder[0].Clone()
-                    { Test-TargetResource @splat } | Should Throw $errorRecord
+                    { Test-TargetResource @splat } | Should -Throw $errorRecord
                 }
 
                 It 'should call expected Mocks' {
@@ -223,7 +223,7 @@ try
 
                 It 'should return true' {
                     $splat = $mockReplicationGroupFolder[0].Clone()
-                    Test-TargetResource @splat | Should Be $True
+                    Test-TargetResource @splat | Should -Be $True
                 }
 
                 It 'should call expected Mocks' {
@@ -237,7 +237,7 @@ try
                 It 'should return false' {
                     $splat = $mockReplicationGroupFolder[0].Clone()
                     $splat.Description = 'Different'
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -251,7 +251,7 @@ try
                 It 'should return false' {
                     $splat = $mockReplicationGroupFolder[0].Clone()
                     $splat.FileNameToExclude = @('*.tmp')
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -265,7 +265,7 @@ try
                 It 'should return false' {
                     $splat = $mockReplicationGroupFolder[0].Clone()
                     $splat.DirectoryNameToExclude = @('*.tmp')
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -279,7 +279,7 @@ try
                 It 'should return false' {
                     $splat = $mockReplicationGroupFolder[0].Clone()
                     $splat.DfsnPath = '\\contoso.com\Public\Different'
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {

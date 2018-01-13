@@ -25,7 +25,7 @@ try
     Describe 'Environment' {
         Context 'Operating System' {
             It 'should be a Server OS' {
-                $productType | Should Be 3
+                $productType | Should -Be 3
             }
         }
     }
@@ -39,7 +39,7 @@ try
     Describe 'Environment' {
         Context 'Windows Features' {
             It 'should have the DFS Namespace Feature Installed' {
-                $featureInstalled | Should Be $true
+                $featureInstalled | Should -Be $true
             }
         }
     }
@@ -96,7 +96,7 @@ try
 
                 It 'should return absent namespace' {
                     $result = Get-TargetResource @namespaceSplat
-                    $result.Ensure | Should Be 'Absent'
+                    $result.Ensure | Should -Be 'Absent'
                 }
 
                 It 'should call the expected mocks' {
@@ -111,16 +111,16 @@ try
 
                 It 'should return correct replication group' {
                     $result = Get-TargetResource @namespaceSplat
-                    $result.Path                         | Should Be $namespace.Path
-                    $result.TargetPath                   | Should Be $namespace.TargetPath
-                    $result.Ensure                       | Should Be 'Absent'
-                    $result.TimeToLiveSec                | Should Be $namespaceFolder.TimeToLiveSec
-                    $result.State                        | Should Be $namespaceFolder.State
-                    $result.Description                  | Should Be $namespaceFolder.Description
-                    $result.EnableInsiteReferrals        | Should Be ($namespaceFolder.Flags -contains 'Insite Referrals')
-                    $result.EnableTargetFailback         | Should Be ($namespaceFolder.Flags -contains 'Target Failback')
-                    $result.ReferralPriorityClass        | Should Be $null
-                    $result.ReferralPriorityRank         | Should Be $null
+                    $result.Path                         | Should -Be $namespace.Path
+                    $result.TargetPath                   | Should -Be $namespace.TargetPath
+                    $result.Ensure                       | Should -Be 'Absent'
+                    $result.TimeToLiveSec                | Should -Be $namespaceFolder.TimeToLiveSec
+                    $result.State                        | Should -Be $namespaceFolder.State
+                    $result.Description                  | Should -Be $namespaceFolder.Description
+                    $result.EnableInsiteReferrals        | Should -Be ($namespaceFolder.Flags -contains 'Insite Referrals')
+                    $result.EnableTargetFailback         | Should -Be ($namespaceFolder.Flags -contains 'Target Failback')
+                    $result.ReferralPriorityClass        | Should -Be $null
+                    $result.ReferralPriorityRank         | Should -Be $null
                 }
 
                 It 'should call the expected mocks' {
@@ -135,16 +135,16 @@ try
 
                 It 'should return correct replication group' {
                     $result = Get-TargetResource @namespaceSplat
-                    $result.Path                         | Should Be $namespace.Path
-                    $result.TargetPath                   | Should Be $namespace.TargetPath
-                    $result.Ensure                       | Should Be 'Present'
-                    $result.TimeToLiveSec                | Should Be $namespaceFolder.TimeToLiveSec
-                    $result.State                        | Should Be $namespaceFolder.State
-                    $result.Description                  | Should Be $namespaceFolder.Description
-                    $result.EnableInsiteReferrals        | Should Be ($namespaceFolder.Flags -contains 'Insite Referrals')
-                    $result.EnableTargetFailback         | Should Be ($namespaceFolder.Flags -contains 'Target Failback')
-                    $result.ReferralPriorityClass        | Should Be $namespaceTarget.ReferralPriorityClass
-                    $result.ReferralPriorityRank         | Should Be $namespaceTarget.ReferralPriorityRank
+                    $result.Path                         | Should -Be $namespace.Path
+                    $result.TargetPath                   | Should -Be $namespace.TargetPath
+                    $result.Ensure                       | Should -Be 'Present'
+                    $result.TimeToLiveSec                | Should -Be $namespaceFolder.TimeToLiveSec
+                    $result.State                        | Should -Be $namespaceFolder.State
+                    $result.Description                  | Should -Be $namespaceFolder.Description
+                    $result.EnableInsiteReferrals        | Should -Be ($namespaceFolder.Flags -contains 'Insite Referrals')
+                    $result.EnableTargetFailback         | Should -Be ($namespaceFolder.Flags -contains 'Target Failback')
+                    $result.ReferralPriorityClass        | Should -Be $namespaceTarget.ReferralPriorityClass
+                    $result.ReferralPriorityRank         | Should -Be $namespaceTarget.ReferralPriorityRank
                 }
 
                 It 'should call the expected mocks' {
@@ -169,7 +169,7 @@ try
                     {
                         $splat = $namespace.Clone()
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -191,7 +191,7 @@ try
                     {
                         $splat = $namespace.Clone()
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -214,7 +214,7 @@ try
                         $splat = $namespace.Clone()
                         $splat.Description = 'A new description'
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -237,7 +237,7 @@ try
                         $splat = $namespace.Clone()
                         $splat.TimeToLiveSec = $splat.TimeToLiveSec + 1
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -260,7 +260,7 @@ try
                         $splat = $namespace.Clone()
                         $splat.EnableInsiteReferrals = $False
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -283,7 +283,7 @@ try
                         $splat = $namespace.Clone()
                         $splat.EnableTargetFailback = $False
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -305,7 +305,7 @@ try
                     {
                         $splat = $namespace.Clone()
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -328,7 +328,7 @@ try
                         $splat = $namespace.Clone()
                         $splat.ReferralPriorityClass = 'SiteCost-High'
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -351,7 +351,7 @@ try
                         $splat = $namespace.Clone()
                         $splat.ReferralPriorityRank++
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -374,7 +374,7 @@ try
                         $splat = $namespace.Clone()
                         $splat.Ensure = 'Absent'
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -397,7 +397,7 @@ try
                         $splat = $namespace.Clone()
                         $splat.Ensure = 'Absent'
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
                 It 'should call expected Mocks' {
@@ -419,7 +419,7 @@ try
 
                 It 'should return false' {
                     $splat = $namespace.Clone()
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -434,7 +434,7 @@ try
 
                 It 'should return false' {
                     $splat = $namespace.Clone()
-                    Test-TargetResource @splat | Should Be $false
+                    Test-TargetResource @splat | Should -Be $false
                 }
 
                 It 'should call expected Mocks' {
@@ -450,7 +450,7 @@ try
                 It 'should return false' {
                     $splat = $namespace.Clone()
                     $splat.Description = 'A new description'
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -466,7 +466,7 @@ try
                 It 'should return false' {
                     $splat = $namespace.Clone()
                     $splat.TimeToLiveSec = $splat.TimeToLiveSec + 1
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -482,7 +482,7 @@ try
                 It 'should return false' {
                     $splat = $namespace.Clone()
                     $splat.EnableInsiteReferrals = $False
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -498,7 +498,7 @@ try
                 It 'should return false' {
                     $splat = $namespace.Clone()
                     $splat.EnableTargetFailback = $False
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -514,7 +514,7 @@ try
                 It 'should return false' {
                     $splat = $namespace.Clone()
                     $splat.ReferralPriorityClass = 'SiteCost-Normal'
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -530,7 +530,7 @@ try
                 It 'should return false' {
                     $splat = $namespace.Clone()
                     $splat.ReferralPriorityRank++
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -545,7 +545,7 @@ try
 
                 It 'should return true' {
                     $splat = $namespace.Clone()
-                    Test-TargetResource @splat | Should Be $True
+                    Test-TargetResource @splat | Should -Be $True
                 }
 
                 It 'should call expected Mocks' {
@@ -561,7 +561,7 @@ try
                 It 'should return false' {
                     $splat = $namespace.Clone()
                     $splat.Ensure = 'Absent'
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
                 It 'should call expected Mocks' {
@@ -577,7 +577,7 @@ try
                 It 'should return true' {
                     $splat = $namespace.Clone()
                     $splat.Ensure = 'Absent'
-                    Test-TargetResource @splat | Should Be $True
+                    Test-TargetResource @splat | Should -Be $True
                 }
 
                 It 'should call expected Mocks' {
@@ -604,7 +604,7 @@ try
 
                     $result = Get-Folder `
                         -Path $namespaceFolder.Path
-                    $result | Should Be $null
+                    $result | Should -Be $null
                 }
 
                 It 'should call expected Mocks' {
@@ -619,7 +619,7 @@ try
 
                     $result = Get-Folder `
                         -Path $namespaceFolder.Path
-                    $result | Should Be $namespaceFolder
+                    $result | Should -Be $namespaceFolder
                 }
 
                 It 'should call expected Mocks' {
@@ -646,7 +646,7 @@ try
                     $result = Get-FolderTarget `
                         -Path $namespaceTarget.Path `
                         -TargetPath $namespaceTarget.TargetPath
-                    $result | Should Be $null
+                    $result | Should -Be $null
                 }
 
                 It 'should call expected Mocks' {
@@ -662,7 +662,7 @@ try
                     $result = Get-FolderTarget `
                         -Path $namespaceTarget.Path `
                         -TargetPath $namespaceTarget.TargetPath
-                    $result | Should Be $namespaceTarget
+                    $result | Should -Be $namespaceTarget
                 }
 
                 It 'should call expected Mocks' {

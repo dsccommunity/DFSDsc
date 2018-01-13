@@ -97,11 +97,11 @@ try
 
                 & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive -ConfigurationData $ConfigData
                 Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
-            } | Should not throw
+            } | Should -not -throw
         }
 
         It 'should be able to call Get-DscConfiguration without throwing' {
-            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should Not throw
+            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should -Not -throw
         }
         #endregion
 
@@ -111,9 +111,9 @@ try
                 -SourceComputerName $ReplicationGroupConnection.SourceComputerName `
                 -DestinationComputerName $ReplicationGroupConnection.DestinationComputerName `
                 -ErrorAction Stop
-            $ReplicationGroupConnectionNew.GroupName               | Should Be $ReplicationGroupConnection.GroupName
-            $ReplicationGroupConnectionNew.SourceComputerName      | Should Be $ReplicationGroupConnection.SourceComputerName
-            $ReplicationGroupConnectionNew.DestinationComputerName | Should Be $ReplicationGroupConnection.DestinationComputerName
+            $ReplicationGroupConnectionNew.GroupName               | Should -Be $ReplicationGroupConnection.GroupName
+            $ReplicationGroupConnectionNew.SourceComputerName      | Should -Be $ReplicationGroupConnection.SourceComputerName
+            $ReplicationGroupConnectionNew.DestinationComputerName | Should -Be $ReplicationGroupConnection.DestinationComputerName
         }
 
         # Clean up
