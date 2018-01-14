@@ -84,7 +84,7 @@ try
         }
 
         #region DEFAULT TESTS
-        It 'should compile and apply the MOF without throwing' {
+        It 'Should compile and apply the MOF without throwing' {
             {
                 $ConfigData = @{
                     AllNodes = @(
@@ -97,25 +97,25 @@ try
 
                 & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive -ConfigurationData $ConfigData
                 Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
-            } | Should not throw
+            } | Should -Not -Throw
         }
 
-        It 'should be able to call Get-DscConfiguration without throwing' {
-            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should Not throw
+        It 'Should be able to call Get-DscConfiguration without throwing' {
+            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should -Not -Throw
         }
         #endregion
 
-        It 'should have set the resource and all the parameters should match' {
+        It 'Should have set the resource and all the parameters should match' {
             $ReplicationGroupMembershipNew = Get-DfsrMembership `
                 -GroupName $ReplicationGroupMembership.GroupName `
                 -ComputerName $ReplicationGroupMembership.Members[0] `
                 -ErrorAction Stop | Where-Object -Property FolderName -eq $ReplicationGroupMembership.Folders[0]
-            $ReplicationGroupMembershipNew.GroupName              | Should Be $ReplicationGroupMembership.GroupName
-            $ReplicationGroupMembershipNew.ComputerName           | Should Be $ReplicationGroupMembership.Members[0]
-            $ReplicationGroupMembershipNew.FolderName             | Should Be $ReplicationGroupMembership.Folders[0]
-            $ReplicationGroupMembershipNew.ContentPath            | Should Be $ReplicationGroupMembership.ContentPath
-            $ReplicationGroupMembershipNew.ReadOnly               | Should Be $ReplicationGroupMembership.ReadOnly
-            $ReplicationGroupMembershipNew.PrimaryMember          | Should Be $ReplicationGroupMembership.PrimaryMember
+            $ReplicationGroupMembershipNew.GroupName              | Should -Be $ReplicationGroupMembership.GroupName
+            $ReplicationGroupMembershipNew.ComputerName           | Should -Be $ReplicationGroupMembership.Members[0]
+            $ReplicationGroupMembershipNew.FolderName             | Should -Be $ReplicationGroupMembership.Folders[0]
+            $ReplicationGroupMembershipNew.ContentPath            | Should -Be $ReplicationGroupMembership.ContentPath
+            $ReplicationGroupMembershipNew.ReadOnly               | Should -Be $ReplicationGroupMembership.ReadOnly
+            $ReplicationGroupMembershipNew.PrimaryMember          | Should -Be $ReplicationGroupMembership.PrimaryMember
         }
 
         # Clean up

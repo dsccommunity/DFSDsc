@@ -17,6 +17,7 @@
   [issue #49](https://github.com/PowerShell/xDFS/issues/49).
 - Prevent unit tests from DSCResource.Tests from running during test
   execution - fixes [Issue #51](https://github.com/PowerShell/xDFS/issues/51).
+- Updated tests to meet Pester V4 guidelines - fixes [Issue #53](https://github.com/PowerShell/xDFS/issues/53).
 
 ## 3.2.0.0
 

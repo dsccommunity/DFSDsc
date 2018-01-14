@@ -26,8 +26,8 @@ try
     $productType = (Get-CimInstance Win32_OperatingSystem).ProductType
     Describe 'Environment' {
         Context 'Operating System' {
-            It 'should be a Server OS' {
-                $productType | Should Be 3
+            It 'Should be a Server OS' {
+                $productType | Should -Be 3
             }
         }
     }
@@ -40,8 +40,8 @@ try
     $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'should have the DFS Namespace Feature Installed' {
-                $featureInstalled | Should Be $true
+            It 'Should have the DFS Namespace Feature Installed' {
+                $featureInstalled | Should -Be $true
             }
         }
     }
@@ -71,37 +71,37 @@ try
             -FullAccess 'Everyone'
 
         #region DEFAULT TESTS
-        It 'should compile and apply the MOF without throwing' {
+        It 'Should compile and apply the MOF without throwing' {
             {
                 & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive
                 Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
-            } | Should not throw
+            } | Should -Not -Throw
         }
 
-        It 'should be able to call Get-DscConfiguration without throwing' {
-            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should Not throw
+        It 'Should be able to call Get-DscConfiguration without throwing' {
+            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should -Not -Throw
         }
         #endregion
 
-        It 'should have set the resource and all the folder parameters should match' {
+        It 'Should have set the resource and all the folder parameters should match' {
             # Get the Rule details
             $NamespaceRootNew = Get-DfsnRoot -Path $NamespaceRoot.Path
-            $NamespaceRootNew.Path                          | Should Be $NamespaceRoot.Path
-            $NamespaceRootNew.Type                          | Should Be $NamespaceRoot.Type
-            $NamespaceRootNew.TimeToLiveSec                 | Should Be $NamespaceRoot.TimeToLiveSec
-            $NamespaceRootNew.State                         | Should Be 'Online'
-            $NamespaceRootNew.Description                   | Should Be $NamespaceRoot.Description
-            $NamespaceRootNew.NamespacePath                 | Should Be $NamespaceRoot.Path
-            $NamespaceRootNew.Flags                         | Should Be @('Target Failback','Site Costing','Insite Referrals','AccessBased Enumeration')
+            $NamespaceRootNew.Path                          | Should -Be $NamespaceRoot.Path
+            $NamespaceRootNew.Type                          | Should -Be $NamespaceRoot.Type
+            $NamespaceRootNew.TimeToLiveSec                 | Should -Be $NamespaceRoot.TimeToLiveSec
+            $NamespaceRootNew.State                         | Should -Be 'Online'
+            $NamespaceRootNew.Description                   | Should -Be $NamespaceRoot.Description
+            $NamespaceRootNew.NamespacePath                 | Should -Be $NamespaceRoot.Path
+            $NamespaceRootNew.Flags                         | Should -Be @('Target Failback','Site Costing','Insite Referrals','AccessBased Enumeration')
         }
 
-        It 'should have set the resource and all the folder target parameters should match' {
+        It 'Should have set the resource and all the folder target parameters should match' {
             $NamespaceRootTargetNew = Get-DfsnRootTarget -Path $NamespaceRoot.Path -TargetPath $NamespaceRoot.TargetPath
-            $NamespaceRootTargetNew.Path                    | Should Be $NamespaceRoot.Path
-            $NamespaceRootTargetNew.NamespacePath           | Should Be $NamespaceRoot.Path
-            $NamespaceRootTargetNew.TargetPath              | Should Be $NamespaceRoot.TargetPath
-            $NamespaceRootTargetNew.ReferralPriorityClass   | Should Be $NamespaceRoot.ReferralPriorityClass
-            $NamespaceRootTargetNew.ReferralPriorityRank    | Should Be $NamespaceRoot.ReferralPriorityRank
+            $NamespaceRootTargetNew.Path                    | Should -Be $NamespaceRoot.Path
+            $NamespaceRootTargetNew.NamespacePath           | Should -Be $NamespaceRoot.Path
+            $NamespaceRootTargetNew.TargetPath              | Should -Be $NamespaceRoot.TargetPath
+            $NamespaceRootTargetNew.ReferralPriorityClass   | Should -Be $NamespaceRoot.ReferralPriorityClass
+            $NamespaceRootTargetNew.ReferralPriorityRank    | Should -Be $NamespaceRoot.ReferralPriorityRank
         }
 
         # Clean up

@@ -84,7 +84,7 @@ try
         }
 
         #region DEFAULT TESTS
-        It 'should compile and apply the MOF without throwing' {
+        It 'Should compile and apply the MOF without throwing' {
             {
                 $ConfigData = @{
                     AllNodes = @(
@@ -97,23 +97,23 @@ try
 
                 & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive -ConfigurationData $ConfigData
                 Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
-            } | Should not throw
+            } | Should -Not -Throw
         }
 
-        It 'should be able to call Get-DscConfiguration without throwing' {
-            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should Not throw
+        It 'Should be able to call Get-DscConfiguration without throwing' {
+            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should -Not -Throw
         }
         #endregion
 
-        It 'should have set the resource and all the parameters should match' {
+        It 'Should have set the resource and all the parameters should match' {
             $ReplicationGroupConnectionNew = Get-DfsrConnection `
                 -GroupName $ReplicationGroupConnection.GroupName `
                 -SourceComputerName $ReplicationGroupConnection.SourceComputerName `
                 -DestinationComputerName $ReplicationGroupConnection.DestinationComputerName `
                 -ErrorAction Stop
-            $ReplicationGroupConnectionNew.GroupName               | Should Be $ReplicationGroupConnection.GroupName
-            $ReplicationGroupConnectionNew.SourceComputerName      | Should Be $ReplicationGroupConnection.SourceComputerName
-            $ReplicationGroupConnectionNew.DestinationComputerName | Should Be $ReplicationGroupConnection.DestinationComputerName
+            $ReplicationGroupConnectionNew.GroupName               | Should -Be $ReplicationGroupConnection.GroupName
+            $ReplicationGroupConnectionNew.SourceComputerName      | Should -Be $ReplicationGroupConnection.SourceComputerName
+            $ReplicationGroupConnectionNew.DestinationComputerName | Should -Be $ReplicationGroupConnection.DestinationComputerName
         }
 
         # Clean up

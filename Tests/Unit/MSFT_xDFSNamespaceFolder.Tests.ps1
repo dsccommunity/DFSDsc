@@ -24,8 +24,8 @@ try
     $productType = (Get-CimInstance Win32_OperatingSystem).ProductType
     Describe 'Environment' {
         Context 'Operating System' {
-            It 'should be a Server OS' {
-                $productType | Should Be 3
+            It 'Should be a Server OS' {
+                $productType | Should -Be 3
             }
         }
     }
@@ -38,8 +38,8 @@ try
     $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'should have the DFS Namespace Feature Installed' {
-                $featureInstalled | Should Be $true
+            It 'Should have the DFS Namespace Feature Installed' {
+                $featureInstalled | Should -Be $true
             }
         }
     }
@@ -94,14 +94,14 @@ try
                 Mock Get-DFSNFolder
                 Mock Get-DFSNFolderTarget
 
-                It 'should return absent namespace' {
+                It 'Should return absent namespace' {
                     $result = Get-TargetResource @namespaceSplat
-                    $result.Ensure | Should Be 'Absent'
+                    $result.Ensure | Should -Be 'Absent'
                 }
 
-                It 'should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 0
+                It 'Should call the expected mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -109,23 +109,23 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
-                It 'should return correct replication group' {
+                It 'Should return correct replication group' {
                     $result = Get-TargetResource @namespaceSplat
-                    $result.Path                         | Should Be $namespace.Path
-                    $result.TargetPath                   | Should Be $namespace.TargetPath
-                    $result.Ensure                       | Should Be 'Absent'
-                    $result.TimeToLiveSec                | Should Be $namespaceFolder.TimeToLiveSec
-                    $result.State                        | Should Be $namespaceFolder.State
-                    $result.Description                  | Should Be $namespaceFolder.Description
-                    $result.EnableInsiteReferrals        | Should Be ($namespaceFolder.Flags -contains 'Insite Referrals')
-                    $result.EnableTargetFailback         | Should Be ($namespaceFolder.Flags -contains 'Target Failback')
-                    $result.ReferralPriorityClass        | Should Be $null
-                    $result.ReferralPriorityRank         | Should Be $null
+                    $result.Path                         | Should -Be $namespace.Path
+                    $result.TargetPath                   | Should -Be $namespace.TargetPath
+                    $result.Ensure                       | Should -Be 'Absent'
+                    $result.TimeToLiveSec                | Should -Be $namespaceFolder.TimeToLiveSec
+                    $result.State                        | Should -Be $namespaceFolder.State
+                    $result.Description                  | Should -Be $namespaceFolder.Description
+                    $result.EnableInsiteReferrals        | Should -Be ($namespaceFolder.Flags -contains 'Insite Referrals')
+                    $result.EnableTargetFailback         | Should -Be ($namespaceFolder.Flags -contains 'Target Failback')
+                    $result.ReferralPriorityClass        | Should -Be $null
+                    $result.ReferralPriorityRank         | Should -Be $null
                 }
 
-                It 'should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                It 'Should call the expected mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -133,23 +133,23 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
-                It 'should return correct replication group' {
+                It 'Should return correct replication group' {
                     $result = Get-TargetResource @namespaceSplat
-                    $result.Path                         | Should Be $namespace.Path
-                    $result.TargetPath                   | Should Be $namespace.TargetPath
-                    $result.Ensure                       | Should Be 'Present'
-                    $result.TimeToLiveSec                | Should Be $namespaceFolder.TimeToLiveSec
-                    $result.State                        | Should Be $namespaceFolder.State
-                    $result.Description                  | Should Be $namespaceFolder.Description
-                    $result.EnableInsiteReferrals        | Should Be ($namespaceFolder.Flags -contains 'Insite Referrals')
-                    $result.EnableTargetFailback         | Should Be ($namespaceFolder.Flags -contains 'Target Failback')
-                    $result.ReferralPriorityClass        | Should Be $namespaceTarget.ReferralPriorityClass
-                    $result.ReferralPriorityRank         | Should Be $namespaceTarget.ReferralPriorityRank
+                    $result.Path                         | Should -Be $namespace.Path
+                    $result.TargetPath                   | Should -Be $namespace.TargetPath
+                    $result.Ensure                       | Should -Be 'Present'
+                    $result.TimeToLiveSec                | Should -Be $namespaceFolder.TimeToLiveSec
+                    $result.State                        | Should -Be $namespaceFolder.State
+                    $result.Description                  | Should -Be $namespaceFolder.Description
+                    $result.EnableInsiteReferrals        | Should -Be ($namespaceFolder.Flags -contains 'Insite Referrals')
+                    $result.EnableTargetFailback         | Should -Be ($namespaceFolder.Flags -contains 'Target Failback')
+                    $result.ReferralPriorityClass        | Should -Be $namespaceTarget.ReferralPriorityClass
+                    $result.ReferralPriorityRank         | Should -Be $namespaceTarget.ReferralPriorityRank
                 }
 
-                It 'should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                It 'Should call the expected mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
         }
@@ -165,21 +165,21 @@ try
                 Mock Get-DFSNFolder
                 Mock Get-DFSNFolderTarget
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $namespace.Clone()
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -187,21 +187,21 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $namespace.Clone()
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -209,22 +209,22 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $namespace.Clone()
                         $splat.Description = 'A new description'
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -232,22 +232,22 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $namespace.Clone()
                         $splat.TimeToLiveSec = $splat.TimeToLiveSec + 1
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -255,22 +255,22 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $namespace.Clone()
                         $splat.EnableInsiteReferrals = $False
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -278,22 +278,22 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $namespace.Clone()
                         $splat.EnableTargetFailback = $False
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -301,21 +301,21 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $namespace.Clone()
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -323,22 +323,22 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $namespace.Clone()
                         $splat.ReferralPriorityClass = 'SiteCost-High'
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -346,22 +346,22 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $namespace.Clone()
                         $splat.ReferralPriorityRank++
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -369,22 +369,22 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $namespace.Clone()
                         $splat.Ensure = 'Absent'
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 1
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -392,22 +392,22 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
-                It 'should not throw error' {
+                It 'Should not throw error' {
                     {
                         $splat = $namespace.Clone()
                         $splat.Ensure = 'Absent'
                         Set-TargetResource @splat
-                    } | Should Not Throw
+                    } | Should -Not -Throw
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
         }
@@ -417,14 +417,14 @@ try
                 Mock Get-DFSNFolder
                 Mock Get-DFSNFolderTarget
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $namespace.Clone()
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 0
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -432,14 +432,14 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $namespace.Clone()
-                    Test-TargetResource @splat | Should Be $false
+                    Test-TargetResource @splat | Should -Be $false
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -447,15 +447,15 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $namespace.Clone()
                     $splat.Description = 'A new description'
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -463,15 +463,15 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $namespace.Clone()
                     $splat.TimeToLiveSec = $splat.TimeToLiveSec + 1
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -479,15 +479,15 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $namespace.Clone()
                     $splat.EnableInsiteReferrals = $False
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -495,15 +495,15 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $namespace.Clone()
                     $splat.EnableTargetFailback = $False
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -511,15 +511,15 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $namespace.Clone()
                     $splat.ReferralPriorityClass = 'SiteCost-Normal'
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -527,15 +527,15 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $namespace.Clone()
                     $splat.ReferralPriorityRank++
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -543,14 +543,14 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
-                It 'should return true' {
+                It 'Should return true' {
                     $splat = $namespace.Clone()
-                    Test-TargetResource @splat | Should Be $True
+                    Test-TargetResource @splat | Should -Be $True
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -558,15 +558,15 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
-                It 'should return false' {
+                It 'Should return false' {
                     $splat = $namespace.Clone()
                     $splat.Ensure = 'Absent'
-                    Test-TargetResource @splat | Should Be $False
+                    Test-TargetResource @splat | Should -Be $False
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -574,15 +574,15 @@ try
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget
 
-                It 'should return true' {
+                It 'Should return true' {
                     $splat = $namespace.Clone()
                     $splat.Ensure = 'Absent'
-                    Test-TargetResource @splat | Should Be $True
+                    Test-TargetResource @splat | Should -Be $True
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
         }
@@ -600,30 +600,30 @@ try
 
                 Mock Get-DFSNFolder { throw $errorRecord }
 
-                It 'should return null' {
+                It 'Should return null' {
 
                     $result = Get-Folder `
                         -Path $namespaceFolder.Path
-                    $result | Should Be $null
+                    $result | Should -Be $null
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
                 }
             }
 
             Context 'DFSN Folder exists' {
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
 
-                It 'should return the expected folder' {
+                It 'Should return the expected folder' {
 
                     $result = Get-Folder `
                         -Path $namespaceFolder.Path
-                    $result | Should Be $namespaceFolder
+                    $result | Should -Be $namespaceFolder
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
                 }
             }
         }
@@ -641,32 +641,32 @@ try
 
                 Mock Get-DFSNFolderTarget { throw $errorRecord }
 
-                It 'should return null' {
+                It 'Should return null' {
 
                     $result = Get-FolderTarget `
                         -Path $namespaceTarget.Path `
                         -TargetPath $namespaceTarget.TargetPath
-                    $result | Should Be $null
+                    $result | Should -Be $null
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
             Context 'DFSN Folder Target exists' {
                 Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
 
-                It 'should return the expected target' {
+                It 'Should return the expected target' {
 
                     $result = Get-FolderTarget `
                         -Path $namespaceTarget.Path `
                         -TargetPath $namespaceTarget.TargetPath
-                    $result | Should Be $namespaceTarget
+                    $result | Should -Be $namespaceTarget
                 }
 
-                It 'should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
         }

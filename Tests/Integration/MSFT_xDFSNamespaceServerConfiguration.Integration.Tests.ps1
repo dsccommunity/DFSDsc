@@ -26,8 +26,8 @@ try
     $productType = (Get-CimInstance Win32_OperatingSystem).ProductType
     Describe 'Environment' {
         Context 'Operating System' {
-            It 'should be a Server OS' {
-                $productType | Should Be 3
+            It 'Should be a Server OS' {
+                $productType | Should -Be 3
             }
         }
     }
@@ -40,8 +40,8 @@ try
     $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'should have the DFS Namespace Feature Installed' {
-                $featureInstalled | Should Be $true
+            It 'Should have the DFS Namespace Feature Installed' {
+                $featureInstalled | Should -Be $true
             }
         }
     }
@@ -61,19 +61,19 @@ try
 
     Describe "$($script:DSCResourceName)_Integration" {
         #region DEFAULT TESTS
-        It 'should compile and apply the MOF without throwing' {
+        It 'Should compile and apply the MOF without throwing' {
             {
                 & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive
                 Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
-            } | Should not throw
+            } | Should -Not -Throw
         }
 
-        It 'should be able to call Get-DscConfiguration without throwing' {
-            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should Not throw
+        It 'Should be able to call Get-DscConfiguration without throwing' {
+            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should -Not -Throw
         }
         #endregion
 
-        It 'should have set the resource and all the parameters should match' {
+        It 'Should have set the resource and all the parameters should match' {
             # Get the Rule details
             $NamespaceServerConfigurationNew = Get-DfsnServerConfiguration -ComputerName $env:COMPUTERNAME
             $NamespaceServerConfigurationNew.LdapTimeoutSec            = $NamespaceServerConfiguration.LdapTimeoutSec
