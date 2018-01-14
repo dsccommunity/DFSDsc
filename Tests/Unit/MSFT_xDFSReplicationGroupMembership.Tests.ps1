@@ -105,7 +105,7 @@ try
                 }
 
                 It 'Should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly -Times 1
                 }
             }
 
@@ -130,7 +130,7 @@ try
                 }
 
                 It 'Should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly -Times 1
                 }
             }
 
@@ -155,7 +155,7 @@ try
                 }
 
                 It 'Should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly -Times 1
                 }
             }
         }
@@ -171,7 +171,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly -Times 1
                 }
             }
 
@@ -186,7 +186,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly -Times 1
                 }
             }
 
@@ -201,7 +201,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly -Times 1
                 }
             }
 
@@ -216,7 +216,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly -Times 1
                 }
             }
 
@@ -231,7 +231,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly -Times 1
                 }
             }
 
@@ -246,7 +246,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly -Times 1
                 }
             }
         }
@@ -266,7 +266,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly -Times 1
                 }
             }
 
@@ -280,7 +280,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly -Times 1
                 }
             }
 
@@ -295,7 +295,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly -Times 1
                 }
             }
 
@@ -310,7 +310,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly -Times 1
                 }
             }
 
@@ -325,7 +325,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly -Times 1
                 }
             }
 
@@ -340,7 +340,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly -Times 1
                 }
             }
 
@@ -355,7 +355,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly -Times 1
                 }
             }
         }

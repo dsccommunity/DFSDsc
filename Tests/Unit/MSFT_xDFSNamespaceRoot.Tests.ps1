@@ -112,8 +112,8 @@ try
                 }
 
                 It 'Should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 0
                 }
             }
 
@@ -141,8 +141,8 @@ try
                 }
 
                 It 'Should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
                 }
             }
 
@@ -169,8 +169,8 @@ try
                 }
 
                 It 'Should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
                 }
             }
         }
@@ -194,13 +194,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly -Times 0
                 }
             }
 
@@ -216,13 +216,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly -Times 0
                 }
             }
 
@@ -239,13 +239,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly -Times 0
                 }
             }
 
@@ -262,13 +262,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly -Times 0
                 }
             }
 
@@ -285,13 +285,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly -Times 0
                 }
             }
 
@@ -308,13 +308,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly -Times 0
                 }
             }
 
@@ -331,13 +331,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly -Times 0
                 }
             }
 
@@ -354,13 +354,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly -Times 0
                 }
             }
 
@@ -377,13 +377,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly -Times 0
                 }
             }
 
@@ -399,13 +399,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly -Times 0
                 }
             }
 
@@ -422,13 +422,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 1
-                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly -Times 0
                 }
             }
 
@@ -445,13 +445,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 1
-                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly -Times 0
                 }
             }
 
@@ -468,13 +468,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly -Times 1
                 }
             }
 
@@ -491,13 +491,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly 0
-                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly -Times 0
                 }
             }
         }
@@ -513,8 +513,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 0
                 }
             }
 
@@ -528,8 +528,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
                 }
             }
 
@@ -548,8 +548,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 0
                 }
             }
 
@@ -564,8 +564,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
                 }
             }
 
@@ -580,8 +580,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
                 }
             }
 
@@ -596,8 +596,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
                 }
             }
 
@@ -612,8 +612,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
                 }
             }
 
@@ -628,8 +628,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
                 }
             }
 
@@ -644,8 +644,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
                 }
             }
 
@@ -660,8 +660,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
                 }
             }
 
@@ -676,8 +676,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
                 }
             }
 
@@ -692,8 +692,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
                 }
             }
 
@@ -707,8 +707,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
                 }
             }
 
@@ -723,8 +723,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
                 }
             }
 
@@ -739,8 +739,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
                 }
             }
         }
@@ -765,7 +765,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsnRoot -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsnRoot -Exactly -Times 1
                 }
             }
 
@@ -779,7 +779,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsnRoot -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsnRoot -Exactly -Times 1
                 }
             }
         }
@@ -805,7 +805,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsnRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsnRootTarget -Exactly -Times 1
                 }
             }
 
@@ -820,7 +820,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsnRootTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsnRootTarget -Exactly -Times 1
                 }
             }
         }

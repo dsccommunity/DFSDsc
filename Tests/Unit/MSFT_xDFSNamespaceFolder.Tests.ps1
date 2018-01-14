@@ -100,8 +100,8 @@ try
                 }
 
                 It 'Should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -124,8 +124,8 @@ try
                 }
 
                 It 'Should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -148,8 +148,8 @@ try
                 }
 
                 It 'Should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
         }
@@ -173,13 +173,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -195,13 +195,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -218,13 +218,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -241,13 +241,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -264,13 +264,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -287,13 +287,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -309,13 +309,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -332,13 +332,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -355,13 +355,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -378,13 +378,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -401,13 +401,13 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
-                    Assert-MockCalled -commandName New-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly 0
-                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly 0
-                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
                 }
             }
         }
@@ -423,8 +423,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 0
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 0
                 }
             }
 
@@ -438,8 +438,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -454,8 +454,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -470,8 +470,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -486,8 +486,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -502,8 +502,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -518,8 +518,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -534,8 +534,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -549,8 +549,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -565,8 +565,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -581,8 +581,8 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
         }
@@ -608,7 +608,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
                 }
             }
 
@@ -623,7 +623,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
                 }
             }
         }
@@ -650,7 +650,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
 
@@ -666,7 +666,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
                 }
             }
         }

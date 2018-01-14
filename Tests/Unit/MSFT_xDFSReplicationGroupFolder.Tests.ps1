@@ -112,7 +112,7 @@ try
                 }
 
                 It 'Should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -138,7 +138,7 @@ try
                 }
 
                 It 'Should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
         }
@@ -154,7 +154,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Set-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Set-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -168,7 +168,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Set-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Set-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -182,7 +182,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Set-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Set-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -196,7 +196,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Set-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Set-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
         }
@@ -214,7 +214,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -227,7 +227,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -241,7 +241,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -255,7 +255,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -269,7 +269,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -283,7 +283,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
         }

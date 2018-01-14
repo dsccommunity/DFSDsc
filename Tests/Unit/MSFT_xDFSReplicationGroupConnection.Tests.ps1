@@ -126,7 +126,7 @@ try
                 }
 
                 It 'Should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
                 }
             }
 
@@ -151,7 +151,7 @@ try
                 }
 
                 It 'Should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
                 }
             }
 
@@ -176,7 +176,7 @@ try
                 }
 
                 It 'Should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
                 }
             }
         }
@@ -196,10 +196,10 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly 0
-                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly 1
-                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly -Times 0
+                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly -Times 0
                 }
             }
 
@@ -217,10 +217,10 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly -Times 0
                 }
             }
 
@@ -240,10 +240,10 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly -Times 0
                 }
             }
 
@@ -262,10 +262,10 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly -Times 0
                 }
             }
 
@@ -284,10 +284,10 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly -Times 0
                 }
             }
 
@@ -307,10 +307,10 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly -Times 0
                 }
             }
 
@@ -330,10 +330,10 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly 0
-                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly -Times 0
+                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly -Times 1
                 }
             }
 
@@ -351,10 +351,10 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly -Times 0
                 }
             }
         }
@@ -369,7 +369,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
                 }
             }
 
@@ -382,7 +382,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
                 }
             }
 
@@ -397,7 +397,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
                 }
             }
 
@@ -411,7 +411,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
                 }
             }
 
@@ -425,7 +425,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
                 }
             }
 
@@ -439,7 +439,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
                 }
             }
 
@@ -453,7 +453,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
                 }
             }
 
@@ -466,7 +466,7 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
                 }
             }
         }

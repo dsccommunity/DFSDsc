@@ -225,9 +225,9 @@ try
                 }
 
                 It 'Should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 0
                 }
             }
 
@@ -255,16 +255,16 @@ try
                 }
 
                 It 'Should call the expected mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 0
                     <#
                         Tests disabled until this issue is resolved:
                         https://windowsserver.uservoice.com/forums/301869-powershell/suggestions/11088807-get-dscconfiguration-fails-with-embedded-cim-type
                     #>
                     if ($false) {
-                        Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                        Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                        Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                        Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                     }
                 }
             }
@@ -291,16 +291,16 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 2
-                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 2
-                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 2
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly -Times 2
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly -Times 0
                 }
             }
 
@@ -325,16 +325,16 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly -Times 0
                 }
             }
 
@@ -358,16 +358,16 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly -Times 0
                 }
             }
 
@@ -391,16 +391,16 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly -Times 0
                 }
             }
 
@@ -425,16 +425,16 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly -Times 0
                 }
             }
 
@@ -459,16 +459,16 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly -Times 0
                 }
             }
 
@@ -493,16 +493,16 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly -Times 0
                 }
             }
 
@@ -527,16 +527,16 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -561,16 +561,16 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly -Times 0
                 }
             }
 
@@ -594,16 +594,16 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly -Times 0
                 }
             }
 
@@ -642,19 +642,19 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 2
-                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 2
+                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly -Times 0
                 }
             }
 
@@ -693,19 +693,19 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 2
-                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 2
+                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly -Times 0
                 }
             }
 
@@ -744,19 +744,19 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 2
-                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly 2
-                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 2
+                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly -Times 2
+                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly -Times 0
                 }
             }
 
@@ -795,19 +795,19 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 2
-                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 2
+                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly -Times 1
                 }
             }
 
@@ -834,18 +834,18 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly -Times 1
                 }
             }
 
@@ -871,18 +871,18 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly -Times 0
                 }
             }
 
@@ -908,18 +908,18 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Add-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
-                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicationGroup -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsReplicatedFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly -Times 1
                 }
             }
         }
@@ -936,9 +936,9 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 0
                 }
             }
 
@@ -954,9 +954,9 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -971,9 +971,9 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -988,9 +988,9 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -1006,9 +1006,9 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -1024,9 +1024,9 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -1042,9 +1042,9 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -1060,9 +1060,9 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -1078,9 +1078,9 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 0
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 0
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 0
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 0
                 }
             }
 
@@ -1095,9 +1095,9 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
 
@@ -1125,10 +1125,10 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 2
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 2
                 }
             }
 
@@ -1156,10 +1156,10 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 2
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 2
                 }
             }
 
@@ -1187,10 +1187,10 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 2
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 2
                 }
             }
 
@@ -1218,10 +1218,10 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly 2
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 2
                 }
             }
 
@@ -1238,10 +1238,10 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly -Times 1
                 }
             }
 
@@ -1257,10 +1257,10 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly -Times 1
                 }
             }
 
@@ -1276,10 +1276,10 @@ try
                 }
 
                 It 'Should call expected Mocks' {
-                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly 1
-                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly 1
+                    Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly -Times 1
                 }
             }
         }
