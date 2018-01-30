@@ -1,11 +1,11 @@
-$script:DSCModuleName   = 'xDFS'
-$script:DSCResourceName = 'MSFT_xDFSNamespaceRoot'
+$script:DSCModuleName   = 'DFSDsc'
+$script:DSCResourceName = 'MSFT_DFSDscNamespaceRoot'
 
 Import-Module -Name (Join-Path -Path (Join-Path -Path (Split-Path $PSScriptRoot -Parent) -ChildPath 'TestHelpers') -ChildPath 'CommonTestHelper.psm1') -Global
 
 #region HEADER
 # Unit Test Template Version: 1.1.0
-[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\xDFS'
+[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\DFSDsc'
 if ( (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
      (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
 {
@@ -100,7 +100,7 @@ try
             TargetPath                   = $namespace.TargetPath
         }
 
-        Describe "MSFT_xDFSNamespaceRoot\Get-TargetResource" {
+        Describe "MSFT_DFSDscNamespaceRoot\Get-TargetResource" {
             Context 'Namespace Root does not exist' {
 
                 Mock Get-DFSNRoot
@@ -175,7 +175,7 @@ try
             }
         }
 
-        Describe "MSFT_xDFSNamespaceRoot\Set-TargetResource" {
+        Describe "MSFT_DFSDscNamespaceRoot\Set-TargetResource" {
             Mock New-DFSNRoot
             Mock Set-DFSNRoot
             Mock New-DfsnRootTarget
@@ -502,7 +502,7 @@ try
             }
         }
 
-        Describe "MSFT_xDFSNamespaceRoot\Test-TargetResource" {
+        Describe "MSFT_DFSDscNamespaceRoot\Test-TargetResource" {
             Context 'Namespace Root does not exist but should' {
                 Mock Get-DFSNRoot
                 Mock Get-DFSNRootTarget
@@ -745,7 +745,7 @@ try
             }
         }
 
-        Describe "MSFT_xDFSNamespaceRoot\Get-Root" {
+        Describe "MSFT_DFSDscNamespaceRoot\Get-Root" {
             Context 'DFSN Root does not exist' {
                 $errorId = 'Cannot get DFS root properites on "{0}"' -f $namespaceRoot.Path
                 $errorCategory = 'NotSpecified'
@@ -784,7 +784,7 @@ try
             }
         }
 
-        Describe "MSFT_xDFSNamespaceRoot\Get-RootTarget" {
+        Describe "MSFT_DFSDscNamespaceRoot\Get-RootTarget" {
             Context 'DFSN Root Target does not exist' {
                 $errorId = 'Cannot get DFS target properites on "{0}"' -f $namespaceTarget.TargetPath
                 $errorCategory = 'NotSpecified'

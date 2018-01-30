@@ -4,10 +4,10 @@ $NamespaceServerConfiguration = @{
     UseFQDN                      = $True
 }
 
-Configuration MSFT_xDFSNamespaceServerConfiguration_Config {
-    Import-DscResource -ModuleName xDFS
+Configuration MSFT_DFSDscNamespaceServerConfiguration_Config {
+    Import-DscResource -ModuleName DFSDsc
     node localhost {
-        xDFSNamespaceServerConfiguration Integration_Test {
+        DFSDscNamespaceServerConfiguration Integration_Test {
             IsSingleInstance             = 'Yes'
             LdapTimeoutSec               = $NamespaceServerConfiguration.LdapTimeoutSec
             SyncIntervalSec              = $NamespaceServerConfiguration.SyncIntervalSec

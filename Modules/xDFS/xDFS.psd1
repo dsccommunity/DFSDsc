@@ -42,10 +42,10 @@
             Tags = @( 'DSC','DesiredStateConfiguration','DSCResourceKit','DSCResource','DFS','DistributedFileSystem' )
 
             # A URL to the license for this module.
-            LicenseUri = 'https://github.com/PowerShell/xDFS/blob/master/LICENSE'
+            LicenseUri = 'https://github.com/PowerShell/DFSDsc/blob/master/LICENSE'
 
             # A URL to the main website for this project.
-            ProjectUri = 'https://github.com/PowerShell/xDFS'
+            ProjectUri = 'https://github.com/PowerShell/DFSDsc'
 
             # ReleaseNotes of this module
         ReleaseNotes = '- Converted AppVeyor.yml to pull Pester from PSGallery instead of Chocolatey.
@@ -63,7 +63,7 @@
 - Correct parameter block format to meet guidelines.
 - Replaced all type accelerators with full type names.
 - Updated Readme.md to contain resource list.
-- Fixed xDFSNamespaceServerConfiguration by converting LocalHost to ComputerName
+- Fixed DFSDscNamespaceServerConfiguration by converting LocalHost to ComputerName
   instead.
 - Added integration test to test for conflicts with other common resource kit modules.
 - Prevented ResourceHelper and Common module cmdlets from being exported to resolve

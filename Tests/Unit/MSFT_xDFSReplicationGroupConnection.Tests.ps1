@@ -1,9 +1,9 @@
-$script:DSCModuleName   = 'xDFS'
-$script:DSCResourceName = 'MSFT_xDFSReplicationGroupConnection'
+$script:DSCModuleName   = 'DFSDsc'
+$script:DSCResourceName = 'MSFT_DFSDscReplicationGroupConnection'
 
 #region HEADER
 # Unit Test Template Version: 1.1.0
-[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\xDFS'
+[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\DFSDsc'
 if ( (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
      (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
 {
@@ -112,7 +112,7 @@ try
             DomainName = $replicationGroupConnections[0].DomainName
         }
 
-        Describe "MSFT_xDFSReplicationGroupConnection\Get-TargetResource" {
+        Describe "MSFT_DFSDscReplicationGroupConnection\Get-TargetResource" {
             Context 'No replication group connections exist' {
                 Mock Get-DfsrConnection
 
@@ -181,7 +181,7 @@ try
             }
         }
 
-        Describe "MSFT_xDFSReplicationGroupConnection\Set-TargetResource" {
+        Describe "MSFT_DFSDscReplicationGroupConnection\Set-TargetResource" {
             Context 'Replication Group connection does not exist but should' {
                 Mock Get-DfsrConnection
                 Mock Set-DfsrConnection
@@ -359,7 +359,7 @@ try
             }
         }
 
-        Describe "MSFT_xDFSReplicationGroupConnection\Test-TargetResource" {
+        Describe "MSFT_DFSDscReplicationGroupConnection\Test-TargetResource" {
             Context 'Replication Group Connection does not exist but should' {
                 Mock Get-DfsrConnection
 

@@ -15,11 +15,11 @@ $NamespaceFolder = @{
     ReferralPriorityRank         = 10
 }
 
-Configuration MSFT_xDFSNamespaceFolder_Config {
-    Import-DscResource -ModuleName xDFS
+Configuration MSFT_DFSDscNamespaceFolder_Config {
+    Import-DscResource -ModuleName DFSDsc
     node localhost {
-        xDFSNamespaceFolder Integration_Test {
-            Path                         = $NamespaceFolder.Path 
+        DFSDscNamespaceFolder Integration_Test {
+            Path                         = $NamespaceFolder.Path
             TargetPath                   = $NamespaceFolder.TargetPath
             Ensure                       = $NamespaceFolder.Ensure
             Description                  = $NamespaceFolder.Description

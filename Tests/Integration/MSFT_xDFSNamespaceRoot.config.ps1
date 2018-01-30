@@ -1,7 +1,7 @@
 $NamespaceRootName = 'IntegrationTestNamespace'
 $NamespaceRoot = @{
     Path                         = "\\$($env:COMPUTERNAME)\$NamespaceRootName"
-    TargetPath                   = "\\$($env:COMPUTERNAME)\$NamespaceRootName" 
+    TargetPath                   = "\\$($env:COMPUTERNAME)\$NamespaceRootName"
     Ensure                       = 'Present'
     Type                         = 'Standalone'
     Description                  = 'Integration test namespace'
@@ -15,11 +15,11 @@ $NamespaceRoot = @{
     ReferralPriorityRank         = 10
 }
 
-Configuration MSFT_xDFSNamespaceRoot_Config {
-    Import-DscResource -ModuleName xDFS
+Configuration MSFT_DFSDscNamespaceRoot_Config {
+    Import-DscResource -ModuleName DFSDsc
     node localhost {
-        xDFSNamespaceRoot Integration_Test {
-            Path                         = $NamespaceRoot.Path 
+        DFSDscNamespaceRoot Integration_Test {
+            Path                         = $NamespaceRoot.Path
             TargetPath                   = $NamespaceRoot.TargetPath
             Ensure                       = $NamespaceRoot.Ensure
             Type                         = $NamespaceRoot.Type

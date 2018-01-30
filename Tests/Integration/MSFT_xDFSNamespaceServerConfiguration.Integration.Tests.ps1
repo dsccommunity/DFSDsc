@@ -1,9 +1,9 @@
-$script:DSCModuleName   = 'xDFS'
-$script:DSCResourceName = 'MSFT_xDFSNamespaceServerConfiguration'
+$script:DSCModuleName   = 'DFSDsc'
+$script:DSCResourceName = 'MSFT_DFSDscNamespaceServerConfiguration'
 
 #region HEADER
 # Integration Test Template Version: 1.1.0
-[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\xDFS'
+[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\DFSDsc'
 
 if ( (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
      (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )

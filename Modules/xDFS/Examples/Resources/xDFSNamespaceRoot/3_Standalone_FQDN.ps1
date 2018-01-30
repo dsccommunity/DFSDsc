@@ -17,7 +17,7 @@ Configuration Example
         $Credential
     )
 
-    Import-DscResource -ModuleName 'xDFS'
+    Import-DscResource -ModuleName 'DFSDsc'
 
     Node $NodeName
     {
@@ -38,15 +38,15 @@ Configuration Example
         }
 
         # Configure the namespace server
-        xDFSNamespaceServerConfiguration DFSNamespaceConfig
+        DFSDscNamespaceServerConfiguration DFSNamespaceConfig
         {
             IsSingleInstance          = 'Yes'
             UseFQDN                   = $true
             PsDscRunAsCredential      = $Credential
-        } # End of xDFSNamespaceServerConfiguration Resource
+        } # End of DFSDscNamespaceServerConfiguration Resource
 
         # Configure the namespace
-        xDFSNamespaceRoot DFSNamespaceRoot_Standalone_Public
+        DFSDscNamespaceRoot DFSNamespaceRoot_Standalone_Public
         {
             Path                 = '\\fileserver1.contoso.com\public'
             TargetPath           = '\\fileserver1.contoso.com\public'
@@ -57,7 +57,7 @@ Configuration Example
         } # End of DFSNamespaceRoot Resource
 
         # Configure the namespace folder
-        xDFSNamespaceFolder DFSNamespaceFolder_Standalone_PublicBrochures
+        DFSDscNamespaceFolder DFSNamespaceFolder_Standalone_PublicBrochures
         {
             Path                 = '\\fileserver1.contoso.com\public\brochures'
             TargetPath           = '\\fileserver2.contoso.com\brochures'

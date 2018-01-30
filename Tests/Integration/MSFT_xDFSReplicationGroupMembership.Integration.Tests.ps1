@@ -7,7 +7,7 @@ These integration tests can only be run on a computer that:
    to create a DFS Replication Group.
 
 If the above are available then to allow these tests to be run a
-MSFT_xDFSReplicationGroupMembership.config.json file must be created in the same folder as
+MSFT_DFSDscReplicationGroupMembership.config.json file must be created in the same folder as
 this file. The content should be a customized version of the following:
 {
     "Username":  "contoso.com\\Administrator",
@@ -28,8 +28,8 @@ this file. The content should be a customized version of the following:
 
 If the above are available and configured these integration tests will run.
 #>
-$script:DSCModuleName   = 'xDFS'
-$script:DSCResourceName = 'MSFT_xDFSReplicationGroupMembership'
+$script:DSCModuleName   = 'DFSDsc'
+$script:DSCResourceName = 'MSFT_DFSDscReplicationGroupMembership'
 
 # Test to see if the config file is available.
 $configFile = "$([System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path))\$($script:DSCResourceName).config.json"
@@ -41,7 +41,7 @@ if (! (Test-Path -Path $configFile))
 
 #region HEADER
 # Integration Test Template Version: 1.1.0
-[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\xDFS'
+[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\DFSDsc'
 
 if ( (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
      (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )

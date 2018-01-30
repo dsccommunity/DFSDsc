@@ -17,7 +17,7 @@ Configuration Example
         $Credential
     )
 
-    Import-DscResource -ModuleName 'xDFS'
+    Import-DscResource -ModuleName 'DFSDsc'
 
     Node $NodeName
     {
@@ -38,7 +38,7 @@ Configuration Example
         }
 
         # Configure the namespace
-        xDFSNamespaceRoot DFSNamespaceRoot_Domain_Departments
+        DFSDscNamespaceRoot DFSNamespaceRoot_Domain_Departments
         {
             Path                 = '\\contoso.com\departments'
             TargetPath           = '\\fs_1\departments'
@@ -50,7 +50,7 @@ Configuration Example
         } # End of DFSNamespaceRoot Resource
 
         # Configure the namespace folders
-        xDFSNamespaceFolder DFSNamespaceFolder_Domain_Finance
+        DFSDscNamespaceFolder DFSNamespaceFolder_Domain_Finance
         {
             Path                 = '\\contoso.com\departments\finance'
             TargetPath           = '\\fs_3\Finance'
@@ -58,9 +58,9 @@ Configuration Example
             Description          = 'AD Domain based DFS namespace folder for storing finance files'
             TimeToLiveSec        = 600
             PsDscRunAsCredential = $Credential
-        } # End of xDFSNamespaceFolder Resource
+        } # End of DFSDscNamespaceFolder Resource
 
-        xDFSNamespaceFolder DFSNamespaceFolder_Domain_Management
+        DFSDscNamespaceFolder DFSNamespaceFolder_Domain_Management
         {
             Path                 = '\\contoso.com\departments\management'
             TargetPath           = '\\fs_8\Management'
@@ -68,6 +68,6 @@ Configuration Example
             Description          = 'AD Domain based DFS namespace folder for storing management files'
             TimeToLiveSec        = 600
             PsDscRunAsCredential = $Credential
-        } # End of xDFSNamespaceFolder Resource
+        } # End of DFSDscNamespaceFolder Resource
     }
 }

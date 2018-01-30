@@ -1,9 +1,9 @@
-$script:DSCModuleName   = 'xDFS'
-$script:DSCResourceName = 'MSFT_xDFSNamespaceFolder'
+$script:DSCModuleName   = 'DFSDsc'
+$script:DSCResourceName = 'MSFT_DFSDscNamespaceFolder'
 
 #region HEADER
 # Unit Test Template Version: 1.1.0
-[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\xDFS'
+[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\DFSDsc'
 if ( (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
      (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
 {
@@ -89,7 +89,7 @@ try
             TargetPath                   = $namespace.TargetPath
         }
 
-        Describe "MSFT_xDFSNamespaceFolder\Get-TargetResource" {
+        Describe "MSFT_DFSDscNamespaceFolder\Get-TargetResource" {
             Context 'Namespace Folder does not exist' {
                 Mock Get-DFSNFolder
                 Mock Get-DFSNFolderTarget
@@ -154,7 +154,7 @@ try
             }
         }
 
-        Describe "MSFT_xDFSNamespaceFolder\Set-TargetResource" {
+        Describe "MSFT_DFSDscNamespaceFolder\Set-TargetResource" {
             Mock New-DFSNFolder
             Mock Set-DFSNFolder
             Mock New-DFSNFolderTarget
@@ -412,7 +412,7 @@ try
             }
         }
 
-        Describe "MSFT_xDFSNamespaceFolder\Test-TargetResource" {
+        Describe "MSFT_DFSDscNamespaceFolder\Test-TargetResource" {
             Context 'Namespace Folder does not exist but should' {
                 Mock Get-DFSNFolder
                 Mock Get-DFSNFolderTarget
@@ -587,7 +587,7 @@ try
             }
         }
 
-        Describe "MSFT_xDFSNamespaceFolder\Get-Folder" {
+        Describe "MSFT_DFSDscNamespaceFolder\Get-Folder" {
             Context 'DFSN Folder does not exist' {
                 $errorId = 'Cannot get DFS folder properites on "{0}"' -f $namespaceFolder.Path
                 $errorCategory = 'NotSpecified'
@@ -628,7 +628,7 @@ try
             }
         }
 
-        Describe "MSFT_xDFSNamespaceFolder\Get-FolderTarget" {
+        Describe "MSFT_DFSDscNamespaceFolder\Get-FolderTarget" {
             Context 'DFSN Folder Target does not exist' {
                 $errorId = 'Cannot get DFS target properites on "{0}"' -f $namespaceTarget.TargetPath
                 $errorCategory = 'NotSpecified'

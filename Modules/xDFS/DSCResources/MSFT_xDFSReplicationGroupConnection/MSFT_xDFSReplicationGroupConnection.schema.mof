@@ -1,5 +1,5 @@
-[ClassVersion("1.0.0.0"), FriendlyName("xDFSReplicationGroupConnection")]
-class MSFT_xDFSReplicationGroupConnection : OMI_BaseResource
+[ClassVersion("1.0.0.0"), FriendlyName("DFSDscReplicationGroupConnection")]
+class MSFT_DFSDscReplicationGroupConnection : OMI_BaseResource
 {
     [Key, Description("The name of the DFS Replication Group.")] String GroupName;
     [Key, Description("The name of the Replication Group source computer for the connection. This can be specified using either the ComputerName or FQDN name for the member. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match.")] String SourceComputerName;

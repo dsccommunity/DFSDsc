@@ -7,7 +7,7 @@ Import-Module -Name (Join-Path -Path $modulePath `
 
 # Import Localization Strings
 $localizedData = Get-LocalizedData `
-    -ResourceName 'MSFT_xDFSNamespaceFolder' `
+    -ResourceName 'MSFT_DFSDscNamespaceFolder' `
     -ResourcePath (Split-Path -Parent $Script:MyInvocation.MyCommand.Path)
 
 <#

@@ -17,7 +17,7 @@ Configuration Example
         $Credential
     )
 
-    Import-DscResource -ModuleName 'xDFS'
+    Import-DscResource -ModuleName 'DFSDsc'
 
     Node $NodeName
     {
@@ -38,7 +38,7 @@ Configuration Example
         }
 
        # Configure the namespace
-        xDFSNamespaceRoot DFSNamespaceRoot_Domain_Software_CA
+        DFSDscNamespaceRoot DFSNamespaceRoot_Domain_Software_CA
         {
             Path                 = '\\contoso.com\software'
             TargetPath           = '\\ca-fileserver\software'
@@ -48,7 +48,7 @@ Configuration Example
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceRoot Resource
 
-        xDFSNamespaceRoot DFSNamespaceRoot_Domain_Software_MA
+        DFSDscNamespaceRoot DFSNamespaceRoot_Domain_Software_MA
         {
             Path                 = '\\contoso.com\software'
             TargetPath           = '\\ma-fileserver\software'
@@ -58,7 +58,7 @@ Configuration Example
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceRoot Resource
 
-        xDFSNamespaceRoot DFSNamespaceRoot_Domain_Software_NY
+        DFSDscNamespaceRoot DFSNamespaceRoot_Domain_Software_NY
         {
             Path                 = '\\contoso.com\software'
             TargetPath           = '\\ny-fileserver\software'
@@ -69,31 +69,31 @@ Configuration Example
         } # End of DFSNamespaceRoot Resource
 
         # Configure the namespace folders
-        xDFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_CA
+        DFSDscNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_CA
         {
             Path                 = '\\contoso.com\software\it'
             TargetPath           = '\\ca-fileserver\it'
             Ensure               = 'Present'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
             PsDscRunAsCredential = $Credential
-        } # End of xDFSNamespaceFolder Resource
+        } # End of DFSDscNamespaceFolder Resource
 
-        xDFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_MA
+        DFSDscNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_MA
         {
             Path                 = '\\contoso.com\software\it'
             TargetPath           = '\\ma-fileserver\it'
             Ensure               = 'Present'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
             PsDscRunAsCredential = $Credential
-        } # End of xDFSNamespaceFolder Resource
+        } # End of DFSDscNamespaceFolder Resource
 
-        xDFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_NY
+        DFSDscNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_NY
         {
             Path                 = '\\contoso.com\software\it'
             TargetPath           = '\\ny-fileserver\it'
             Ensure               = 'Present'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
             PsDscRunAsCredential = $Credential
-        } # End of xDFSNamespaceFolder Resource
+        } # End of DFSDscNamespaceFolder Resource
     }
 }

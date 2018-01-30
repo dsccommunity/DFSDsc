@@ -1,9 +1,9 @@
-$script:DSCModuleName   = 'xDFS'
-$script:DSCResourceName = 'MSFT_xDFSReplicationGroupMembership'
+$script:DSCModuleName   = 'DFSDsc'
+$script:DSCResourceName = 'MSFT_DFSDscReplicationGroupMembership'
 
 #region HEADER
 # Unit Test Template Version: 1.1.0
-[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\xDFS'
+[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\DFSDsc'
 if ( (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
      (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
 {
@@ -87,7 +87,7 @@ try
             PrimaryMember = $True
         }
 
-        Describe "MSFT_xDFSReplicationGroupMembership\Get-TargetResource" {
+        Describe "MSFT_DFSDscReplicationGroupMembership\Get-TargetResource" {
             Context 'Replication group folder does not exist' {
                 Mock Get-DfsrMembership
 
@@ -160,7 +160,7 @@ try
             }
         }
 
-        Describe "MSFT_xDFSReplicationGroupMembership\Set-TargetResource"{
+        Describe "MSFT_DFSDscReplicationGroupMembership\Set-TargetResource"{
             Context 'Replication group membership exists and has no differences' {
                 Mock Set-DfsrMembership
 
@@ -251,7 +251,7 @@ try
             }
         }
 
-        Describe "MSFT_xDFSReplicationGroupMembership\Test-TargetResource" {
+        Describe "MSFT_DFSDscReplicationGroupMembership\Test-TargetResource" {
             Context 'Replication group membership does not exist' {
                 Mock Get-DfsrMembership
 

@@ -30,10 +30,10 @@ $ReplicationGroupFolder = @{
     PSDSCRunAsCredential    = New-Object System.Management.Automation.PSCredential ($TestConfig.Username, $TestPassword)
 }
 
-Configuration MSFT_xDFSReplicationGroupFolder_Config {
-    Import-DscResource -ModuleName xDFS
+Configuration MSFT_DFSDscReplicationGroupFolder_Config {
+    Import-DscResource -ModuleName DFSDsc
     node localhost {
-        xDFSReplicationGroupFolder Integration_Test {
+        DFSDscReplicationGroupFolder Integration_Test {
             GroupName                   = $ReplicationGroupFolder.GroupName
             FolderName                  = $ReplicationGroupFolder.FolderName
             Description                 = $ReplicationGroupFolder.Description

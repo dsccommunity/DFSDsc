@@ -1,9 +1,9 @@
-$script:DSCModuleName   = 'xDFS'
-$script:DSCResourceName = 'MSFT_xDFSReplicationGroup'
+$script:DSCModuleName   = 'DFSDsc'
+$script:DSCResourceName = 'MSFT_DFSDscReplicationGroup'
 
 #region HEADER
 # Unit Test Template Version: 1.1.0
-[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\xDFS'
+[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\DFSDsc'
 if ( (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
      (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
 {
@@ -211,7 +211,7 @@ try
         $replicationGroupContentPath = $replicationGroup.Clone()
         $replicationGroupContentPath += @{ ContentPaths = @($mockReplicationGroupMembership.ContentPath) }
 
-        Describe "MSFT_xDFSReplicationGroup\Get-TargetResource" {
+        Describe "MSFT_DFSDscReplicationGroup\Get-TargetResource" {
             Context 'No replication groups exist' {
                 Mock Get-DfsReplicationGroup
                 Mock Get-DfsrMember
@@ -270,7 +270,7 @@ try
             }
         }
 
-        Describe "MSFT_xDFSReplicationGroup\Set-TargetResource" {
+        Describe "MSFT_DFSDscReplicationGroup\Set-TargetResource" {
             Context 'Replication Group does not exist but should' {
                 Mock Get-DfsReplicationGroup
                 Mock New-DfsReplicationGroup
@@ -924,7 +924,7 @@ try
             }
         }
 
-        Describe "MSFT_xDFSReplicationGroup\Test-TargetResource" {
+        Describe "MSFT_DFSDscReplicationGroup\Test-TargetResource" {
             Context 'Replication Group does not exist but should' {
                 Mock Get-DfsReplicationGroup
                 Mock Get-DfsrMember
@@ -1284,7 +1284,7 @@ try
             }
         }
 
-        Describe "MSFT_xDFSReplicationGroup\Get-FQDNMemberName" {
+        Describe "MSFT_DFSDscReplicationGroup\Get-FQDNMemberName" {
             Context 'ComputerName passed includes Domain Name that matches DomainName' {
                 It 'Should return correct FQDN' {
                     $splat = @{

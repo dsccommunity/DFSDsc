@@ -1,9 +1,9 @@
-$script:DSCModuleName   = 'xDFS'
-$script:DSCResourceName = 'MSFT_xDFSReplicationGroupFolder'
+$script:DSCModuleName   = 'DFSDsc'
+$script:DSCResourceName = 'MSFT_DFSDscReplicationGroupFolder'
 
 #region HEADER
 # Unit Test Template Version: 1.1.0
-[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\xDFS'
+[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\DFSDsc'
 if ( (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
      (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
 {
@@ -96,7 +96,7 @@ try
             }
         )
 
-        Describe "MSFT_xDFSReplicationGroupFolder\Get-TargetResource" {
+        Describe "MSFT_DFSDscReplicationGroupFolder\Get-TargetResource" {
             Context 'Replication group folder does not exist' {
                 Mock Get-DfsReplicatedFolder
 
@@ -143,7 +143,7 @@ try
             }
         }
 
-        Describe "MSFT_xDFSReplicationGroupFolder\Set-TargetResource" {
+        Describe "MSFT_DFSDscReplicationGroupFolder\Set-TargetResource" {
             Context 'Replication group folder exists but has different Description' {
                 Mock Set-DfsReplicatedFolder
 
@@ -201,7 +201,7 @@ try
             }
         }
 
-        Describe "MSFT_xDFSReplicationGroupFolder\Test-TargetResource" {
+        Describe "MSFT_DFSDscReplicationGroupFolder\Test-TargetResource" {
             Context 'Replication group folder does not exist' {
                 Mock Get-DfsReplicatedFolder
 

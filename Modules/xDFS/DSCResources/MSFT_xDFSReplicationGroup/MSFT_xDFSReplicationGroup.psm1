@@ -138,7 +138,7 @@ function Get-TargetResource
     Folders. This can have one entry for each Folder in the Folders
     parameter and should be set in th same order. If any entry is not blank
     then the Content Paths will need to be set manually by
-    using the xDFSReplicationGroupMembership resource.
+    using the DFSDscReplicationGroupMembership resource.
 
     .PARAMETER DomainName
     The AD domain the Replication Group should created in.
@@ -269,7 +269,7 @@ function Set-TargetResource
         foreach ($member in $Members)
         {
             $replicationGroupParameters.ComputerName = $member
-            $fqdnMembers += @(  
+            $fqdnMembers += @(
                 Get-FQDNMemberName @replicationGroupParameters
             )
         } # foreach
@@ -516,7 +516,7 @@ function Set-TargetResource
     Folders. This can have one entry for each Folder in the Folders
     parameter and should be set in th same order. If any entry is not blank
     then the Content Paths will need to be set manually by
-    using the xDFSReplicationGroupMembership resource.
+    using the DFSDscReplicationGroupMembership resource.
 
     .PARAMETER DomainName
     The AD domain the Replication Group should created in.

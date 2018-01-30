@@ -18,7 +18,7 @@ Configuration Example
         $Credential
     )
 
-    Import-DscResource -Module xDFS
+    Import-DscResource -Module DFSDsc
 
     Node $NodeName
     {
@@ -33,7 +33,7 @@ Configuration Example
         }
 
         # Configure the Replication Group
-        xDFSReplicationGroup RGPublic
+        DFSDscReplicationGroup RGPublic
         {
             GroupName = 'Public'
             Description = 'Public files for use by all departments'

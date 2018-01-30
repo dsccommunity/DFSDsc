@@ -29,10 +29,10 @@ $ReplicationGroup = @{
     PSDSCRunAsCredential = New-Object System.Management.Automation.PSCredential ($TestConfig.Username, $TestPassword)
 }
 
-Configuration MSFT_xDFSReplicationGroup_Config {
-    Import-DscResource -ModuleName xDFS
+Configuration MSFT_DFSDscReplicationGroup_Config {
+    Import-DscResource -ModuleName DFSDsc
     node localhost {
-        xDFSReplicationGroup Integration_Test {
+        DFSDscReplicationGroup Integration_Test {
             GroupName                   = $ReplicationGroup.GroupName
             Description                 = $ReplicationGroup.Description
             Ensure                      = $ReplicationGroup.Ensure

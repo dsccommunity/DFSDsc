@@ -29,10 +29,10 @@ $ReplicationGroupConnection = @{
     PSDSCRunAsCredential    = New-Object System.Management.Automation.PSCredential ($TestConfig.Username, $TestPassword)
 }
 
-Configuration MSFT_xDFSReplicationGroupConnection_Config {
-    Import-DscResource -ModuleName xDFS
+Configuration MSFT_DFSDscReplicationGroupConnection_Config {
+    Import-DscResource -ModuleName DFSDsc
     node localhost {
-        xDFSReplicationGroupConnection Integration_Test {
+        DFSDscReplicationGroupConnection Integration_Test {
             GroupName                   = $ReplicationGroupConnection.GroupName
             Ensure                      = 'Present'
             SourceComputerName          = $ReplicationGroupConnection.SourceComputerName
