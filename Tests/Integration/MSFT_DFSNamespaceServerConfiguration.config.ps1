@@ -7,7 +7,7 @@ $NamespaceServerConfiguration = @{
 Configuration MSFT_DFSNamespaceServerConfiguration_Config {
     Import-DscResource -ModuleName DFSDsc
     node localhost {
-        DFSDscNamespaceServerConfiguration Integration_Test {
+        DFSNamespaceServerConfiguration Integration_Test {
             IsSingleInstance             = 'Yes'
             LdapTimeoutSec               = $NamespaceServerConfiguration.LdapTimeoutSec
             SyncIntervalSec              = $NamespaceServerConfiguration.SyncIntervalSec

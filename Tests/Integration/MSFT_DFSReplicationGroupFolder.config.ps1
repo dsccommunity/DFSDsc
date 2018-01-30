@@ -33,7 +33,7 @@ $ReplicationGroupFolder = @{
 Configuration MSFT_DFSReplicationGroupFolder_Config {
     Import-DscResource -ModuleName DFSDsc
     node localhost {
-        DFSDscReplicationGroupFolder Integration_Test {
+        DFSReplicationGroupFolder Integration_Test {
             GroupName                   = $ReplicationGroupFolder.GroupName
             FolderName                  = $ReplicationGroupFolder.FolderName
             Description                 = $ReplicationGroupFolder.Description

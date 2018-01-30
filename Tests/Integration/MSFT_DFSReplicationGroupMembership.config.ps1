@@ -34,7 +34,7 @@ $ReplicationGroupMembership = @{
 Configuration MSFT_DFSReplicationGroupMembership_Config {
     Import-DscResource -ModuleName DFSDsc
     node localhost {
-        DFSDscReplicationGroupMembership Integration_Test {
+        DFSReplicationGroupMembership Integration_Test {
             GroupName                   = $ReplicationGroupMembership.GroupName
             FolderName                  = $ReplicationGroupMembership.FolderName
             ComputerName                = $ReplicationGroupMembership.ComputerName

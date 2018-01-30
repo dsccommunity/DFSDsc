@@ -18,7 +18,7 @@ $NamespaceFolder = @{
 Configuration MSFT_DFSNamespaceFolder_Config {
     Import-DscResource -ModuleName DFSDsc
     node localhost {
-        DFSDscNamespaceFolder Integration_Test {
+        DFSNamespaceFolder Integration_Test {
             Path                         = $NamespaceFolder.Path
             TargetPath                   = $NamespaceFolder.TargetPath
             Ensure                       = $NamespaceFolder.Ensure

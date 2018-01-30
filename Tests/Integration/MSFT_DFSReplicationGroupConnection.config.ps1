@@ -32,7 +32,7 @@ $ReplicationGroupConnection = @{
 Configuration MSFT_DFSReplicationGroupConnection_Config {
     Import-DscResource -ModuleName DFSDsc
     node localhost {
-        DFSDscReplicationGroupConnection Integration_Test {
+        DFSReplicationGroupConnection Integration_Test {
             GroupName                   = $ReplicationGroupConnection.GroupName
             Ensure                      = 'Present'
             SourceComputerName          = $ReplicationGroupConnection.SourceComputerName

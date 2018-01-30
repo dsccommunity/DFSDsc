@@ -18,7 +18,7 @@ $NamespaceRoot = @{
 Configuration MSFT_DFSNamespaceRoot_Config {
     Import-DscResource -ModuleName DFSDsc
     node localhost {
-        DFSDscNamespaceRoot Integration_Test {
+        DFSNamespaceRoot Integration_Test {
             Path                         = $NamespaceRoot.Path
             TargetPath                   = $NamespaceRoot.TargetPath
             Ensure                       = $NamespaceRoot.Ensure
