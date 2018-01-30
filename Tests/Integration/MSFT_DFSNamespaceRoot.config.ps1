@@ -15,7 +15,7 @@ $NamespaceRoot = @{
     ReferralPriorityRank         = 10
 }
 
-Configuration MSFT_DFSDscNamespaceRoot_Config {
+Configuration MSFT_DFSNamespaceRoot_Config {
     Import-DscResource -ModuleName DFSDsc
     node localhost {
         DFSDscNamespaceRoot Integration_Test {

@@ -1,5 +1,5 @@
 $script:DSCModuleName   = 'DFSDsc'
-$script:DSCResourceName = 'MSFT_DFSDscnamespaceServerConfiguration'
+$script:DSCResourceName = 'MSFT_DFSNamespaceServerConfiguration'
 
 #region HEADER
 # Unit Test Template Version: 1.1.0
@@ -65,7 +65,7 @@ try
             UseFQDN                      = $namespaceServerConfiguration.UseFQDN
         }
 
-        Describe "MSFT_DFSDscnamespaceServerConfiguration\Get-TargetResource" {
+        Describe "MSFT_DFSNamespaceServerConfiguration\Get-TargetResource" {
             Context 'Namespace Server Configuration Exists' {
                 Mock Get-DFSNServerConfiguration -MockWith { $namespaceServerConfiguration }
 
@@ -82,7 +82,7 @@ try
             }
         }
 
-        Describe "MSFT_DFSDscnamespaceServerConfiguration\Set-TargetResource" {
+        Describe "MSFT_DFSNamespaceServerConfiguration\Set-TargetResource" {
             Mock Get-DFSNServerConfiguration -MockWith { $namespaceServerConfiguration }
             Mock Set-DFSNServerConfiguration
 
@@ -146,7 +146,7 @@ try
             }
         }
 
-        Describe "MSFT_DFSDscnamespaceServerConfiguration\Test-TargetResource" {
+        Describe "MSFT_DFSNamespaceServerConfiguration\Test-TargetResource" {
             Mock Get-DFSNServerConfiguration -MockWith { $namespaceServerConfiguration }
 
             Context 'Namespace Server Configuration all parameters are the same' {

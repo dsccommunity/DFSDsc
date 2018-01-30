@@ -15,7 +15,7 @@ $NamespaceFolder = @{
     ReferralPriorityRank         = 10
 }
 
-Configuration MSFT_DFSDscNamespaceFolder_Config {
+Configuration MSFT_DFSNamespaceFolder_Config {
     Import-DscResource -ModuleName DFSDsc
     node localhost {
         DFSDscNamespaceFolder Integration_Test {

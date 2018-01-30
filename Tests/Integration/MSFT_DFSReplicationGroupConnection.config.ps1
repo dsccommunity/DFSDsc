@@ -29,7 +29,7 @@ $ReplicationGroupConnection = @{
     PSDSCRunAsCredential    = New-Object System.Management.Automation.PSCredential ($TestConfig.Username, $TestPassword)
 }
 
-Configuration MSFT_DFSDscReplicationGroupConnection_Config {
+Configuration MSFT_DFSReplicationGroupConnection_Config {
     Import-DscResource -ModuleName DFSDsc
     node localhost {
         DFSDscReplicationGroupConnection Integration_Test {

@@ -1,5 +1,5 @@
-[ClassVersion("1.0.0.0"), FriendlyName("DFSDscNamespaceRoot")]
-class MSFT_DFSDscNamespaceRoot : OMI_BaseResource
+[ClassVersion("1.0.0.0"), FriendlyName("DFSNamespaceRoot")]
+class MSFT_DFSNamespaceRoot : OMI_BaseResource
 {
     [Key, Description("Specifies a path for the root of a DFS namespace.")] String Path;
     [Key, Description("Specifies a path for a root target of the DFS namespace.")] String TargetPath;

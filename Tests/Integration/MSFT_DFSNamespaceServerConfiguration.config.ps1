@@ -4,7 +4,7 @@ $NamespaceServerConfiguration = @{
     UseFQDN                      = $True
 }
 
-Configuration MSFT_DFSDscNamespaceServerConfiguration_Config {
+Configuration MSFT_DFSNamespaceServerConfiguration_Config {
     Import-DscResource -ModuleName DFSDsc
     node localhost {
         DFSDscNamespaceServerConfiguration Integration_Test {

@@ -1,5 +1,5 @@
-[ClassVersion("1.0.0.0"), FriendlyName("DFSDscReplicationGroupFolder")]
-class MSFT_DFSDscReplicationGroupFolder : OMI_BaseResource
+[ClassVersion("1.0.0.0"), FriendlyName("DFSReplicationGroupFolder")]
+class MSFT_DFSReplicationGroupFolder : OMI_BaseResource
 {
     [Key, Description("The name of the DFS Replication Group.")] String GroupName;
     [Key, Description("The name of the DFS Replication Group Folder.")] String FolderName;

@@ -7,7 +7,7 @@ These integration tests can only be run on a computer that:
    to create a DFS Replication Group.
 
 If the above are available then to allow these tests to be run a
-MSFT_DFSDscReplicationGroupMembership.config.json file must be created in the same folder as
+MSFT_DFSReplicationGroupMembership.config.json file must be created in the same folder as
 this file. The content should be a customized version of the following:
 {
     "Username":  "contoso.com\\Administrator",
@@ -29,7 +29,7 @@ this file. The content should be a customized version of the following:
 If the above are available and configured these integration tests will run.
 #>
 $script:DSCModuleName   = 'DFSDsc'
-$script:DSCResourceName = 'MSFT_DFSDscReplicationGroupMembership'
+$script:DSCResourceName = 'MSFT_DFSReplicationGroupMembership'
 
 # Test to see if the config file is available.
 $configFile = "$([System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path))\$($script:DSCResourceName).config.json"

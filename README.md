@@ -6,19 +6,19 @@ folders are supported. Namespaces will be supported in a future release.
 
 The **DFSDsc** module contains the following resources:
 
-- **[DFSDscNamespaceFolder](https://github.com/PowerShell/DFSDsc/wiki/DFSDscNamespaceFolder)**:
+- **[DFSNamespaceFolder](https://github.com/PowerShell/DFSDsc/wiki/DFSNamespaceFolder)**:
   Create, edit or remove folders from DFS namespaces.
-- **[DFSDscNamespaceRoot](https://github.com/PowerShell/DFSDsc/wiki/DFSDscNamespaceRoot)**:
+- **[DFSNamespaceRoot](https://github.com/PowerShell/DFSDsc/wiki/DFSNamespaceRoot)**:
   Create, edit or remove standalone or domain based DFS namespaces.
-- **[DFSDscNamespaceServerConfiguration](https://github.com/PowerShell/DFSDsc/wiki/DFSDscNamespaceServerConfiguration)**:
+- **[DFSNamespaceServerConfiguration](https://github.com/PowerShell/DFSDsc/wiki/DFSNamespaceServerConfiguration)**:
   Configure DFS Namespace server settings.
-- **[DFSDscReplicationGroup](https://github.com/PowerShell/DFSDsc/wiki/DFSDscReplicationGroup)**:
+- **[DFSReplicationGroup](https://github.com/PowerShell/DFSDsc/wiki/DFSReplicationGroup)**:
   Create, edit or remove DFS Replication Groups.
-- **[DFSDscReplicationGroupConnection](https://github.com/PowerShell/DFSDsc/wiki/DFSDscReplicationGroupConnection)**:
+- **[DFSReplicationGroupConnection](https://github.com/PowerShell/DFSDsc/wiki/DFSReplicationGroupConnection)**:
   Create, edit and remove DFS Replication Group connections.
-- **[DFSDscReplicationGroupFolder](https://github.com/PowerShell/DFSDsc/wiki/DFSDscReplicationGroupFolder)**:
+- **[DFSReplicationGroupFolder](https://github.com/PowerShell/DFSDsc/wiki/DFSReplicationGroupFolder)**:
   Configure DFS Replication Group folders.
-- **[DFSDscReplicationGroupMembership](https://github.com/PowerShell/DFSDsc/wiki/DFSDscReplicationGroupMembership)**:
+- **[DFSReplicationGroupMembership](https://github.com/PowerShell/DFSDsc/wiki/DFSReplicationGroupMembership)**:
   Configure Replication Group Folder Membership.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).

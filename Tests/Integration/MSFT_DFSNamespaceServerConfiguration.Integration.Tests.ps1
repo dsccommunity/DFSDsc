@@ -1,5 +1,5 @@
 $script:DSCModuleName   = 'DFSDsc'
-$script:DSCResourceName = 'MSFT_DFSDscNamespaceServerConfiguration'
+$script:DSCResourceName = 'MSFT_DFSNamespaceServerConfiguration'
 
 #region HEADER
 # Integration Test Template Version: 1.1.0
