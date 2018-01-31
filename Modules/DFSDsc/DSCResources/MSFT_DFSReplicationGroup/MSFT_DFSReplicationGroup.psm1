@@ -88,7 +88,7 @@ function Get-TargetResource
             Folders = @()
             ContentPaths = @()
         }
-    }
+    } #if
     else
     {
         Write-Verbose -Message ( @(
@@ -100,7 +100,7 @@ function Get-TargetResource
         $returnValue += @{
             Ensure = 'Absent'
         }
-    } # if
+    } # else
 
     return $returnValue
 } # Get-TargetResource
@@ -239,7 +239,7 @@ function Set-TargetResource
                         -f $GroupName
                     ) -join '' )
             } # if
-        }
+        } # if
         else
         {
             # Ths Rep Groups doesn't exist - Create it
@@ -256,7 +256,7 @@ function Set-TargetResource
                 $($LocalizedData.ReplicationGroupCreatedMessage) `
                     -f $GroupName
                 ) -join '' )
-        } # if
+        } # else
 
         # Clean up the splat so we can use it in the next cmdlets
         $replicationGroupParameters.Remove('Description')
@@ -383,7 +383,7 @@ function Set-TargetResource
                         {
                             # Don't update this membership
                             continue
-                        }
+                        } #if
 
                         # The Content Path for this member needs to be set
                         Set-DfsrMembership @replicationGroupParameters `
@@ -453,12 +453,12 @@ function Set-TargetResource
                                     $($LocalizedData.ReplicationGroupFullMeshConnectionAddedMessage) `
                                     -f  $GroupName,$source,$destination
                                 ) -join '' )
-                        } # else
+                        } # if
                     } # foreach
                 } # foreach
             } # 'Fullmesh'
         } # swtich
-    }
+    } #if
     else
     {
         # The Rep Group should not exist
@@ -482,7 +482,7 @@ function Set-TargetResource
                     -f $GroupName
                 ) -join '' )
         } # if
-    } #else
+    } # if
 } # Set-TargetResource
 
 <#
@@ -655,7 +655,7 @@ function Test-TargetResource
                     ) -join '' )
 
                 $desiredConfigurationMatch = $false
-            }
+            } # if
 
             # Get the content paths (if any were passed in the array)
             if ($ContentPaths)
@@ -681,7 +681,7 @@ function Test-TargetResource
                             {
                                 # This membership is in the correct state.
                                 continue
-                            }
+                            } # if
 
                             Write-Verbose -Message ( @(
                                 "$($MyInvocation.MyCommand): "
@@ -743,12 +743,12 @@ function Test-TargetResource
                                     ) -join '' )
 
                                 $desiredConfigurationMatch = $false
-                            } # if
+                            } # else
                         } # foreach
                     } # foreach
                 } # 'fullmesh'
             } # switch
-        }
+        } # if
         else
         {
             # Ths RG doesn't exist but should
@@ -759,7 +759,7 @@ function Test-TargetResource
                 ) -join '' )
 
             $desiredConfigurationMatch = $false
-        } # if
+        } # else
     }
     else
     {
@@ -774,7 +774,7 @@ function Test-TargetResource
                 ) -join '' )
 
             $desiredConfigurationMatch = $false
-        }
+        } # if
         else
         {
             # The RG does not exist and should not
@@ -783,8 +783,8 @@ function Test-TargetResource
                 $($LocalizedData.ReplicationGroupDoesNotExistAndShouldNotMessage) `
                     -f $GroupName
                 ) -join '' )
-        } # if
-    } # if
+        } # else
+    } # else
 
     return $desiredConfigurationMatch
 } # Test-TargetResource
