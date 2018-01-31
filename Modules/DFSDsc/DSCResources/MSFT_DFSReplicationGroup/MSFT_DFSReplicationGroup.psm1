@@ -442,7 +442,7 @@ function Set-TargetResource
                                         -f  $GroupName,$source,$destination
                                     ) -join '' )
                             } # if
-                        }
+                        } # if
                         else
                         {
                             Add-DfsrConnection @replicationGroupParameters `
@@ -453,7 +453,7 @@ function Set-TargetResource
                                     $($LocalizedData.ReplicationGroupFullMeshConnectionAddedMessage) `
                                     -f  $GroupName,$source,$destination
                                 ) -join '' )
-                        } # if
+                        } # else
                     } # foreach
                 } # foreach
             } # 'Fullmesh'
@@ -481,8 +481,8 @@ function Set-TargetResource
                 $($LocalizedData.ReplicationGroupExistsRemovedMessage) `
                     -f $GroupName
                 ) -join '' )
-        }
-    } # if
+        } # if
+    } #else
 } # Set-TargetResource
 
 <#
