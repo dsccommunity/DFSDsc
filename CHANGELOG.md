@@ -3,7 +3,7 @@
 ## Unreleased
 
 - BREAKING CHANGE
-  - Renamed xDFS to DFSDsc as per https://github.com/PowerShell/xDFS/issues/55
+  - Renamed xDFS to DFSDsc - fixes [Issue #55](https://github.com/PowerShell/xDFS/issues/55)
   - Changed all MSFT_xResourceName to MSFT_ResourceName
   - Updated DSCResources, Examples, Modules and Tests for new naming.
   - Updated Year to 2018 in License and Manifest.
