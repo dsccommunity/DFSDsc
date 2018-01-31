@@ -52,7 +52,7 @@ Configuration Example
             SourceComputerName = 'FileServer1.contoso.com'
             DestinationComputerName = 'FileServer2.contoso.com'
             PSDSCRunAsCredential = $Credential
-        } # End of DFSDscReplicationGroupConnection Resource
+        } # End of DFSReplicationGroupConnection Resource
 
         DFSReplicationGroupConnection RGPublicC2
         {
@@ -61,7 +61,7 @@ Configuration Example
             SourceComputerName = 'FileServer2.contoso.com'
             DestinationComputerName = 'FileServer1.contoso.com'
             PSDSCRunAsCredential = $Credential
-        } # End of DFSDscReplicationGroupConnection Resource
+        } # End of DFSReplicationGroupConnection Resource
 
         DFSReplicationGroupFolder RGSoftwareFolder
         {

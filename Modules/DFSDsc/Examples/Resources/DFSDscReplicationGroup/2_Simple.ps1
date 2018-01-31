@@ -33,7 +33,7 @@ Configuration Example
         }
 
         # Configure the Replication Group
-        DFSDscReplicationGroup RGPublic
+        DFSReplicationGroup RGPublic
         {
             GroupName = 'Public'
             Description = 'Public files for use by all departments'

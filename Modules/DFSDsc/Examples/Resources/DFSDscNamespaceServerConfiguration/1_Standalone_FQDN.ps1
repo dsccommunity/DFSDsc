@@ -38,15 +38,15 @@ Configuration Example
         }
 
         # Configure the namespace server
-        DFSDscNamespaceServerConfiguration DFSNamespaceConfig
+        DFSNamespaceServerConfiguration DFSNamespaceConfig
         {
             IsSingleInstance          = 'Yes'
             UseFQDN                   = $true
             PsDscRunAsCredential      = $Credential
-        } # End of DFSDscNamespaceServerConfiguration Resource
+        } # End of DFSNamespaceServerConfiguration Resource
 
         # Configure the namespace
-        DFSDscNamespaceRoot DFSNamespaceRoot_Standalone_Public
+        DFSNamespaceRoot DFSNamespaceRoot_Standalone_Public
         {
             Path                 = '\\fileserver1.contoso.com\public'
             TargetPath           = '\\fileserver1.contoso.com\public'
@@ -57,7 +57,7 @@ Configuration Example
         } # End of DFSNamespaceRoot Resource
 
         # Configure the namespace folder
-        DFSDscNamespaceFolder DFSNamespaceFolder_Standalone_PublicBrochures
+        DFSNamespaceFolder DFSNamespaceFolder_Standalone_PublicBrochures
         {
             Path                 = '\\fileserver1.contoso.com\public\brochures'
             TargetPath           = '\\fileserver2.contoso.com\brochures'

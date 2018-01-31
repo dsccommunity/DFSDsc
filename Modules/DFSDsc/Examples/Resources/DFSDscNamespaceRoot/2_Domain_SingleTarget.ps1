@@ -58,7 +58,7 @@ Configuration Example
             Description          = 'AD Domain based DFS namespace folder for storing finance files'
             TimeToLiveSec        = 600
             PsDscRunAsCredential = $Credential
-        } # End of DFSDscNamespaceFolder Resource
+        } # End of DFSNamespaceFolder Resource
 
         DFSNamespaceFolder DFSNamespaceFolder_Domain_Management
         {
@@ -68,6 +68,6 @@ Configuration Example
             Description          = 'AD Domain based DFS namespace folder for storing management files'
             TimeToLiveSec        = 600
             PsDscRunAsCredential = $Credential
-        } # End of DFSDscNamespaceFolder Resource
+        } # End of DFSNamespaceFolder Resource
     }
 }

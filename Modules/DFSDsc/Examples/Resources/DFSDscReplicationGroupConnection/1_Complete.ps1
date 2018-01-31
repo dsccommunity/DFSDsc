@@ -34,7 +34,7 @@ Configuration Example
         }
 
         # Configure the Replication Group
-        DFSDscReplicationGroup RGPublic
+        DFSReplicationGroup RGPublic
         {
             GroupName = 'Public'
             Description = 'Public files for use by all departments'
@@ -45,35 +45,35 @@ Configuration Example
             DependsOn = '[WindowsFeature]RSATDFSMgmtConInstall'
         } # End of RGPublic Resource
 
-        DFSDscReplicationGroupConnection RGPublicC1
+        DFSReplicationGroupConnection RGPublicC1
         {
             GroupName = 'Public'
             Ensure = 'Present'
             SourceComputerName = 'FileServer1.contoso.com'
             DestinationComputerName = 'FileServer2.contoso.com'
             PSDSCRunAsCredential = $Credential
-        } # End of DFSDscReplicationGroupConnection Resource
+        } # End of DFSReplicationGroupConnection Resource
 
-        DFSDscReplicationGroupConnection RGPublicC2
+        DFSReplicationGroupConnection RGPublicC2
         {
             GroupName = 'Public'
             Ensure = 'Present'
             SourceComputerName = 'FileServer2.contoso.com'
             DestinationComputerName = 'FileServer1.contoso.com'
             PSDSCRunAsCredential = $Credential
-        } # End of DFSDscReplicationGroupConnection Resource
+        } # End of DFSReplicationGroupConnection Resource
 
-        DFSDscReplicationGroupFolder RGSoftwareFolder
+        DFSReplicationGroupFolder RGSoftwareFolder
         {
             GroupName = 'Public'
             FolderName = 'Software'
             Description = 'DFS Share for storing software installers'
             DirectoryNameToExclude = 'Temp'
             PSDSCRunAsCredential = $Credential
-            DependsOn = '[DFSDscReplicationGroup]RGPublic'
+            DependsOn = '[DFSReplicationGroup]RGPublic'
         } # End of RGPublic Resource
 
-        DFSDscReplicationGroupMembership RGPublicSoftwareFS1
+        DFSReplicationGroupMembership RGPublicSoftwareFS1
         {
             GroupName = 'Public'
             FolderName = 'Software'
@@ -81,17 +81,17 @@ Configuration Example
             ContentPath = 'd:\Public\Software'
             PrimaryMember = $true
             PSDSCRunAsCredential = $Credential
-            DependsOn = '[DFSDscReplicationGroupFolder]RGSoftwareFolder'
+            DependsOn = '[DFSReplicationGroupFolder]RGSoftwareFolder'
         } # End of RGPublicSoftwareFS1 Resource
 
-        DFSDscReplicationGroupMembership RGPublicSoftwareFS2
+        DFSReplicationGroupMembership RGPublicSoftwareFS2
         {
             GroupName = 'Public'
             FolderName = 'Software'
             ComputerName = 'FileServer2.contoso.com'
             ContentPath = 'e:\Data\Public\Software'
             PSDSCRunAsCredential = $Credential
-            DependsOn = '[DFSDscReplicationGroupFolder]RGSoftwareFolder'
+            DependsOn = '[DFSReplicationGroupFolder]RGSoftwareFolder'
         } # End of RGPublicSoftwareFS2 Resource
     } # End of Node
 } # End of Configuration

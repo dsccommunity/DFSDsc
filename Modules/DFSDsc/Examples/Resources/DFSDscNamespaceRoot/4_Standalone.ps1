@@ -38,7 +38,7 @@ Configuration Example
         }
 
         # Configure the namespace
-        DFSDscNamespaceRoot DFSNamespaceRoot_Standalone_Public
+        DFSNamespaceRoot DFSNamespaceRoot_Standalone_Public
         {
             Path                 = '\\fileserver1\public'
             TargetPath           = '\\fileserver1\public'
@@ -49,7 +49,7 @@ Configuration Example
         } # End of DFSNamespaceRoot Resource
 
         # Configure the namespace folder
-        DFSDscNamespaceFolder DFSNamespaceFolder_Standalone_PublicBrochures
+        DFSNamespaceFolder DFSNamespaceFolder_Standalone_PublicBrochures
         {
             Path                 = '\\fileserver1\public\brochures'
             TargetPath           = '\\fileserver2\brochures'
