@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- BREAKING CHANGE
+  - Renamed xDFS to DFSDsc as per https://github.com/PowerShell/xDFS/issues/55
+  - Changed all MSFT_xResourceName to MSFT_ResourceName
+  - Updated DSCResources, Examples, Modules and Tests for new naming.
+  - Updated Year to 2018 in License and Manifest.
+
 - Added the VS Code PowerShell extension formatting settings that cause PowerShell
   files to be formatted as per the DSC Resource kit style guidelines.
 - Improve layout of badge area in README.MD.
