@@ -428,8 +428,10 @@ function Set-TargetResource
                         $replicationGroupConnection = Get-DfsrConnection @replicationGroupParameters `
                             -ErrorAction Stop
 
-                        if ($replicationGroupConnection) {
-                            if (-not $replicationGroupConnection.Enabled) {
+                        if ($replicationGroupConnection)
+                        {
+                            if (-not $replicationGroupConnection.Enabled)
+                            {
                                 Set-DfsrConnection @replicationGroupParameters `
                                     -DisableConnection $false `
                                     -ErrorAction Stop
