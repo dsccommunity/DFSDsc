@@ -100,9 +100,8 @@ try
             TargetPath                   = $namespace.TargetPath
         }
 
-        Describe "MSFT_DFSNamespaceRoot\Get-TargetResource" {
+        Describe 'MSFT_DFSNamespaceRoot\Get-TargetResource' {
             Context 'Namespace Root does not exist' {
-
                 Mock Get-DFSNRoot
                 Mock Get-DFSNRootTarget
 
@@ -175,7 +174,7 @@ try
             }
         }
 
-        Describe "MSFT_DFSNamespaceRoot\Set-TargetResource" {
+        Describe 'MSFT_DFSNamespaceRoot\Set-TargetResource' {
             Mock New-DFSNRoot
             Mock Set-DFSNRoot
             Mock New-DfsnRootTarget
@@ -502,7 +501,7 @@ try
             }
         }
 
-        Describe "MSFT_DFSNamespaceRoot\Test-TargetResource" {
+        Describe 'MSFT_DFSNamespaceRoot\Test-TargetResource' {
             Context 'Namespace Root does not exist but should' {
                 Mock Get-DFSNRoot
                 Mock Get-DFSNRootTarget
@@ -745,7 +744,7 @@ try
             }
         }
 
-        Describe "MSFT_DFSNamespaceRoot\Get-Root" {
+        Describe 'MSFT_DFSNamespaceRoot\Get-Root' {
             Context 'DFSN Root does not exist' {
                 $errorId = 'Cannot get DFS root properites on "{0}"' -f $namespaceRoot.Path
                 $errorCategory = 'NotSpecified'
@@ -784,7 +783,7 @@ try
             }
         }
 
-        Describe "MSFT_DFSNamespaceRoot\Get-RootTarget" {
+        Describe 'MSFT_DFSNamespaceRoot\Get-RootTarget' {
             Context 'DFSN Root Target does not exist' {
                 $errorId = 'Cannot get DFS target properites on "{0}"' -f $namespaceTarget.TargetPath
                 $errorCategory = 'NotSpecified'

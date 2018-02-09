@@ -112,7 +112,7 @@ try
             DomainName = $replicationGroupConnections[0].DomainName
         }
 
-        Describe "MSFT_DFSReplicationGroupConnection\Get-TargetResource" {
+        Describe 'MSFT_DFSReplicationGroupConnection\Get-TargetResource' {
             Context 'No replication group connections exist' {
                 Mock Get-DfsrConnection
 
@@ -181,7 +181,7 @@ try
             }
         }
 
-        Describe "MSFT_DFSReplicationGroupConnection\Set-TargetResource" {
+        Describe 'MSFT_DFSReplicationGroupConnection\Set-TargetResource' {
             Context 'Replication Group connection does not exist but should' {
                 Mock Get-DfsrConnection
                 Mock Set-DfsrConnection
@@ -359,7 +359,7 @@ try
             }
         }
 
-        Describe "MSFT_DFSReplicationGroupConnection\Test-TargetResource" {
+        Describe 'MSFT_DFSReplicationGroupConnection\Test-TargetResource' {
             Context 'Replication Group Connection does not exist but should' {
                 Mock Get-DfsrConnection
 

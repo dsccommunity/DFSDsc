@@ -65,7 +65,7 @@ try
             UseFQDN                      = $namespaceServerConfiguration.UseFQDN
         }
 
-        Describe "MSFT_DFSNamespaceServerConfiguration\Get-TargetResource" {
+        Describe 'MSFT_DFSNamespaceServerConfiguration\Get-TargetResource' {
             Context 'Namespace Server Configuration Exists' {
                 Mock Get-DFSNServerConfiguration -MockWith { $namespaceServerConfiguration }
 
@@ -82,7 +82,7 @@ try
             }
         }
 
-        Describe "MSFT_DFSNamespaceServerConfiguration\Set-TargetResource" {
+        Describe 'MSFT_DFSNamespaceServerConfiguration\Set-TargetResource' {
             Mock Get-DFSNServerConfiguration -MockWith { $namespaceServerConfiguration }
             Mock Set-DFSNServerConfiguration
 
@@ -146,7 +146,7 @@ try
             }
         }
 
-        Describe "MSFT_DFSNamespaceServerConfiguration\Test-TargetResource" {
+        Describe 'MSFT_DFSNamespaceServerConfiguration\Test-TargetResource' {
             Mock Get-DFSNServerConfiguration -MockWith { $namespaceServerConfiguration }
 
             Context 'Namespace Server Configuration all parameters are the same' {

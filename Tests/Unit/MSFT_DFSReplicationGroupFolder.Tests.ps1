@@ -96,7 +96,7 @@ try
             }
         )
 
-        Describe "MSFT_DFSReplicationGroupFolder\Get-TargetResource" {
+        Describe 'MSFT_DFSReplicationGroupFolder\Get-TargetResource' {
             Context 'Replication group folder does not exist' {
                 Mock Get-DfsReplicatedFolder
 
@@ -143,7 +143,7 @@ try
             }
         }
 
-        Describe "MSFT_DFSReplicationGroupFolder\Set-TargetResource" {
+        Describe 'MSFT_DFSReplicationGroupFolder\Set-TargetResource' {
             Context 'Replication group folder exists but has different Description' {
                 Mock Set-DfsReplicatedFolder
 
@@ -201,7 +201,7 @@ try
             }
         }
 
-        Describe "MSFT_DFSReplicationGroupFolder\Test-TargetResource" {
+        Describe 'MSFT_DFSReplicationGroupFolder\Test-TargetResource' {
             Context 'Replication group folder does not exist' {
                 Mock Get-DfsReplicatedFolder
 

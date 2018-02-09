@@ -87,7 +87,7 @@ try
             PrimaryMember = $True
         }
 
-        Describe "MSFT_DFSReplicationGroupMembership\Get-TargetResource" {
+        Describe 'MSFT_DFSReplicationGroupMembership\Get-TargetResource' {
             Context 'Replication group folder does not exist' {
                 Mock Get-DfsrMembership
 
@@ -160,7 +160,7 @@ try
             }
         }
 
-        Describe "MSFT_DFSReplicationGroupMembership\Set-TargetResource"{
+        Describe 'MSFT_DFSReplicationGroupMembership\Set-TargetResource' {
             Context 'Replication group membership exists and has no differences' {
                 Mock Set-DfsrMembership
 
@@ -251,7 +251,7 @@ try
             }
         }
 
-        Describe "MSFT_DFSReplicationGroupMembership\Test-TargetResource" {
+        Describe 'MSFT_DFSReplicationGroupMembership\Test-TargetResource' {
             Context 'Replication group membership does not exist' {
                 Mock Get-DfsrMembership
 

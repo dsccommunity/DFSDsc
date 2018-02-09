@@ -211,7 +211,7 @@ try
         $replicationGroupContentPath = $replicationGroup.Clone()
         $replicationGroupContentPath += @{ ContentPaths = @($mockReplicationGroupMembership.ContentPath) }
 
-        Describe "MSFT_DFSReplicationGroup\Get-TargetResource" {
+        Describe 'MSFT_DFSReplicationGroup\Get-TargetResource' {
             Context 'No replication groups exist' {
                 Mock Get-DfsReplicationGroup
                 Mock Get-DfsrMember
@@ -270,7 +270,7 @@ try
             }
         }
 
-        Describe "MSFT_DFSReplicationGroup\Set-TargetResource" {
+        Describe 'MSFT_DFSReplicationGroup\Set-TargetResource' {
             Context 'Replication Group does not exist but should' {
                 Mock Get-DfsReplicationGroup
                 Mock New-DfsReplicationGroup
@@ -924,7 +924,7 @@ try
             }
         }
 
-        Describe "MSFT_DFSReplicationGroup\Test-TargetResource" {
+        Describe 'MSFT_DFSReplicationGroup\Test-TargetResource' {
             Context 'Replication Group does not exist but should' {
                 Mock Get-DfsReplicationGroup
                 Mock Get-DfsrMember
@@ -1284,7 +1284,7 @@ try
             }
         }
 
-        Describe "MSFT_DFSReplicationGroup\Get-FQDNMemberName" {
+        Describe 'MSFT_DFSReplicationGroup\Get-FQDNMemberName' {
             Context 'ComputerName passed includes Domain Name that matches DomainName' {
                 It 'Should return correct FQDN' {
                     $splat = @{
