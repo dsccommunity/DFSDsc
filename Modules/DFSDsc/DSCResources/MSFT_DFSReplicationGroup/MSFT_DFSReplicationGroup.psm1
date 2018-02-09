@@ -138,7 +138,7 @@ function Get-TargetResource
     Folders. This can have one entry for each Folder in the Folders
     parameter and should be set in th same order. If any entry is not blank
     then the Content Paths will need to be set manually by
-    using the DFSDscReplicationGroupMembership resource.
+    using the DFSReplicationGroupMembership resource.
 
     .PARAMETER DomainName
     The AD domain the Replication Group should created in.
@@ -518,7 +518,7 @@ function Set-TargetResource
     Folders. This can have one entry for each Folder in the Folders
     parameter and should be set in th same order. If any entry is not blank
     then the Content Paths will need to be set manually by
-    using the DFSDscReplicationGroupMembership resource.
+    using the DFSReplicationGroupMembership resource.
 
     .PARAMETER DomainName
     The AD domain the Replication Group should created in.

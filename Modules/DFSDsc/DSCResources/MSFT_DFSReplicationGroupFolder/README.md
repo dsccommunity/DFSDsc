@@ -8,5 +8,5 @@ folder properties need to be set:
 - FilenameToExclude
 - DirectoryNameToExclude
 
-In most cases just setting the Folders property in the DFSDscReplicationGroup
+In most cases just setting the Folders property in the DFSReplicationGroup
 resource will be acceptable.
