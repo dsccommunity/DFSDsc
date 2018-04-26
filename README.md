@@ -1,24 +1,24 @@
-# xDFS
+# DFSDsc
 
-The **xDFS** module contains DSC resources for configuring Distributed File
+The **DFSDsc** module contains DSC resources for configuring Distributed File
 System Replication and Namespaces. Currently in this version only Replication
 folders are supported. Namespaces will be supported in a future release.
 
-The **xDFS** module contains the following resources:
+The **DFSDsc** module contains the following resources:
 
-- **[xDFSNamespaceFolder](https://github.com/PowerShell/xDFS/wiki/xDFSNamespaceFolder)**:
+- **[DFSNamespaceFolder](https://github.com/PowerShell/DFSDsc/wiki/DFSNamespaceFolder)**:
   Create, edit or remove folders from DFS namespaces.
-- **[xDFSNamespaceRoot](https://github.com/PowerShell/xDFS/wiki/xDFSNamespaceRoot)**:
+- **[DFSNamespaceRoot](https://github.com/PowerShell/DFSDsc/wiki/DFSNamespaceRoot)**:
   Create, edit or remove standalone or domain based DFS namespaces.
-- **[xDFSNamespaceServerConfiguration](https://github.com/PowerShell/xDFS/wiki/xDFSNamespaceServerConfiguration)**:
+- **[DFSNamespaceServerConfiguration](https://github.com/PowerShell/DFSDsc/wiki/DFSNamespaceServerConfiguration)**:
   Configure DFS Namespace server settings.
-- **[xDFSReplicationGroup](https://github.com/PowerShell/xDFS/wiki/xDFSReplicationGroup)**:
+- **[DFSReplicationGroup](https://github.com/PowerShell/DFSDsc/wiki/DFSReplicationGroup)**:
   Create, edit or remove DFS Replication Groups.
-- **[xDFSReplicationGroupConnection](https://github.com/PowerShell/xDFS/wiki/xDFSReplicationGroupConnection)**:
+- **[DFSReplicationGroupConnection](https://github.com/PowerShell/DFSDsc/wiki/DFSReplicationGroupConnection)**:
   Create, edit and remove DFS Replication Group connections.
-- **[xDFSReplicationGroupFolder](https://github.com/PowerShell/xDFS/wiki/xDFSReplicationGroupFolder)**:
+- **[DFSReplicationGroupFolder](https://github.com/PowerShell/DFSDsc/wiki/DFSReplicationGroupFolder)**:
   Configure DFS Replication Group folders.
-- **[xDFSReplicationGroupMembership](https://github.com/PowerShell/xDFS/wiki/xDFSReplicationGroupMembership)**:
+- **[DFSReplicationGroupMembership](https://github.com/PowerShell/DFSDsc/wiki/DFSReplicationGroupMembership)**:
   Configure Replication Group Folder Membership.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
@@ -28,23 +28,23 @@ additional questions or comments.
 
 ## Documentation and Examples
 
-For a full list of resources in xDFS and examples on their use, check out
-the [xDFS wiki](https://github.com/PowerShell/xDFS/wiki).
+For a full list of resources in DFSDsc and examples on their use, check out
+the [DFSDsc wiki](https://github.com/PowerShell/DFSDsc/wiki).
 
 ## Branches
 
 ### master
 
-[![Build status](https://ci.appveyor.com/api/projects/status/5hkcpe757hhe4583/branch/master?svg=true)](https://ci.appveyor.com/project/PowerShell/xDFS/branch/master)
-[![codecov](https://codecov.io/gh/PowerShell/xDFS/branch/master/graph/badge.svg)](https://codecov.io/gh/PowerShell/xDFS/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/5hkcpe757hhe4583/branch/master?svg=true)](https://ci.appveyor.com/project/PowerShell/DFSDsc/branch/master)
+[![codecov](https://codecov.io/gh/PowerShell/DFSDsc/branch/master/graph/badge.svg)](https://codecov.io/gh/PowerShell/DFSDsc/branch/master)
 
 This is the branch containing the latest release - no contributions should be made
 directly to this branch.
 
 ### dev
 
-[![Build status](https://ci.appveyor.com/api/projects/status/5hkcpe757hhe4583/branch/dev?svg=true)](https://ci.appveyor.com/project/PowerShell/xDFS/branch/dev)
-[![codecov](https://codecov.io/gh/PowerShell/xDFS/branch/dev/graph/badge.svg)](https://codecov.io/gh/PowerShell/xDFS/branch/dev)
+[![Build status](https://ci.appveyor.com/api/projects/status/5hkcpe757hhe4583/branch/dev?svg=true)](https://ci.appveyor.com/project/PowerShell/DFSDsc/branch/dev)
+[![codecov](https://codecov.io/gh/PowerShell/DFSDsc/branch/dev/graph/badge.svg)](https://codecov.io/gh/PowerShell/DFSDsc/branch/dev)
 
 This is the development branch to which contributions should be proposed by contributors
 as pull requests. This development branch will periodically be merged to the master

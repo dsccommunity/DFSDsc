@@ -6,8 +6,8 @@
 .sln
 DscResource.Tests
 DscResource.Tests/*
-Modules/xDFS/DscResource.Tests
-Modules/xDFS/DscResource.Tests/*
+Modules/DFSDsc/DscResource.Tests
+Modules/DFSDsc/DscResource.Tests/*
 node_modules
 node_modules/*
 markdownissues.txt
