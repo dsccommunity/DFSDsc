@@ -2,6 +2,31 @@
 
 ## Unreleased
 
+## 4.0.0.0
+
+- BREAKING CHANGE
+  - Renamed xDFS to DFSDsc - fixes [Issue #55](https://github.com/PowerShell/xDFS/issues/55).
+  - Changed all MSFT_xResourceName to MSFT_DFSResourceName.
+  - Updated DSCResources, Examples, Modules and Tests for new naming.
+  - Updated Year to 2018 in License and Manifest.
+  - Changed all Modules\DFSDsc\Examples\Resources to DFSResourceName.
+- Added the VS Code PowerShell extension formatting settings that cause PowerShell
+  files to be formatted as per the DSC Resource kit style guidelines.
+- Improve layout of badge area in README.MD.
+- Disabled MD013 rule checking to enable badge table.
+- Updated Year to 2017 in License and Manifest.
+- Added .github support files:
+  - CONTRIBUTING.md
+  - ISSUE_TEMPLATE.md
+  - PULL_REQUEST_TEMPLATE.md
+- Opted into Common Tests 'Validate Module Files' and 'Validate Script Files'.
+- Converted files with UTF8 with BOM over to UTF8 - fixes [Issue #47](https://github.com/PowerShell/xDFS/issues/47).
+- Added `Documentation and Examples` section to Readme.md file - see
+  [issue #49](https://github.com/PowerShell/xDFS/issues/49).
+- Prevent unit tests from DSCResource.Tests from running during test
+  execution - fixes [Issue #51](https://github.com/PowerShell/xDFS/issues/51).
+- Updated tests to meet Pester V4 guidelines - fixes [Issue #53](https://github.com/PowerShell/xDFS/issues/53).
+
 ## 3.2.0.0
 
 - Converted AppVeyor.yml to pull Pester from PSGallery instead of Chocolatey.

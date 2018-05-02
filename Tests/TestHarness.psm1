@@ -10,12 +10,12 @@ function Invoke-TestHarness
         $DscTestsPath
     )
 
-    Write-Verbose -Message 'Commencing all xDFS tests'
+    Write-Verbose -Message 'Commencing all DFSDsc tests'
 
     $repoDir = Join-Path -Path $PSScriptRoot -ChildPath '..\' -Resolve
 
     $testCoverageFiles = @()
-    Get-ChildItem -Path "$repoDir\modules\xDFS\DSCResources\**\*.psm1" -Recurse | ForEach-Object {
+    Get-ChildItem -Path "$repoDir\modules\DFSDsc\DSCResources\**\*.psm1" -Recurse | ForEach-Object {
         if ($_.FullName -notlike '*\DSCResource.Tests\*') {
             $testCoverageFiles += $_.FullName
         }
@@ -27,7 +27,7 @@ function Invoke-TestHarness
         $testResultSettings.Add('OutputFile', $TestResultsFile)
     }
 
-    Import-Module -Name "$repoDir\modules\xDFS\xDFS.psd1"
+    Import-Module -Name "$repoDir\modules\DFSDsc\DFSDsc.psd1"
     $testsToRun = @()
 
     # Run Unit Tests
@@ -41,7 +41,21 @@ function Invoke-TestHarness
     # DSC Common Tests
     if ($PSBoundParameters.ContainsKey('DscTestsPath') -eq $true)
     {
-        $testsToRun += @( $DscTestsPath )
+        $getChildItemParameters = @{
+            Path = $DscTestsPath
+            Recurse = $true
+            Filter = '*.Tests.ps1'
+        }
+
+        # Get all tests '*.Tests.ps1'.
+        $commonTestFiles = Get-ChildItem @getChildItemParameters
+
+        # Remove DscResource.Tests unit and integration tests.
+        $commonTestFiles = $commonTestFiles | Where-Object -FilterScript {
+            $_.FullName -notmatch 'DSCResource.Tests\\Tests'
+        }
+
+        $testsToRun += @( $commonTestFiles.FullName )
     }
 
     $results = Invoke-Pester -Script $testsToRun `
