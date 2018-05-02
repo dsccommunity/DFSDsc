@@ -1,6 +1,6 @@
 @{
     # Version number of this module.
-    ModuleVersion = '3.2.0.0'
+    moduleVersion = '4.0.0.0'
 
     # ID used to uniquely identify this module
     GUID = '3bcb9c66-ea0b-4675-bd46-c390a382c388'
@@ -48,28 +48,32 @@
             ProjectUri = 'https://github.com/PowerShell/DFSDsc'
 
             # ReleaseNotes of this module
-        ReleaseNotes = '- Converted AppVeyor.yml to pull Pester from PSGallery instead of Chocolatey.
-- Changed AppVeyor.yml to use default image.
-- Converted AppVeyor build process to use AppVeyor.psm1.
-- Resolved PSSA violations.
-- Resolved Readme.md style violations.
-- Converted Integration Tests to use Test Drive and stop using Invoke-Pester.
-- Move strings into separate language files.
-- Added CodeCov support.
-- Clean up manifest file by removing commented out sections.
-- Convert Examples to pass tests and meet minimum standards.
-- Convert to Wiki and auto-documentation generation.
-- Convert to TestHarness test execution method.
-- Correct parameter block format to meet guidelines.
-- Replaced all type accelerators with full type names.
-- Updated Readme.md to contain resource list.
-- Fixed xDFSNamespaceServerConfiguration by converting LocalHost to ComputerName
-  instead.
-- Added integration test to test for conflicts with other common resource kit modules.
-- Prevented ResourceHelper and Common module cmdlets from being exported to resolve
-  conflicts with other resource modules.
+        ReleaseNotes = '- BREAKING CHANGE
+  - Renamed xDFS to DFSDsc - fixes [Issue 55](https://github.com/PowerShell/xDFS/issues/55).
+  - Changed all MSFT_xResourceName to MSFT_DFSResourceName.
+  - Updated DSCResources, Examples, Modules and Tests for new naming.
+  - Updated Year to 2018 in License and Manifest.
+  - Changed all Modules\DFSDsc\Examples\Resources to DFSResourceName.
+- Added the VS Code PowerShell extension formatting settings that cause PowerShell
+  files to be formatted as per the DSC Resource kit style guidelines.
+- Improve layout of badge area in README.MD.
+- Disabled MD013 rule checking to enable badge table.
+- Updated Year to 2017 in License and Manifest.
+- Added .github support files:
+  - CONTRIBUTING.md
+  - ISSUE_TEMPLATE.md
+  - PULL_REQUEST_TEMPLATE.md
+- Opted into Common Tests "Validate Module Files" and "Validate Script Files".
+- Converted files with UTF8 with BOM over to UTF8 - fixes [Issue 47](https://github.com/PowerShell/xDFS/issues/47).
+- Added `Documentation and Examples` section to Readme.md file - see
+  [issue 49](https://github.com/PowerShell/xDFS/issues/49).
+- Prevent unit tests from DSCResource.Tests from running during test
+  execution - fixes [Issue 51](https://github.com/PowerShell/xDFS/issues/51).
+- Updated tests to meet Pester V4 guidelines - fixes [Issue 53](https://github.com/PowerShell/xDFS/issues/53).
+
 '
         } # End of PSData hashtable
     } # End of PrivateData hashtable
 }
+
 
