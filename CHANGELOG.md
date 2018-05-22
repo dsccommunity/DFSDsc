@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Added Hub and Spoke replication group example - fixes [Issue #62](https://github.com/PowerShell/DFSDsc/issues/62).
+- Enabled PSSA rule violations to fail build - Fixes [Issue #320](https://github.com/PowerShell/DFSDsc/issues/59).
 
 ## 4.0.0.0
 
