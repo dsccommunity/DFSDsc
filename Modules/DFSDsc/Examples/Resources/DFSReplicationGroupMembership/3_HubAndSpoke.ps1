@@ -8,7 +8,7 @@
     replicated to all members of the SpokeComputerName parameter array
     into the 'd:\inetpub\wwwroot\WebSiteFiles' folder. The spoke
     computers are passed in the SpokeComputerName parameter and
-    default to 'Spoke1', 'Spoke2' and 'Spoke3'.
+    defaults to 'Spoke1', 'Spoke2' and 'Spoke3'.
 #>
 Configuration Example
 {
