@@ -2,11 +2,13 @@
     .EXAMPLE
     Create a Hub and Spoke style DFS Replication Group called WebSite
     containing one Hub member and one or more Spoke members. The name of
-    the Hub computer is passed in the HubComputerName parameter. The Hub
-    member contains a folder called WebSiteFles with the path
-    'd:\inetpub\wwwroot\WebSiteFiles'. This path is replicated to all
-    members of the SpokeComputerName parameter array into the
-    'd:\inetpub\wwwroot\WebSiteFiles' folder.
+    the Hub computer is passed in the HubComputerName parameter and
+    defaults to 'Hub'. The Hub member contains a folder called WebSiteFle
+    with the path 'd:\inetpub\wwwroot\WebSiteFiles'. This path is
+    replicated to all members of the SpokeComputerName parameter array
+    into the 'd:\inetpub\wwwroot\WebSiteFiles' folder. The spoke
+    computers are passed in the SopeComputerName parameter and
+    default to 'Spoke1', 'Spoke2' and 'Spoke3'.
 #>
 Configuration Example
 {
@@ -20,13 +22,13 @@ Configuration Example
         [PSCredential]
         $Credential,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [System.String]
-        $HubComputerName,
+        $HubComputerName = 'Hub',
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [System.String[]]
-        $SpokeComputerName
+        $SpokeComputerName = @('Spoke1','Spoke2','Spoke3')
     )
 
     Import-DscResource -Module DFSDsc
