@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added Hub and Spoke replication group example - fixes [Issue #62](https://github.com/PowerShell/DFSDsc/issues/62).
+
 ## 4.0.0.0
 
 - BREAKING CHANGE
