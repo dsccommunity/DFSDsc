@@ -78,7 +78,8 @@ Configuration Example
         } # End of RGWebSiteMembershipHub Resource
 
         # Configure the connection and membership for each Spoke
-        foreach ($spoke in $SpokeComputerName) {
+        foreach ($spoke in $SpokeComputerName)
+        {
             DFSReplicationGroupConnection "RGWebSiteConnection$spoke"
             {
                 GroupName = 'WebSite'
