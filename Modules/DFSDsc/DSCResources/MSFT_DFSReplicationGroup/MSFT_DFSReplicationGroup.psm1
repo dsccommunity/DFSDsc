@@ -626,11 +626,18 @@ function Test-TargetResource
 
             # Compare the Members
             $existingMembers = @((Get-DfsrMember @replicationGroupParameters -ErrorAction Stop).DnsName)
-            if ((Compare-Object `
-                -ReferenceObject $fqdnMembers `
-                -DifferenceObject $existingMembers).Count -ne 0)
+            <#
+                check for null values before using compare-object
+                if one is null but not both then report difference
+                if neither are null then compare values
+            #>
+            if ([String]::IsNullOrEmpty($existingMembers) -and [String]::IsNullOrEmpty($fqdnMembers))
             {
-                # There is a member different of some kind.
+                # both are null so no difference found
+            }
+            elseif ([String]::IsNullOrEmpty($existingMembers) -xor [String]::IsNullOrEmpty($fqdnMembers))
+            {
+                # There is a member difference of some kind.
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.ReplicationGroupMembersNeedUpdateMessage) `
@@ -638,16 +645,39 @@ function Test-TargetResource
                     ) -join '' )
 
                 $desiredConfigurationMatch = $false
-            } # if
+            }
+            else
+            {
+                # neither variables are null so it's safe to use compare-object
+                if ((Compare-Object `
+                    -ReferenceObject $fqdnMembers `
+                    -DifferenceObject $existingMembers).Count -ne 0)
+                {
+                    # There is a member difference of some kind.
+                    Write-Verbose -Message ( @(
+                        "$($MyInvocation.MyCommand): "
+                        $($LocalizedData.ReplicationGroupMembersNeedUpdateMessage) `
+                            -f $GroupName
+                        ) -join '' )
+
+                    $desiredConfigurationMatch = $false
+                } # if
+            }
 
             # Compare the Folders
             $existingFolders = @((Get-DfsReplicatedFolder @replicationGroupParameters -ErrorAction Stop).FolderName)
-
-            if ((Compare-Object `
-                -ReferenceObject $Folders `
-                -DifferenceObject $existingFolders).Count -ne 0)
+            <#
+                check for null values before using compare-object
+                if one is null but not both then report difference
+                if neither are null then compare values
+            #>
+            if ([String]::IsNullOrEmpty($existingFolders) -and [String]::IsNullOrEmpty($Folders))
             {
-                # There is a folder different of some kind.
+                # both are null so no difference found
+            }
+            elseif ([String]::IsNullOrEmpty($existingFolders) -xor [String]::IsNullOrEmpty($Folders))
+            {
+                # There is a folder difference of some kind.
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.ReplicationGroupFoldersNeedUpdateMessage) `
@@ -655,8 +685,24 @@ function Test-TargetResource
                     ) -join '' )
 
                 $desiredConfigurationMatch = $false
-            } # if
+            }
+            else
+            {
+                # neither variables are null so it's safe to use compare-object
+                if ((Compare-Object `
+                    -ReferenceObject $Folders `
+                    -DifferenceObject $existingFolders).Count -ne 0)
+                {
+                    # There is a folder difference of some kind.
+                    Write-Verbose -Message ( @(
+                        "$($MyInvocation.MyCommand): "
+                        $($LocalizedData.ReplicationGroupFoldersNeedUpdateMessage) `
+                            -f $GroupName
+                        ) -join '' )
 
+                    $desiredConfigurationMatch = $false
+                } # if
+            }
             # Get the content paths (if any were passed in the array)
             if ($ContentPaths)
             {
