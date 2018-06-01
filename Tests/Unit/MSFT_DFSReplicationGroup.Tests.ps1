@@ -1019,7 +1019,7 @@ try
                 Mock Get-DfsrMember -MockWith { return $null }
                 Mock Get-DfsReplicatedFolder -MockWith { return $mockReplicationGroupFolder }
 
-                It 'Should return false' {
+                It 'Should return true' {
                     $splat = $replicationGroupNullMembers.Clone()
                     Test-TargetResource @splat | Should -Be $True
                 }
@@ -1141,7 +1141,7 @@ try
                 Mock Get-DfsrMember -MockWith { return $mockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $null }
 
-                It 'Should return false' {
+                It 'Should return true' {
                     $splat = $replicationGroupNullFolders.Clone()
                     Test-TargetResource @splat | Should -Be $True
                 }
