@@ -21,10 +21,7 @@ The **DFSDsc** module contains the following resources:
 - **[DFSReplicationGroupMembership](https://github.com/PowerShell/DFSDsc/wiki/DFSReplicationGroupMembership)**:
   Configure Replication Group Folder Membership.
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/)
-or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
-additional questions or comments.
+This project has adopted [this code of conduct](CODE_OF_CONDUCT.md).
 
 ## Documentation and Examples
 

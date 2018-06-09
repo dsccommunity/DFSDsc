@@ -3,8 +3,10 @@
 ## Unreleased
 
 - Added Hub and Spoke replication group example - fixes [Issue #62](https://github.com/PowerShell/DFSDsc/issues/62).
-- Enabled PSSA rule violations to fail build - Fixes [Issue #320](https://github.com/PowerShell/DFSDsc/issues/59).
+- Enabled PSSA rule violations to fail build - fixes [Issue #320](https://github.com/PowerShell/DFSDsc/issues/59).
 - Allow null values in resource group members or folders - fixes [Issue #27](https://github.com/PowerShell/xDFS/issues/27).
+- Added a CODE\_OF\_CONDUCT.md with the same content as in the README.md - fixes
+  [Issue #67](https://github.com/PowerShell/DFSDsc/issues/67).
 
 ## 4.0.0.0
 
