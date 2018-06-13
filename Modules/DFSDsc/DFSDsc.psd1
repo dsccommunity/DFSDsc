@@ -1,6 +1,6 @@
 @{
     # Version number of this module.
-    moduleVersion = '4.0.0.0'
+    moduleVersion = '4.1.0.0'
 
     # ID used to uniquely identify this module
     GUID = '3bcb9c66-ea0b-4675-bd46-c390a382c388'
@@ -48,32 +48,16 @@
             ProjectUri = 'https://github.com/PowerShell/DFSDsc'
 
             # ReleaseNotes of this module
-        ReleaseNotes = '- BREAKING CHANGE
-  - Renamed xDFS to DFSDsc - fixes [Issue 55](https://github.com/PowerShell/xDFS/issues/55).
-  - Changed all MSFT_xResourceName to MSFT_DFSResourceName.
-  - Updated DSCResources, Examples, Modules and Tests for new naming.
-  - Updated Year to 2018 in License and Manifest.
-  - Changed all Modules\DFSDsc\Examples\Resources to DFSResourceName.
-- Added the VS Code PowerShell extension formatting settings that cause PowerShell
-  files to be formatted as per the DSC Resource kit style guidelines.
-- Improve layout of badge area in README.MD.
-- Disabled MD013 rule checking to enable badge table.
-- Updated Year to 2017 in License and Manifest.
-- Added .github support files:
-  - CONTRIBUTING.md
-  - ISSUE_TEMPLATE.md
-  - PULL_REQUEST_TEMPLATE.md
-- Opted into Common Tests "Validate Module Files" and "Validate Script Files".
-- Converted files with UTF8 with BOM over to UTF8 - fixes [Issue 47](https://github.com/PowerShell/xDFS/issues/47).
-- Added `Documentation and Examples` section to Readme.md file - see
-  [issue 49](https://github.com/PowerShell/xDFS/issues/49).
-- Prevent unit tests from DSCResource.Tests from running during test
-  execution - fixes [Issue 51](https://github.com/PowerShell/xDFS/issues/51).
-- Updated tests to meet Pester V4 guidelines - fixes [Issue 53](https://github.com/PowerShell/xDFS/issues/53).
+        ReleaseNotes = '- Added Hub and Spoke replication group example - fixes [Issue 62](https://github.com/PowerShell/DFSDsc/issues/62).
+- Enabled PSSA rule violations to fail build - fixes [Issue 320](https://github.com/PowerShell/DFSDsc/issues/59).
+- Allow null values in resource group members or folders - fixes [Issue 27](https://github.com/PowerShell/xDFS/issues/27).
+- Added a CODE\_OF\_CONDUCT.md with the same content as in the README.md - fixes
+  [Issue 67](https://github.com/PowerShell/DFSDsc/issues/67).
 
 '
         } # End of PSData hashtable
     } # End of PrivateData hashtable
 }
+
 
 
