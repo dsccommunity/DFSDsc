@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Refactored module folder structure to move resource to root folder of
+  repository and remove test harness - fixes [Issue #142](https://github.com/PowerShell/CertificateDsc/issues/142).
+- Updated Examples to support deployment to PowerShell Gallery scripts.
+- Remove exclusion of all tags in appveyor.yml, so all common tests can be run
+  if opt-in.
+
 ## 4.1.0.0
 
 - Added Hub and Spoke replication group example - fixes [Issue #62](https://github.com/PowerShell/DFSDsc/issues/62).
