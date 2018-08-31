@@ -1,17 +1,32 @@
-<#
-    .EXAMPLE
-    Create a standalone DFS namespace called public on the server fileserver1. A namespace
-    folder called brochures is also created in this namespace that targets the
-    \\fileserver2\brochures share.
+<#PSScriptInfo
+.VERSION 1.0.0
+.GUID daadea0f-b395-4702-bc3d-0a0613e2ef9f
+.AUTHOR Microsoft Corporation
+.COMPANYNAME Microsoft Corporation
+.COPYRIGHT
+.TAGS DSCConfiguration
+.LICENSEURI https://github.com/PowerShell/DfsDsc/blob/master/LICENSE
+.PROJECTURI https://github.com/PowerShell/DfsDsc
+.ICONURI
+.EXTERNALMODULEDEPENDENCIES
+.REQUIREDSCRIPTS
+.EXTERNALSCRIPTDEPENDENCIES
+.RELEASENOTES First version.
+.PRIVATEDATA 2016-Datacenter,2016-Datacenter-Server-Core
 #>
-Configuration Example
+
+#Requires -module DfsDsc
+
+<#
+    .DESCRIPTION
+        Create a standalone DFS namespace called public on the server fileserver1. A namespace
+        folder called brochures is also created in this namespace that targets the
+        \\fileserver2\brochures share.
+#>
+Configuration DFSNamespaceRoot_Standalone_Config
 {
     param
     (
-        [Parameter()]
-        [System.String[]]
-        $NodeName = 'localhost',
-
         [Parameter()]
         [PSCredential]
         $Credential
@@ -19,7 +34,7 @@ Configuration Example
 
     Import-DscResource -ModuleName 'DFSDsc'
 
-    Node $NodeName
+    Node localhost
     {
         <#
             Install the Prerequisite features first

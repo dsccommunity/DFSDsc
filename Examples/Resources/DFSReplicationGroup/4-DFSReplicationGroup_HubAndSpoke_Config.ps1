@@ -1,23 +1,38 @@
-<#
-    .EXAMPLE
-    Create a Hub and Spoke style DFS Replication Group called WebSite
-    containing one Hub member and one or more Spoke members. The name of
-    the Hub computer is passed in the HubComputerName parameter and
-    defaults to 'Hub'. The Hub member contains a folder called WebSiteFiles
-    with the path 'd:\inetpub\wwwroot\WebSiteFiles'. This path is
-    replicated to all members of the SpokeComputerName parameter array
-    into the 'd:\inetpub\wwwroot\WebSiteFiles' folder. The spoke
-    computers are passed in the SpokeComputerName parameter and
-    defaults to 'Spoke1', 'Spoke2' and 'Spoke3'.
+<#PSScriptInfo
+.VERSION 1.0.0
+.GUID cb1ced6c-35ea-4e02-aa0c-0aa1cd3c5182
+.AUTHOR Microsoft Corporation
+.COMPANYNAME Microsoft Corporation
+.COPYRIGHT
+.TAGS DSCConfiguration
+.LICENSEURI https://github.com/PowerShell/DfsDsc/blob/master/LICENSE
+.PROJECTURI https://github.com/PowerShell/DfsDsc
+.ICONURI
+.EXTERNALMODULEDEPENDENCIES
+.REQUIREDSCRIPTS
+.EXTERNALSCRIPTDEPENDENCIES
+.RELEASENOTES First version.
+.PRIVATEDATA 2016-Datacenter,2016-Datacenter-Server-Core
 #>
-Configuration Example
+
+#Requires -module DfsDsc
+
+<#
+    .DESCRIPTION
+        Create a Hub and Spoke style DFS Replication Group called WebSite
+        containing one Hub member and one or more Spoke members. The name of
+        the Hub computer is passed in the HubComputerName parameter and
+        defaults to 'Hub'. The Hub member contains a folder called WebSiteFiles
+        with the path 'd:\inetpub\wwwroot\WebSiteFiles'. This path is
+        replicated to all members of the SpokeComputerName parameter array
+        into the 'd:\inetpub\wwwroot\WebSiteFiles' folder. The spoke
+        computers are passed in the SpokeComputerName parameter and
+        defaults to 'Spoke1', 'Spoke2' and 'Spoke3'.
+#>
+Configuration DFSReplicationGroup_HubAndSpoke_Config
 {
     param
     (
-        [Parameter()]
-        [System.String[]]
-        $NodeName = 'localhost',
-
         [Parameter()]
         [PSCredential]
         $Credential,
@@ -33,7 +48,7 @@ Configuration Example
 
     Import-DscResource -Module DFSDsc
 
-    Node $NodeName
+    Node localhost
     {
         <#
             Install the Prerequisite features first

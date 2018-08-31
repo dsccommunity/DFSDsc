@@ -1,17 +1,32 @@
-<#
-    .EXAMPLE
-    Create an AD Domain V2 based DFS namespace called software in the domain contoso.com with
-    a three targets on the servers ca-fileserver, ma-fileserver and ny-fileserver. It also
-    creates a IT folder in each namespace.
+<#PSScriptInfo
+.VERSION 1.0.0
+.GUID c99703be-abb1-424a-a856-b69af295ccfe
+.AUTHOR Microsoft Corporation
+.COMPANYNAME Microsoft Corporation
+.COPYRIGHT
+.TAGS DSCConfiguration
+.LICENSEURI https://github.com/PowerShell/DfsDsc/blob/master/LICENSE
+.PROJECTURI https://github.com/PowerShell/DfsDsc
+.ICONURI
+.EXTERNALMODULEDEPENDENCIES
+.REQUIREDSCRIPTS
+.EXTERNALSCRIPTDEPENDENCIES
+.RELEASENOTES First version.
+.PRIVATEDATA 2016-Datacenter,2016-Datacenter-Server-Core
 #>
-Configuration Example
+
+#Requires -module DfsDsc
+
+<#
+    .DESCRIPTION
+        Create an AD Domain V2 based DFS namespace called software in the domain contoso.com with
+        a three targets on the servers ca-fileserver, ma-fileserver and ny-fileserver. It also
+        creates a IT folder in each namespace.
+#>
+Configuration DFSNamespaceFolder_Domain_MultipleTarget_Config
 {
     param
     (
-        [Parameter()]
-        [System.String[]]
-        $NodeName = 'localhost',
-
         [Parameter()]
         [PSCredential]
         $Credential
@@ -19,7 +34,7 @@ Configuration Example
 
     Import-DscResource -ModuleName 'DFSDsc'
 
-    Node $NodeName
+    Node localhost
     {
         <#
             Install the Prerequisite features first

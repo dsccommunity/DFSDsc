@@ -1,18 +1,33 @@
-<#
-    .EXAMPLE
-    Create a DFS Replication Group called Public containing two members, FileServer1 and
-    FileServer2. The Replication Group contains a single folder called Software. A description
-    will be set on the Software folder and it will be set to exclude the directory Temp from
-    replication. An automatic fullmesh topology is assigned to the replication group connections.
+<#PSScriptInfo
+.VERSION 1.0.0
+.GUID b8e7619e-4b6d-4b56-9f26-266de1d02ca4
+.AUTHOR Microsoft Corporation
+.COMPANYNAME Microsoft Corporation
+.COPYRIGHT
+.TAGS DSCConfiguration
+.LICENSEURI https://github.com/PowerShell/DfsDsc/blob/master/LICENSE
+.PROJECTURI https://github.com/PowerShell/DfsDsc
+.ICONURI
+.EXTERNALMODULEDEPENDENCIES
+.REQUIREDSCRIPTS
+.EXTERNALSCRIPTDEPENDENCIES
+.RELEASENOTES First version.
+.PRIVATEDATA 2016-Datacenter,2016-Datacenter-Server-Core
 #>
-Configuration Example
+
+#Requires -module DfsDsc
+
+<#
+    .DESCRIPTION
+        Create a DFS Replication Group called Public containing two members, FileServer1 and
+        FileServer2. The Replication Group contains a single folder called Software. A description
+        will be set on the Software folder and it will be set to exclude the directory Temp from
+        replication. An automatic fullmesh topology is assigned to the replication group connections.
+#>
+Configuration DFSReplicationGroup_FullMesh_Config
 {
     param
     (
-        [Parameter()]
-        [System.String[]]
-        $NodeName = 'localhost',
-
         [Parameter()]
         [PSCredential]
         $Credential
@@ -20,7 +35,7 @@ Configuration Example
 
     Import-DscResource -Module DFSDsc
 
-    Node $NodeName
+    Node localhost
     {
         <#
             Install the Prerequisite features first

@@ -1,17 +1,32 @@
-<#
-    .EXAMPLE
-    Create a standalone DFS namespace using FQDN called public on the server
-    fileserver1.contoso.com. A sub-folder called brochures is also created in
-    this namespace that targets the \\fileserver2.contoso.com\brochures share.
+<#PSScriptInfo
+.VERSION 1.0.0
+.GUID 2f8a475b-5dc9-4f0e-b8e0-fe51d3552698
+.AUTHOR Microsoft Corporation
+.COMPANYNAME Microsoft Corporation
+.COPYRIGHT
+.TAGS DSCConfiguration
+.LICENSEURI https://github.com/PowerShell/DfsDsc/blob/master/LICENSE
+.PROJECTURI https://github.com/PowerShell/DfsDsc
+.ICONURI
+.EXTERNALMODULEDEPENDENCIES
+.REQUIREDSCRIPTS
+.EXTERNALSCRIPTDEPENDENCIES
+.RELEASENOTES First version.
+.PRIVATEDATA 2016-Datacenter,2016-Datacenter-Server-Core
 #>
-Configuration Example
+
+#Requires -module DfsDsc
+
+<#
+    .DESCRIPTION
+        Create a standalone DFS namespace using FQDN called public on the server
+        fileserver1.contoso.com. A sub-folder called brochures is also created in
+        this namespace that targets the \\fileserver2.contoso.com\brochures share.
+#>
+Configuration DFSNamespaceRoot_Standalone_FQDN_Config
 {
     param
     (
-        [Parameter()]
-        [System.String[]]
-        $NodeName = 'localhost',
-
         [Parameter()]
         [PSCredential]
         $Credential
@@ -19,7 +34,7 @@ Configuration Example
 
     Import-DscResource -ModuleName 'DFSDsc'
 
-    Node $NodeName
+    Node localhost
     {
         <#
             Install the Prerequisite features first

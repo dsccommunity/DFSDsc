@@ -1,18 +1,33 @@
-<#
-    .EXAMPLE
-    Create a DFS Replication Group called Public containing two members, FileServer1
-    and FileServer2. The Replication Group contains two folders called Software and Misc.
-    An automatic Full Mesh connection topology will be assigned. The Content Paths for each
-    folder and member will be set to 'd:\public\software' and 'd:\public\misc' respectively.
+<#PSScriptInfo
+.VERSION 1.0.0
+.GUID d5b27b97-bebc-4edf-adb8-0846f9be4807
+.AUTHOR Microsoft Corporation
+.COMPANYNAME Microsoft Corporation
+.COPYRIGHT
+.TAGS DSCConfiguration
+.LICENSEURI https://github.com/PowerShell/DfsDsc/blob/master/LICENSE
+.PROJECTURI https://github.com/PowerShell/DfsDsc
+.ICONURI
+.EXTERNALMODULEDEPENDENCIES
+.REQUIREDSCRIPTS
+.EXTERNALSCRIPTDEPENDENCIES
+.RELEASENOTES First version.
+.PRIVATEDATA 2016-Datacenter,2016-Datacenter-Server-Core
 #>
-Configuration Example
+
+#Requires -module DfsDsc
+
+<#
+    .DESCRIPTION
+        Create a DFS Replication Group called Public containing two members, FileServer1
+        and FileServer2. The Replication Group contains two folders called Software and Misc.
+        An automatic Full Mesh connection topology will be assigned. The Content Paths for each
+        folder and member will be set to 'd:\public\software' and 'd:\public\misc' respectively.
+#>
+Configuration DFSReplicationGroup_Simple_Config
 {
     param
     (
-        [Parameter()]
-        [System.String[]]
-        $NodeName = 'localhost',
-
         [Parameter()]
         [PSCredential]
         $Credential
@@ -20,7 +35,7 @@ Configuration Example
 
     Import-DscResource -Module DFSDsc
 
-    Node $NodeName
+    Node localhost
     {
         <#
             Install the Prerequisite features first
