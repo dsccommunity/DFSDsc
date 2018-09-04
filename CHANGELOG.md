@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Refactored module folder structure to move resource to root folder of
+  repository and remove test harness - fixes [Issue #74](https://github.com/PowerShell/DfsDsc/issues/74).
+- Updated Examples to support deployment to PowerShell Gallery scripts.
+- Remove exclusion of all tags in appveyor.yml, so all common tests can be run
+  if opt-in.
+- Added .VSCode settings for applying DSC PSSA rules - fixes [Issue #75](https://github.com/PowerShell/DfsDsc/issues/75).
+
 ## 4.1.0.0
 
 - Added Hub and Spoke replication group example - fixes [Issue #62](https://github.com/PowerShell/DFSDsc/issues/62).
