@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add support for modifying staging quota size in MSFT_DFSReplicationGroupMembership - fixes
+  [Issue #77](https://github.com/PowerShell/DfsDsc/issues/74).
 - Refactored module folder structure to move resource to root folder of
   repository and remove test harness - fixes [Issue #74](https://github.com/PowerShell/DfsDsc/issues/74).
 - Updated Examples to support deployment to PowerShell Gallery scripts.
