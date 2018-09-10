@@ -230,7 +230,7 @@ try
                 It 'Should not throw error' {
                     $splat = $mockReplicationGroupMembership.Clone()
                     $splat.Remove('ConflictAndDeletedPath')
-                    $splat.StagingPathQuotaInMB = 'Different'
+                    $splat.StagingPathQuotaInMB = 8192
                     { Set-TargetResource @splat } | Should -Not -Throw
                 }
 
@@ -354,7 +354,7 @@ try
                 It 'Should return false' {
                     $splat = $mockReplicationGroupMembership.Clone()
                     $splat.Remove('ConflictAndDeletedPath')
-                    $splat.StagingPathQuotaInMB = 'Different'
+                    $splat.StagingPathQuotaInMB = 8192
                     Test-TargetResource @splat | Should -Be $False
                 }
 
