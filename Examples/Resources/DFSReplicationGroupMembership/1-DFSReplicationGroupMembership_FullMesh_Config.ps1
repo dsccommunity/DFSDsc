@@ -76,6 +76,7 @@ Configuration DFSReplicationGroupMembership_FullMesh_Config
             FolderName = 'Software'
             ComputerName = 'FileServer1'
             ContentPath = 'd:\Public\Software'
+            StagingPathQuotaInMB = 4096
             PrimaryMember = $true
             PSDSCRunAsCredential = $Credential
             DependsOn = '[DFSReplicationGroupFolder]RGSoftwareFolder'
@@ -87,6 +88,7 @@ Configuration DFSReplicationGroupMembership_FullMesh_Config
             FolderName = 'Software'
             ComputerName = 'FileServer2'
             ContentPath = 'e:\Data\Public\Software'
+            StagingPathQuotaInMB = 4096
             PSDSCRunAsCredential = $Credential
             DependsOn = '[DFSReplicationGroupFolder]RGSoftwareFolder'
         } # End of RGPublicSoftwareFS2 Resource
