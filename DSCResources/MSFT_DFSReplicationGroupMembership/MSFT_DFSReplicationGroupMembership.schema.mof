@@ -6,6 +6,7 @@ class MSFT_DFSReplicationGroupMembership : OMI_BaseResource
     [Key, Description("The computer name of the Replication Group member. This can be specified using either the ComputerName or FQDN name for the member. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match.")] String ComputerName;
     [Write, Description("The local content path for the DFS Replication Group Folder.")] String ContentPath;
     [Write, Description("The local staging path for the DFS Replication Group Folder.")] String StagingPath;
+    [Write, Description("The staging path quota size in MB for the DFS Replication Group Folder.")] String StagingPathQuotaInMB;
     [Read, Description("The local content and deleted path for the DFS Replication Group Folder.")] String ConflictAndDeletedPath;
     [Write, Description("Specify if this content path should be read only.")] Boolean ReadOnly;
     [Write, Description("Used to configure this as the Primary Member. Every folder must have at least one primary member for initial replication to take place.")] Boolean PrimaryMember;
