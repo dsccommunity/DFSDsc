@@ -8,6 +8,8 @@
 - Remove exclusion of all tags in appveyor.yml, so all common tests can be run
   if opt-in.
 - Added .VSCode settings for applying DSC PSSA rules - fixes [Issue #75](https://github.com/PowerShell/DfsDsc/issues/75).
+- Updated LICENSE file to match the Microsoft Open Source Team standard.
+  Fixes [Issue #79](https://github.com/PowerShell/DFSDsc/issues/79)
 
 ## 4.1.0.0
 
