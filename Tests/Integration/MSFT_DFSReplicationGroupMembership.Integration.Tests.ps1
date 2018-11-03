@@ -114,6 +114,7 @@ try
             $ReplicationGroupMembershipNew.ComputerName           | Should -Be $ReplicationGroupMembership.Members[0]
             $ReplicationGroupMembershipNew.FolderName             | Should -Be $ReplicationGroupMembership.Folders[0]
             $ReplicationGroupMembershipNew.ContentPath            | Should -Be $ReplicationGroupMembership.ContentPath
+            $ReplicationGroupMembershipNew.StagingPathQuotaInMB   | Should -Be $ReplicationGroupMembership.StagingPathQuotaInMB
             $ReplicationGroupMembershipNew.ReadOnly               | Should -Be $ReplicationGroupMembership.ReadOnly
             $ReplicationGroupMembershipNew.PrimaryMember          | Should -Be $ReplicationGroupMembership.PrimaryMember
         }

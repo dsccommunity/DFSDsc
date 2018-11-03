@@ -94,6 +94,7 @@ function Get-TargetResource
         $returnValue += @{
             ContentPath = $replicationGroupMembership.ContentPath
             StagingPath = $replicationGroupMembership.StagingPath
+            StagingPathQuotaInMB = $replicationGroupMembership.StagingPathQuotaInMB
             ConflictAndDeletedPath = $replicationGroupMembership.ConflictAndDeletedPath
             ReadOnly = $replicationGroupMembership.ReadOnly
             PrimaryMember = $replicationGroupMembership.PrimaryMember
@@ -133,6 +134,9 @@ function Get-TargetResource
     .PARAMETER StagingPath
     The local staging path for the DFS Replication Group Folder.
 
+    .PARAMETER StagingPathQuotaInMB
+    The local staging path quota size in MB.
+
     .PARAMETER ReadOnly
     Specify if this content path should be read only.
 
@@ -168,6 +172,10 @@ function Set-TargetResource
         [Parameter()]
         [System.String]
         $StagingPath,
+
+        [Parameter()]
+        [System.UInt32]
+        $StagingPathQuotaInMB,
 
         [Parameter()]
         [System.Boolean]
@@ -221,6 +229,9 @@ function Set-TargetResource
     .PARAMETER StagingPath
     The local staging path for the DFS Replication Group Folder.
 
+    .PARAMETER StagingPathQuotaInMB
+    The local staging path quota size in MB.
+
     .PARAMETER ReadOnly
     Specify if this content path should be read only.
 
@@ -257,6 +268,10 @@ function Test-TargetResource
         [Parameter()]
         [System.String]
         $StagingPath,
+
+        [Parameter()]
+        [System.UInt32]
+        $StagingPathQuotaInMB,
 
         [Parameter()]
         [System.Boolean]
@@ -326,6 +341,19 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.ReplicationGroupMembershipStagingPathMismatchMessage) `
+                    -f $GroupName,$FolderName,$ComputerName
+                ) -join '' )
+
+            $desiredConfigurationMatch = $false
+        } # if
+
+        # Check the StagingPathQuota
+        if (($PSBoundParameters.ContainsKey('StagingPathQuotaInMB')) `
+            -and ($replicationGroupMembership.StagingPathQuotaInMB -ne $StagingPathQuotaInMB))
+        {
+            Write-Verbose -Message ( @(
+                "$($MyInvocation.MyCommand): "
+                $($LocalizedData.ReplicationGroupMembershipStagingPathQuotaMismatchMessage) `
                     -f $GroupName,$FolderName,$ComputerName
                 ) -join '' )
 

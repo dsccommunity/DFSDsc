@@ -83,6 +83,7 @@ try
             ComputerName = $replicationGroup.Members[0]
             ContentPath = 'd:\public\software\'
             StagingPath = 'd:\public\software\DfsrPrivate\Staging\'
+            StagingPathQuotaInMB = 4096
             ConflictAndDeletedPath = 'd:\public\software\DfsrPrivate\ConflictAndDeleted\'
             ReadOnly = $False
             PrimaryMember = $True
@@ -124,6 +125,7 @@ try
                     $result.ComputerName | Should -Be $mockReplicationGroupMembership.ComputerName
                     $result.ContentPath | Should -Be $mockReplicationGroupMembership.ContentPath
                     $result.StagingPath | Should -Be $mockReplicationGroupMembership.StagingPath
+                    $result.StagingPathQuotaInMB | Should -Be $mockReplicationGroupMembership.StagingPathQuotaInMB
                     $result.ConflictAndDeletedPath | Should -Be $mockReplicationGroupMembership.ConflictAndDeletedPath
                     $result.ReadOnly | Should -Be $mockReplicationGroupMembership.ReadOnly
                     $result.PrimaryMember | Should -Be $mockReplicationGroupMembership.PrimaryMember
@@ -149,6 +151,7 @@ try
                     $result.ComputerName | Should -Be $mockReplicationGroupMembership.ComputerName
                     $result.ContentPath | Should -Be $mockReplicationGroupMembership.ContentPath
                     $result.StagingPath | Should -Be $mockReplicationGroupMembership.StagingPath
+                    $result.StagingPathQuotaInMB | Should -Be $mockReplicationGroupMembership.StagingPathQuotaInMB
                     $result.ConflictAndDeletedPath | Should -Be $mockReplicationGroupMembership.ConflictAndDeletedPath
                     $result.ReadOnly | Should -Be $mockReplicationGroupMembership.ReadOnly
                     $result.PrimaryMember | Should -Be $mockReplicationGroupMembership.PrimaryMember
@@ -213,6 +216,21 @@ try
                     $splat = $mockReplicationGroupMembership.Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.StagingPath = 'Different'
+                    { Set-TargetResource @splat } | Should -Not -Throw
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Set-DfsrMembership -Exactly -Times 1
+                }
+            }
+
+            Context 'Replication group membership exists but has different StagingPathQuotaInMB' {
+                Mock Set-DfsrMembership
+
+                It 'Should not throw error' {
+                    $splat = $mockReplicationGroupMembership.Clone()
+                    $splat.Remove('ConflictAndDeletedPath')
+                    $splat.StagingPathQuotaInMB = 8192
                     { Set-TargetResource @splat } | Should -Not -Throw
                 }
 
@@ -322,6 +340,21 @@ try
                     $splat = $mockReplicationGroupMembership.Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.StagingPath = 'Different'
+                    Test-TargetResource @splat | Should -Be $False
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DfsrMembership -Exactly -Times 1
+                }
+            }
+
+            Context 'Replication group membership exists but has different StagingPathQuotaInMB' {
+                Mock Get-DfsrMembership -MockWith { return @($mockReplicationGroupMembership) }
+
+                It 'Should return false' {
+                    $splat = $mockReplicationGroupMembership.Clone()
+                    $splat.Remove('ConflictAndDeletedPath')
+                    $splat.StagingPathQuotaInMB = 8192
                     Test-TargetResource @splat | Should -Be $False
                 }
 

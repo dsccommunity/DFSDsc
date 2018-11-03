@@ -87,6 +87,7 @@ Configuration DFSReplicationGroupMembership_HubAndSpoke_Config
             FolderName = 'WebSiteFiles'
             ComputerName = $HubComputerName
             ContentPath = 'd:\inetpub\wwwroot\WebSiteFiles'
+            StagingPathQuotaInMB = 4096
             PrimaryMember = $true
             PSDSCRunAsCredential = $Credential
             DependsOn = '[DFSReplicationGroupFolder]RGWebSiteFolder'
@@ -111,6 +112,7 @@ Configuration DFSReplicationGroupMembership_HubAndSpoke_Config
                 FolderName = 'WebSiteFiles'
                 ComputerName = $spoke
                 ContentPath = 'd:\inetpub\wwwroot\WebSiteFiles'
+                StagingPathQuotaInMB = 4096
                 PSDSCRunAsCredential = $Credential
                 DependsOn = "[DFSReplicationGroupConnection]RGWebSiteConnection$spoke"
             } # End of RGWebSiteMembership$spoke Resource
