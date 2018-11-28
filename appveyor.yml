@@ -25,8 +25,7 @@ build: false
 test_script:
     - ps: |
         Invoke-AppveyorTestScriptTask `
-            -Type 'Harness' `
-            -MainModulePath $mainModuleFolder `
+            -CodeCoverage `
             -CodeCovIo
 
 #---------------------------------#
@@ -38,5 +37,6 @@ deploy_script:
     - ps: |
         Invoke-AppveyorAfterTestTask `
             -Type 'Wiki' `
-            -MainModulePath $mainModuleFolder `
             -ResourceModuleName $moduleName
+
+        Invoke-AppVeyorDeployTask

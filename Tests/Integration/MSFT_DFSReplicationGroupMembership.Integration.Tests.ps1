@@ -41,7 +41,7 @@ if (! (Test-Path -Path $configFile))
 
 #region HEADER
 # Integration Test Template Version: 1.1.0
-[System.String] $script:moduleRoot = Join-Path -Path $(Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $Script:MyInvocation.MyCommand.Path))) -ChildPath 'Modules\DFSDsc'
+[System.String] $script:moduleRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 
 if ( (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
      (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
@@ -114,6 +114,7 @@ try
             $ReplicationGroupMembershipNew.ComputerName           | Should -Be $ReplicationGroupMembership.Members[0]
             $ReplicationGroupMembershipNew.FolderName             | Should -Be $ReplicationGroupMembership.Folders[0]
             $ReplicationGroupMembershipNew.ContentPath            | Should -Be $ReplicationGroupMembership.ContentPath
+            $ReplicationGroupMembershipNew.StagingPathQuotaInMB   | Should -Be $ReplicationGroupMembership.StagingPathQuotaInMB
             $ReplicationGroupMembershipNew.ReadOnly               | Should -Be $ReplicationGroupMembership.ReadOnly
             $ReplicationGroupMembershipNew.PrimaryMember          | Should -Be $ReplicationGroupMembership.PrimaryMember
         }
