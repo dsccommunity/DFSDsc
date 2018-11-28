@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 4.2.0.0
+
 - Add support for modifying staging quota size in
   MSFT_DFSReplicationGroupMembership - fixes [Issue #77](https://github.com/PowerShell/DfsDsc/issues/77).
 - Refactored module folder structure to move resource to root folder of
