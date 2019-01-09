@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 4.3.0.0
+
 - Explicitly removed extra hidden files from release package
 
 ## 4.2.0.0
