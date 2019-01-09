@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Explicitly removed extra hidden files from release package
+
 ## 4.2.0.0
 
 - Add support for modifying staging quota size in
