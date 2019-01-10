@@ -250,7 +250,8 @@ function Test-TargetResource
         $parameterNew = (Get-Variable -Name ($parameter.name)).Value
 
         if ($PSBoundParameters.ContainsKey($parameter.Name) `
-            -and ($parameterSource -ne $parameterNew)) {
+            -and ($parameterSource -ne $parameterNew))
+        {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($LocalizedData.NamespaceServerConfigurationParameterNeedsUpdateMessage) `
