@@ -3,6 +3,8 @@
 ## Unreleased
 
 - Fixes PSSA style violation issues resulting - fixes [Issue #84](https://github.com/PowerShell/DfsDsc/issues/84).
+- Added 'DscResourcesToExport' to manifest to improve information in
+  PowerShell Gallery - fixes [Issue #86](https://github.com/PowerShell/DfsDsc/issues/86).
 
 ## 4.3.0.0
 

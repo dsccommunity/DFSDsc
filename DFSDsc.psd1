@@ -29,17 +29,34 @@
     # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
     # NestedModules = @()
 
-    # Functions to export from this module
-    FunctionsToExport = '*'
+    # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
+    FunctionsToExport = @()
 
-    # Cmdlets to export from this module
-    CmdletsToExport = '*'
+    # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
+    CmdletsToExport = @()
+
+    # Variables to export from this module
+    VariablesToExport = '*'
+
+    # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
+    AliasesToExport = @()
+
+    # DSC resources to export from this module
+    DscResourcesToExport = @(
+        'DFSNamespaceFolder',
+        'DFSNamespaceRoot',
+        'DFSNamespaceServerConfiguration',
+        'DFSReplicationGroup',
+        'DFSReplicationGroupConnection',
+        'DFSReplicationGroupFolder',
+        'DFSReplicationGroupMembership'
+        )
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
     PrivateData = @{
         PSData = @{
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags = @( 'DSC','DesiredStateConfiguration','DSCResourceKit','DSCResource','DFS','DistributedFileSystem' )
+            Tags = @( 'DSC', 'DesiredStateConfiguration', 'DSCResourceKit', 'DSCResource', 'DFS', 'DistributedFileSystem' )
 
             # A URL to the license for this module.
             LicenseUri = 'https://github.com/PowerShell/DFSDsc/blob/master/LICENSE'
