@@ -2,10 +2,11 @@
 
 ## Unreleased
 
+- Fixes PSSA style violation issues resulting - fixes [Issue #84](https://github.com/PowerShell/DfsDsc/issues/84).
+
 ## 4.3.0.0
 
 - Explicitly removed extra hidden files from release package
-- Fixes PSSA style violation issues resulting - fixes [Issue #84](https://github.com/PowerShell/DfsDsc/issues/84).
 
 ## 4.2.0.0
 
