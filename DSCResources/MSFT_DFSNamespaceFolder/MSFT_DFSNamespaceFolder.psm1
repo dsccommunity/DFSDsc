@@ -488,7 +488,8 @@ function Test-TargetResource
 
             # Check the Namespace parameters
             if (($Description) `
-                -and ($folder.Description -ne $Description)) {
+                -and ($folder.Description -ne $Description))
+            {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceFolderParameterNeedsUpdateMessage) `
@@ -498,7 +499,8 @@ function Test-TargetResource
             }
 
             if (($TimeToLiveSec) `
-                -and ($folder.TimeToLiveSec -ne $TimeToLiveSec)) {
+                -and ($folder.TimeToLiveSec -ne $TimeToLiveSec))
+            {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceFolderParameterNeedsUpdateMessage) `
@@ -508,7 +510,8 @@ function Test-TargetResource
             }
 
             if (($null -ne $EnableInsiteReferrals) `
-                -and (($folder.Flags -contains 'Insite Referrals') -ne $EnableInsiteReferrals)) {
+                -and (($folder.Flags -contains 'Insite Referrals') -ne $EnableInsiteReferrals))
+            {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceFolderParameterNeedsUpdateMessage) `
@@ -518,7 +521,8 @@ function Test-TargetResource
             }
 
             if (($null -ne $EnableTargetFailback) `
-                -and (($folder.Flags -contains 'Target Failback') -ne $EnableTargetFailback)) {
+                -and (($folder.Flags -contains 'Target Failback') -ne $EnableTargetFailback))
+            {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceFolderParameterNeedsUpdateMessage) `
@@ -534,7 +538,8 @@ function Test-TargetResource
             if ($targetFolder)
             {
                 if (($ReferralPriorityClass) `
-                    -and ($targetFolder.ReferralPriorityClass -ne $ReferralPriorityClass)) {
+                    -and ($targetFolder.ReferralPriorityClass -ne $ReferralPriorityClass))
+                {
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
                         $($LocalizedData.NamespaceFolderTargetParameterNeedsUpdateMessage) `
@@ -544,7 +549,8 @@ function Test-TargetResource
                 }
 
                 if (($ReferralPriorityRank) `
-                    -and ($targetFolder.ReferralPriorityRank -ne $ReferralPriorityRank)) {
+                    -and ($targetFolder.ReferralPriorityRank -ne $ReferralPriorityRank))
+                {
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
                         $($LocalizedData.NamespaceFolderTargetParameterNeedsUpdateMessage) `
