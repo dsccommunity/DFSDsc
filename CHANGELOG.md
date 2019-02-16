@@ -7,9 +7,6 @@
   PowerShell Gallery - fixes [Issue #86](https://github.com/PowerShell/DfsDsc/issues/86).
 - Set FunctionsToExport, CmdletsToExport, VariablesToExport, AliasesToExport
   to empty list in manifest to meet best practice.
-
-## 4.3.0.0
-
 - Explicitly removed extra hidden files from release package
 
 ## 4.2.0.0
