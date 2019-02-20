@@ -596,7 +596,8 @@ function Test-TargetResource
 
             # Check the Namespace parameters
             if (($Description) `
-                -and ($root.Description -ne $Description)) {
+                -and ($root.Description -ne $Description))
+            {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
@@ -607,7 +608,8 @@ function Test-TargetResource
             } # if
 
             if (($TimeToLiveSec) `
-                -and ($root.TimeToLiveSec -ne $TimeToLiveSec)) {
+                -and ($root.TimeToLiveSec -ne $TimeToLiveSec))
+            {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
@@ -618,7 +620,8 @@ function Test-TargetResource
             } # if
 
             if (($null -ne $EnableSiteCosting) `
-                -and (($root.Flags -contains 'Site Costing') -ne $EnableSiteCosting)) {
+                -and (($root.Flags -contains 'Site Costing') -ne $EnableSiteCosting))
+            {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
@@ -629,7 +632,8 @@ function Test-TargetResource
             } # if
 
             if (($null -ne $EnableInsiteReferrals) `
-                -and (($root.Flags -contains 'Insite Referrals') -ne $EnableInsiteReferrals)) {
+                -and (($root.Flags -contains 'Insite Referrals') -ne $EnableInsiteReferrals))
+            {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
@@ -640,7 +644,8 @@ function Test-TargetResource
             } # if
 
             if (($null -ne $EnableAccessBasedEnumeration) `
-                -and (($root.Flags -contains 'AccessBased Enumeration') -ne $EnableAccessBasedEnumeration)) {
+                -and (($root.Flags -contains 'AccessBased Enumeration') -ne $EnableAccessBasedEnumeration))
+            {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
@@ -651,7 +656,8 @@ function Test-TargetResource
             } # if
 
             if (($null -ne $EnableRootScalability) `
-                -and (($root.Flags -contains 'Root Scalability') -ne $EnableRootScalability)) {
+                -and (($root.Flags -contains 'Root Scalability') -ne $EnableRootScalability))
+            {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
@@ -662,7 +668,8 @@ function Test-TargetResource
             } # if
 
             if (($null -ne $EnableTargetFailback) `
-                -and (($root.Flags -contains 'Target Failback') -ne $EnableTargetFailback)) {
+                -and (($root.Flags -contains 'Target Failback') -ne $EnableTargetFailback))
+            {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
                     $($LocalizedData.NamespaceRootParameterNeedsUpdateMessage) `
@@ -679,7 +686,8 @@ function Test-TargetResource
             if ($target)
             {
                 if (($ReferralPriorityClass) `
-                    -and ($target.ReferralPriorityClass -ne $ReferralPriorityClass)) {
+                    -and ($target.ReferralPriorityClass -ne $ReferralPriorityClass))
+                {
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
                         $($LocalizedData.NamespaceRootTargetParameterNeedsUpdateMessage) `
@@ -689,7 +697,8 @@ function Test-TargetResource
                 } # if
 
                 if (($ReferralPriorityRank) `
-                    -and ($target.ReferralPriorityRank -ne $ReferralPriorityRank)) {
+                    -and ($target.ReferralPriorityRank -ne $ReferralPriorityRank))
+                {
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
                         $($LocalizedData.NamespaceRootTargetParameterNeedsUpdateMessage) `
