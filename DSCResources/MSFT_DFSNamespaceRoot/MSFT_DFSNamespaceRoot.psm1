@@ -779,7 +779,7 @@ function Test-TargetResource
     .PARAMETER Path
     Specifies a path for the root of a DFS namespace.
 #>
-Function Get-Root
+function Get-Root
 {
     param
     (
@@ -815,7 +815,7 @@ Function Get-Root
     .PARAMETER TargetPath
     Specifies a path for a root target of the DFS namespace.
 #>
-Function Get-RootTarget
+function Get-RootTarget
 {
     param
     (
