@@ -65,17 +65,15 @@
             ProjectUri = 'https://github.com/PowerShell/DFSDsc'
 
             # ReleaseNotes of this module
-        ReleaseNotes = '- Fixes PSSA style violation issues resulting - fixes [Issue 84](https://github.com/PowerShell/DfsDsc/issues/84).
-- Added "DscResourcesToExport" to manifest to improve information in
-  PowerShell Gallery - fixes [Issue 86](https://github.com/PowerShell/DfsDsc/issues/86).
-- Set FunctionsToExport, CmdletsToExport, VariablesToExport, AliasesToExport
-  to empty list in manifest to meet best practice.
-- Explicitly removed extra hidden files from release package
+        ReleaseNotes = '- Fix example publish to PowerShell Gallery by adding `gallery_api`
+  environment variable to `AppVeyor.yml` - fixes [Issue 91](https://github.com/PowerShell/DfsDsc/issues/91).
+- Fix minor style issues in statement case.
 
 '
         } # End of PSData hashtable
     } # End of PrivateData hashtable
 }
+
 
 
 

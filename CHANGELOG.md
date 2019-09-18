@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 4.3.0.0
+
 - Fix example publish to PowerShell Gallery by adding `gallery_api`
   environment variable to `AppVeyor.yml` - fixes [Issue #91](https://github.com/PowerShell/DfsDsc/issues/91).
 - Fix minor style issues in statement case.
