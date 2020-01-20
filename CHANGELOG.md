@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- BREAKING CHANGE
+  - Add support for setting a DFS Namespace root target's referral status (state) to be either `Online` or `Offline` 
+    in MSFT_DFSNamespaceRoot. State is now a required parameter.
+  - Add support for setting a DFS Namespace folder target's referral status (state) to be either `Online` or `Offline` 
+    in MSFT_DFSNamespaceFolder. State is now a required parameter.
+  
+
 ## 4.4.0.0
 
 - Fix example publish to PowerShell Gallery by adding `gallery_api`

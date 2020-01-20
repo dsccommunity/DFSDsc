@@ -20,6 +20,9 @@ $localizedData = Get-LocalizedData `
     .PARAMETER TargetPath
     Specifies a path for a root target of the DFS namespace.
 
+    .PARAMETER State
+    Specifies a State for the root of a DFS namespace.
+
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
 
@@ -39,6 +42,11 @@ function Get-TargetResource
         [Parameter(Mandatory = $true)]
         [System.String]
         $TargetPath,
+
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $State,
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
@@ -112,6 +120,7 @@ function Get-TargetResource
         $returnValue += @{
             ReferralPriorityClass        = $target.ReferralPriorityClass
             ReferralPriorityRank         = $target.ReferralPriorityRank
+            State                        = $target.State
         }
 
         Write-Verbose -Message ( @(
@@ -142,6 +151,9 @@ function Get-TargetResource
 
     .PARAMETER TargetPath
     Specifies a path for a root target of the DFS namespace.
+
+    .PARAMETER State
+    Specifies a State for the root of a DFS namespace.
 
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
@@ -188,6 +200,11 @@ function Set-TargetResource
         [Parameter(Mandatory = $true)]
         [System.String]
         $TargetPath,
+
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $State,
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
@@ -352,6 +369,15 @@ function Set-TargetResource
             $targetProperties = @{}
 
             # Check the target properties
+            if (($State) `
+                -and ($targetProperties.State -ne $State))
+            {
+                $targetProperties += @{
+                    State = $State
+                }
+                $targetChange = $true
+            } # if
+
             if (($ReferralPriorityClass) `
                 -and ($target.ReferralPriorityClass -ne $ReferralPriorityClass))
             {
@@ -469,6 +495,9 @@ function Set-TargetResource
     .PARAMETER TargetPath
     Specifies a path for a root target of the DFS namespace.
 
+    .PARAMETER State
+    Specifies a State for the root of a DFS namespace.
+
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
 
@@ -515,6 +544,11 @@ function Test-TargetResource
         [Parameter(Mandatory = $true)]
         [System.String]
         $TargetPath,
+
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $State,
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
@@ -685,6 +719,17 @@ function Test-TargetResource
 
             if ($target)
             {
+                if (($State) `
+                    -and ($target.State -ne $State))
+                {
+                    Write-Verbose -Message ( @(
+                        "$($MyInvocation.MyCommand): "
+                        $($LocalizedData.NamespaceRootTargetParameterNeedsUpdateMessage) `
+                            -f $Type,$Path,$TargetPath,'State'
+                        ) -join '' )
+                    $desiredConfigurationMatch = $false
+                } # if
+
                 if (($ReferralPriorityClass) `
                     -and ($target.ReferralPriorityClass -ne $ReferralPriorityClass))
                 {

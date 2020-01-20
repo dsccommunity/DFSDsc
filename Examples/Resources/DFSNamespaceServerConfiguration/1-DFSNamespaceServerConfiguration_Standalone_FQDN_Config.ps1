@@ -66,6 +66,7 @@ Configuration DFSNamespaceServerConfiguration_Standalone_FQDN_Config
             Path                 = '\\fileserver1.contoso.com\public'
             TargetPath           = '\\fileserver1.contoso.com\public'
             Ensure               = 'Present'
+            State                = 'Online'
             Type                 = 'Standalone'
             Description          = 'Standalone DFS namespace for storing public files'
             PsDscRunAsCredential = $Credential
@@ -77,6 +78,7 @@ Configuration DFSNamespaceServerConfiguration_Standalone_FQDN_Config
             Path                 = '\\fileserver1.contoso.com\public\brochures'
             TargetPath           = '\\fileserver2.contoso.com\brochures'
             Ensure               = 'Present'
+            State                = 'Online'
             Description          = 'Standalone DFS namespace for storing public brochure files'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceFolder Resource

@@ -89,6 +89,7 @@ Configuration DFSNamespaceRoot_Domain_MultipleTarget_Config
             Path                 = '\\contoso.com\software\it'
             TargetPath           = '\\ca-fileserver\it'
             Ensure               = 'Present'
+            State                = 'Online'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceFolder Resource
@@ -98,15 +99,27 @@ Configuration DFSNamespaceRoot_Domain_MultipleTarget_Config
             Path                 = '\\contoso.com\software\it'
             TargetPath           = '\\ma-fileserver\it'
             Ensure               = 'Present'
+            State                = 'Online'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceFolder Resource
 
-        DFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_NY
+        DFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_NY_01
         {
             Path                 = '\\contoso.com\software\it'
-            TargetPath           = '\\ny-fileserver\it'
+            TargetPath           = '\\ny-fileserver01\it'
             Ensure               = 'Present'
+            State                = 'Online'
+            Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
+            PsDscRunAsCredential = $Credential
+        } # End of DFSNamespaceFolder Resource
+
+        DFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_NY02
+        {
+            Path                 = '\\contoso.com\software\it'
+            TargetPath           = '\\ny-fileserver02\it'
+            Ensure               = 'Present'
+            State                = 'Online'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceFolder Resource

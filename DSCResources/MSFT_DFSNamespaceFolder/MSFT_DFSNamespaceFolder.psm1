@@ -40,7 +40,12 @@ function Get-TargetResource
         [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure
+        $Ensure,
+
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $State
     )
 
     Write-Verbose -Message ( @(
@@ -100,6 +105,7 @@ function Get-TargetResource
         $returnValue += @{
             ReferralPriorityClass        = $targetFolder.ReferralPriorityClass
             ReferralPriorityRank         = $targetFolder.ReferralPriorityRank
+            State                        = $targetFolder.State
         }
 
         Write-Verbose -Message ( @(
@@ -133,6 +139,9 @@ function Get-TargetResource
 
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
+
+    .PARAMETER State
+    Specifies the target's referral status.
 
     .PARAMETER Description
     The description of the DFS Namespace.
@@ -169,6 +178,11 @@ function Set-TargetResource
         [ValidateSet('Present','Absent')]
         [System.String]
         $Ensure,
+
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $State,
 
         [Parameter()]
         [System.String]
@@ -284,6 +298,15 @@ function Set-TargetResource
             $targetProperties = @{}
 
             # Check the target properties
+            if (($State) `
+                -and ($targetFolder.State -ne $State))
+            {
+                $targetProperties += @{
+                    State = $State
+                }
+                $targetChange = $true
+            }
+
             if (($ReferralPriorityClass) `
                 -and ($targetFolder.ReferralPriorityClass -ne $ReferralPriorityClass))
             {
@@ -348,7 +371,7 @@ function Set-TargetResource
             {
                 $PSBoundParameters.ReferralPriorityClass = ($ReferralPriorityClass -replace '-','')
             }
-
+            
             # Create New-DfsnFolder
             $null = New-DfsnFolder `
                 @PSBoundParameters `
@@ -403,6 +426,9 @@ function Set-TargetResource
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
 
+    .PARAMETER State
+    Specifies the target's referral status.
+
     .PARAMETER Description
     The description of the DFS Namespace.
 
@@ -439,6 +465,11 @@ function Test-TargetResource
         [ValidateSet('Present','Absent')]
         [System.String]
         $Ensure,
+
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $State,
 
         [Parameter()]
         [System.String]
@@ -537,6 +568,17 @@ function Test-TargetResource
 
             if ($targetFolder)
             {
+                if (($State) `
+                    -and ($targetFolder.State -ne $State))
+                {
+                    Write-Verbose -Message ( @(
+                        "$($MyInvocation.MyCommand): "
+                        $($LocalizedData.NamespaceFolderTargetParameterNeedsUpdateMessage) `
+                            -f $Path,$TargetPath,'State'
+                        ) -join '' )
+                    $desiredConfigurationMatch = $false
+                }
+
                 if (($ReferralPriorityClass) `
                     -and ($targetFolder.ReferralPriorityClass -ne $ReferralPriorityClass))
                 {

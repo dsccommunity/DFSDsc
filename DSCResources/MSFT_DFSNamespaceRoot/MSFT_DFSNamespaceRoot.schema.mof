@@ -3,6 +3,7 @@ class MSFT_DFSNamespaceRoot : OMI_BaseResource
 {
     [Key, Description("Specifies a path for the root of a DFS namespace.")] String Path;
     [Key, Description("Specifies a path for a root target of the DFS namespace.")] String TargetPath;
+    [Required, Description("Specifies a state for a root target of the DFS namespace."), ValueMap{"Offline","Online"}, Values{"Offline","Online"}] String State;
     [Required, Description("Specifies if the DFS Namespace root should exist."), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
     [Required, Description("Specifies the type of a DFS namespace as a Type object."), ValueMap{"Standalone","DomainV1","DomainV2"}, Values{"Standalone","DomainV1","DomainV2"}] String Type;
     [Write, Description("The description of the DFS Namespace.")] String Description;
@@ -14,5 +15,4 @@ class MSFT_DFSNamespaceRoot : OMI_BaseResource
     [Write, Description("Specifies the target priority class for a DFS namespace root."), ValueMap{"Global-High","SiteCost-High","SiteCost-Normal","SiteCost-Low","Global-Low"}, Values{"Global-High","SiteCost-High","SiteCost-Normal","SiteCost-Low","Global-Low"}] String ReferralPriorityClass;
     [Write, Description("Specifies the priority rank, as an integer, for a root target of the DFS namespace.")] Uint32 ReferralPriorityRank;
     [Write, Description("Specifies a TTL interval, in seconds, for referrals.")] Uint32 TimeToLiveSec;
-    [Read] String State;
 };
