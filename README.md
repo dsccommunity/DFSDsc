@@ -1,5 +1,32 @@
 # DFSDsc
 
+[![Build Status](https://dev.azure.com/dsccommunity/DFSDsc/_apis/build/status/dsccommunity.DFSDsc?branchName=master)](https://dev.azure.com/dsccommunity/DFSDsc/_build/latest?definitionId=31&branchName=master)
+![Code Coverage](https://img.shields.io/azure-devops/coverage/dsccommunity/DFSDsc/31/master)
+[![Azure DevOps tests](https://img.shields.io/azure-devops/tests/dsccommunity/DFSDsc/31/master)](https://dsccommunity.visualstudio.com/DFSDsc/_test/analytics?definitionId=31&contextType=build)
+[![PowerShell Gallery (with prereleases)](https://img.shields.io/powershellgallery/vpre/DFSDsc?label=DFSDsc%20Preview)](https://www.powershellgallery.com/packages/DFSDsc/)
+[![PowerShell Gallery](https://img.shields.io/powershellgallery/v/DFSDsc?label=DFSDsc)](https://www.powershellgallery.com/packages/DFSDsc/)
+
+## Code of Conduct
+
+This project has adopted [this code of conduct](CODE_OF_CONDUCT.md).
+
+## Releases
+
+For each merge to the branch `master` a preview release will be
+deployed to [PowerShell Gallery](https://www.powershellgallery.com/).
+Periodically a release version tag will be pushed which will deploy a
+full release to [PowerShell Gallery](https://www.powershellgallery.com/).
+
+## Contributing
+
+Please check out common DSC Community [contributing guidelines](https://dsccommunity.org/guidelines/contributing).
+
+## Change log
+
+A full list of changes in each version can be found in the [change log](CHANGELOG.md).
+
+## Resources
+
 The **DFSDsc** module contains DSC resources for configuring Distributed File
 System Replication and Namespaces. Currently in this version only Replication
 folders are supported. Namespaces will be supported in a future release.
@@ -21,31 +48,10 @@ The **DFSDsc** module contains the following resources:
 - **[DFSReplicationGroupMembership](https://github.com/PowerShell/DFSDsc/wiki/DFSReplicationGroupMembership)**:
   Configure Replication Group Folder Membership.
 
-This project has adopted [this code of conduct](CODE_OF_CONDUCT.md).
-
 ## Documentation and Examples
 
 For a full list of resources in DFSDsc and examples on their use, check out
 the [DFSDsc wiki](https://github.com/PowerShell/DFSDsc/wiki).
-
-## Branches
-
-### master
-
-[![Build status](https://ci.appveyor.com/api/projects/status/5hkcpe757hhe4583/branch/master?svg=true)](https://ci.appveyor.com/project/PowerShell/DFSDsc/branch/master)
-[![codecov](https://codecov.io/gh/PowerShell/DFSDsc/branch/master/graph/badge.svg)](https://codecov.io/gh/PowerShell/DFSDsc/branch/master)
-
-This is the branch containing the latest release - no contributions should be made
-directly to this branch.
-
-### dev
-
-[![Build status](https://ci.appveyor.com/api/projects/status/5hkcpe757hhe4583/branch/dev?svg=true)](https://ci.appveyor.com/project/PowerShell/DFSDsc/branch/dev)
-[![codecov](https://codecov.io/gh/PowerShell/DFSDsc/branch/dev/graph/badge.svg)](https://codecov.io/gh/PowerShell/DFSDsc/branch/dev)
-
-This is the development branch to which contributions should be proposed by contributors
-as pull requests. This development branch will periodically be merged to the master
-branch, and be released to [PowerShell Gallery](https://www.powershellgallery.com/).
 
 ## Requirements
 
@@ -73,7 +79,3 @@ Because this DSC Resource actually only configures information within the AD,
 it is only required that this resource is run on a computer that is registered
 in AD. It doesn't need to be run on one of the File Servers participating
 in the Distributed File System or Namespace.
-
-## Contributing
-
-Please check out common DSC Resources [contributing guidelines](https://github.com/PowerShell/DscResource.Kit/blob/master/CONTRIBUTING.md).
