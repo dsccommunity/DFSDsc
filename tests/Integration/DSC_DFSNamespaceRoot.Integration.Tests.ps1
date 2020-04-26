@@ -58,19 +58,6 @@ try
     Describe "$($script:dscResourceName)_Integration" {
         Context 'When creating a DFS Namespace Root' {
             BeforeAll {
-                # Create a SMB share for the Namespace
-                $randomFileName = [System.IO.Path]::GetRandomFileName()
-                $script:shareFolderRoot = Join-Path -Path $env:Temp -ChildPath "$($script:DSCResourceName)_$randomFileName"
-
-                New-Item `
-                    -Path $script:shareFolderRoot `
-                    -Type Directory
-
-                New-SMBShare `
-                    -Name $script:namespaceRootName `
-                    -Path $script:shareFolderRoot `
-                    -FullAccess 'Everyone'
-
                 $script:namespaceRootName = 'IntegrationTestNamespace'
                 $script:namespaceRoot = @{
                     Path                         = "\\$($env:COMPUTERNAME)\$script:namespaceRootName"
@@ -87,6 +74,19 @@ try
                     ReferralPriorityClass        = 'Global-Low'
                     ReferralPriorityRank         = 10
                 }
+
+                # Create a SMB share for the Namespace
+                $randomFileName = [System.IO.Path]::GetRandomFileName()
+                $script:shareFolderRoot = Join-Path -Path $env:Temp -ChildPath "$($script:DSCResourceName)_$randomFileName"
+
+                New-Item `
+                    -Path $script:shareFolderRoot `
+                    -Type Directory
+
+                New-SMBShare `
+                    -Name $script:namespaceRootName `
+                    -Path $script:shareFolderRoot `
+                    -FullAccess 'Everyone'
             }
 
             It 'Should compile and apply the MOF without throwing' {
@@ -133,22 +133,24 @@ try
             It 'Should have set the resource and all the folder parameters should match' {
                 # Get the Rule details
                 $namespaceRootNew = Get-DfsnRoot -Path $script:namespaceRoot.Path
-                $namespaceRootNew.Path                          | Should -Be $script:namespaceRoot.Path
-                $namespaceRootNew.Type                          | Should -Be $script:namespaceRoot.Type
-                $namespaceRootNew.TimeToLiveSec                 | Should -Be $script:namespaceRoot.TimeToLiveSec
-                $namespaceRootNew.State                         | Should -Be 'Online'
-                $namespaceRootNew.Description                   | Should -Be $script:namespaceRoot.Description
-                $namespaceRootNew.NamespacePath                 | Should -Be $script:namespaceRoot.Path
-                $namespaceRootNew.Flags                         | Should -Be @('Target Failback','Site Costing','Insite Referrals','AccessBased Enumeration')
+                $namespaceRootNew.Path          | Should -Be $script:namespaceRoot.Path
+                $namespaceRootNew.Type          | Should -Be $script:namespaceRoot.Type
+                $namespaceRootNew.TimeToLiveSec | Should -Be $script:namespaceRoot.TimeToLiveSec
+                $namespaceRootNew.State         | Should -Be 'Online'
+                $namespaceRootNew.Description   | Should -Be $script:namespaceRoot.Description
+                $namespaceRootNew.NamespacePath | Should -Be $script:namespaceRoot.Path
+                $namespaceRootNew.Flags         | Should -Be @('Target Failback','Site Costing','Insite Referrals','AccessBased Enumeration')
             }
 
             It 'Should have set the resource and all the folder target parameters should match' {
-                $namespaceRootTargetNew = Get-DfsnRootTarget -Path $script:namespaceRoot.Path -TargetPath $script:namespaceRoot.TargetPath
-                $namespaceRootTargetNew.Path                    | Should -Be $script:namespaceRoot.Path
-                $namespaceRootTargetNew.NamespacePath           | Should -Be $script:namespaceRoot.Path
-                $namespaceRootTargetNew.TargetPath              | Should -Be $script:namespaceRoot.TargetPath
-                $namespaceRootTargetNew.ReferralPriorityClass   | Should -Be $script:namespaceRoot.ReferralPriorityClass
-                $namespaceRootTargetNew.ReferralPriorityRank    | Should -Be $script:namespaceRoot.ReferralPriorityRank
+                $namespaceRootTargetNew = Get-DfsnRootTarget `
+                    -Path $script:namespaceRoot.Path `
+                    -TargetPath $script:namespaceRoot.TargetPath
+                $namespaceRootTargetNew.Path                  | Should -Be $script:namespaceRoot.Path
+                $namespaceRootTargetNew.NamespacePath         | Should -Be $script:namespaceRoot.Path
+                $namespaceRootTargetNew.TargetPath            | Should -Be $script:namespaceRoot.TargetPath
+                $namespaceRootTargetNew.ReferralPriorityClass | Should -Be $script:namespaceRoot.ReferralPriorityClass
+                $namespaceRootTargetNew.ReferralPriorityRank  | Should -Be $script:namespaceRoot.ReferralPriorityRank
             }
 
             AfterAll {
