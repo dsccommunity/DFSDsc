@@ -2,7 +2,7 @@
 param ()
 
 $script:dscModuleName = 'DFSDsc'
-$script:dscResourceName = 'DSC_DFSReplicationMembership'
+$script:dscResourceName = 'DSC_DFSReplicationGroupMembership'
 
 function Invoke-TestSetup
 {
