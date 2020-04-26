@@ -59,7 +59,7 @@ try
         BeforeAll {
             # Backup the existing settings
             $script:serverConfigurationBackup = Get-DFSNServerConfiguration `
-                -ComputerName $($env:COMPUTERNAME)
+                -ComputerName $env:COMPUTERNAME
 
             $script:namespaceServerConfiguration = @{
                 LdapTimeoutSec               = 45
@@ -108,6 +108,8 @@ try
         }
 
         AfterAll {
+            Write-Verbose -Message ("UseFQDN: {0}" -f ($script:serverConfigurationBackup.UseFQDN | Out-String)) -Verbose
+
             # Clean up
             Set-DFSNServerConfiguration `
                 -ComputerName $env:COMPUTERNAME `
