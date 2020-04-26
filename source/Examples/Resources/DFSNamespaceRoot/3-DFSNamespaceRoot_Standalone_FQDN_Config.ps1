@@ -1,12 +1,12 @@
 <#PSScriptInfo
 .VERSION 1.0.0
 .GUID 2f8a475b-5dc9-4f0e-b8e0-fe51d3552698
-.AUTHOR Microsoft Corporation
-.COMPANYNAME Microsoft Corporation
-.COPYRIGHT
+.AUTHOR DSC Community
+.COMPANYNAME DSC Community
+.COPYRIGHT Copyright the DSC Community contributors. All rights reserved.
 .TAGS DSCConfiguration
-.LICENSEURI https://github.com/PowerShell/DfsDsc/blob/master/LICENSE
-.PROJECTURI https://github.com/PowerShell/DfsDsc
+.LICENSEURI https://github.com/dsccommunity/DfsDsc/blob/master/LICENSE
+.PROJECTURI https://github.com/dsccommunity/DfsDsc
 .ICONURI
 .EXTERNALMODULEDEPENDENCIES
 .REQUIREDSCRIPTS

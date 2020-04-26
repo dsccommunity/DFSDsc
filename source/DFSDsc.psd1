@@ -64,6 +64,9 @@
             # A URL to the main website for this project.
             ProjectUri   = 'https://github.com/dsccommunity/DFSDsc'
 
+            # A URL to an icon representing this module.
+            IconUri      = 'https://dsccommunity.org/images/DSC_Logo_300p.png'
+
             # ReleaseNotes of this module
             ReleaseNotes = ''
         } # End of PSData hashtable
