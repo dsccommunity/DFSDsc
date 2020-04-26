@@ -56,74 +56,118 @@ try
     . $configFile
 
     Describe "$($script:dscResourceName)_Integration" {
-        # Create a SMB share for the Namespace
-        $RandomFileName = [System.IO.Path]::GetRandomFileName()
+        Context 'When creating a DFS Namespace Root' {
+            BeforeAll {
+                # Create a SMB share for the Namespace
+                $randomFileName = [System.IO.Path]::GetRandomFileName()
+                $script:shareFolderRoot = Join-Path -Path $env:Temp -ChildPath "$($script:DSCResourceName)_$randomFileName"
 
-        $ShareFolderRoot = Join-Path -Path $env:Temp -ChildPath "$($script:DSCResourceName)_$RandomFileName"
+                New-Item `
+                    -Path $script:shareFolderRoot `
+                    -Type Directory
 
-        New-Item `
-            -Path $ShareFolderRoot `
-            -Type Directory
+                New-SMBShare `
+                    -Name $script:namespaceRootName `
+                    -Path $script:shareFolderRoot `
+                    -FullAccess 'Everyone'
 
-        New-SMBShare `
-            -Name $NamespaceRootName `
-            -Path $ShareFolderRoot `
-            -FullAccess 'Everyone'
+                $script:namespaceRootName = 'IntegrationTestNamespace'
+                $script:namespaceRoot = @{
+                    Path                         = "\\$($env:COMPUTERNAME)\$script:namespaceRootName"
+                    TargetPath                   = "\\$($env:COMPUTERNAME)\$script:namespaceRootName"
+                    Ensure                       = 'Present'
+                    Type                         = 'Standalone'
+                    Description                  = 'Integration test namespace'
+                    TimeToLiveSec                = 500
+                    EnableSiteCosting            = $true
+                    EnableInsiteReferrals        = $true
+                    EnableAccessBasedEnumeration = $true
+                    EnableRootScalability        = $true
+                    EnableTargetFailback         = $true
+                    ReferralPriorityClass        = 'Global-Low'
+                    ReferralPriorityRank         = 10
+                }
+            }
 
-        It 'Should compile and apply the MOF without throwing' {
-            {
-                & "$($script:DSCResourceName)_Config" `
-                    -OutputPath $TestDrive
+            It 'Should compile and apply the MOF without throwing' {
+                {
+                    $configData = @{
+                        AllNodes = @(
+                            @{
+                                NodeName                     = 'localhost'
+                                Path                         = $script:namespaceRoot.Path
+                                TargetPath                   = $script:namespaceRoot.TargetPath
+                                Ensure                       = $script:namespaceRoot.Ensure
+                                Type                         = $script:namespaceRoot.Type
+                                Description                  = $script:namespaceRoot.Description
+                                TimeToLiveSec                = $script:namespaceRoot.TimeToLiveSec
+                                EnableSiteCosting            = $script:namespaceRoot.EnableSiteCosting
+                                EnableInsiteReferrals        = $script:namespaceRoot.EnableInsiteReferrals
+                                EnableAccessBasedEnumeration = $script:namespaceRoot.EnableAccessBasedEnumeration
+                                EnableRootScalability        = $script:namespaceRoot.EnableRootScalability
+                                EnableTargetFailback         = $script:namespaceRoot.EnableTargetFailback
+                                ReferralPriorityClass        = $script:namespaceRoot.ReferralPriorityClass
+                                ReferralPriorityRank         = $script:namespaceRoot.ReferralPriorityRank
+                            }
+                        )
+                    }
 
-                Start-DscConfiguration `
-                    -Path $TestDrive `
-                    -ComputerName localhost `
-                    -Wait `
-                    -Verbose `
+                    & "$($script:DSCResourceName)_Config" `
+                        -OutputPath $TestDrive `
+                        -ConfigurationData $configData
+
+                    Start-DscConfiguration `
+                        -Path $TestDrive `
+                        -ComputerName localhost `
+                        -Wait `
+                        -Verbose `
+                        -Force `
+                        -ErrorAction Stop
+                } | Should -Not -Throw
+            }
+
+            It 'Should be able to call Get-DscConfiguration without throwing' {
+                { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should -Not -Throw
+            }
+
+            It 'Should have set the resource and all the folder parameters should match' {
+                # Get the Rule details
+                $namespaceRootNew = Get-DfsnRoot -Path $script:namespaceRoot.Path
+                $namespaceRootNew.Path                          | Should -Be $script:namespaceRoot.Path
+                $namespaceRootNew.Type                          | Should -Be $script:namespaceRoot.Type
+                $namespaceRootNew.TimeToLiveSec                 | Should -Be $script:namespaceRoot.TimeToLiveSec
+                $namespaceRootNew.State                         | Should -Be 'Online'
+                $namespaceRootNew.Description                   | Should -Be $script:namespaceRoot.Description
+                $namespaceRootNew.NamespacePath                 | Should -Be $script:namespaceRoot.Path
+                $namespaceRootNew.Flags                         | Should -Be @('Target Failback','Site Costing','Insite Referrals','AccessBased Enumeration')
+            }
+
+            It 'Should have set the resource and all the folder target parameters should match' {
+                $namespaceRootTargetNew = Get-DfsnRootTarget -Path $script:namespaceRoot.Path -TargetPath $script:namespaceRoot.TargetPath
+                $namespaceRootTargetNew.Path                    | Should -Be $script:namespaceRoot.Path
+                $namespaceRootTargetNew.NamespacePath           | Should -Be $script:namespaceRoot.Path
+                $namespaceRootTargetNew.TargetPath              | Should -Be $script:namespaceRoot.TargetPath
+                $namespaceRootTargetNew.ReferralPriorityClass   | Should -Be $script:namespaceRoot.ReferralPriorityClass
+                $namespaceRootTargetNew.ReferralPriorityRank    | Should -Be $script:namespaceRoot.ReferralPriorityRank
+            }
+
+            AfterAll {
+                # Clean up
+                Remove-DFSNRoot `
+                    -Path $script:namespaceRoot.Path `
                     -Force `
-                    -ErrorAction Stop
-            } | Should -Not -Throw
+                    -Confirm:$false
+
+                Remove-SMBShare `
+                    -Name $script:namespaceRootName `
+                    -Confirm:$false
+
+                Remove-Item `
+                    -Path $script:shareFolderRoot `
+                    -Recurse `
+                    -Force
+            }
         }
-
-        It 'Should be able to call Get-DscConfiguration without throwing' {
-            { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should -Not -Throw
-        }
-
-        It 'Should have set the resource and all the folder parameters should match' {
-            # Get the Rule details
-            $NamespaceRootNew = Get-DfsnRoot -Path $NamespaceRoot.Path
-            $NamespaceRootNew.Path                          | Should -Be $NamespaceRoot.Path
-            $NamespaceRootNew.Type                          | Should -Be $NamespaceRoot.Type
-            $NamespaceRootNew.TimeToLiveSec                 | Should -Be $NamespaceRoot.TimeToLiveSec
-            $NamespaceRootNew.State                         | Should -Be 'Online'
-            $NamespaceRootNew.Description                   | Should -Be $NamespaceRoot.Description
-            $NamespaceRootNew.NamespacePath                 | Should -Be $NamespaceRoot.Path
-            $NamespaceRootNew.Flags                         | Should -Be @('Target Failback','Site Costing','Insite Referrals','AccessBased Enumeration')
-        }
-
-        It 'Should have set the resource and all the folder target parameters should match' {
-            $NamespaceRootTargetNew = Get-DfsnRootTarget -Path $NamespaceRoot.Path -TargetPath $NamespaceRoot.TargetPath
-            $NamespaceRootTargetNew.Path                    | Should -Be $NamespaceRoot.Path
-            $NamespaceRootTargetNew.NamespacePath           | Should -Be $NamespaceRoot.Path
-            $NamespaceRootTargetNew.TargetPath              | Should -Be $NamespaceRoot.TargetPath
-            $NamespaceRootTargetNew.ReferralPriorityClass   | Should -Be $NamespaceRoot.ReferralPriorityClass
-            $NamespaceRootTargetNew.ReferralPriorityRank    | Should -Be $NamespaceRoot.ReferralPriorityRank
-        }
-
-        # Clean up
-        Remove-DFSNRoot `
-            -Path $NamespaceRoot.Path `
-            -Force `
-            -Confirm:$false
-
-        Remove-SMBShare `
-            -Name $NamespaceRootName `
-            -Confirm:$false
-
-        Remove-Item `
-            -Path $ShareFolderRoot `
-            -Recurse `
-            -Force
     }
 }
 finally

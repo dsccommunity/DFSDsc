@@ -56,7 +56,7 @@ try
     . $configFile
 
     Describe "$($script:dscResourceName)_Integration" {
-        Context 'When creating a DFS Namespace' {
+        Context 'When creating a new folder in DFS Namespace' {
             BeforeAll {
                 $script:namespaceRootName = 'IntegrationTestNamespace'
                 $script:namespaceFolderName = 'TestFolder'
@@ -111,7 +111,7 @@ try
                     $configData = @{
                         AllNodes = @(
                             @{
-                                NodeName = 'localhost'
+                                NodeName                     = 'localhost'
                                 Path                         = $script:namespaceFolder.Path
                                 TargetPath                   = $script:namespaceFolder.TargetPath
                                 Ensure                       = $script:namespaceFolder.Ensure

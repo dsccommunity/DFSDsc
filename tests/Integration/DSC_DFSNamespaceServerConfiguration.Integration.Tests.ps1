@@ -56,10 +56,34 @@ try
     . $configFile
 
     Describe "$($script:dscResourceName)_Integration" {
+        BeforeAll {
+            # Backup the existing settings
+            $script:serverConfigurationBackup = Get-DFSNServerConfiguration `
+                -ComputerName $($env:COMPUTERNAME)
+
+            $script:namespaceServerConfiguration = @{
+                LdapTimeoutSec               = 45
+                SyncIntervalSec              = 5000
+                UseFQDN                      = $True
+            }
+        }
+
         It 'Should compile and apply the MOF without throwing' {
             {
+                $configData = @{
+                    AllNodes = @(
+                        @{
+                            NodeName        = 'localhost'
+                            LdapTimeoutSec  = $script:namespaceServerConfiguration.LdapTimeoutSec
+                            SyncIntervalSec = $script:namespaceServerConfiguration.SyncIntervalSec
+                            UseFQDN         = $script:namespaceServerConfiguration.UseFQDN
+                        }
+                    )
+                }
+
                 & "$($script:DSCResourceName)_Config" `
-                    -OutputPath $TestDrive
+                    -OutputPath $TestDrive `
+                    -ConfigurationData $configData
 
                 Start-DscConfiguration `
                     -Path $TestDrive `
@@ -77,19 +101,19 @@ try
 
         It 'Should have set the resource and all the parameters should match' {
             # Get the Rule details
-            $NamespaceServerConfigurationNew = Get-DfsnServerConfiguration -ComputerName $env:COMPUTERNAME
-            $NamespaceServerConfigurationNew.LdapTimeoutSec            = $NamespaceServerConfiguration.LdapTimeoutSec
-            $NamespaceServerConfigurationNew.SyncIntervalSec           = $NamespaceServerConfiguration.SyncIntervalSec
-            $NamespaceServerConfigurationNew.UseFQDN                   = $NamespaceServerConfiguration.UseFQDN
+            $namespaceServerConfigurationNew = Get-DfsnServerConfiguration -ComputerName $env:COMPUTERNAME
+            $namespaceServerConfigurationNew.LdapTimeoutSec            = $script:namespaceServerConfiguration.LdapTimeoutSec
+            $namespaceServerConfigurationNew.SyncIntervalSec           = $script:namespaceServerConfiguration.SyncIntervalSec
+            $namespaceServerConfigurationNew.UseFQDN                   = $script:namespaceServerConfiguration.UseFQDN
         }
 
         AfterAll {
             # Clean up
             Set-DFSNServerConfiguration `
                 -ComputerName $env:COMPUTERNAME `
-                -LdapTimeoutSec $ServerConfigurationBackup.LdapTimeoutSec `
-                -SyncIntervalSec $ServerConfigurationBackup.SyncIntervalSec `
-                -UseFQDN $ServerConfigurationBackup.UseFQDN
+                -LdapTimeoutSec $script:serverConfigurationBackup.LdapTimeoutSec `
+                -SyncIntervalSec $script:serverConfigurationBackup.SyncIntervalSec `
+                -UseFQDN $script:serverConfigurationBackup.UseFQDN
         }
     }
 }
