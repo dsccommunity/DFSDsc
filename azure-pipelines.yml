@@ -98,6 +98,14 @@ stages:
               downloadPath: '$(Build.SourcesDirectory)'
 
           - task: PowerShell@2
+            name: installDFSFeatures
+            displayName: 'Install DFS Features'
+            inputs:
+              targetType: 'inline'
+              script: 'Install-WindowsFeature FS-DFS-Namespace, FS-DFS-Replication, RSAT-DFS-Mgmt-Con'
+              pwsh: false
+
+          - task: PowerShell@2
             name: test
             displayName: 'Run Unit Test'
             inputs:
@@ -187,6 +195,14 @@ stages:
               downloadType: 'single'
               artifactName: 'output'
               downloadPath: '$(Build.SourcesDirectory)'
+
+          - task: PowerShell@2
+            name: installDFSFeatures
+            displayName: 'Install DFS Features'
+            inputs:
+              targetType: 'inline'
+              script: 'Install-WindowsFeature FS-DFS-Namespace, FS-DFS-Replication, RSAT-DFS-Mgmt-Con'
+              pwsh: false
 
           - task: PowerShell@2
             name: test
