@@ -1,22 +1,35 @@
-$script:DSCModuleName   = 'DFSDsc'
-$script:DSCResourceName = 'DSC_DFSReplicationGroupFolder'
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingConvertToSecureStringWithPlainText", "")]
+param ()
 
-#region HEADER
-# Unit Test Template Version: 1.1.0
-[System.String] $script:moduleRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+$script:dscModuleName = 'DFSDsc'
+$script:dscResourceName = 'DSC_DFSReplicationGroupFolder'
 
-if ( (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
-     (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
+function Invoke-TestSetup
 {
-    & git @('clone','https://github.com/PowerShell/DscResource.Tests.git',(Join-Path -Path $script:moduleRoot -ChildPath '\DSCResource.Tests\'))
+    try
+    {
+        Import-Module -Name DscResource.Test -Force -ErrorAction 'Stop'
+    }
+    catch [System.IO.FileNotFoundException]
+    {
+        throw 'DscResource.Test module dependency not found. Please run ".\build.ps1 -Tasks build" first.'
+    }
+
+    $script:testEnvironment = Initialize-TestEnvironment `
+        -DSCModuleName $script:dscModuleName `
+        -DSCResourceName $script:dscResourceName `
+        -ResourceType 'Mof' `
+        -TestType 'Unit'
+
+    Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath '..\TestHelpers\CommonTestHelper.psm1')
 }
 
-Import-Module (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1') -Force
-$TestEnvironment = Initialize-TestEnvironment `
-    -DSCModuleName $script:DSCModuleName `
-    -DSCResourceName $script:DSCResourceName `
-    -TestType Unit
-#endregion HEADER
+function Invoke-TestCleanup
+{
+    Restore-TestEnvironment -TestEnvironment $script:testEnvironment
+}
+
+Invoke-TestSetup
 
 # Begin Testing
 try
@@ -36,10 +49,10 @@ try
         break
     }
 
-    $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Replication).Installed
+    $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'Should have the DFS Replication Feature Installed' {
+            It 'Should have the DFS Namespace Feature Installed' {
                 $featureInstalled | Should -Be $true
             }
         }
@@ -50,22 +63,7 @@ try
         break
     }
 
-    $featureInstalled = (Get-WindowsFeature -Name RSAT-DFS-Mgmt-Con).Installed
-    Describe 'Environment' {
-        Context 'Windows Features' {
-            It 'Should have the DFS Management Tools Feature Installed' {
-                $featureInstalled | Should -Be $true
-            }
-        }
-    }
-
-    if ($featureInstalled -eq $false)
-    {
-        break
-    }
-
-    #region Pester Tests
-    InModuleScope $script:DSCResourceName {
+    InModuleScope $script:dscResourceName {
         # Create the Mock Objects that will be used for running tests
         $replicationGroup = [PSObject]@{
             GroupName = 'Test Group'
@@ -289,11 +287,8 @@ try
             }
         }
     }
-    #endregion
 }
 finally
 {
-    #region FOOTER
-    Restore-TestEnvironment -TestEnvironment $TestEnvironment
-    #endregion
+    Invoke-TestCleanup
 }
