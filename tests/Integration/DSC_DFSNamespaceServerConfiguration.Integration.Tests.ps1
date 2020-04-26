@@ -25,6 +25,7 @@ try
 {
     # Ensure that the tests can be performed on this computer
     $productType = (Get-CimInstance Win32_OperatingSystem).ProductType
+
     Describe 'Environment' {
         Context 'Operating System' {
             It 'Should be a Server OS' {
@@ -39,6 +40,7 @@ try
     }
 
     $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
+
     Describe 'Environment' {
         Context 'Windows Features' {
             It 'Should have the DFS Namespace Feature Installed' {
