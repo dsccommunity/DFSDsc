@@ -1,6 +1,6 @@
 $modulePath = Join-Path -Path (Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent) -ChildPath 'Modules'
 
-# Import the Networking Common Modules
+# Import the DFSDsc.Common Module
 Import-Module -Name (Join-Path -Path $modulePath `
         -ChildPath (Join-Path -Path 'DFSDsc.Common' `
             -ChildPath 'DFSDsc.Common.psm1'))
