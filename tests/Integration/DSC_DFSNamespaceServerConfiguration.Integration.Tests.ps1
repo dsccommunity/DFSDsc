@@ -108,7 +108,10 @@ try
         }
 
         AfterAll {
-            Write-Verbose -Message ("UseFQDN: {0}" -f ($script:serverConfigurationBackup.UseFQDN | Out-String)) -Verbose
+            if (-not $script:serverConfigurationBackup.UseFQDN)
+            {
+                $script:serverConfigurationBackup.UseFQDN = $false
+            }
 
             # Clean up
             Set-DFSNServerConfiguration `
