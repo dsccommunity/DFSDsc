@@ -2,8 +2,8 @@ $modulePath = Join-Path -Path (Split-Path -Path (Split-Path -Path $PSScriptRoot 
 
 # Import the Certificate Resource Helper Module
 Import-Module -Name (Join-Path -Path $modulePath `
-                               -ChildPath (Join-Path -Path 'DFSDsc.ResourceHelper' `
-                                                     -ChildPath 'DFSDsc.ResourceHelper.psm1'))
+                               -ChildPath (Join-Path -Path 'DFSDsc.Common' `
+                                                     -ChildPath 'DFSDsc.Common.psm1'))
 
 # Import Localization Strings
 $localizedData = Get-LocalizedData `

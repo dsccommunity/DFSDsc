@@ -11,3 +11,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated to use continuous delivery pattern using Azure DevOps - fixes
   [Issue #41](https://github.com/dsccommunity/DFSDsc/issues/98).
 - Updated build badges in README.MD.
+- Renamed `DFSDsc.ResourceHelper` module to `DFSDsc.Common` to align to
+  other modules.
