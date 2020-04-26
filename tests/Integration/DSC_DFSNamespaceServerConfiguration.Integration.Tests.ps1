@@ -1,25 +1,26 @@
-$script:DSCModuleName   = 'DFSDsc'
-$script:DSCResourceName = 'DSC_DFSNamespaceServerConfiguration'
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingConvertToSecureStringWithPlainText", "")]
+param ()
 
-#region HEADER
-# Integration Test Template Version: 1.1.0
-[System.String] $script:moduleRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+$script:dscModuleName = 'DFSDsc'
+$script:dscResourceName = 'DSC_DFSNamespaceServerConfiguration'
 
-if ( (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests'))) -or `
-     (-not (Test-Path -Path (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1'))) )
+try
 {
-    & git @('clone','https://github.com/PowerShell/DscResource.Tests.git',(Join-Path -Path $script:moduleRoot -ChildPath '\DSCResource.Tests\'))
+    Import-Module -Name DscResource.Test -Force -ErrorAction 'Stop'
+}
+catch [System.IO.FileNotFoundException]
+{
+    throw 'DscResource.Test module dependency not found. Please run ".\build.ps1 -Tasks build" first.'
 }
 
-Import-Module (Join-Path -Path $script:moduleRoot -ChildPath 'DSCResource.Tests\TestHelper.psm1') -Force
-Import-Module (Join-Path -Path $script:moduleRoot -ChildPath "$($script:DSCModuleName).psd1") -Force
-$TestEnvironment = Initialize-TestEnvironment `
-    -DSCModuleName $script:DSCModuleName `
-    -DSCResourceName $script:DSCResourceName `
-    -TestType Integration
-#endregion
+$script:testEnvironment = Initialize-TestEnvironment `
+    -DSCModuleName $script:dscModuleName `
+    -DSCResourceName $script:dscResourceName `
+    -ResourceType 'Mof' `
+    -TestType 'Integration'
 
-# Using try/finally to always cleanup even if something awful happens.
+Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath '..\TestHelpers\CommonTestHelper.psm1')
+
 try
 {
     # Ensure that the tests can be performed on this computer
@@ -51,27 +52,28 @@ try
         break
     }
 
-    # Backup the existing settings
-    $ServerConfigurationBackup = Get-DFSNServerConfiguration `
-        -ComputerName $($env:COMPUTERNAME)
-
-    #region Integration Tests
     $configFile = Join-Path -Path $PSScriptRoot -ChildPath "$($script:DSCResourceName).config.ps1"
     . $configFile
 
-    Describe "$($script:DSCResourceName)_Integration" {
-        #region DEFAULT TESTS
+    Describe "$($script:dscResourceName)_Integration" {
         It 'Should compile and apply the MOF without throwing' {
             {
-                & "$($script:DSCResourceName)_Config" -OutputPath $TestDrive
-                Start-DscConfiguration -Path $TestDrive -ComputerName localhost -Wait -Verbose -Force
+                & "$($script:DSCResourceName)_Config" `
+                    -OutputPath $TestDrive
+
+                Start-DscConfiguration `
+                    -Path $TestDrive `
+                    -ComputerName localhost `
+                    -Wait `
+                    -Verbose `
+                    -Force `
+                    -ErrorAction Stop
             } | Should -Not -Throw
         }
 
         It 'Should be able to call Get-DscConfiguration without throwing' {
             { Get-DscConfiguration -Verbose -ErrorAction Stop } | Should -Not -Throw
         }
-        #endregion
 
         It 'Should have set the resource and all the parameters should match' {
             # Get the Rule details
@@ -81,18 +83,17 @@ try
             $NamespaceServerConfigurationNew.UseFQDN                   = $NamespaceServerConfiguration.UseFQDN
         }
 
-        # Clean up
-        Set-DFSNServerConfiguration `
-            -ComputerName $env:COMPUTERNAME `
-            -LdapTimeoutSec $ServerConfigurationBackup.LdapTimeoutSec `
-            -SyncIntervalSec $ServerConfigurationBackup.SyncIntervalSec `
-            -UseFQDN $ServerConfigurationBackup.UseFQDN
+        AfterAll {
+            # Clean up
+            Set-DFSNServerConfiguration `
+                -ComputerName $env:COMPUTERNAME `
+                -LdapTimeoutSec $ServerConfigurationBackup.LdapTimeoutSec `
+                -SyncIntervalSec $ServerConfigurationBackup.SyncIntervalSec `
+                -UseFQDN $ServerConfigurationBackup.UseFQDN
+        }
     }
-    #endregion
 }
 finally
 {
-    #region FOOTER
-    Restore-TestEnvironment -TestEnvironment $TestEnvironment
-    #endregion
+    Restore-TestEnvironment -TestEnvironment $script:testEnvironment
 }
