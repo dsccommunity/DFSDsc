@@ -1,14 +1,12 @@
 $modulePath = Join-Path -Path (Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent) -ChildPath 'Modules'
 
-# Import the Certificate Resource Helper Module
+# Import the Networking Common Modules
 Import-Module -Name (Join-Path -Path $modulePath `
-                               -ChildPath (Join-Path -Path 'DFSDsc.Common' `
-                                                     -ChildPath 'DFSDsc.Common.psm1'))
+        -ChildPath (Join-Path -Path 'FileContentDsc.Common' `
+            -ChildPath 'FileContentDsc.Common.psm1'))
 
 # Import Localization Strings
-$localizedData = Get-LocalizedData `
-    -ResourceName 'DSC_DFSNamespaceServerConfiguration' `
-    -ResourcePath (Split-Path -Parent $Script:MyInvocation.MyCommand.Path)
+$script:localizedData = Get-LocalizedData -ResourceName 'DSC_DFSNamespaceServerConfiguration'
 
 <#
     This is an array of all the parameters used by this resource.
@@ -55,7 +53,7 @@ function Get-TargetResource
 
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.GettingNamespaceServerConfigurationMessage)
+            $($script:localizedData.GettingNamespaceServerConfigurationMessage)
         ) -join '' )
 
     # Get the current DFSN Server Configuration
@@ -122,7 +120,7 @@ function Set-TargetResource
 
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.SettingNamespaceServerConfigurationMessage)
+            $($script:localizedData.SettingNamespaceServerConfigurationMessage)
         ) -join '' )
 
     # Get the current DFSN Server Configuration
@@ -147,7 +145,7 @@ function Set-TargetResource
 
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.NamespaceServerConfigurationUpdateParameterMessage) `
+                $($script:localizedData.NamespaceServerConfigurationUpdateParameterMessage) `
                     -f $parameter.Name,$parameterNew
                 ) -join '' )
 
@@ -168,7 +166,7 @@ function Set-TargetResource
 
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.NamespaceServerConfigurationUpdatedMessage)
+            $($script:localizedData.NamespaceServerConfigurationUpdatedMessage)
             ) -join '' )
 
         if ($restart)
@@ -181,7 +179,7 @@ function Set-TargetResource
 
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.NamespaceServerConfigurationServiceRestartedMessage)
+                $($script:localizedData.NamespaceServerConfigurationServiceRestartedMessage)
                 ) -join '' )
         }
     } # if
@@ -232,7 +230,7 @@ function Test-TargetResource
 
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.TestingNamespaceServerConfigurationMessage)
+            $($script:localizedData.TestingNamespaceServerConfigurationMessage)
         ) -join '' )
 
     # Flag to signal whether settings are correct
@@ -254,7 +252,7 @@ function Test-TargetResource
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.NamespaceServerConfigurationParameterNeedsUpdateMessage) `
+                $($script:localizedData.NamespaceServerConfigurationParameterNeedsUpdateMessage) `
                     -f $parameter.Name,$parameterSource,$parameterNew
                 ) -join '' )
 

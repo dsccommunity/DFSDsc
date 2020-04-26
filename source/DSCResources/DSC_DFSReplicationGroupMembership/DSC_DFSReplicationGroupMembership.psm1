@@ -1,14 +1,12 @@
 $modulePath = Join-Path -Path (Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent) -ChildPath 'Modules'
 
-# Import the Certificate Resource Helper Module
+# Import the Networking Common Modules
 Import-Module -Name (Join-Path -Path $modulePath `
-                               -ChildPath (Join-Path -Path 'DFSDsc.Common' `
-                                                     -ChildPath 'DFSDsc.Common.psm1'))
+        -ChildPath (Join-Path -Path 'FileContentDsc.Common' `
+            -ChildPath 'FileContentDsc.Common.psm1'))
 
 # Import Localization Strings
-$localizedData = Get-LocalizedData `
-    -ResourceName 'DSC_DFSReplicationGroupMembership' `
-    -ResourcePath (Split-Path -Parent $Script:MyInvocation.MyCommand.Path)
+$script:localizedData = Get-LocalizedData -ResourceName 'DSC_DFSReplicationGroupMembership'
 
 <#
     .SYNOPSIS
@@ -54,7 +52,7 @@ function Get-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.GettingReplicationGroupMembershipMessage) `
+        $($script:localizedData.GettingReplicationGroupMembershipMessage) `
             -f $GroupName,$FolderName,$ComputerName
         ) -join '' )
 
@@ -85,7 +83,7 @@ function Get-TargetResource
     {
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.ReplicationGroupMembershipExistsMessage) `
+            $($script:localizedData.ReplicationGroupMembershipExistsMessage) `
                 -f $GroupName,$FolderName,$ComputerName
             ) -join '' )
 
@@ -105,7 +103,7 @@ function Get-TargetResource
     {
         # The Rep Group membership doesn't exist
         New-InvalidOperationException `
-            -Message ($($LocalizedData.ReplicationGroupMembershipMissingError) `
+            -Message ($($script:localizedData.ReplicationGroupMembershipMissingError) `
                 -f $GroupName,$FolderName,$ComputerName)
     }
 
@@ -192,7 +190,7 @@ function Set-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.SettingRegGroupMembershipMessage) `
+        $($script:localizedData.SettingRegGroupMembershipMessage) `
             -f $GroupName,$FolderName,$ComputerName
         ) -join '' )
 
@@ -202,7 +200,7 @@ function Set-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.ReplicationGroupMembershipUpdatedMessage) `
+        $($script:localizedData.ReplicationGroupMembershipUpdatedMessage) `
             -f $GroupName,$FolderName,$ComputerName
         ) -join '' )
 } # Set-TargetResource
@@ -291,7 +289,7 @@ function Test-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.TestingRegGroupMembershipMessage) `
+        $($script:localizedData.TestingRegGroupMembershipMessage) `
             -f $GroupName,$FolderName,$ComputerName
         ) -join '' )
 
@@ -317,7 +315,7 @@ function Test-TargetResource
         # The rep group folder is found
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.ReplicationGroupMembershipExistsMessage) `
+            $($script:localizedData.ReplicationGroupMembershipExistsMessage) `
                 -f $GroupName,$FolderName,$ComputerName
             ) -join '' )
 
@@ -327,7 +325,7 @@ function Test-TargetResource
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupMembershipContentPathMismatchMessage) `
+                $($script:localizedData.ReplicationGroupMembershipContentPathMismatchMessage) `
                     -f $GroupName,$FolderName,$ComputerName
                 ) -join '' )
 
@@ -340,7 +338,7 @@ function Test-TargetResource
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupMembershipStagingPathMismatchMessage) `
+                $($script:localizedData.ReplicationGroupMembershipStagingPathMismatchMessage) `
                     -f $GroupName,$FolderName,$ComputerName
                 ) -join '' )
 
@@ -353,7 +351,7 @@ function Test-TargetResource
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupMembershipStagingPathQuotaMismatchMessage) `
+                $($script:localizedData.ReplicationGroupMembershipStagingPathQuotaMismatchMessage) `
                     -f $GroupName,$FolderName,$ComputerName
                 ) -join '' )
 
@@ -366,7 +364,7 @@ function Test-TargetResource
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupMembershipReadOnlyMismatchMessage) `
+                $($script:localizedData.ReplicationGroupMembershipReadOnlyMismatchMessage) `
                     -f $GroupName,$FolderName,$ComputerName
                 ) -join '' )
 
@@ -379,7 +377,7 @@ function Test-TargetResource
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupMembershipPrimaryMemberMismatchMessage) `
+                $($script:localizedData.ReplicationGroupMembershipPrimaryMemberMismatchMessage) `
                     -f $GroupName,$FolderName,$ComputerName
                 ) -join '' )
 
@@ -390,7 +388,7 @@ function Test-TargetResource
     {
         # The Rep Group membership doesn't exist
         New-InvalidOperationException `
-            -Message ($($LocalizedData.ReplicationGroupMembershipMissingError) `
+            -Message ($($script:localizedData.ReplicationGroupMembershipMissingError) `
                 -f $GroupName,$FolderName,$ComputerName)
     } # if
 

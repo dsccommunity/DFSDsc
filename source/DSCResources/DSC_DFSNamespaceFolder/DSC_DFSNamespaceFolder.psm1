@@ -1,14 +1,12 @@
 $modulePath = Join-Path -Path (Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent) -ChildPath 'Modules'
 
-# Import the Certificate Resource Helper Module
+# Import the Networking Common Modules
 Import-Module -Name (Join-Path -Path $modulePath `
-                               -ChildPath (Join-Path -Path 'DFSDsc.Common' `
-                                                     -ChildPath 'DFSDsc.Common.psm1'))
+        -ChildPath (Join-Path -Path 'FileContentDsc.Common' `
+            -ChildPath 'FileContentDsc.Common.psm1'))
 
 # Import Localization Strings
-$localizedData = Get-LocalizedData `
-    -ResourceName 'DSC_DFSNamespaceFolder' `
-    -ResourcePath (Split-Path -Parent $Script:MyInvocation.MyCommand.Path)
+$script:localizedData = Get-LocalizedData -ResourceName 'DSC_DFSNamespaceFolder'
 
 <#
     .SYNOPSIS
@@ -45,7 +43,7 @@ function Get-TargetResource
 
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.GettingNamespaceFolderMessage) `
+            $($script:localizedData.GettingNamespaceFolderMessage) `
                 -f $Path,$TargetPath
         ) -join '' )
 
@@ -65,7 +63,7 @@ function Get-TargetResource
         # The namespace folder exists
         Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.NamespaceFolderExistsMessage) `
+                $($script:localizedData.NamespaceFolderExistsMessage) `
                     -f $Path
             ) -join '' )
     }
@@ -74,7 +72,7 @@ function Get-TargetResource
         # The namespace folder does not exist
         Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.NamespaceFolderDoesNotExistMessage) `
+                $($script:localizedData.NamespaceFolderDoesNotExistMessage) `
                     -f $Path
             ) -join '' )
         return $returnValue
@@ -104,7 +102,7 @@ function Get-TargetResource
 
         Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.NamespaceFolderTargetExistsMessage) `
+                $($script:localizedData.NamespaceFolderTargetExistsMessage) `
                     -f $Path,$TargetPath
             ) -join '' )
     }
@@ -113,7 +111,7 @@ function Get-TargetResource
         # The target does not exist in this namespace
         Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.NamespaceFolderTargetDoesNotExistMessage) `
+                $($script:localizedData.NamespaceFolderTargetDoesNotExistMessage) `
                     -f $Path,$TargetPath
             ) -join '' )
     } # if
@@ -198,7 +196,7 @@ function Set-TargetResource
 
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.SettingNamespaceFolderMessage) `
+            $($script:localizedData.SettingNamespaceFolderMessage) `
                 -f $Path,$TargetPath
         ) -join '' )
 
@@ -266,7 +264,7 @@ function Set-TargetResource
                 $folderProperties.GetEnumerator() | ForEach-Object -Process {
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
-                        $($LocalizedData.NamespaceFolderUpdateParameterMessage) `
+                        $($script:localizedData.NamespaceFolderUpdateParameterMessage) `
                             -f $Path,$_.name, $_.value
                     ) -join '' )
                 }
@@ -330,7 +328,7 @@ function Set-TargetResource
             $targetProperties.GetEnumerator() | ForEach-Object -Process {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceFolderTargetUpdateParameterMessage) `
+                    $($script:localizedData.NamespaceFolderTargetUpdateParameterMessage) `
                         -f $Path,$TargetPath,$_.name, $_.value
                 ) -join '' )
             }
@@ -357,7 +355,7 @@ function Set-TargetResource
             $PSBoundParameters.GetEnumerator() | ForEach-Object -Process {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceFolderUpdateParameterMessage) `
+                    $($script:localizedData.NamespaceFolderUpdateParameterMessage) `
                         -f $Path,$TargetPath,$_.name, $_.value
                 ) -join '' )
             }
@@ -383,7 +381,7 @@ function Set-TargetResource
 
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.NamespaceFolderTargetRemovedMessage) `
+                $($script:localizedData.NamespaceFolderTargetRemovedMessage) `
                     -f $Path,$TargetPath
             ) -join '' )
         }
@@ -468,7 +466,7 @@ function Test-TargetResource
 
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.TestingNamespaceFolderMessage) `
+            $($script:localizedData.TestingNamespaceFolderMessage) `
                 -f $Path,$TargetPath
         ) -join '' )
 
@@ -492,7 +490,7 @@ function Test-TargetResource
             {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceFolderParameterNeedsUpdateMessage) `
+                    $($script:localizedData.NamespaceFolderParameterNeedsUpdateMessage) `
                         -f $Path,'Description'
                     ) -join '' )
                 $desiredConfigurationMatch = $false
@@ -503,7 +501,7 @@ function Test-TargetResource
             {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceFolderParameterNeedsUpdateMessage) `
+                    $($script:localizedData.NamespaceFolderParameterNeedsUpdateMessage) `
                         -f $Path,'TimeToLiveSec'
                     ) -join '' )
                 $desiredConfigurationMatch = $false
@@ -514,7 +512,7 @@ function Test-TargetResource
             {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceFolderParameterNeedsUpdateMessage) `
+                    $($script:localizedData.NamespaceFolderParameterNeedsUpdateMessage) `
                         -f $Path,'EnableInsiteReferrals'
                     ) -join '' )
                 $desiredConfigurationMatch = $false
@@ -525,7 +523,7 @@ function Test-TargetResource
             {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceFolderParameterNeedsUpdateMessage) `
+                    $($script:localizedData.NamespaceFolderParameterNeedsUpdateMessage) `
                         -f $Path,'EnableTargetFailback'
                     ) -join '' )
                 $desiredConfigurationMatch = $false
@@ -542,7 +540,7 @@ function Test-TargetResource
                 {
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
-                        $($LocalizedData.NamespaceFolderTargetParameterNeedsUpdateMessage) `
+                        $($script:localizedData.NamespaceFolderTargetParameterNeedsUpdateMessage) `
                             -f $Path,$TargetPath,'ReferralPriorityClass'
                         ) -join '' )
                     $desiredConfigurationMatch = $false
@@ -553,7 +551,7 @@ function Test-TargetResource
                 {
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
-                        $($LocalizedData.NamespaceFolderTargetParameterNeedsUpdateMessage) `
+                        $($script:localizedData.NamespaceFolderTargetParameterNeedsUpdateMessage) `
                             -f $Path,$TargetPath,'ReferralPriorityRank'
                         ) -join '' )
                     $desiredConfigurationMatch = $false
@@ -564,7 +562,7 @@ function Test-TargetResource
                 # The Folder target does not exist but should - change required
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceFolderTargetDoesNotExistButShouldMessage) `
+                    $($script:localizedData.NamespaceFolderTargetDoesNotExistButShouldMessage) `
                         -f $Path,$TargetPath
                     ) -join '' )
                 $desiredConfigurationMatch = $false
@@ -575,7 +573,7 @@ function Test-TargetResource
             # Ths Namespace Folder doesn't exist but should - change required
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                 $($LocalizedData.NamespaceFolderDoesNotExistButShouldMessage) `
+                 $($script:localizedData.NamespaceFolderDoesNotExistButShouldMessage) `
                     -f $Path
                 ) -join '' )
             $desiredConfigurationMatch = $false
@@ -595,7 +593,7 @@ function Test-TargetResource
                 # The Folder target exists but should not - change required
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceFolderTargetExistsButShouldNotMessage) `
+                    $($script:localizedData.NamespaceFolderTargetExistsButShouldNotMessage) `
                         -f $Path,$TargetPath
                     ) -join '' )
                 $desiredConfigurationMatch = $false
@@ -605,7 +603,7 @@ function Test-TargetResource
                 # The Namespace exists but the target doesn't - change not required
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.NamespaceFolderTargetDoesNotExistAndShouldNotMessage) `
+                    $($script:localizedData.NamespaceFolderTargetDoesNotExistAndShouldNotMessage) `
                         -f $Path,$TargetPath
                     ) -join '' )
             }
@@ -615,7 +613,7 @@ function Test-TargetResource
             # The Namespace does not exist (so neither does the target) - change not required
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                 $($LocalizedData.NamespaceFolderDoesNotExistAndShouldNotMessage) `
+                 $($script:localizedData.NamespaceFolderDoesNotExistAndShouldNotMessage) `
                     -f $Path
                 ) -join '' )
         }

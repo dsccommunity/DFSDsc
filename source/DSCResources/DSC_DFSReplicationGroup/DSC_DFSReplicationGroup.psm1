@@ -1,14 +1,12 @@
 $modulePath = Join-Path -Path (Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent) -ChildPath 'Modules'
 
-# Import the Certificate Resource Helper Module
+# Import the Networking Common Modules
 Import-Module -Name (Join-Path -Path $modulePath `
-                               -ChildPath (Join-Path -Path 'DFSDsc.Common' `
-                                                     -ChildPath 'DFSDsc.Common.psm1'))
+        -ChildPath (Join-Path -Path 'FileContentDsc.Common' `
+            -ChildPath 'FileContentDsc.Common.psm1'))
 
 # Import Localization Strings
-$localizedData = Get-LocalizedData `
-    -ResourceName 'DSC_DFSReplicationGroup' `
-    -ResourcePath (Split-Path -Parent $Script:MyInvocation.MyCommand.Path)
+$script:localizedData = Get-LocalizedData -ResourceName 'DSC_DFSReplicationGroup'
 
 <#
     .SYNOPSIS
@@ -44,7 +42,7 @@ function Get-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.GettingReplicationGroupMessage) `
+        $($script:localizedData.GettingReplicationGroupMessage) `
             -f $GroupName
         ) -join '' )
 
@@ -69,7 +67,7 @@ function Get-TargetResource
     {
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.ReplicationGroupExistsMessage) `
+            $($script:localizedData.ReplicationGroupExistsMessage) `
                 -f $GroupName
             ) -join '' )
 
@@ -93,7 +91,7 @@ function Get-TargetResource
     {
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.ReplicationGroupDoesNotExistMessage) `
+            $($script:localizedData.ReplicationGroupDoesNotExistMessage) `
                 -f $GroupName
             ) -join '' )
 
@@ -184,7 +182,7 @@ function Set-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.SettingRegGroupMessage) `
+        $($script:localizedData.SettingRegGroupMessage) `
             -f $GroupName
         ) -join '' )
 
@@ -208,7 +206,7 @@ function Set-TargetResource
         # The rep group should exist
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.EnsureReplicationGroupExistsMessage) `
+            $($script:localizedData.EnsureReplicationGroupExistsMessage) `
                 -f $GroupName
             ) -join '' )
 
@@ -224,7 +222,7 @@ function Set-TargetResource
             # The RG exists already - Check the existing RG and members
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupExistsMessage) `
+                $($script:localizedData.ReplicationGroupExistsMessage) `
                     -f $GroupName
                 ) -join '' )
 
@@ -235,7 +233,7 @@ function Set-TargetResource
 
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.ReplicationGroupDescriptionUpdatedMessage) `
+                    $($script:localizedData.ReplicationGroupDescriptionUpdatedMessage) `
                         -f $GroupName
                     ) -join '' )
             } # if
@@ -245,7 +243,7 @@ function Set-TargetResource
             # Ths Rep Groups doesn't exist - Create it
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupDoesNotExistMessage) `
+                $($script:localizedData.ReplicationGroupDoesNotExistMessage) `
                     -f $GroupName
                 ) -join '' )
 
@@ -253,7 +251,7 @@ function Set-TargetResource
 
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupCreatedMessage) `
+                $($script:localizedData.ReplicationGroupCreatedMessage) `
                     -f $GroupName
                 ) -join '' )
         } # else
@@ -291,7 +289,7 @@ function Set-TargetResource
 
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.ReplicationGroupMemberAddedMessage) `
+                    $($script:localizedData.ReplicationGroupMemberAddedMessage) `
                         -f $GroupName,$member
                     ) -join '' )
             } # if
@@ -310,7 +308,7 @@ function Set-TargetResource
 
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.ReplicationGroupMemberRemovedMessage) `
+                    $($script:localizedData.ReplicationGroupMemberRemovedMessage) `
                         -f $GroupName,$existingMember
                     ) -join '' )
             } # if
@@ -331,7 +329,7 @@ function Set-TargetResource
 
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.ReplicationGroupFolderAddedMessage) `
+                    $($script:localizedData.ReplicationGroupFolderAddedMessage) `
                         -f $GroupName,$folder
                     ) -join '' )
             } # if
@@ -350,7 +348,7 @@ function Set-TargetResource
 
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.ReplicationGroupFolderRemovedMessage) `
+                    $($script:localizedData.ReplicationGroupFolderRemovedMessage) `
                         -f $GroupName,$existingFolder
                     ) -join '' )
             } # if
@@ -394,7 +392,7 @@ function Set-TargetResource
 
                         Write-Verbose -Message ( @(
                             "$($MyInvocation.MyCommand): "
-                            $($LocalizedData.ReplicationGroupContentPathUpdatedMessage) `
+                            $($script:localizedData.ReplicationGroupContentPathUpdatedMessage) `
                                 -f $GroupName,$membership.ComputerName
                             ) -join '' )
                     } # foreach
@@ -438,7 +436,7 @@ function Set-TargetResource
 
                                 Write-Verbose -Message ( @(
                                     "$($MyInvocation.MyCommand): "
-                                        $($LocalizedData.ReplicationGroupFullMeshConnectionUpdatedMessage) `
+                                        $($script:localizedData.ReplicationGroupFullMeshConnectionUpdatedMessage) `
                                         -f  $GroupName,$source,$destination
                                     ) -join '' )
                             } # if
@@ -450,7 +448,7 @@ function Set-TargetResource
 
                             Write-Verbose -Message ( @(
                                 "$($MyInvocation.MyCommand): "
-                                    $($LocalizedData.ReplicationGroupFullMeshConnectionAddedMessage) `
+                                    $($script:localizedData.ReplicationGroupFullMeshConnectionAddedMessage) `
                                     -f  $GroupName,$source,$destination
                                 ) -join '' )
                         } # if
@@ -464,7 +462,7 @@ function Set-TargetResource
         # The Rep Group should not exist
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.EnsureReplicationGroupDoesNotExistMessage) `
+            $($script:localizedData.EnsureReplicationGroupDoesNotExistMessage) `
                 -f $GroupName
             ) -join '' )
 
@@ -478,7 +476,7 @@ function Set-TargetResource
 
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupExistsRemovedMessage) `
+                $($script:localizedData.ReplicationGroupExistsRemovedMessage) `
                     -f $GroupName
                 ) -join '' )
         } # if
@@ -568,7 +566,7 @@ function Test-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.TestingRegGroupMessage) `
+        $($script:localizedData.TestingRegGroupMessage) `
             -f $GroupName
         ) -join '' )
 
@@ -595,7 +593,7 @@ function Test-TargetResource
             # The RG exists already
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupExistsMessage) `
+                $($script:localizedData.ReplicationGroupExistsMessage) `
                     -f $GroupName
                 ) -join '' )
 
@@ -604,7 +602,7 @@ function Test-TargetResource
             {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.ReplicationGroupDescriptionNeedsUpdateMessage) `
+                    $($script:localizedData.ReplicationGroupDescriptionNeedsUpdateMessage) `
                         -f $GroupName
                     ) -join '' )
 
@@ -640,7 +638,7 @@ function Test-TargetResource
                 # There is a member difference of some kind.
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.ReplicationGroupMembersNeedUpdateMessage) `
+                    $($script:localizedData.ReplicationGroupMembersNeedUpdateMessage) `
                         -f $GroupName
                     ) -join '' )
 
@@ -656,7 +654,7 @@ function Test-TargetResource
                     # There is a member difference of some kind.
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
-                        $($LocalizedData.ReplicationGroupMembersNeedUpdateMessage) `
+                        $($script:localizedData.ReplicationGroupMembersNeedUpdateMessage) `
                             -f $GroupName
                         ) -join '' )
 
@@ -680,7 +678,7 @@ function Test-TargetResource
                 # There is a folder difference of some kind.
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.ReplicationGroupFoldersNeedUpdateMessage) `
+                    $($script:localizedData.ReplicationGroupFoldersNeedUpdateMessage) `
                         -f $GroupName
                     ) -join '' )
 
@@ -696,7 +694,7 @@ function Test-TargetResource
                     # There is a folder difference of some kind.
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
-                        $($LocalizedData.ReplicationGroupFoldersNeedUpdateMessage) `
+                        $($script:localizedData.ReplicationGroupFoldersNeedUpdateMessage) `
                             -f $GroupName
                         ) -join '' )
 
@@ -731,7 +729,7 @@ function Test-TargetResource
 
                             Write-Verbose -Message ( @(
                                 "$($MyInvocation.MyCommand): "
-                                $($LocalizedData.ReplicationGroupContentPathNeedUpdateMessage) `
+                                $($script:localizedData.ReplicationGroupContentPathNeedUpdateMessage) `
                                     -f $GroupName,$membership.ComputerName
                                 ) -join '' )
 
@@ -773,7 +771,7 @@ function Test-TargetResource
                                 {
                                     Write-Verbose -Message ( @(
                                         "$($MyInvocation.MyCommand): "
-                                         $($LocalizedData.ReplicationGroupFullMeshDisabledConnectionMessage) `
+                                         $($script:localizedData.ReplicationGroupFullMeshDisabledConnectionMessage) `
                                             -f  $GroupName,$source,$destination
                                         ) -join '' )
 
@@ -784,7 +782,7 @@ function Test-TargetResource
                             {
                                 Write-Verbose -Message ( @(
                                     "$($MyInvocation.MyCommand): "
-                                     $($LocalizedData.ReplicationGroupFullMeshMissingConnectionMessage) `
+                                     $($script:localizedData.ReplicationGroupFullMeshMissingConnectionMessage) `
                                         -f  $GroupName,$source,$destination
                                     ) -join '' )
 
@@ -800,7 +798,7 @@ function Test-TargetResource
             # Ths RG doesn't exist but should
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                 $($LocalizedData.ReplicationGroupDoesNotExistButShouldMessage) `
+                 $($script:localizedData.ReplicationGroupDoesNotExistButShouldMessage) `
                     -f  $GroupName
                 ) -join '' )
 
@@ -815,7 +813,7 @@ function Test-TargetResource
             # The RG exists but should not
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                 $($LocalizedData.ReplicationGroupExistsButShouldNotMessage) `
+                 $($script:localizedData.ReplicationGroupExistsButShouldNotMessage) `
                     -f $GroupName
                 ) -join '' )
 
@@ -826,7 +824,7 @@ function Test-TargetResource
             # The RG does not exist and should not
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupDoesNotExistAndShouldNotMessage) `
+                $($script:localizedData.ReplicationGroupDoesNotExistAndShouldNotMessage) `
                     -f $GroupName
                 ) -join '' )
         } # else
@@ -889,7 +887,7 @@ function Get-FQDNMemberName
             else
             {
                 New-InvalidOperationException `
-                    -Message ($($LocalizedData.ReplicationGroupDomainMismatchError `
+                    -Message ($($script:localizedData.ReplicationGroupDomainMismatchError `
                         -f $GroupName,$ComputerName,$DomainName))
             } # if
         }

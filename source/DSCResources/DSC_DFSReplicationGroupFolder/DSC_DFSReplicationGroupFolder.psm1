@@ -1,14 +1,12 @@
 $modulePath = Join-Path -Path (Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent) -ChildPath 'Modules'
 
-# Import the Certificate Resource Helper Module
+# Import the Networking Common Modules
 Import-Module -Name (Join-Path -Path $modulePath `
-                               -ChildPath (Join-Path -Path 'DFSDsc.Common' `
-                                                     -ChildPath 'DFSDsc.Common.psm1'))
+        -ChildPath (Join-Path -Path 'FileContentDsc.Common' `
+            -ChildPath 'FileContentDsc.Common.psm1'))
 
 # Import Localization Strings
-$localizedData = Get-LocalizedData `
-    -ResourceName 'DSC_DFSReplicationGroupFolder' `
-    -ResourcePath (Split-Path -Parent $Script:MyInvocation.MyCommand.Path)
+$script:localizedData = Get-LocalizedData -ResourceName 'DSC_DFSReplicationGroupFolder'
 
 <#
     .SYNOPSIS
@@ -43,7 +41,7 @@ function Get-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.GettingReplicationGroupFolderMessage) `
+        $($script:localizedData.GettingReplicationGroupFolderMessage) `
             -f $GroupName,$FolderName
         ) -join '' )
 
@@ -69,7 +67,7 @@ function Get-TargetResource
     {
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.ReplicationGroupFolderExistsMessage) `
+            $($script:localizedData.ReplicationGroupFolderExistsMessage) `
                 -f $GroupName,$FolderName
             ) -join '' )
 
@@ -91,7 +89,7 @@ function Get-TargetResource
     {
         # The Rep Group folder doesn't exist
         New-InvalidOperationException `
-            -Message ($($LocalizedData.ReplicationGroupFolderMissingError) `
+            -Message ($($script:localizedData.ReplicationGroupFolderMissingError) `
                 -f $GroupName,$FolderName)
     }
 
@@ -160,7 +158,7 @@ function Set-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.SettingReplicationGroupFolderMessage) `
+        $($script:localizedData.SettingReplicationGroupFolderMessage) `
             -f $GroupName,$FolderName
         ) -join '' )
 
@@ -170,7 +168,7 @@ function Set-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.ReplicationGroupFolderUpdatedMessage) `
+        $($script:localizedData.ReplicationGroupFolderUpdatedMessage) `
             -f $GroupName,$FolderName
         ) -join '' )
 } # Set-TargetResource
@@ -241,7 +239,7 @@ function Test-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.TestingReplicationGroupFolderMessage) `
+        $($script:localizedData.TestingReplicationGroupFolderMessage) `
             -f $GroupName,$FolderName
         ) -join '' )
 
@@ -266,7 +264,7 @@ function Test-TargetResource
         # The rep group folder is found
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.ReplicationGroupFolderExistsMessage) `
+            $($script:localizedData.ReplicationGroupFolderExistsMessage) `
                 -f $GroupName,$FolderName
             ) -join '' )
 
@@ -276,7 +274,7 @@ function Test-TargetResource
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupFolderDescriptionMismatchMessage) `
+                $($script:localizedData.ReplicationGroupFolderDescriptionMismatchMessage) `
                     -f $GroupName,$FolderName
                 ) -join '' )
 
@@ -291,7 +289,7 @@ function Test-TargetResource
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupFolderFileNameToExcludeMismatchMessage) `
+                $($script:localizedData.ReplicationGroupFolderFileNameToExcludeMismatchMessage) `
                     -f $GroupName,$FolderName
                 ) -join '' )
 
@@ -306,7 +304,7 @@ function Test-TargetResource
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupFolderDirectoryNameToExcludeMismatchMessage) `
+                $($script:localizedData.ReplicationGroupFolderDirectoryNameToExcludeMismatchMessage) `
                     -f $GroupName,$FolderName
                 ) -join '' )
 
@@ -318,7 +316,7 @@ function Test-TargetResource
         {
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupFolderDfsnPathMismatchMessage) `
+                $($script:localizedData.ReplicationGroupFolderDfsnPathMismatchMessage) `
                     -f $GroupName,$FolderName
                 ) -join '' )
 
@@ -329,7 +327,7 @@ function Test-TargetResource
     {
         # The Rep Group folder doesn't exist
         New-InvalidOperationException `
-            -Message ($($LocalizedData.ReplicationGroupFolderMissingError) `
+            -Message ($($script:localizedData.ReplicationGroupFolderMissingError) `
                 -f $GroupName,$FolderName)
     } # if
 

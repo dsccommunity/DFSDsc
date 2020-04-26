@@ -1,14 +1,12 @@
 $modulePath = Join-Path -Path (Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent) -ChildPath 'Modules'
 
-# Import the Certificate Resource Helper Module
+# Import the Networking Common Modules
 Import-Module -Name (Join-Path -Path $modulePath `
-                               -ChildPath (Join-Path -Path 'DFSDsc.Common' `
-                                                     -ChildPath 'DFSDsc.Common.psm1'))
+        -ChildPath (Join-Path -Path 'FileContentDsc.Common' `
+            -ChildPath 'FileContentDsc.Common.psm1'))
 
 # Import Localization Strings
-$localizedData = Get-LocalizedData `
-    -ResourceName 'DSC_DFSReplicationGroupConnection' `
-    -ResourcePath (Split-Path -Parent $Script:MyInvocation.MyCommand.Path)
+$script:localizedData = Get-LocalizedData -ResourceName 'DSC_DFSReplicationGroupConnection'
 
 <#
     .SYNOPSIS
@@ -64,7 +62,7 @@ function Get-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.GettingReplicationGroupConnectionMessage) `
+        $($script:localizedData.GettingReplicationGroupConnectionMessage) `
             -f $GroupName,$SourceComputerName,$DestinationComputerName
         ) -join '' )
 
@@ -91,7 +89,7 @@ function Get-TargetResource
     {
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.ReplicationGroupConnectionExistsMessage) `
+            $($script:localizedData.ReplicationGroupConnectionExistsMessage) `
                 -f $GroupName,$SourceComputerName,$DestinationComputerName
             ) -join '' )
 
@@ -128,7 +126,7 @@ function Get-TargetResource
     {
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.ReplicationGroupConnectionDoesNotExistMessage) `
+            $($script:localizedData.ReplicationGroupConnectionDoesNotExistMessage) `
                 -f $GroupName,$SourceComputerName,$DestinationComputerName
             ) -join '' )
 
@@ -216,7 +214,7 @@ function Set-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.SettingReplicationGroupConnectionMessage) `
+        $($script:localizedData.SettingReplicationGroupConnectionMessage) `
             -f $GroupName,$SourceComputerName,$DestinationComputerName
         ) -join '' )
 
@@ -246,7 +244,7 @@ function Set-TargetResource
         # The rep group connection should exist
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.EnsureReplicationGroupConnectionExistsMessage) `
+            $($script:localizedData.EnsureReplicationGroupConnectionExistsMessage) `
                 -f $GroupName,$SourceComputerName,$DestinationComputerName
             ) -join '' )
 
@@ -258,7 +256,7 @@ function Set-TargetResource
             # The RG connection exists already - update it
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupConnectionExistsMessage) `
+                $($script:localizedData.ReplicationGroupConnectionExistsMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
 
@@ -267,7 +265,7 @@ function Set-TargetResource
 
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupConnectionUpdatedMessage) `
+                $($script:localizedData.ReplicationGroupConnectionUpdatedMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
         }
@@ -276,7 +274,7 @@ function Set-TargetResource
             # Ths Rep Groups doesn't exist - Create it
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupConnectionDoesNotExistMessage) `
+                $($script:localizedData.ReplicationGroupConnectionDoesNotExistMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
 
@@ -285,7 +283,7 @@ function Set-TargetResource
 
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupConnectionCreatedMessage) `
+                $($script:localizedData.ReplicationGroupConnectionCreatedMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
         } # if
@@ -295,7 +293,7 @@ function Set-TargetResource
         # The Rep Group should not exist
         Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
-            $($LocalizedData.EnsureReplicationGroupConnectionDoesNotExistMessage) `
+            $($script:localizedData.EnsureReplicationGroupConnectionDoesNotExistMessage) `
                 -f $GroupName,$SourceComputerName,$DestinationComputerName
             ) -join '' )
 
@@ -306,7 +304,7 @@ function Set-TargetResource
 
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupConnectionExistsRemovedMessage) `
+                $($script:localizedData.ReplicationGroupConnectionExistsRemovedMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
         }
@@ -393,7 +391,7 @@ function Test-TargetResource
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
-        $($LocalizedData.TestingReplicationGroupConnectionMessage) `
+        $($script:localizedData.TestingReplicationGroupConnectionMessage) `
             -f $GroupName,$SourceComputerName,$DestinationComputerName
         ) -join '' )
 
@@ -425,7 +423,7 @@ function Test-TargetResource
             # The RG exists already
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupConnectionExistsMessage) `
+                $($script:localizedData.ReplicationGroupConnectionExistsMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
 
@@ -435,7 +433,7 @@ function Test-TargetResource
             {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.ReplicationGroupConnectionNeedsUpdateMessage) `
+                    $($script:localizedData.ReplicationGroupConnectionNeedsUpdateMessage) `
                         -f $GroupName,$SourceComputerName,$DestinationComputerName,'Description'
                     ) -join '' )
 
@@ -449,7 +447,7 @@ function Test-TargetResource
             {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.ReplicationGroupConnectionNeedsUpdateMessage) `
+                    $($script:localizedData.ReplicationGroupConnectionNeedsUpdateMessage) `
                         -f $GroupName,$SourceComputerName,$DestinationComputerName,'Enabled'
                     ) -join '' )
 
@@ -463,7 +461,7 @@ function Test-TargetResource
             {
                 Write-Verbose -Message ( @(
                     "$($MyInvocation.MyCommand): "
-                    $($LocalizedData.ReplicationGroupConnectionNeedsUpdateMessage) `
+                    $($script:localizedData.ReplicationGroupConnectionNeedsUpdateMessage) `
                         -f $GroupName,$SourceComputerName,$DestinationComputerName,'RDC Enabled'
                     ) -join '' )
 
@@ -475,7 +473,7 @@ function Test-TargetResource
             # Ths RG doesn't exist but should
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                 $($LocalizedData.ReplicationGroupConnectionDoesNotExistButShouldMessage) `
+                 $($script:localizedData.ReplicationGroupConnectionDoesNotExistButShouldMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
 
@@ -490,7 +488,7 @@ function Test-TargetResource
             # The RG exists but should not
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                 $($LocalizedData.ReplicationGroupConnectionExistsButShouldNotMessage) `
+                 $($script:localizedData.ReplicationGroupConnectionExistsButShouldNotMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
 
@@ -501,7 +499,7 @@ function Test-TargetResource
             # The RG does not exist and should not
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
-                $($LocalizedData.ReplicationGroupConnectionDoesNotExistAndShouldNotMessage) `
+                $($script:localizedData.ReplicationGroupConnectionDoesNotExistAndShouldNotMessage) `
                     -f $GroupName,$SourceComputerName,$DestinationComputerName
                 ) -join '' )
         } # if
