@@ -2,8 +2,8 @@ $modulePath = Join-Path -Path (Split-Path -Path (Split-Path -Path $PSScriptRoot 
 
 # Import the Networking Common Modules
 Import-Module -Name (Join-Path -Path $modulePath `
-        -ChildPath (Join-Path -Path 'FileContentDsc.Common' `
-            -ChildPath 'FileContentDsc.Common.psm1'))
+        -ChildPath (Join-Path -Path 'DFSDsc.Common' `
+            -ChildPath 'DFSDsc.Common.psm1'))
 
 # Import Localization Strings
 $script:localizedData = Get-LocalizedData -ResourceName 'DSC_DFSReplicationGroupConnection'

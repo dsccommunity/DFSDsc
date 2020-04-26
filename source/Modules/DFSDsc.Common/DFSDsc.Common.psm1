@@ -349,7 +349,7 @@ function New-NotImplementedException
 
 # Import Localization Strings
 $script:localizedData = Get-LocalizedData `
-    -ResourceName 'FileContentDsc.Common' `
+    -ResourceName 'DFSDsc.Common' `
     -ScriptRoot $PSScriptRoot
 
 Export-ModuleMember -Function @(
