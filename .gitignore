@@ -2,14 +2,9 @@
 *.user
 *.coverage
 .vs
+.vscode
 .psproj
 .sln
-DscResource.Tests
-DscResource.Tests/*
-Modules/DFSDsc/DscResource.Tests
-Modules/DFSDsc/DscResource.Tests/*
-node_modules
-node_modules/*
 markdownissues.txt
 TestResults.xml
-*.config.json
+output/

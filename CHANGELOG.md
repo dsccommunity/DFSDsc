@@ -1,14 +1,31 @@
-# Versions
+# Change log for DFSDsc
 
-## Unreleased
+The format is based on and uses the types of changes according to [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 4.4.0.0
+## [Unreleased]
+
+### Changed
+
+- BREAKING CHANGE: Changed resource prefix from MSFT to DSC.
+- Updated to use continuous delivery pattern using Azure DevOps - fixes
+  [Issue #41](https://github.com/dsccommunity/DFSDsc/issues/98).
+- Updated build badges in README.MD.
+- Renamed `DFSDsc.ResourceHelper` module to `DFSDsc.Common` to align to
+  other modules.
+- Correct case of localization folder names.
+
+## [4.4.0.0]
+
+### Changed
 
 - Fix example publish to PowerShell Gallery by adding `gallery_api`
   environment variable to `AppVeyor.yml` - fixes [Issue #91](https://github.com/PowerShell/DfsDsc/issues/91).
 - Fix minor style issues in statement case.
 
-## 4.3.0.0
+## [4.3.0.0]
+
+### Changed
 
 - Fixes PSSA style violation issues resulting - fixes [Issue #84](https://github.com/PowerShell/DfsDsc/issues/84).
 - Added 'DscResourcesToExport' to manifest to improve information in
@@ -17,7 +34,9 @@
   to empty list in manifest to meet best practice.
 - Explicitly removed extra hidden files from release package
 
-## 4.2.0.0
+## [4.2.0.0]
+
+### Changed
 
 - Add support for modifying staging quota size in
   MSFT_DFSReplicationGroupMembership - fixes [Issue #77](https://github.com/PowerShell/DfsDsc/issues/77).
@@ -30,7 +49,9 @@
 - Updated LICENSE file to match the Microsoft Open Source Team
   standard - fixes [Issue #79](https://github.com/PowerShell/DFSDsc/issues/79)
 
-## 4.1.0.0
+## [4.1.0.0]
+
+### Changed
 
 - Added Hub and Spoke replication group example - fixes [Issue #62](https://github.com/PowerShell/DFSDsc/issues/62).
 - Enabled PSSA rule violations to fail build - fixes [Issue #320](https://github.com/PowerShell/DFSDsc/issues/59).
@@ -38,7 +59,9 @@
 - Added a CODE\_OF\_CONDUCT.md with the same content as in the README.md - fixes
   [Issue #67](https://github.com/PowerShell/DFSDsc/issues/67).
 
-## 4.0.0.0
+## [4.0.0.0]
+
+### Changed
 
 - BREAKING CHANGE
   - Renamed xDFS to DFSDsc - fixes [Issue #55](https://github.com/PowerShell/xDFS/issues/55).
@@ -63,7 +86,9 @@
   execution - fixes [Issue #51](https://github.com/PowerShell/xDFS/issues/51).
 - Updated tests to meet Pester V4 guidelines - fixes [Issue #53](https://github.com/PowerShell/xDFS/issues/53).
 
-## 3.2.0.0
+## [3.2.0.0]
+
+### Changed
 
 - Converted AppVeyor.yml to pull Pester from PSGallery instead of Chocolatey.
 - Changed AppVeyor.yml to use default image.
@@ -86,14 +111,18 @@
 - Prevented ResourceHelper and Common module cmdlets from being exported to resolve
   conflicts with other resource modules.
 
-## 3.1.0.0
+## [3.1.0.0]
+
+### Changed
 
 - MSFT_xDFSNamespaceServerConfiguration- resource added.
 - Corrected names of DFS Namespace sample files to indicate that they are setting
   Namespace roots and folders.
 - Removed Pester version from AppVeyor.yml.
 
-## 3.0.0.0
+## [3.0.0.0]
+
+### Changed
 
 - RepGroup renamed to ReplicationGroup in all files.
 - xDFSReplicationGroupConnection- Changed DisableConnection parameter to EnsureEnabled.
@@ -101,12 +130,16 @@
 - xDFSReplicationGroup- Fixed bug where disabled connection was not enabled in
   Fullmesh topology.
 
-## 2.2.0.0
+## [2.2.0.0]
+
+### Changed
 
 - DSC Module moved to MSFT.
 - MSFT_xDFSNamespace- Removed.
 
-## 2.1.0.0
+## [2.1.0.0]
+
+### Changed
 
 - MSFT_xDFSRepGroup- Fixed issue when using FQDN member names.
 - MSFT_xDFSRepGroupMembership- Fixed issue with Get-TargetResource when using
@@ -116,13 +149,17 @@
 - MSFT_xDFSNamespaceRoot- Added write support to TimeToLiveSec parameter.
 - MSFT_xDFSNamespaceFolder- Added write support to TimeToLiveSec parameter.
 
-## 2.0.0.0
+## [2.0.0.0]
+
+### Changed
 
 - MSFT_xDFSNamespaceRoot- resource added.
 - MSFT_xDFSNamespaceFolder- resource added.
 - MSFT_xDFSNamespace- deprecated - use MSFT_xDFSNamespaceRoot instead.
 
-## 1.5.1.0
+## [1.5.1.0]
+
+### Changed
 
 - MSFT_xDFSNamespace- Add parameters:
   - EnableSiteCosting
@@ -133,7 +170,9 @@
   - ReferralPriorityClass
   - ReferralPriorityRank
 
-## 1.5.0.0
+## [1.5.0.0]
+
+### Changed
 
 - MSFT_xDFSNamespace- New sample files added.
 - MSFT_xDFSNamespace- MOF parameter descriptions corrected.
@@ -146,49 +185,69 @@
   until [this issue](https://windowsserver.uservoice.com/forums/301869-powershell/suggestions/11088807-get-dscconfiguration-fails-with-embedded-cim-type)
   is resolved.
 
-## 1.4.2.0
+## [1.4.2.0]
+
+### Changed
 
 - MSFT_xDFSRepGroup- Fixed "Cannot bind argument to parameter 'DifferenceObject'
   because it is null." error.
 - All Unit tests updated to use *_TestEnvironment functions in DSCResource.Tests\TestHelpers.psm1
 
-## 1.4.1.0
+## [1.4.1.0]
+
+### Changed
 
 - MSFT_xDFSNamespace- Renamed Sample_DcFSNamespace.ps1 to Sample_xDFSNamespace.
 - MSFT_xDFSNamespace- Corrected Import-DscResouce in example.
 
-## 1.4.0.0
+## [1.4.0.0]
+
+### Changed
 
 - Community update by Erik Granneman
 - New DSC recource xDFSNameSpace
 
-## 1.3.2.0
+## [1.3.2.0]
+
+### Changed
 
 - Documentation and Module Manifest Update only.
 
-## 1.3.1.0
+## [1.3.1.0]
+
+### Changed
 
 - xDFSRepGroupFolder- DfsnPath parameter added for setting DFS Namespace path mapping.
 
-## 1.3.0.0
+## [1.3.0.0]
+
+### Changed
 
 - xDFSRepGroup- If ContentPaths is set, PrimaryMember is set to first member in
   the Members array.
 - xDFSRRepGroupMembership- PrimaryMembers property added so that Primary Member
   can be set.
 
-## 1.2.1.0
+## [1.2.1.0]
+
+### Changed
 
 - xDFSRepGroup- Fix to ContentPaths generation when more than one folder is provided.
 
-## 1.2.0.0
+## [1.2.0.0]
+
+### Changed
 
 - xDFSRepGroup- ContentPaths string array parameter.
 
-## 1.1.0.0
+## [1.1.0.0]
+
+### Changed
 
 - xDFSRepGroupConnection- Resource added.
 
-## 1.0.0.0
+## [1.0.0.0]
+
+### Changed
 
 - Initial release.
