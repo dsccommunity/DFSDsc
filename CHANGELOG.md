@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed `DFSDsc.ResourceHelper` module to `DFSDsc.Common` to align to
   other modules.
 - Correct case of localization folder names.
+- Update build badges in `README.md` with correct build IDs.
 
 ## [4.4.0.0]
 
