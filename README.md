@@ -1,8 +1,8 @@
 # DFSDsc
 
-[![Build Status](https://dev.azure.com/dsccommunity/DFSDsc/_apis/build/status/dsccommunity.DFSDsc?branchName=master)](https://dev.azure.com/dsccommunity/DFSDsc/_build/latest?definitionId=31&branchName=master)
-![Code Coverage](https://img.shields.io/azure-devops/coverage/dsccommunity/DFSDsc/31/master)
-[![Azure DevOps tests](https://img.shields.io/azure-devops/tests/dsccommunity/DFSDsc/31/master)](https://dsccommunity.visualstudio.com/DFSDsc/_test/analytics?definitionId=31&contextType=build)
+[![Build Status](https://dev.azure.com/dsccommunity/DFSDsc/_apis/build/status/dsccommunity.DFSDsc?branchName=master)](https://dev.azure.com/dsccommunity/DFSDsc/_build/latest?definitionId=35&branchName=master)
+![Code Coverage](https://img.shields.io/azure-devops/coverage/dsccommunity/DFSDsc/35/master)
+[![Azure DevOps tests](https://img.shields.io/azure-devops/tests/dsccommunity/DFSDsc/35/master)](https://dsccommunity.visualstudio.com/DFSDsc/_test/analytics?definitionId=35&contextType=build)
 [![PowerShell Gallery (with prereleases)](https://img.shields.io/powershellgallery/vpre/DFSDsc?label=DFSDsc%20Preview)](https://www.powershellgallery.com/packages/DFSDsc/)
 [![PowerShell Gallery](https://img.shields.io/powershellgallery/v/DFSDsc?label=DFSDsc)](https://www.powershellgallery.com/packages/DFSDsc/)
 

@@ -14,8 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed `DFSDsc.ResourceHelper` module to `DFSDsc.Common` to align to
   other modules.
 - Correct case of localization folder names.
+- Update build badges in `README.md` with correct build IDs.
 
-## [4.4.0.0]
+## [4.4.0.0] - 2019-09-19
 
 ### Changed
 
@@ -23,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   environment variable to `AppVeyor.yml` - fixes [Issue #91](https://github.com/PowerShell/DfsDsc/issues/91).
 - Fix minor style issues in statement case.
 
-## [4.3.0.0]
+## [4.3.0.0] - 2019-02-20
 
 ### Changed
 
@@ -34,7 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   to empty list in manifest to meet best practice.
 - Explicitly removed extra hidden files from release package
 
-## [4.2.0.0]
+## [4.2.0.0] - 2018-11-29
 
 ### Changed
 
@@ -49,7 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated LICENSE file to match the Microsoft Open Source Team
   standard - fixes [Issue #79](https://github.com/PowerShell/DFSDsc/issues/79)
 
-## [4.1.0.0]
+## [4.1.0.0] - 2018-06-13
 
 ### Changed
 
@@ -59,7 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added a CODE\_OF\_CONDUCT.md with the same content as in the README.md - fixes
   [Issue #67](https://github.com/PowerShell/DFSDsc/issues/67).
 
-## [4.0.0.0]
+## [4.0.0.0] - 2018-05-03
 
 ### Changed
 
@@ -86,7 +87,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   execution - fixes [Issue #51](https://github.com/PowerShell/xDFS/issues/51).
 - Updated tests to meet Pester V4 guidelines - fixes [Issue #53](https://github.com/PowerShell/xDFS/issues/53).
 
-## [3.2.0.0]
+## [3.2.0.0] - 2017-06-01
 
 ### Changed
 
@@ -111,7 +112,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Prevented ResourceHelper and Common module cmdlets from being exported to resolve
   conflicts with other resource modules.
 
-## [3.1.0.0]
+## [3.1.0.0] - 2016-06-29
 
 ### Changed
 
@@ -120,7 +121,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Namespace roots and folders.
 - Removed Pester version from AppVeyor.yml.
 
-## [3.0.0.0]
+## [3.0.0.0] - 2016-05-11
 
 ### Changed
 
@@ -130,14 +131,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - xDFSReplicationGroup- Fixed bug where disabled connection was not enabled in
   Fullmesh topology.
 
-## [2.2.0.0]
+## [2.2.0.0] - 2016-01-01
 
 ### Changed
 
 - DSC Module moved to MSFT.
 - MSFT_xDFSNamespace- Removed.
 
-## [2.1.0.0]
+## [2.1.0.0] - 2016-01-01
 
 ### Changed
 
@@ -149,7 +150,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - MSFT_xDFSNamespaceRoot- Added write support to TimeToLiveSec parameter.
 - MSFT_xDFSNamespaceFolder- Added write support to TimeToLiveSec parameter.
 
-## [2.0.0.0]
+## [2.0.0.0] - 2016-01-01
 
 ### Changed
 
@@ -157,7 +158,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - MSFT_xDFSNamespaceFolder- resource added.
 - MSFT_xDFSNamespace- deprecated - use MSFT_xDFSNamespaceRoot instead.
 
-## [1.5.1.0]
+## [1.5.1.0] - 2016-01-01
 
 ### Changed
 
@@ -170,7 +171,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - ReferralPriorityClass
   - ReferralPriorityRank
 
-## [1.5.0.0]
+## [1.5.0.0] - 2016-01-01
 
 ### Changed
 
@@ -185,7 +186,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   until [this issue](https://windowsserver.uservoice.com/forums/301869-powershell/suggestions/11088807-get-dscconfiguration-fails-with-embedded-cim-type)
   is resolved.
 
-## [1.4.2.0]
+## [1.4.2.0] - 2016-01-01
 
 ### Changed
 
@@ -193,33 +194,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   because it is null." error.
 - All Unit tests updated to use *_TestEnvironment functions in DSCResource.Tests\TestHelpers.psm1
 
-## [1.4.1.0]
+## [1.4.1.0] - 2016-01-01
 
 ### Changed
 
 - MSFT_xDFSNamespace- Renamed Sample_DcFSNamespace.ps1 to Sample_xDFSNamespace.
 - MSFT_xDFSNamespace- Corrected Import-DscResouce in example.
 
-## [1.4.0.0]
+## [1.4.0.0] - 2016-01-01
 
 ### Changed
 
 - Community update by Erik Granneman
 - New DSC recource xDFSNameSpace
 
-## [1.3.2.0]
+## [1.3.2.0] - 2016-01-01
 
 ### Changed
 
 - Documentation and Module Manifest Update only.
 
-## [1.3.1.0]
+## [1.3.1.0] - 2016-01-01
 
 ### Changed
 
 - xDFSRepGroupFolder- DfsnPath parameter added for setting DFS Namespace path mapping.
 
-## [1.3.0.0]
+## [1.3.0.0] - 2016-01-01
 
 ### Changed
 
@@ -228,25 +229,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - xDFSRRepGroupMembership- PrimaryMembers property added so that Primary Member
   can be set.
 
-## [1.2.1.0]
+## [1.2.1.0] - 2016-01-01
 
 ### Changed
 
 - xDFSRepGroup- Fix to ContentPaths generation when more than one folder is provided.
 
-## [1.2.0.0]
+## [1.2.0.0] - 2016-01-01
 
 ### Changed
 
 - xDFSRepGroup- ContentPaths string array parameter.
 
-## [1.1.0.0]
+## [1.1.0.0] - 2016-01-01
 
 ### Changed
 
 - xDFSRepGroupConnection- Resource added.
 
-## [1.0.0.0]
+## [1.0.0.0] - 2016-01-01
 
 ### Changed
 
