@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   other modules.
 - Correct case of localization folder names.
 - Update build badges in `README.md` with correct build IDs.
+- DFSDsc
+  - Updated to use the common module _DscResource.Common_ - Fixes [Issue #102](https://github.com/dsccommunity/DFSDsc/issues/102).
+  - Fixed build failures caused by changes in `ModuleBuilder` module v1.7.0
+    by changing `CopyDirectories` to `CopyPaths` - Fixes [Issue #103](https://github.com/dsccommunity/DFSDsc/issues/103).
+  - Pin `Pester` module to 4.10.1 because Pester 5.0 is missing code
+    coverage - Fixes [Issue #105](https://github.com/dsccommunity/DFSDsc/issues/105).
 
 ## [4.4.0.0] - 2019-09-19
 
