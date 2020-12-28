@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Minor corrections to pipeline files and examples after renaming `master`
   branch to `main`.
 - DFSDsc
-  - Automatically publish documentation to GitHub Wiki - Fixes [Issue #109](https://github.com/dsccommunity/WSManDsc/issues/109).
+  - Automatically publish documentation to GitHub Wiki - Fixes [Issue #109](https://github.com/dsccommunity/DFSDsc/issues/109).
 
 ## [4.4.0.0] - 2019-09-19
 
