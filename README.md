@@ -1,8 +1,8 @@
 # DFSDsc
 
-[![Build Status](https://dev.azure.com/dsccommunity/DFSDsc/_apis/build/status/dsccommunity.DFSDsc?branchName=master)](https://dev.azure.com/dsccommunity/DFSDsc/_build/latest?definitionId=35&branchName=master)
-![Code Coverage](https://img.shields.io/azure-devops/coverage/dsccommunity/DFSDsc/35/master)
-[![Azure DevOps tests](https://img.shields.io/azure-devops/tests/dsccommunity/DFSDsc/35/master)](https://dsccommunity.visualstudio.com/DFSDsc/_test/analytics?definitionId=35&contextType=build)
+[![Build Status](https://dev.azure.com/dsccommunity/DFSDsc/_apis/build/status/dsccommunity.DFSDsc?branchName=main)](https://dev.azure.com/dsccommunity/DFSDsc/_build/latest?definitionId=35&branchName=main)
+![Code Coverage](https://img.shields.io/azure-devops/coverage/dsccommunity/DFSDsc/35/main)
+[![Azure DevOps tests](https://img.shields.io/azure-devops/tests/dsccommunity/DFSDsc/35/main)](https://dsccommunity.visualstudio.com/DFSDsc/_test/analytics?definitionId=35&contextType=build)
 [![PowerShell Gallery (with prereleases)](https://img.shields.io/powershellgallery/vpre/DFSDsc?label=DFSDsc%20Preview)](https://www.powershellgallery.com/packages/DFSDsc/)
 [![PowerShell Gallery](https://img.shields.io/powershellgallery/v/DFSDsc?label=DFSDsc)](https://www.powershellgallery.com/packages/DFSDsc/)
 
@@ -12,7 +12,7 @@ This project has adopted [this code of conduct](CODE_OF_CONDUCT.md).
 
 ## Releases
 
-For each merge to the branch `master` a preview release will be
+For each merge to the branch `main` a preview release will be
 deployed to [PowerShell Gallery](https://www.powershellgallery.com/).
 Periodically a release version tag will be pushed which will deploy a
 full release to [PowerShell Gallery](https://www.powershellgallery.com/).
