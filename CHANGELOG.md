@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Pin `Pester` module to 4.10.1 because Pester 5.0 is missing code
     coverage - Fixes [Issue #105](https://github.com/dsccommunity/DFSDsc/issues/105).
 - Renamed `master` branch to `main` - Fixes [Issue #108](https://github.com/dsccommunity/DFSDsc/issues/108).
+- Corrected build badge URLs in README.md.
 
 ## [4.4.0.0] - 2019-09-19
 
