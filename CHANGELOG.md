@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     coverage - Fixes [Issue #105](https://github.com/dsccommunity/DFSDsc/issues/105).
 - Renamed `master` branch to `main` - Fixes [Issue #108](https://github.com/dsccommunity/DFSDsc/issues/108).
 - Corrected build badge URLs in README.md.
+- Minor corrections to pipeline files and examples after renaming `master`
+  branch to `main`.
+- DFSDsc
+  - Automatically publish documentation to GitHub Wiki - Fixes [Issue #109](https://github.com/dsccommunity/DFSDsc/issues/109).
 
 ## [4.4.0.0] - 2019-09-19
 
