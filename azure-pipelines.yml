@@ -47,6 +47,8 @@ stages:
             inputs:
               targetPath: '$(buildFolderName)/'
               artifactName: $(testArtifactName)
+              publishLocation: 'pipeline'
+              parallel: true
 
   - stage: Test
     dependsOn: Build
