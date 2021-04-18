@@ -42,12 +42,11 @@ stages:
             env:
               ModuleVersion: $(gitVersion.Informationalversion)
 
-          - task: PublishBuildArtifacts@1
+          - task: PublishPipelineArtifact@1
             displayName: 'Publish Build Artifact'
             inputs:
-              PathtoPublish: 'output/'
-              ArtifactName: 'output'
-              publishLocation: 'Container'
+              targetPath: '$(buildFolderName)/'
+              artifactName: $(testArtifactName)
 
   - stage: Test
     dependsOn: Build
