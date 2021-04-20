@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated build to use `Sampler.GitHubTasks` - Fixes [Issue #116](https://github.com/dsccommunity/DFSDsc/issues/116).
 - Added support for publishing code coverage to `CodeCov.io` and
   Azure Pipelines - Fixes [Issue #115](https://github.com/dsccommunity/DFSDsc/issues/115).
+- Removed duplicate code coverage badge.
 
 ## [4.4.0.0] - 2019-09-19
 
