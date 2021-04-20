@@ -79,7 +79,7 @@ stages:
             displayName: 'Publish Test Results'
             inputs:
               testResultsFormat: 'NUnit'
-              testResultsFiles: $(buildFolderName)/$(testResultFolderName)/NUnit*.xml'
+              testResultsFiles: '$(buildFolderName)/$(testResultFolderName)/NUnit*.xml'
               testRunTitle: 'HQRM'
             condition: succeededOrFailed()
 
@@ -89,13 +89,6 @@ stages:
           vmImage: 'vs2017-win2016'
         timeoutInMinutes: 0
         steps:
-          - powershell: |
-              $repositoryOwner,$repositoryName = $env:BUILD_REPOSITORY_NAME -split '/'
-              echo "##vso[task.setvariable variable=RepositoryOwner;isOutput=true]$repositoryOwner"
-              echo "##vso[task.setvariable variable=RepositoryName;isOutput=true]$repositoryName"
-            name: dscBuildVariable
-            displayName: 'Set Environment Variables'
-
           - task: DownloadPipelineArtifact@2
             displayName: 'Download Pipeline Artifact'
             inputs:
@@ -123,7 +116,7 @@ stages:
             displayName: 'Publish Test Results'
             inputs:
               testResultsFormat: 'NUnit'
-              testResultsFiles: $(buildFolderName)/$(testResultFolderName)/NUnit*.xml'
+              testResultsFiles: '$(buildFolderName)/$(testResultFolderName)/NUnit*.xml'
               testRunTitle: 'Unit (Windows Server 2016)'
             condition: succeededOrFailed()
 
@@ -214,7 +207,7 @@ stages:
             displayName: 'Publish Test Results'
             inputs:
               testResultsFormat: 'NUnit'
-              testResultsFiles: $(buildFolderName)/$(testResultFolderName)/NUnit*.xml'
+              testResultsFiles: '$(buildFolderName)/$(testResultFolderName)/NUnit*.xml'
               testRunTitle: 'Integration (Windows Server 2016)'
             condition: succeededOrFailed()
 
@@ -258,7 +251,7 @@ stages:
             displayName: 'Publish Test Results'
             inputs:
               testResultsFormat: 'NUnit'
-              testResultsFiles: $(buildFolderName)/$(testResultFolderName)/NUnit*.xml'
+              testResultsFiles: '$(buildFolderName)/$(testResultFolderName)/NUnit*.xml'
               testRunTitle: 'Unit (Windows Server 2019)'
             condition: succeededOrFailed()
 
@@ -303,7 +296,7 @@ stages:
             displayName: 'Publish Test Results'
             inputs:
               testResultsFormat: 'NUnit'
-              testResultsFiles: $(buildFolderName)/$(testResultFolderName)/NUnit*.xml'
+              testResultsFiles: '$(buildFolderName)/$(testResultFolderName)/NUnit*.xml'
               testRunTitle: 'Integration (Windows Server 2019)'
             condition: succeededOrFailed()
 
