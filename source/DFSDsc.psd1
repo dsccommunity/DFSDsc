@@ -46,6 +46,7 @@
         'DFSReplicationGroup',
         'DFSReplicationGroupConnection',
         'DFSReplicationGroupFolder',
+        'DFSReplicationGroupMember',
         'DFSReplicationGroupMembership'
     )
 

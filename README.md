@@ -46,6 +46,8 @@ The **DFSDsc** module contains the following resources:
   Create, edit and remove DFS Replication Group connections.
 - **[DFSReplicationGroupFolder](https://github.com/PowerShell/DFSDsc/wiki/DFSReplicationGroupFolder)**:
   Configure DFS Replication Group folders.
+- **[DFSReplicationGroupMember](https://github.com/PowerShell/DFSDsc/wiki/DFSReplicationGroupMember)**:
+  Configure Replication Group Folder Members.
 - **[DFSReplicationGroupMembership](https://github.com/PowerShell/DFSDsc/wiki/DFSReplicationGroupMembership)**:
   Configure Replication Group Folder Membership.
 

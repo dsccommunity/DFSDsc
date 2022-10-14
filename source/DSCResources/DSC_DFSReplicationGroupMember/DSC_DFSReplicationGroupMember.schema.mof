@@ -1,0 +1,9 @@
+[ClassVersion("1.0.0.0"), FriendlyName("DFSReplicationGroupMember")]
+class DSC_DFSReplicationGroupMember : OMI_BaseResource
+{
+    [Key, Description("The name of the DFS Replication Group.")] String GroupName;
+    [Required, Description("Specifies whether the DFS Replication Group member should exist."), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+    [Key, Description("The computer name of the Replication Group member. This can be specified using either the ComputerName or FQDN name for the member. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match.")] String ComputerName;
+    [Write, Description("A description for the DFS Replication Group member.")] String Description;
+    [Write, Description("The name of the AD Domain the DFS Replication Group this replication group is in.")] String DomainName;
+};
