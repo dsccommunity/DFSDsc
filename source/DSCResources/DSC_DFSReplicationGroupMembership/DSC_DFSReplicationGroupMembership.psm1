@@ -87,13 +87,27 @@ function Get-TargetResource
 
         $returnValue.ComputerName = $replicationGroupMembership.ComputerName
 
+        if ($replicationGroupMembership.Enabled)
+        {
+            $ensureEnabled = 'Enabled'
+        }
+        else
+        {
+            $ensureEnabled = 'Disabled'
+        } # if
+
         $returnValue += @{
+            EnsureEnabled = $ensureEnabled
             ContentPath = $replicationGroupMembership.ContentPath
             StagingPath = $replicationGroupMembership.StagingPath
             StagingPathQuotaInMB = $replicationGroupMembership.StagingPathQuotaInMB
+            MinimumFileStagingSize = $replicationGroupMembership.MinimumFileStagingSize
             ConflictAndDeletedPath = $replicationGroupMembership.ConflictAndDeletedPath
+            ConflictAndDeletedQuotaInMB = $replicationGroupMembership.ConflictAndDeletedQuotaInMB
             ReadOnly = $replicationGroupMembership.ReadOnly
+            RemoveDeletedFiles = $replicationGroupMembership.RemoveDeletedFiles
             PrimaryMember = $replicationGroupMembership.PrimaryMember
+            DfsnPath = $replicationGroupMembership.DfsnPath
             DomainName = $replicationGroupMembership.DomainName
         }
     }
@@ -126,6 +140,9 @@ function Get-TargetResource
     If an FQDN name is used and the DomainName parameter is set, the FQDN
     domain name must match.
 
+    .PARAMETER EnsureEnabled
+    Ensures that membership is either Enabled or Disabled.
+
     .PARAMETER ContentPath
     The local content path for the DFS Replication Group Folder.
 
@@ -135,13 +152,25 @@ function Get-TargetResource
     .PARAMETER StagingPathQuotaInMB
     The local staging path quota size in MB.
 
+    .PARAMETER MinimumFileStagingSize
+    The minimum file size that DFS Replication stages during outbound replication.
+
+    .PARAMETER ConflictAndDeletedQuotaInMB
+    The local conflict and deleted path quota size in MB.
+
     .PARAMETER ReadOnly
     Specify if this content path should be read only.
+
+    .PARAMETER RemoveDeletedFiles
+    Specify if a member computer deletes files and folders immediately following inbound replication.
 
     .PARAMETER PrimaryMember
     Used to configure this as the Primary Member. Every folder must
     have at least one primary member for initial replication to take
     place.
+
+    .PARAMETER DfsnPath
+    Specify the DFS Namespace folder path of the membership. This value does not affect replication.
 
     .PARAMETER DomainName
     The name of the AD Domain the DFS Replication Group this replication
@@ -164,6 +193,11 @@ function Set-TargetResource
         $ComputerName,
 
         [Parameter()]
+        [ValidateSet('Enabled','Disabled')]
+        [System.String]
+        $EnsureEnabled = 'Enabled',
+
+        [Parameter()]
         [System.String]
         $ContentPath,
 
@@ -176,12 +210,32 @@ function Set-TargetResource
         $StagingPathQuotaInMB,
 
         [Parameter()]
+        [ValidateSet('Size256KB','Size512KB',
+            'Size1MB','Size2MB','Size4MB','Size8MB','Size16MB','Size32MB','Size64MB','Size128MB','Size256MB','Size512MB',
+            'Size1GB','Size2GB','Size4GB','Size8GB','Size16GB','Size32GB','Size64GB','Size128GB','Size256GB','Size512GB',
+            'Size1TB','Size2TB','Size4TB','Size8TB','Size16TB','Size32TB','Size64TB','Size128TB','Size256TB','Size512TB')]
+        [System.String]
+        $MinimumFileStagingSize,
+
+        [Parameter()]
+        [System.UInt32]
+        $ConflictAndDeletedQuotaInMB,
+
+        [Parameter()]
         [System.Boolean]
         $ReadOnly,
 
         [Parameter()]
         [System.Boolean]
+        $RemoveDeletedFiles,
+
+        [Parameter()]
+        [System.Boolean]
         $PrimaryMember,
+
+        [Parameter()]
+        [System.String]
+        $DfsnPath,
 
         [Parameter()]
         [System.String]
@@ -193,6 +247,11 @@ function Set-TargetResource
         $($script:localizedData.SettingRegGroupMembershipMessage) `
             -f $GroupName,$FolderName,$ComputerName
         ) -join '' )
+
+    # Remove Ensure so the PSBoundParameters can be used to splat
+    $null = $PSBoundParameters.Remove('EnsureEnabled')
+
+    $null = $PSBoundParameters.Add('DisableMembership',($EnsureEnabled -eq 'Disabled'))
 
     # Now apply the changes
     Set-DfsrMembership @PSBoundParameters `
@@ -221,6 +280,9 @@ function Set-TargetResource
     If an FQDN name is used and the DomainName parameter is set, the FQDN
     domain name must match.
 
+    .PARAMETER EnsureEnabled
+    Ensures that membership is either Enabled or Disabled.
+
     .PARAMETER ContentPath
     The local content path for the DFS Replication Group Folder.
 
@@ -230,13 +292,25 @@ function Set-TargetResource
     .PARAMETER StagingPathQuotaInMB
     The local staging path quota size in MB.
 
+    .PARAMETER MinimumFileStagingSize
+    The minimum file size that DFS Replication stages during outbound replication.
+
+    .PARAMETER ConflictAndDeletedQuotaInMB
+    The local conflict and deleted path quota size in MB.
+
     .PARAMETER ReadOnly
     Specify if this content path should be read only.
+
+    .PARAMETER RemoveDeletedFiles
+    Specify if a member computer deletes files and folders immediately following inbound replication.
 
     .PARAMETER PrimaryMember
     Used to configure this as the Primary Member. Every folder must
     have at least one primary member for initial replication to take
     place.
+
+    .PARAMETER DfsnPath
+    Specify the DFS Namespace folder path of the membership. This value does not affect replication.
 
     .PARAMETER DomainName
     The name of the AD Domain the DFS Replication Group this replication
@@ -260,6 +334,11 @@ function Test-TargetResource
         $ComputerName,
 
         [Parameter()]
+        [ValidateSet('Enabled','Disabled')]
+        [System.String]
+        $EnsureEnabled = 'Enabled',
+
+        [Parameter()]
         [System.String]
         $ContentPath,
 
@@ -272,12 +351,32 @@ function Test-TargetResource
         $StagingPathQuotaInMB,
 
         [Parameter()]
+        [ValidateSet('Size256KB','Size512KB',
+            'Size1MB','Size2MB','Size4MB','Size8MB','Size16MB','Size32MB','Size64MB','Size128MB','Size256MB','Size512MB',
+            'Size1GB','Size2GB','Size4GB','Size8GB','Size16GB','Size32GB','Size64GB','Size128GB','Size256GB','Size512GB',
+            'Size1TB','Size2TB','Size4TB','Size8TB','Size16TB','Size32TB','Size64TB','Size128TB','Size256TB','Size512TB')]
+        [System.String]
+        $MinimumFileStagingSize,
+
+        [Parameter()]
+        [System.UInt32]
+        $ConflictAndDeletedQuotaInMB,
+
+        [Parameter()]
         [System.Boolean]
         $ReadOnly,
 
         [Parameter()]
         [System.Boolean]
+        $RemoveDeletedFiles,
+
+        [Parameter()]
+        [System.Boolean]
         $PrimaryMember,
+
+        [Parameter()]
+        [System.String]
+        $DfsnPath,
 
         [Parameter()]
         [System.String]
@@ -319,6 +418,21 @@ function Test-TargetResource
                 -f $GroupName,$FolderName,$ComputerName
             ) -join '' )
 
+        # Check the Enabled
+        if (($EnsureEnabled -eq 'Enabled') `
+            -and (-not $replicationGroupMembership.Enabled) `
+            -or ($EnsureEnabled -eq 'Disabled') `
+            -and ($replicationGroupMembership.Enabled))
+        {
+            Write-Verbose -Message ( @(
+                "$($MyInvocation.MyCommand): "
+                $($script:localizedData.ReplicationGroupMembershipEnabledMismatchMessage) `
+                    -f $GroupName,$FolderName,$ComputerName
+                ) -join '' )
+
+            $desiredConfigurationMatch = $false
+        } # if
+
         # Check the ContentPath
         if (($PSBoundParameters.ContainsKey('ContentPath')) `
             -and ($replicationGroupMembership.ContentPath -ne $ContentPath))
@@ -358,6 +472,32 @@ function Test-TargetResource
             $desiredConfigurationMatch = $false
         } # if
 
+        # Check the MinimumFileStagingSize
+        if (($PSBoundParameters.ContainsKey('MinimumFileStagingSize')) `
+            -and ($replicationGroupMembership.MinimumFileStagingSize -ne $MinimumFileStagingSize))
+        {
+            Write-Verbose -Message ( @(
+                "$($MyInvocation.MyCommand): "
+                $($script:localizedData.ReplicationGroupMembershipMinimumFileStagingMismatchMessage) `
+                    -f $GroupName,$FolderName,$ComputerName
+                ) -join '' )
+
+            $desiredConfigurationMatch = $false
+        } # if
+
+        # Check the ConflictAndDeletedQuotaInMB
+        if (($PSBoundParameters.ContainsKey('ConflictAndDeletedQuotaInMB')) `
+            -and ($replicationGroupMembership.ConflictAndDeletedQuotaInMB -ne $ConflictAndDeletedQuotaInMB))
+        {
+            Write-Verbose -Message ( @(
+                "$($MyInvocation.MyCommand): "
+                $($script:localizedData.ReplicationGroupMembershipConflictAndDeletedMismatchMessage) `
+                    -f $GroupName,$FolderName,$ComputerName
+                ) -join '' )
+
+            $desiredConfigurationMatch = $false
+        } # if
+
         # Check the ReadOnly
         if (($PSBoundParameters.ContainsKey('ReadOnly')) `
             -and ($replicationGroupMembership.ReadOnly -ne $ReadOnly))
@@ -371,6 +511,19 @@ function Test-TargetResource
             $desiredConfigurationMatch = $false
         } # if
 
+        # Check the RemoveDeletedFiles
+        if (($PSBoundParameters.ContainsKey('RemoveDeletedFiles')) `
+            -and ($replicationGroupMembership.RemoveDeletedFiles -ne $RemoveDeletedFiles))
+        {
+            Write-Verbose -Message ( @(
+                "$($MyInvocation.MyCommand): "
+                $($script:localizedData.ReplicationGroupMembershipRemoveDeletedFilesMismatchMessage) `
+                    -f $GroupName,$FolderName,$ComputerName
+                ) -join '' )
+
+            $desiredConfigurationMatch = $false
+        } # if
+
         # Check the PrimaryMember
         if (($PSBoundParameters.ContainsKey('PrimaryMember')) `
             -and ($replicationGroupMembership.PrimaryMember -ne $PrimaryMember))
@@ -378,6 +531,19 @@ function Test-TargetResource
             Write-Verbose -Message ( @(
                 "$($MyInvocation.MyCommand): "
                 $($script:localizedData.ReplicationGroupMembershipPrimaryMemberMismatchMessage) `
+                    -f $GroupName,$FolderName,$ComputerName
+                ) -join '' )
+
+            $desiredConfigurationMatch = $false
+        } # if
+
+        # Check the DfsnPath
+        if (($PSBoundParameters.ContainsKey('DfsnPath')) `
+            -and ($replicationGroupMembership.DfsnPath -ne $DfsnPath))
+        {
+            Write-Verbose -Message ( @(
+                "$($MyInvocation.MyCommand): "
+                $($script:localizedData.ReplicationGroupMembershipDfsnPathMismatchMessage) `
                     -f $GroupName,$FolderName,$ComputerName
                 ) -join '' )
 

@@ -112,12 +112,23 @@ function Get-TargetResource
             $ensureRDCEnabled = 'Disabled'
         } # if
 
+        if ($replicationGroupConnection.CrossFileRdcEnabled)
+        {
+            $ensureCrossFileRDCEnabled = 'Enabled'
+        }
+        else
+        {
+            $ensureCrossFileRDCEnabled = 'Disabled'
+        } # if
+
         $returnValue += @{
             Ensure = 'Present'
             Description = $replicationGroupConnection.Description
             DomainName = $replicationGroupConnection.DomainName
             EnsureEnabled = $ensureEnabled
             EnsureRDCEnabled = $ensureRDCEnabled
+            EnsureCrossFileRDCEnabled = $ensureCrossFileRDCEnabled
+            MinimumRDCFileSizeInKB = $replicationGroupConnection.MinimumRDCFileSizeInKB
         }
     }
     else
@@ -167,6 +178,12 @@ function Get-TargetResource
     .PARAMETER EnsureRDCEnabled
     Ensures remote differential compression is Enabled or Disabled.
 
+    .PARAMETER EnsureCrossFileRDCEnabled
+    Ensures cross-file similarity remote differential compression is Enabled or Disabled.
+
+    .PARAMETER MinimumRDCFileSizeInKB
+    The file size threshold for RDC to apply in KB.
+
     .PARAMETER DomainName
     The name of the AD Domain the DFS Replication Group connection should be in.
 #>
@@ -206,6 +223,15 @@ function Set-TargetResource
         $EnsureRDCEnabled = 'Enabled',
 
         [Parameter()]
+        [ValidateSet('Enabled','Disabled')]
+        [System.String]
+        $EnsureCrossFileRDCEnabled = 'Enabled',
+
+        [Parameter()]
+        [System.UInt32]
+        $MinimumRDCFileSizeInKB,
+
+        [Parameter()]
         [System.String]
         $DomainName
     )
@@ -220,6 +246,7 @@ function Set-TargetResource
     $null = $PSBoundParameters.Remove('Ensure')
     $null = $PSBoundParameters.Remove('EnsureEnabled')
     $null = $PSBoundParameters.Remove('EnsureRDCEnabled')
+    $null = $PSBoundParameters.Remove('EnsureCrossFileRDCEnabled')
 
     # Lookup the existing Replication Group Connection
     $connectionParameters = @{
@@ -248,6 +275,7 @@ function Set-TargetResource
 
         $null = $PSBoundParameters.Add('DisableConnection',($EnsureEnabled -eq 'Disabled'))
         $null = $PSBoundParameters.Add('DisableRDC',($EnsureRDCEnabled -eq 'Disabled'))
+        $null = $PSBoundParameters.Add('DisableCrossFileRDC',($EnsureCrossFileRDCEnabled -eq 'Disabled'))
 
         if ($replicationGroupConnection)
         {
@@ -340,6 +368,12 @@ function Set-TargetResource
     .PARAMETER EnsureRDCEnabled
     Ensures remote differential compression is Enabled or Disabled.
 
+    .PARAMETER EnsureCrossFileRDCEnabled
+    Ensures cross-file similarity remote differential compression is Enabled or Disabled.
+
+    .PARAMETER MinimumRDCFileSizeInKB
+    The file size threshold for RDC to apply in KB.
+
     .PARAMETER DomainName
     The name of the AD Domain the DFS Replication Group connection should be in.
 #>
@@ -378,6 +412,15 @@ function Test-TargetResource
         [ValidateSet('Enabled','Disabled')]
         [System.String]
         $EnsureRDCEnabled = 'Enabled',
+
+        [Parameter()]
+        [ValidateSet('Enabled','Disabled')]
+        [System.String]
+        $EnsureCrossFileRDCEnabled = 'Enabled',
+
+        [Parameter()]
+        [System.UInt32]
+        $MinimumRDCFileSizeInKB,
 
         [Parameter()]
         [System.String]
@@ -461,6 +504,32 @@ function Test-TargetResource
                     "$($MyInvocation.MyCommand): "
                     $($script:localizedData.ReplicationGroupConnectionNeedsUpdateMessage) `
                         -f $GroupName,$SourceComputerName,$DestinationComputerName,'RDC Enabled'
+                    ) -join '' )
+
+                $desiredConfigurationMatch = $false
+            } # if
+
+            if (($EnsureCrossFileRDCEnabled -eq 'Enabled') `
+                -and (-not $replicationGroupConnection.CrossFileRDCEnabled) `
+                -or ($EnsureCrossFileRDCEnabled -eq 'Disabled') `
+                -and ($replicationGroupConnection.CrossFileRDCEnabled))
+            {
+                Write-Verbose -Message ( @(
+                    "$($MyInvocation.MyCommand): "
+                    $($script:localizedData.ReplicationGroupConnectionNeedsUpdateMessage) `
+                        -f $GroupName,$SourceComputerName,$DestinationComputerName,'Cross File RDC Enabled'
+                    ) -join '' )
+
+                $desiredConfigurationMatch = $false
+            } # if
+
+            if (($PSBoundParameters.ContainsKey('MinimumRDCFileSizeInKB')) -and `
+                ($replicationGroupConnection.MinimumRDCFileSizeInKB -ne $MinimumRDCFileSizeInKB))
+            {
+                Write-Verbose -Message ( @(
+                    "$($MyInvocation.MyCommand): "
+                    $($script:localizedData.ReplicationGroupConnectionNeedsUpdateMessage) `
+                        -f $GroupName,$SourceComputerName,$DestinationComputerName,'Minimum RDC File Size'
                     ) -join '' )
 
                 $desiredConfigurationMatch = $false
