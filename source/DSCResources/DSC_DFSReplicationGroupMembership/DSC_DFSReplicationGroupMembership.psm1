@@ -100,9 +100,11 @@ function Get-TargetResource
     else
     {
         # The Rep Group membership doesn't exist
-        New-InvalidOperationException `
-            -Message ($($script:localizedData.ReplicationGroupMembershipMissingError) `
-                -f $GroupName,$FolderName,$ComputerName)
+        Write-Verbose -Message ( @(
+            "$($MyInvocation.MyCommand): "
+            $($script:localizedData.ReplicationGroupMembershipDoesNotExistMessage) `
+                -f $GroupName,$FolderName,$ComputerName
+            ) -join '' )
     }
 
     return $returnValue
@@ -385,9 +387,13 @@ function Test-TargetResource
     else
     {
         # The Rep Group membership doesn't exist
-        New-InvalidOperationException `
-            -Message ($($script:localizedData.ReplicationGroupMembershipMissingError) `
-                -f $GroupName,$FolderName,$ComputerName)
+        Write-Verbose -Message ( @(
+            "$($MyInvocation.MyCommand): "
+            $($script:localizedData.ReplicationGroupMembershipDoesNotExistMessage) `
+                -f $GroupName,$FolderName,$ComputerName
+            ) -join '' )
+
+        $desiredConfigurationMatch = $false
     } # if
 
     return $desiredConfigurationMatch

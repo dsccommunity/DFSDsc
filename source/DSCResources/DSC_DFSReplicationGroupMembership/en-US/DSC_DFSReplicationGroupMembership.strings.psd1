@@ -1,7 +1,7 @@
 ConvertFrom-StringData @'
     GettingReplicationGroupMembershipMessage                    = Getting DFS Replication Group "{0}" folder "{1}" on "{2}".
     ReplicationGroupMembershipExistsMessage                     = DFS Replication Group "{0}" folder "{1}" on "{2}" exists.
-    ReplicationGroupMembershipMissingError                      = DFS Replication Group "{0}" folder "{1}" on "{2}" is missing.
+    ReplicationGroupMembershipDoesNotExistMessage               = DFS Replication Group "{0}" folder "{1}" on "{2}" does not exist.
     SettingRegGroupMembershipMessage                            = Setting DFS Replication Group "{0}" folder "{1}" on "{2}".
     ReplicationGroupMembershipUpdatedMessage                    = DFS Replication Group "{0}" folder "{1}" on "{2}" has has been updated.
     TestingRegGroupMembershipMessage                            = Testing DFS Replication Group "{0}" folder "{1}" on "{2}".
