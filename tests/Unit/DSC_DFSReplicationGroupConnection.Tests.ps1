@@ -84,6 +84,8 @@ try
                 Description = 'Connection Description'
                 EnsureEnabled = 'Enabled'
                 EnsureRDCEnabled = 'Enabled'
+                EnsureCrossFileRDCEnabled = 'Enabled'
+                MinimumRDCFileSizeInKB = 64
                 DomainName = 'contoso.com'
             },
             [PSObject]@{
@@ -94,6 +96,8 @@ try
                 Description = 'Connection Description'
                 EnsureEnabled = 'Enabled'
                 EnsureRDCEnabled = 'Enabled'
+                EnsureCrossFileRDCEnabled = 'Enabled'
+                MinimumRDCFileSizeInKB = 64
                 DomainName = 'contoso.com'
             }
         )
@@ -108,6 +112,8 @@ try
             Description = $replicationGroupConnections[0].Description
             Enabled = ($replicationGroupConnections[0].EnsureEnabled -eq 'Enabled')
             RDCEnabled = ($replicationGroupConnections[0].EnsureRDCEnabled -eq 'Enabled')
+            CrossFileRDCEnabled = ($replicationGroupConnections[0].CrossFileRDCEnabled -eq 'Enabled')
+            MinimumRDCFileSizeInKB = $replicationGroupConnections[0].MinimumRDCFileSizeInKB
             DomainName = $replicationGroupConnections[0].DomainName
         }
 
@@ -146,6 +152,8 @@ try
                     $result.Description | Should -Be $replicationGroupConnections[0].Description
                     $result.EnsureEnabled | Should -Be $replicationGroupConnections[0].EnsureEnabled
                     $result.EnsureRDCEnabled | Should -Be $replicationGroupConnections[0].EnsureRDCEnabled
+                    $result.EnsureCrossFileRDCEnabled | Should -Be $replicationGroupConnections[0].EnsureCrossFileRDCEnabled
+                    $result.MinimumRDCFileSizeInKB | Should -Be $replicationGroupConnections[0].MinimumRDCFileSizeInKB
                     $result.DomainName | Should -Be $replicationGroupConnections[0].DomainName
                 }
 
@@ -171,6 +179,8 @@ try
                     $result.Description | Should -Be $replicationGroupConnections[0].Description
                     $result.EnsureEnabled | Should -Be $replicationGroupConnections[0].EnsureEnabled
                     $result.EnsureRDCEnabled | Should -Be $replicationGroupConnections[0].EnsureRDCEnabled
+                    $result.EnsureCrossFileRDCEnabled | Should -Be $replicationGroupConnections[0].EnsureCrossFileRDCEnabled
+                    $result.MinimumRDCFileSizeInKB | Should -Be $replicationGroupConnections[0].MinimumRDCFileSizeInKB
                     $result.DomainName | Should -Be $replicationGroupConnections[0].DomainName
                 }
 
@@ -313,6 +323,49 @@ try
                 }
             }
 
+            Context 'Replication Group connection exists but has different EnsureCrossFileRDCEnabled' {
+                Mock Get-DfsrConnection -MockWith { return @($mockReplicationGroupConnection) }
+                Mock Set-DfsrConnection
+                Mock Add-DfsrConnection
+                Mock Remove-DfsrConnection
+
+                It 'Should not throw error' {
+                    {
+                        $splat = $replicationGroupConnections[0].Clone()
+                        $splat.EnsureCrossFileRDCEnabled = 'Disabled'
+                        Set-TargetResource @splat
+                    } | Should -Not -Throw
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly -Times 0
+                }
+            }
+
+            Context 'Replication Group connection exists but has different MinimumRDCFileSizeInKB' {
+                Mock Get-DfsrConnection -MockWith { return @($mockReplicationGroupConnection) }
+                Mock Set-DfsrConnection
+                Mock Add-DfsrConnection
+                Mock Remove-DfsrConnection
+
+                It 'Should not throw error' {
+                    {
+                        $splat = $replicationGroupConnections[0].Clone()
+                        $splat.MinimumRDCFileSizeInKB = 128
+                        Set-TargetResource @splat
+                    } | Should -Not -Throw
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsrConnection -Exactly -Times 1
+                    Assert-MockCalled -commandName Add-DfsrConnection -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsrConnection -Exactly -Times 0
+                }
+            }
 
             Context 'Replication Group connection exists but should not' {
                 Mock Get-DfsrConnection -MockWith { return @($mockReplicationGroupConnection) }
@@ -434,6 +487,34 @@ try
                 It 'Should return false' {
                     $splat = $replicationGroupConnections[0].Clone()
                     $splat.EnsureRDCEnabled = 'Disabled'
+                    Test-TargetResource @splat | Should -Be $False
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
+                }
+            }
+
+            Context 'Replication Group Connection exists but has different EnsureCrossFileRDCEnabled' {
+                Mock Get-DfsrConnection -MockWith { @($mockReplicationGroupConnection) }
+
+                It 'Should return false' {
+                    $splat = $replicationGroupConnections[0].Clone()
+                    $splat.EnsureCrossFileRDCEnabled = 'Disabled'
+                    Test-TargetResource @splat | Should -Be $False
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DfsrConnection -Exactly -Times 1
+                }
+            }
+
+            Context 'Replication Group Connection exists but has different MinimumRDCFileSizeInKB' {
+                Mock Get-DfsrConnection -MockWith { @($mockReplicationGroupConnection) }
+
+                It 'Should return false' {
+                    $splat = $replicationGroupConnections[0].Clone()
+                    $splat.MinimumRDCFileSizeInKB = 128
                     Test-TargetResource @splat | Should -Be $False
                 }
 
