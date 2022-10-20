@@ -161,7 +161,7 @@ try
                 $namespaceFolderTargetNew.Path                    | Should -Be $script:namespaceFolder.Path
                 $namespaceFolderTargetNew.NamespacePath           | Should -Be $script:namespaceFolder.Path
                 $namespaceFolderTargetNew.TargetPath              | Should -Be $script:namespaceFolder.TargetPath
-                $namespaceFolderTargetNew.State             | Should -Be $script:namespaceFolder.TargetState
+                $namespaceFolderTargetNew.State                   | Should -Be $script:namespaceFolder.TargetState
                 $namespaceFolderTargetNew.ReferralPriorityClass   | Should -Be $script:namespaceFolder.ReferralPriorityClass
                 $namespaceFolderTargetNew.ReferralPriorityRank    | Should -Be $script:namespaceFolder.ReferralPriorityRank
             }

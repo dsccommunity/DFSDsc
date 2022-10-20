@@ -153,7 +153,7 @@ try
                 $namespaceRootTargetNew.Path                  | Should -Be $script:namespaceRoot.Path
                 $namespaceRootTargetNew.NamespacePath         | Should -Be $script:namespaceRoot.Path
                 $namespaceRootTargetNew.TargetPath            | Should -Be $script:namespaceRoot.TargetPath
-                $namespaceRootTargetNew.State           | Should -Be $script:namespaceRoot.TargetState
+                $namespaceRootTargetNew.State                 | Should -Be $script:namespaceRoot.TargetState
                 $namespaceRootTargetNew.ReferralPriorityClass | Should -Be $script:namespaceRoot.ReferralPriorityClass
                 $namespaceRootTargetNew.ReferralPriorityRank  | Should -Be $script:namespaceRoot.ReferralPriorityRank
             }
