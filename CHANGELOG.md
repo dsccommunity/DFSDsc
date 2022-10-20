@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- BREAKING CHANGE
+  - Add support for setting a DFS Namespace root target's referral status (state) to be either `Online` or `Offline`
+    in MSFT_DFSNamespaceRoot. State is now a required parameter.
+  - Add support for setting a DFS Namespace folder target's referral status (state) to be either `Online` or `Offline`
+    in MSFT_DFSNamespaceFolder. State is now a required parameter.
 - BREAKING CHANGE: Changed resource prefix from MSFT to DSC.
 - Updated to use continuous delivery pattern using Azure DevOps - fixes
   [Issue #41](https://github.com/dsccommunity/DFSDsc/issues/98).
