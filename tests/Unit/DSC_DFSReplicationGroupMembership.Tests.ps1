@@ -280,7 +280,7 @@ try
                 It 'Should not throw error' {
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
-                    $splat.StagingPathQuotaInMB = 8192
+                    $splat.StagingPathQuotaInMB++
                     { Set-TargetResource @splat } | Should -Not -Throw
                 }
 
@@ -310,7 +310,7 @@ try
                 It 'Should not throw error' {
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
-                    $splat.ConflictAndDeletedQuotaInMB = 8192
+                    $splat.ConflictAndDeletedQuotaInMB++
                     { Set-TargetResource @splat } | Should -Not -Throw
                 }
 
@@ -479,7 +479,7 @@ try
                 It 'Should return false' {
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
-                    $splat.StagingPathQuotaInMB = 8192
+                    $splat.StagingPathQuotaInMB++
                     Test-TargetResource @splat | Should -Be $False
                 }
 
@@ -509,7 +509,7 @@ try
                 It 'Should return false' {
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
-                    $splat.ConflictAndDeletedQuotaInMB = 8192
+                    $splat.ConflictAndDeletedQuotaInMB++
                     Test-TargetResource @splat | Should -Be $False
                 }
 

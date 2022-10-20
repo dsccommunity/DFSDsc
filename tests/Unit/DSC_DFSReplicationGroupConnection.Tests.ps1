@@ -353,7 +353,7 @@ try
                 It 'Should not throw error' {
                     {
                         $splat = $replicationGroupConnections[0].Clone()
-                        $splat.MinimumRDCFileSizeInKB = 128
+                        $splat.MinimumRDCFileSizeInKB++
                         Set-TargetResource @splat
                     } | Should -Not -Throw
                 }
@@ -513,7 +513,7 @@ try
 
                 It 'Should return false' {
                     $splat = $replicationGroupConnections[0].Clone()
-                    $splat.MinimumRDCFileSizeInKB = 128
+                    $splat.MinimumRDCFileSizeInKB++
                     Test-TargetResource @splat | Should -Be $False
                 }
 
