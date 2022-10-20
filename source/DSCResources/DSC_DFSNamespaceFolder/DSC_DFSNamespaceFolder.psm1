@@ -18,6 +18,9 @@ $script:localizedData = Get-LocalizedData -DefaultUICulture 'en-US'
 
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
+
+    .PARAMETER TargetState
+    Specifies a State for the root of a DFS namespace.
 #>
 function Get-TargetResource
 {
@@ -38,10 +41,10 @@ function Get-TargetResource
         [System.String]
         $Ensure = 'Present',
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Offline','Online')]
         [System.String]
-        $State
+        $TargetState = 'Online'
     )
 
     Write-Verbose -Message ( @(
@@ -101,7 +104,7 @@ function Get-TargetResource
         $returnValue += @{
             ReferralPriorityClass        = $targetFolder.ReferralPriorityClass
             ReferralPriorityRank         = $targetFolder.ReferralPriorityRank
-            State                        = $targetFolder.State
+            TargetState                  = $targetFolder.State
         }
 
         Write-Verbose -Message ( @(
@@ -136,7 +139,7 @@ function Get-TargetResource
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
 
-    .PARAMETER State
+    .PARAMETER TargetState
     Specifies the target's referral status.
 
     .PARAMETER Description
@@ -175,10 +178,10 @@ function Set-TargetResource
         [System.String]
         $Ensure = 'Present',
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Offline','Online')]
         [System.String]
-        $State,
+        $TargetState = 'Online',
 
         [Parameter()]
         [System.String]
@@ -226,7 +229,7 @@ function Set-TargetResource
 
             # The Folder properties that will be updated
             $folderProperties = @{
-                State = 'online'
+                State = 'Online'
             }
 
             if (($Description) `
@@ -294,11 +297,11 @@ function Set-TargetResource
             $targetProperties = @{}
 
             # Check the target properties
-            if (($State) `
-                -and ($targetFolder.State -ne $State))
+            if (($TargetState) `
+                -and ($targetFolder.State -ne $TargetState))
             {
                 $targetProperties += @{
-                    State = $State
+                    State = $TargetState
                 }
                 $targetChange = $true
             }
@@ -422,7 +425,7 @@ function Set-TargetResource
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
 
-    .PARAMETER State
+    .PARAMETER TargetState
     Specifies the target's referral status.
 
     .PARAMETER Description
@@ -462,10 +465,10 @@ function Test-TargetResource
         [System.String]
         $Ensure = 'Present',
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Offline','Online')]
         [System.String]
-        $State,
+        $TargetState = 'Online',
 
         [Parameter()]
         [System.String]
@@ -564,13 +567,13 @@ function Test-TargetResource
 
             if ($targetFolder)
             {
-                if (($State) `
-                    -and ($targetFolder.State -ne $State))
+                if (($TargetState) `
+                    -and ($targetFolder.State -ne $TargetState))
                 {
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
                         $($LocalizedData.NamespaceFolderTargetParameterNeedsUpdateMessage) `
-                            -f $Path,$TargetPath,'State'
+                            -f $Path,$TargetPath,'TargetState'
                         ) -join '' )
                     $desiredConfigurationMatch = $false
                 }

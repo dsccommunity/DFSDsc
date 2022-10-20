@@ -16,7 +16,7 @@ $script:localizedData = Get-LocalizedData -DefaultUICulture 'en-US'
     .PARAMETER TargetPath
     Specifies a path for a root target of the DFS namespace.
 
-    .PARAMETER State
+    .PARAMETER TargetState
     Specifies a State for the root of a DFS namespace.
 
     .PARAMETER Ensure
@@ -43,6 +43,11 @@ function Get-TargetResource
         [ValidateSet('Present','Absent')]
         [System.String]
         $Ensure = 'Present',
+
+        [Parameter()]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $TargetState = 'Online',
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]
@@ -111,7 +116,7 @@ function Get-TargetResource
         $returnValue += @{
             ReferralPriorityClass        = $target.ReferralPriorityClass
             ReferralPriorityRank         = $target.ReferralPriorityRank
-            State                        = $target.State
+            TargetState                  = $target.State
         }
 
         Write-Verbose -Message ( @(
@@ -143,11 +148,11 @@ function Get-TargetResource
     .PARAMETER TargetPath
     Specifies a path for a root target of the DFS namespace.
 
-    .PARAMETER State
-    Specifies a State for the root of a DFS namespace.
-
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
+
+    .PARAMETER TargetState
+    Specifies a State for the root of a DFS namespace.
 
     .PARAMETER Type
     Specifies the type of a DFS namespace as a Type object.
@@ -196,6 +201,11 @@ function Set-TargetResource
         [ValidateSet('Present','Absent')]
         [System.String]
         $Ensure = 'Present',
+
+        [Parameter()]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $TargetState = 'Online',
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]
@@ -260,7 +270,7 @@ function Set-TargetResource
 
             # The root properties that will be updated
             $rootProperties = @{
-                State = 'online'
+                State = 'Online'
             }
 
             if (($Description) `
@@ -355,11 +365,11 @@ function Set-TargetResource
             $targetProperties = @{}
 
             # Check the target properties
-            if (($State) `
-                -and ($targetProperties.State -ne $State))
+            if (($TargetState) `
+                -and ($targetProperties.State -ne $TargetState))
             {
                 $targetProperties += @{
-                    State = $State
+                    State = $TargetState
                 }
                 $targetChange = $true
             } # if
@@ -481,11 +491,11 @@ function Set-TargetResource
     .PARAMETER TargetPath
     Specifies a path for a root target of the DFS namespace.
 
-    .PARAMETER State
-    Specifies a State for the root of a DFS namespace.
-
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
+
+    .PARAMETER TargetState
+    Specifies a State for the root of a DFS namespace.
 
     .PARAMETER Type
     Specifies the type of a DFS namespace as a Type object.
@@ -535,6 +545,11 @@ function Test-TargetResource
         [ValidateSet('Present','Absent')]
         [System.String]
         $Ensure = 'Present',
+
+        [Parameter()]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $TargetState = 'Online',
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]
@@ -700,13 +715,13 @@ function Test-TargetResource
 
             if ($target)
             {
-                if (($State) `
-                    -and ($target.State -ne $State))
+                if (($TargetState) `
+                    -and ($target.State -ne $TargetState))
                 {
                     Write-Verbose -Message ( @(
                         "$($MyInvocation.MyCommand): "
                         $($LocalizedData.NamespaceRootTargetParameterNeedsUpdateMessage) `
-                            -f $Type,$Path,$TargetPath,'State'
+                            -f $Type,$Path,$TargetPath,'TargetState'
                         ) -join '' )
                     $desiredConfigurationMatch = $false
                 } # if
