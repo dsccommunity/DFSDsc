@@ -6,6 +6,7 @@ Configuration DSC_DFSNamespaceRoot_Config {
             Path                         = $Node.Path
             TargetPath                   = $Node.TargetPath
             Ensure                       = $Node.Ensure
+            TargetState                  = $Node.TargetState
             Type                         = $Node.Type
             Description                  = $Node.Description
             TimeToLiveSec                = $Node.TimeToLiveSec

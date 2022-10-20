@@ -70,6 +70,7 @@ try
                     Path                         = "$($script:namespaceRoot.Path)\$script:namespaceFolderName"
                     TargetPath                   = "\\$($env:COMPUTERNAME)\$script:namespaceFolderName"
                     Ensure                       = 'Present'
+                    TargetState                  = 'Online'
                     Description                  = 'Integration test namespace folder'
                     EnableInsiteReferrals        = $true
                     EnableTargetFailback         = $true
@@ -117,6 +118,7 @@ try
                                 Path                         = $script:namespaceFolder.Path
                                 TargetPath                   = $script:namespaceFolder.TargetPath
                                 Ensure                       = $script:namespaceFolder.Ensure
+                                TargetState                  = $script:namespaceFolder.TargetState
                                 Description                  = $script:namespaceFolder.Description
                                 EnableInsiteReferrals        = $script:namespaceFolder.EnableInsiteReferrals
                                 EnableTargetFailback         = $script:namespaceFolder.EnableTargetFailback
@@ -159,6 +161,7 @@ try
                 $namespaceFolderTargetNew.Path                    | Should -Be $script:namespaceFolder.Path
                 $namespaceFolderTargetNew.NamespacePath           | Should -Be $script:namespaceFolder.Path
                 $namespaceFolderTargetNew.TargetPath              | Should -Be $script:namespaceFolder.TargetPath
+                $namespaceFolderTargetNew.State             | Should -Be $script:namespaceFolder.TargetState
                 $namespaceFolderTargetNew.ReferralPriorityClass   | Should -Be $script:namespaceFolder.ReferralPriorityClass
                 $namespaceFolderTargetNew.ReferralPriorityRank    | Should -Be $script:namespaceFolder.ReferralPriorityRank
             }

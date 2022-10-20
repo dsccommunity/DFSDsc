@@ -16,11 +16,11 @@ $script:localizedData = Get-LocalizedData -DefaultUICulture 'en-US'
     .PARAMETER TargetPath
     Specifies a path for a root target of the DFS namespace.
 
-    .PARAMETER TargetState
-    Specifies a State for the root of a DFS namespace.
-
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
+
+    .PARAMETER TargetState
+    Specifies a State for the root of a DFS namespace.
 
     .PARAMETER Type
     Specifies the type of a DFS namespace as a Type object.
