@@ -70,6 +70,7 @@ Configuration DFSNamespaceRoot_Domain_SingleTarget_Config
             Path                 = '\\contoso.com\departments\finance'
             TargetPath           = '\\fs_3\Finance'
             Ensure               = 'Present'
+            State                = 'Online'
             Description          = 'AD Domain based DFS namespace folder for storing finance files'
             TimeToLiveSec        = 600
             PsDscRunAsCredential = $Credential
@@ -80,6 +81,7 @@ Configuration DFSNamespaceRoot_Domain_SingleTarget_Config
             Path                 = '\\contoso.com\departments\management'
             TargetPath           = '\\fs_8\Management'
             Ensure               = 'Present'
+            State                = 'Online'
             Description          = 'AD Domain based DFS namespace folder for storing management files'
             TimeToLiveSec        = 600
             PsDscRunAsCredential = $Credential

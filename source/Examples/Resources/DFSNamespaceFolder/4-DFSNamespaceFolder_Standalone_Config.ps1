@@ -69,6 +69,7 @@ Configuration DFSNamespaceFolder_Standalone_Config
             Path                 = '\\fileserver1\public\brochures'
             TargetPath           = '\\fileserver2\brochures'
             Ensure               = 'Present'
+            State                = 'Online'
             Description          = 'Standalone DFS namespace for storing public brochure files'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceFolder Resource
