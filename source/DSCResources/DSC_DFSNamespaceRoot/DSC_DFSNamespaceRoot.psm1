@@ -36,10 +36,10 @@ function Get-TargetResource
         [System.String]
         $TargetPath,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure,
+        $Ensure = 'Present',
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]
@@ -185,10 +185,10 @@ function Set-TargetResource
         [System.String]
         $TargetPath,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure,
+        $Ensure = 'Present',
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]
@@ -512,10 +512,10 @@ function Test-TargetResource
         [System.String]
         $TargetPath,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure,
+        $Ensure = 'Present',
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]

@@ -2,7 +2,7 @@
 class DSC_DFSReplicationGroup : OMI_BaseResource
 {
     [Key, Description("The name of the DFS Replication Group.")] String GroupName;
-    [Required, Description("Specifies whether the DSF Replication Group should exist."), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+    [Write, Description("Specifies whether the DFS Replication Group should exist."), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
     [Write, Description("A description for the DFS Replication Group.")] String Description;
     [Write, Description("A list of computers that are members of this Replication Group. These can be specified using either the ComputerName or FQDN name for each member. These may also be defined separately through the DFSReplicationGroupMember resource. If an FQDN name is used and the DomainName parameter is set, the FQDN domain name must match.")] String Members[];
     [Write, Description("A list of folders that are replicated in this Replication Group.")] String Folders[];

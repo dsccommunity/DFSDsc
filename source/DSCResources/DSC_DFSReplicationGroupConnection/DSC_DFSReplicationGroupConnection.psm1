@@ -48,10 +48,10 @@ function Get-TargetResource
         [System.String]
         $DestinationComputerName,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure,
+        $Ensure = 'Present',
 
         [Parameter()]
         [System.String]
@@ -203,10 +203,10 @@ function Set-TargetResource
         [System.String]
         $DestinationComputerName,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure,
+        $Ensure = 'Present',
 
         [Parameter()]
         [System.String]
@@ -394,10 +394,10 @@ function Test-TargetResource
         [System.String]
         $DestinationComputerName,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure,
+        $Ensure = 'Present',
 
         [Parameter()]
         [System.String]

@@ -33,10 +33,10 @@ function Get-TargetResource
         [System.String]
         $TargetPath,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure
+        $Ensure = 'Present'
     )
 
     Write-Verbose -Message ( @(
@@ -161,10 +161,10 @@ function Set-TargetResource
         [System.String]
         $TargetPath,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure,
+        $Ensure = 'Present',
 
         [Parameter()]
         [System.String]
@@ -431,10 +431,10 @@ function Test-TargetResource
         [System.String]
         $TargetPath,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure,
+        $Ensure = 'Present',
 
         [Parameter()]
         [System.String]
