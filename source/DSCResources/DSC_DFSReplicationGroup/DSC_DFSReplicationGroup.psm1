@@ -14,7 +14,7 @@ $script:localizedData = Get-LocalizedData -DefaultUICulture 'en-US'
     The name of the DFS Replication Group.
 
     .PARAMETER Ensure
-    Specifies whether the DSF Replication Group should exist.
+    Specifies whether the DFS Replication Group should exist.
 
     .PARAMETER DomainName
     The AD domain the Replication Group should created in.
@@ -109,7 +109,7 @@ function Get-TargetResource
     The name of the DFS Replication Group.
 
     .PARAMETER Ensure
-    Specifies whether the DSF Replication Group should exist.
+    Specifies whether the DFS Replication Group should exist.
 
     .PARAMETER Description
     A description for the DFS Replication Group.
@@ -502,7 +502,7 @@ function Set-TargetResource
     The name of the DFS Replication Group.
 
     .PARAMETER Ensure
-    Specifies whether the DSF Replication Group should exist.
+    Specifies whether the DFS Replication Group should exist.
 
     .PARAMETER Description
     A description for the DFS Replication Group.

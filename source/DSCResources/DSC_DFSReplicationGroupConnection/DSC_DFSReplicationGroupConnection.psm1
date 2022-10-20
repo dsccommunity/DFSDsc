@@ -26,7 +26,7 @@ $script:localizedData = Get-LocalizedData -DefaultUICulture 'en-US'
     DomainName parameter is set, the FQDN domain name must match.
 
     .PARAMETER Ensure
-    Specifies whether the DSF Replication Group should exist.
+    Specifies whether the DFS Replication Group should exist.
 
     .PARAMETER DomainName
     The name of the AD Domain the DFS Replication Group connection should be in.
@@ -167,7 +167,7 @@ function Get-TargetResource
     DomainName parameter is set, the FQDN domain name must match.
 
     .PARAMETER Ensure
-    Specifies whether the DSF Replication Group should exist.
+    Specifies whether the DFS Replication Group should exist.
 
     .PARAMETER Description
     A description for the DFS Replication Group connection.
@@ -357,7 +357,7 @@ function Set-TargetResource
     DomainName parameter is set, the FQDN domain name must match.
 
     .PARAMETER Ensure
-    Specifies whether the DSF Replication Group should exist.
+    Specifies whether the DFS Replication Group should exist.
 
     .PARAMETER Description
     A description for the DFS Replication Group connection.
