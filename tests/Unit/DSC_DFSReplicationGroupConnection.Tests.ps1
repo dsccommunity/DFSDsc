@@ -310,7 +310,6 @@ try
                     {
                         $splat = $replicationGroupConnections[0].Clone()
                         $splat.EnsureRDCEnabled = 'Disabled'
-                        $splat.Description = 'Changed'
                         Set-TargetResource @splat
                     } | Should -Not -Throw
                 }
