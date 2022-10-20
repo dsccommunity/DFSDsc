@@ -70,6 +70,7 @@ try
             TargetPath                   = '\\server1\UnitTestNamespace'
             Type                         = 'DomainV2'
             Ensure                       = 'Present'
+            TargetState                  = 'Online'
             Description                  = 'Unit Test Namespace Description'
             TimeToLiveSec                = 500
             EnableSiteCosting            = $true
@@ -147,7 +148,7 @@ try
                     $result.EnableTargetFailback         | Should -Be ($namespaceRoot.Flags -contains 'Target Failback')
                     $result.ReferralPriorityClass        | Should -Be $null
                     $result.ReferralPriorityRank         | Should -Be $null
-
+                    $result.TargetState                  | Should -Be $null
                 }
 
                 It 'Should call the expected mocks' {
@@ -176,6 +177,7 @@ try
                     $result.EnableTargetFailback         | Should -Be ($namespaceRoot.Flags -contains 'Target Failback')
                     $result.ReferralPriorityClass        | Should -Be $namespaceTarget.ReferralPriorityClass
                     $result.ReferralPriorityRank         | Should -Be $namespaceTarget.ReferralPriorityRank
+                    $result.TargetState                  | Should -Be $namespaceTarget.State
                 }
 
                 It 'Should call the expected mocks' {
@@ -465,6 +467,29 @@ try
                 }
             }
 
+            Context 'Namespace Root and Target exists and should but has different TargetState' {
+                Mock Get-DFSNRoot -MockWith { $namespaceRoot }
+                Mock Get-DFSNRootTarget -MockWith { $namespaceTarget }
+
+                It 'Should not throw error' {
+                    {
+                        $splat = $namespace.Clone()
+                        $splat.TargetState = 'Offline'
+                        Set-TargetResource @splat
+                    } | Should -Not -Throw
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly -Times 0
+                }
+            }
+
             Context 'Namespace Root and Target exists but should not' {
                 Mock Get-DFSNRoot -MockWith { $namespaceRoot }
                 Mock Get-DFSNRootTarget -MockWith { $namespaceTarget }
@@ -698,6 +723,22 @@ try
                 It 'Should return false' {
                     $splat = $namespace.Clone()
                     $splat.ReferralPriorityRank++
+                    Test-TargetResource @splat | Should -Be $False
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
+                }
+            }
+
+            Context 'Namespace Root exists and should but has a different TargetState' {
+                Mock Get-DFSNRoot -MockWith { $namespaceRoot }
+                Mock Get-DFSNRootTarget
+
+                It 'Should return false' {
+                    $splat = $namespace.Clone()
+                    $splat.TargetState = 'Offline'
                     Test-TargetResource @splat | Should -Be $False
                 }
 
