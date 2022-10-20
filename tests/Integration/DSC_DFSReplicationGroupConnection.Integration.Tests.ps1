@@ -7,7 +7,7 @@
     to create a DFS Replication Group.
 
     If the above are available then to allow these tests to be run a
-    DSC_DFSReplicationGroupFolder.config.json file must be created in the same folder as
+    DSC_DFSReplicationGroupConnection.config.json file must be created in the same folder as
     this file. The content should be a customized version of the following:
     {
         "Username":  "contoso.com\\Administrator",
