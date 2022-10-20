@@ -53,7 +53,7 @@ Configuration DFSNamespaceFolder_Domain_SingleTarget_Config
         }
 
         # Configure the namespace
-        DFSNamespaceRoot DFSNamespaceRoot_Domain_Departments600
+        DFSNamespaceRoot DFSNamespaceRoot_Domain_Departments
         {
             Path                 = '\\contoso.com\departments'
             TargetPath           = '\\fs_1\departments'
