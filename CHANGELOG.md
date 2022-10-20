@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   without errors even if the replication group does not yet exist - Fixes [Issue #125](https://github.com/dsccommunity/DFSDsc/issues/125)
 - Add support for CrossFileRDCEnabled and MinimumRDCFileSizeInKB parameters in DSC_DFSReplicationGroupConnection resource
 - Add support for EnsureEnabled, MinimumFileStagingSize, ConflictAndDeletedQuotaInMB, RemoveDeletedFiles and DfsnPath parameters in
-  DSC_DFSReplicationGroupConnection resource
+  DSC_DFSReplicationGroupMembership resource
 - Converted all 'Ensure' parameters to default to 'Present' - Fixes [Issue #29](https://github.com/dsccommunity/DFSDsc/issues/29)
 - Add support for modifying Namespace Root and Folder ReferralStatus (State) - Fixes [Issue #96]https://github.com/dsccommunity/DFSDsc/issues/96
 - BREAKING CHANGE: Changed resource prefix from MSFT to DSC.
