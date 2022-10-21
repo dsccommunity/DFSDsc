@@ -1025,7 +1025,7 @@ try
 
                 It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 0
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
