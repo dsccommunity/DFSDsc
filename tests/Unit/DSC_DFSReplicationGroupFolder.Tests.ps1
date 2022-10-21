@@ -99,15 +99,12 @@ try
             Context 'Replication group folder does not exist' {
                 Mock Get-DfsReplicatedFolder
 
-                It 'Should throw RegGroupFolderMissingError error' {
-                    $errorRecord = Get-InvalidOperationRecord `
-                        -Message ($($LocalizedData.ReplicationGroupFolderMissingError) -f $mockReplicationGroupFolder[0].GroupName,$mockReplicationGroupFolder[0].FolderName)
-
+                It 'Should not throw error' {
                     {
                         $result = Get-TargetResource `
                             -GroupName $mockReplicationGroupFolder[0].GroupName `
                             -FolderName $mockReplicationGroupFolder[0].FolderName
-                    } | Should -Throw $errorRecord
+                    } | Should -Not -Throw
                 }
 
                 It 'Should call the expected mocks' {
@@ -204,12 +201,9 @@ try
             Context 'Replication group folder does not exist' {
                 Mock Get-DfsReplicatedFolder
 
-                It 'Should throw RegGroupFolderMissingError error' {
-                    $errorRecord = Get-InvalidOperationRecord `
-                        -Message ($($LocalizedData.ReplicationGroupFolderMissingError) -f $mockReplicationGroupFolder[0].GroupName,$mockReplicationGroupFolder[0].FolderName)
-
+                It 'Should not throw error' {
                     $splat = $mockReplicationGroupFolder[0].Clone()
-                    { Test-TargetResource @splat } | Should -Throw $errorRecord
+                    { Test-TargetResource @splat } | Should -Not -Throw
                 }
 
                 It 'Should call expected Mocks' {

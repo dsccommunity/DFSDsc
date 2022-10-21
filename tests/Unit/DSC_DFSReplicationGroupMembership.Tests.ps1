@@ -112,23 +112,17 @@ try
             DfsnPath = $replicationGroupMemberships[0].DfsnPath
         }
 
-# BANANA - up to here, check DFSReplicationGroupConnection Tests, don't forget to swap EnsureEnabled syntax
-
         Describe 'DSC_DFSReplicationGroupMembership\Get-TargetResource' {
             Context 'Replication group folder does not exist' {
                 Mock Get-DfsrMembership
 
-                It 'Should throw RegGroupFolderMissingError error' {
-                    $errorRecord = Get-InvalidOperationRecord `
-                        -Message ($($LocalizedData.ReplicationGroupMembershipMissingError) `
-                        -f $replicationGroupMemberships[0].GroupName,$replicationGroupMemberships[0].FolderName,$replicationGroupMemberships[0].ComputerName)
-
+                It 'Should not throw error' {
                     {
                         $result = Get-TargetResource `
                             -GroupName $replicationGroupMemberships[0].GroupName `
                             -FolderName $replicationGroupMemberships[0].FolderName `
                             -ComputerName $replicationGroupMemberships[0].ComputerName
-                    } | Should -Throw $errorRecord
+                    } | Should -Not -Throw
                 }
 
                 It 'Should call the expected mocks' {
@@ -384,14 +378,10 @@ try
             Context 'Replication group membership does not exist' {
                 Mock Get-DfsrMembership
 
-                It 'Should throw RegGroupMembershipMissingError error' {
-                    $errorRecord = Get-InvalidOperationRecord `
-                        -Message ($($LocalizedData.ReplicationGroupMembershipMissingError) -f `
-                            $replicationGroupMemberships[0].GroupName,$replicationGroupMemberships[0].FolderName,$replicationGroupMemberships[0].ComputerName)
-
+                It 'Should not throw error' {
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
-                    { Test-TargetResource @splat } | Should -Throw $errorRecord
+                    { Test-TargetResource @splat } | Should -Not -Throw
                 }
 
                 It 'Should call expected Mocks' {
