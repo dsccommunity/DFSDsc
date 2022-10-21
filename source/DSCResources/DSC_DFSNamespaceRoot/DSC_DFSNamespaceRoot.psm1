@@ -366,7 +366,7 @@ function Set-TargetResource
 
             # Check the target properties
             if (($TargetState) `
-                -and ($targetProperties.State -ne $TargetState))
+                -and ($target.State -ne $TargetState))
             {
                 $targetProperties += @{
                     State = $TargetState
