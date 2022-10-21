@@ -317,94 +317,90 @@ function Set-TargetResource
             } # foreach
         } # if
 
-        # Set the folders (if any were passed in the array) plus any content paths
-        if ($Folders)
+        # Get the existing folders of this DFS Rep Group
+        $existingFolders = (Get-DfsReplicatedFolder @replicationGroupParameters -ErrorAction Stop).FolderName
+
+        # Add any missing folders
+        foreach ($folder in $Folders)
         {
-            # Get the existing folders of this DFS Rep Group
-            $existingFolders = (Get-DfsReplicatedFolder @replicationGroupParameters -ErrorAction Stop).FolderName
-
-            # Add any missing folders
-            foreach ($folder in $Folders)
+            if ($folder -notin $existingFolders)
             {
-                if ($folder -notin $existingFolders)
-                {
-                    # Folder is missing - add it
-                    New-DfsReplicatedFolder @replicationGroupParameters `
-                        -FolderName $folder `
-                        -ErrorAction Stop
-
-                    Write-Verbose -Message ( @(
-                        "$($MyInvocation.MyCommand): "
-                        $($script:localizedData.ReplicationGroupFolderAddedMessage) `
-                            -f $GroupName,$folder
-                        ) -join '' )
-                } # if
-            } # foreach
-
-            # Remove any folders that shouldn't exist
-            foreach ($existingFolder in $existingFolders)
-            {
-                if ($existingFolder -notin $Folders)
-                {
-                    # Folder exists but shouldn't - remove it
-                    Remove-DfsReplicatedFolder @replicationGroupParameters `
-                        -Folder $existingFolder `
-                        -Force `
-                        -ErrorAction Stop
-
-                    Write-Verbose -Message ( @(
-                        "$($MyInvocation.MyCommand): "
-                        $($script:localizedData.ReplicationGroupFolderRemovedMessage) `
-                            -f $GroupName,$existingFolder
-                        ) -join '' )
-                } # if
-            } # foreach
-
-            # Set the content paths (if any were passed in the array)
-            if ($ContentPaths)
-            {
-                # Get the current memberships for this rep group
-                $memberships = Get-DfsrMembership @replicationGroupParameters `
+                # Folder is missing - add it
+                New-DfsReplicatedFolder @replicationGroupParameters `
+                    -FolderName $folder `
                     -ErrorAction Stop
 
-                # Scan through the content paths array
-                for ($i=0; $i -lt $Folders.Count; $i++)
-                {
-                    $contentPath = $ContentPaths[$i]
-                    if ($contentPath)
-                    {
-                        foreach ($membership in $memberships)
-                        {
-                            [System.String] $fqdnMemberName = Get-FQDNMemberName `
-                                @replicationGroupParameters `
-                                -ComputerName $membership.ComputerName
-
-                            [System.Boolean] $primaryMember = ($fqdnMemberName -eq $fqdnMembers[0])
-
-                            if (($membership.FolderName -ne $Folders[$i]) `
-                                -or (($membership.ContentPath -eq $ContentPath) `
-                                -and ($membership.PrimaryMember -eq $primaryMember)))
-                            {
-                                # Don't update this membership
-                                continue
-                            } #if
-
-                            # The Content Path for this member needs to be set
-                            Set-DfsrMembership @replicationGroupParameters `
-                                -FolderName $membership.FolderName `
-                                -ComputerName $membership.ComputerName `
-                                -PrimaryMember $primaryMember `
-                                -ContentPath $ContentPath
-
-                            Write-Verbose -Message ( @(
-                                "$($MyInvocation.MyCommand): "
-                                $($script:localizedData.ReplicationGroupContentPathUpdatedMessage) `
-                                    -f $GroupName,$membership.ComputerName
-                                ) -join '' )
-                        } # foreach
-                    } # if
-                } # foreach
+                Write-Verbose -Message ( @(
+                    "$($MyInvocation.MyCommand): "
+                    $($script:localizedData.ReplicationGroupFolderAddedMessage) `
+                        -f $GroupName,$folder
+                    ) -join '' )
             } # if
+        } # foreach
+
+        # Remove any folders that shouldn't exist
+        foreach ($existingFolder in $existingFolders)
+        {
+            if ($existingFolder -notin $Folders)
+            {
+                # Folder exists but shouldn't - remove it
+                Remove-DfsReplicatedFolder @replicationGroupParameters `
+                    -Folder $existingFolder `
+                    -Force `
+                    -ErrorAction Stop
+
+                Write-Verbose -Message ( @(
+                    "$($MyInvocation.MyCommand): "
+                    $($script:localizedData.ReplicationGroupFolderRemovedMessage) `
+                        -f $GroupName,$existingFolder
+                    ) -join '' )
+            } # if
+        } # foreach
+
+        # Set the content paths (if any were passed in the array)
+        if ($ContentPaths)
+        {
+            # Get the current memberships for this rep group
+            $memberships = Get-DfsrMembership @replicationGroupParameters `
+                -ErrorAction Stop
+
+            # Scan through the content paths array
+            for ($i=0; $i -lt $Folders.Count; $i++)
+            {
+                $contentPath = $ContentPaths[$i]
+                if ($contentPath)
+                {
+                    foreach ($membership in $memberships)
+                    {
+                        [System.String] $fqdnMemberName = Get-FQDNMemberName `
+                            @replicationGroupParameters `
+                            -ComputerName $membership.ComputerName
+
+                        [System.Boolean] $primaryMember = ($fqdnMemberName -eq $fqdnMembers[0])
+
+                        if (($membership.FolderName -ne $Folders[$i]) `
+                            -or (($membership.ContentPath -eq $ContentPath) `
+                            -and ($membership.PrimaryMember -eq $primaryMember)))
+                        {
+                            # Don't update this membership
+                            continue
+                        } #if
+
+                        # The Content Path for this member needs to be set
+                        Set-DfsrMembership @replicationGroupParameters `
+                            -FolderName $membership.FolderName `
+                            -ComputerName $membership.ComputerName `
+                            -PrimaryMember $primaryMember `
+                            -ContentPath $ContentPath
+
+                        Write-Verbose -Message ( @(
+                            "$($MyInvocation.MyCommand): "
+                            $($script:localizedData.ReplicationGroupContentPathUpdatedMessage) `
+                                -f $GroupName,$membership.ComputerName
+                            ) -join '' )
+                    } # foreach
+                } # if
+            } # foreach
         } # if
 
         # If any members were passed in the array
@@ -678,21 +674,34 @@ function Test-TargetResource
                 }
             } # if
 
-            # Get the folders (if any were passed in the array) plus any content paths
-            if ($Folders)
+            # Compare the Folders
+            $existingFolders = @((Get-DfsReplicatedFolder @replicationGroupParameters -ErrorAction Stop).FolderName)
+            <#
+                check for null values before using compare-object
+                if one is null but not both then report difference
+                if neither are null then compare values
+            #>
+            if ([String]::IsNullOrEmpty($existingFolders) -and [String]::IsNullOrEmpty($Folders))
             {
-                # Compare the Folders
-                $existingFolders = @((Get-DfsReplicatedFolder @replicationGroupParameters -ErrorAction Stop).FolderName)
-                <#
-                    check for null values before using compare-object
-                    if one is null but not both then report difference
-                    if neither are null then compare values
-                #>
-                if ([String]::IsNullOrEmpty($existingFolders) -and [String]::IsNullOrEmpty($Folders))
-                {
-                    # both are null so no difference found
-                }
-                elseif ([String]::IsNullOrEmpty($existingFolders) -xor [String]::IsNullOrEmpty($Folders))
+                # both are null so no difference found
+            }
+            elseif ([String]::IsNullOrEmpty($existingFolders) -xor [String]::IsNullOrEmpty($Folders))
+            {
+                # There is a folder difference of some kind.
+                Write-Verbose -Message ( @(
+                    "$($MyInvocation.MyCommand): "
+                    $($script:localizedData.ReplicationGroupFoldersNeedUpdateMessage) `
+                        -f $GroupName
+                    ) -join '' )
+
+                $desiredConfigurationMatch = $false
+            }
+            else
+            {
+                # neither variables are null so it's safe to use compare-object
+                if ((Compare-Object `
+                    -ReferenceObject $Folders `
+                    -DifferenceObject $existingFolders).Count -ne 0)
                 {
                     # There is a folder difference of some kind.
                     Write-Verbose -Message ( @(
@@ -702,61 +711,44 @@ function Test-TargetResource
                         ) -join '' )
 
                     $desiredConfigurationMatch = $false
-                }
-                else
-                {
-                    # neither variables are null so it's safe to use compare-object
-                    if ((Compare-Object `
-                        -ReferenceObject $Folders `
-                        -DifferenceObject $existingFolders).Count -ne 0)
-                    {
-                        # There is a folder difference of some kind.
-                        Write-Verbose -Message ( @(
-                            "$($MyInvocation.MyCommand): "
-                            $($script:localizedData.ReplicationGroupFoldersNeedUpdateMessage) `
-                                -f $GroupName
-                            ) -join '' )
-
-                        $desiredConfigurationMatch = $false
-                    } # if
-                }
-                # Get the content paths (if any were passed in the array)
-                if ($ContentPaths)
-                {
-                    # Get the current memberships for this rep group
-                    $memberships = Get-DfsrMembership @replicationGroupParameters `
-                        -ErrorAction Stop
-
-                    # Scan through the content paths array
-                    for ($i=0; $i -lt $Folders.Count; $i++)
-                    {
-                        $contentPath = $ContentPaths[$i]
-
-                        if ($contentPath)
-                        {
-                            foreach ($membership in $memberships)
-                            {
-                                [System.Boolean] $primaryMember = ($membership.ComputerName -eq $Members[0])
-
-                                if (($membership.FolderName -ne $Folders[$i]) `
-                                    -or (($membership.ContentPath -eq $contentPath) `
-                                    -and ($membership.PrimaryMember -eq $primaryMember)))
-                                {
-                                    # This membership is in the correct state.
-                                    continue
-                                } # if
-
-                                Write-Verbose -Message ( @(
-                                    "$($MyInvocation.MyCommand): "
-                                    $($script:localizedData.ReplicationGroupContentPathNeedUpdateMessage) `
-                                        -f $GroupName,$membership.ComputerName
-                                    ) -join '' )
-
-                                $desiredConfigurationMatch = $false
-                            } # if
-                        } # if
-                    } # foreach
                 } # if
+            }
+            # Get the content paths (if any were passed in the array)
+            if ($ContentPaths)
+            {
+                # Get the current memberships for this rep group
+                $memberships = Get-DfsrMembership @replicationGroupParameters `
+                    -ErrorAction Stop
+
+                # Scan through the content paths array
+                for ($i=0; $i -lt $Folders.Count; $i++)
+                {
+                    $contentPath = $ContentPaths[$i]
+
+                    if ($contentPath)
+                    {
+                        foreach ($membership in $memberships)
+                        {
+                            [System.Boolean] $primaryMember = ($membership.ComputerName -eq $Members[0])
+
+                            if (($membership.FolderName -ne $Folders[$i]) `
+                                -or (($membership.ContentPath -eq $contentPath) `
+                                -and ($membership.PrimaryMember -eq $primaryMember)))
+                            {
+                                # This membership is in the correct state.
+                                continue
+                            } # if
+
+                            Write-Verbose -Message ( @(
+                                "$($MyInvocation.MyCommand): "
+                                $($script:localizedData.ReplicationGroupContentPathNeedUpdateMessage) `
+                                    -f $GroupName,$membership.ComputerName
+                                ) -join '' )
+
+                            $desiredConfigurationMatch = $false
+                        } # if
+                    } # if
+                } # foreach
             } # if
 
             # If any members were passed in the array
