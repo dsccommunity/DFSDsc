@@ -461,7 +461,7 @@ function Set-TargetResource
                         } # foreach
                     } # foreach
                 } # 'Fullmesh'
-            } # swtich
+            } # switch
         } #if
     } #if
     else

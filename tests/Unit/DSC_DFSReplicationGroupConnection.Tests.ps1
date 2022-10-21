@@ -112,7 +112,7 @@ try
             Description = $replicationGroupConnections[0].Description
             Enabled = ($replicationGroupConnections[0].EnsureEnabled -eq 'Enabled')
             RDCEnabled = ($replicationGroupConnections[0].EnsureRDCEnabled -eq 'Enabled')
-            CrossFileRDCEnabled = ($replicationGroupConnections[0].CrossFileRDCEnabled -eq 'Enabled')
+            CrossFileRDCEnabled = ($replicationGroupConnections[0].EnsureCrossFileRDCEnabled -eq 'Enabled')
             MinimumRDCFileSizeInKB = $replicationGroupConnections[0].MinimumRDCFileSizeInKB
             DomainName = $replicationGroupConnections[0].DomainName
         }
