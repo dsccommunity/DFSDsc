@@ -167,7 +167,7 @@ try
 
                 It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
-                    Assert-MockCalled -commandName Set-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsrMember -Exactly -Times 0
                     Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 0
                     Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
                 }
@@ -181,7 +181,7 @@ try
 
                 It 'Should not throw error' {
                     {
-                        $splat = $replicationGroupMember[0].Clone()
+                        $splat = $mockreplicationGroupMember[0].Clone()
                         $splat.Description = 'Changed'
                         Set-TargetResource @splat
                     } | Should -Not -Throw
@@ -232,7 +232,7 @@ try
 
                 It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
-                    Assert-MockCalled -commandName Set-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsrMember -Exactly -Times 0
                     Assert-MockCalled -commandName Add-DfsrMember -Exactly -Times 0
                     Assert-MockCalled -commandName Remove-DfsrMember -Exactly -Times 0
                 }
