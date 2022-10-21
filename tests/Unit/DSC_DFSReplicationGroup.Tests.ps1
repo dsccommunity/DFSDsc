@@ -1001,14 +1001,14 @@ try
                 Mock Get-DfsrMember -MockWith { return $mockReplicationGroupMember }
                 Mock Get-DfsReplicatedFolder -MockWith { return $mockReplicationGroupFolder }
 
-                It 'Should return false' {
+                It 'Should return true' {
                     $splat = $replicationGroupNullMembers.Clone()
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -Be $True
                 }
 
                 It 'Should call expected Mocks' {
                     Assert-MockCalled -commandName Get-DfsReplicationGroup -Exactly -Times 1
-                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DfsrMember -Exactly -Times 0
                     Assert-MockCalled -commandName Get-DfsReplicatedFolder -Exactly -Times 1
                 }
             }
