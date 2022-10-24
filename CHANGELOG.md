@@ -8,18 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Add support for setting a DFS Namespace root target's referral status (TargetState) to be either `Online` or `Offline`
-  in DSC_DFSNamespaceRoot.
+  in DSC_DFSNamespaceRoot - Fixes [Issue #96](https://github.com/dsccommunity/DFSDsc/issues/96).
 - Add support for setting a DFS Namespace folder target's referral status (TargetState) to be either `Online` or `Offline`
-  in DSC_DFSNamespaceFolder.
-- Add DSC_DFSReplicationGroupMember module allowing replication group members to be separately defined outside of DFSReplicationGroup
-  - This allows situations where new memberships may be added through DSC Configurations on each server, instead of a single server
+  in DSC_DFSNamespaceFolder - Fixes [Issue #96](https://github.com/dsccommunity/DFSDsc/issues/96).
+- Add DSC_DFSReplicationGroupMember module allowing replication group members to be separately defined outside of DFSReplicationGroup.
+  - This allows situations where new memberships may be added through DSC Configurations on each server, instead of a single server.
 - Allow Get-TargetResource and Test-TargetResource to be run in DSC_DFSReplicationGroupFolder and DSC_DFSReplicationGroupMember
   without errors even if the replication group does not yet exist - Fixes [Issue #125](https://github.com/dsccommunity/DFSDsc/issues/125)
-- Add support for CrossFileRDCEnabled and MinimumRDCFileSizeInKB parameters in DSC_DFSReplicationGroupConnection resource
+- Add support for CrossFileRDCEnabled and MinimumRDCFileSizeInKB parameters in DSC_DFSReplicationGroupConnection resource.
 - Add support for EnsureEnabled, MinimumFileStagingSize, ConflictAndDeletedQuotaInMB, RemoveDeletedFiles and DfsnPath parameters in
-  DSC_DFSReplicationGroupMembership resource
+  DSC_DFSReplicationGroupMembership resource.
 - Converted all 'Ensure' parameters to default to 'Present' - Fixes [Issue #29](https://github.com/dsccommunity/DFSDsc/issues/29)
-- Add support for modifying Namespace Root and Folder ReferralStatus (State) - Fixes [Issue #96](https://github.com/dsccommunity/DFSDsc/issues/96)
 - BREAKING CHANGE: Changed resource prefix from MSFT to DSC.
 - Updated to use continuous delivery pattern using Azure DevOps - fixes
   [Issue #41](https://github.com/dsccommunity/DFSDsc/issues/98).
