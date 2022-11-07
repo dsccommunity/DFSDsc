@@ -7,18 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Add support for setting a DFS Namespace root target's referral status (TargetState) to be either `Online` or `Offline`
-  in DSC_DFSNamespaceRoot - Fixes [Issue #96](https://github.com/dsccommunity/DFSDsc/issues/96).
-- Add support for setting a DFS Namespace folder target's referral status (TargetState) to be either `Online` or `Offline`
-  in DSC_DFSNamespaceFolder - Fixes [Issue #96](https://github.com/dsccommunity/DFSDsc/issues/96).
-- Add DSC_DFSReplicationGroupMember module allowing replication group members to be separately defined outside of DFSReplicationGroup.
-  - This allows situations where new memberships may be added through DSC Configurations on each server, instead of a single server.
-- Allow Get-TargetResource and Test-TargetResource to be run in DSC_DFSReplicationGroupFolder and DSC_DFSReplicationGroupMember
-  without errors even if the replication group does not yet exist - Fixes [Issue #125](https://github.com/dsccommunity/DFSDsc/issues/125)
-- Add support for CrossFileRDCEnabled and MinimumRDCFileSizeInKB parameters in DSC_DFSReplicationGroupConnection resource.
-- Add support for EnsureEnabled, MinimumFileStagingSize, ConflictAndDeletedQuotaInMB, RemoveDeletedFiles and DfsnPath parameters in
-  DSC_DFSReplicationGroupMembership resource.
-- Converted all 'Ensure' parameters to default to 'Present' - Fixes [Issue #29](https://github.com/dsccommunity/DFSDsc/issues/29)
+- All modules
+  - Converted 'Ensure' parameters to default to 'Present' - fixes [Issue #29](https://github.com/dsccommunity/DFSDsc/issues/29).
+- DFSNamespaceRoot
+  - Added support for setting target referral status (TargetState) - fixes [Issue #96](https://github.com/dsccommunity/DFSDsc/issues/96).
+- DFSNamespaceFolder
+  - Added support for setting target referral status (TargetState) - fixes [Issue #96](https://github.com/dsccommunity/DFSDsc/issues/96).
+- DFSReplicationGroupMember
+  - New module allowing replication group members to be separately defined outside of DFSReplicationGroup.
+    This allows situations where new memberships may be added separately on individual servers, instead of a single server.
+- DFSReplicationGroupConnection
+  - Add support for setting CrossFileRDCEnabled and MinimumRDCFileSizeInKB.
+- DFSReplicationGroupFolder
+  - Allow Get-TargetResource and Test-TargetResource to run if group does not exist - fixes [Issue #125](https://github.com/dsccommunity/DFSDsc/issues/125).
+- DFSReplicationGroupMember
+  - Allow Get-TargetResource and Test-TargetResource to run if group does not exist - fixes [Issue #125](https://github.com/dsccommunity/DFSDsc/issues/125).
+- DFSReplicationGroupMembership
+  - Add support for setting EnsureEnabled, MinimumFileStagingSize, ConflictAndDeletedQuotaInMB, RemoveDeletedFiles and DfsnPath.
 - BREAKING CHANGE: Changed resource prefix from MSFT to DSC.
 - Updated to use continuous delivery pattern using Azure DevOps - fixes
   [Issue #41](https://github.com/dsccommunity/DFSDsc/issues/98).
