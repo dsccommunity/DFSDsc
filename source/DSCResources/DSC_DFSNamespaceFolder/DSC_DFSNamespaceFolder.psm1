@@ -20,7 +20,7 @@ $script:localizedData = Get-LocalizedData -DefaultUICulture 'en-US'
     Specifies if the DFS Namespace root should exist.
 
     .PARAMETER TargetState
-    Specifies a State for the root of a DFS namespace.
+    Specifies the state of the DFS namespace folder target.
 #>
 function Get-TargetResource
 {
@@ -140,7 +140,7 @@ function Get-TargetResource
     Specifies if the DFS Namespace root should exist.
 
     .PARAMETER TargetState
-    Specifies the target's referral status.
+    Specifies the state of the DFS namespace folder target.
 
     .PARAMETER Description
     The description of the DFS Namespace.
@@ -426,7 +426,7 @@ function Set-TargetResource
     Specifies if the DFS Namespace root should exist.
 
     .PARAMETER TargetState
-    Specifies the target's referral status.
+    Specifies the state of the DFS namespace folder target.
 
     .PARAMETER Description
     The description of the DFS Namespace.

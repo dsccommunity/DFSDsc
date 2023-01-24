@@ -20,7 +20,7 @@ $script:localizedData = Get-LocalizedData -DefaultUICulture 'en-US'
     Specifies if the DFS Namespace root should exist.
 
     .PARAMETER TargetState
-    Specifies a State for the root of a DFS namespace.
+    Specifies the state of the DFS namespace root target.
 
     .PARAMETER Type
     Specifies the type of a DFS namespace as a Type object.
@@ -152,7 +152,7 @@ function Get-TargetResource
     Specifies if the DFS Namespace root should exist.
 
     .PARAMETER TargetState
-    Specifies a State for the root of a DFS namespace.
+    Specifies the state of the DFS namespace root target.
 
     .PARAMETER Type
     Specifies the type of a DFS namespace as a Type object.
@@ -495,7 +495,7 @@ function Set-TargetResource
     Specifies if the DFS Namespace root should exist.
 
     .PARAMETER TargetState
-    Specifies a State for the root of a DFS namespace.
+    Specifies the state of the DFS namespace root target.
 
     .PARAMETER Type
     Specifies the type of a DFS namespace as a Type object.
