@@ -56,6 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   images - Fixes [Issue #122](https://github.com/dsccommunity/DFSDsc/issues/122).
 - Updated pipeline unit tests and integration tests to use Windows Server 2019 and
   Windows Server 2022 images - Fixes [Issue #122](https://github.com/dsccommunity/DFSDsc/issues/122).
+- Temporarily pinned build image to Ubuntu 20.04 - Fixes [Issue #127](https://github.com/dsccommunity/DFSDsc/issues/127).
 
 ### Fixed
 
