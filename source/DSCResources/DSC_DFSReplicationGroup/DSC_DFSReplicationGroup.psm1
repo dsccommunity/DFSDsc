@@ -261,7 +261,7 @@ function Set-TargetResource
         $replicationGroupParameters.Remove('Description')
 
         # Set the members (if any were passed in the array)
-        if ($PSBoundParameters.ContainsKey('Members'))
+        if ($Members)
         {
             # Create an array of FQDN Members from the Members Array
             $replicationGroupParameters += @{
@@ -406,7 +406,7 @@ function Set-TargetResource
         } # if
 
         # If any members were passed in the array
-        if ($PSBoundParameters.ContainsKey('Members'))
+        if ($Members)
         {
             # If the topology is not manual, automatically configure the connections
             switch ($Topology)
@@ -622,7 +622,7 @@ function Test-TargetResource
             } # if
 
             # Get the members (if any were passed in the array)
-            if ($PSBoundParameters.ContainsKey('Members'))
+            if ($Members)
             {
                 # Create an array of FQDN Members from the Members Array
                 $replicationGroupParameters += @{
@@ -756,7 +756,7 @@ function Test-TargetResource
             } # if
 
             # If any members were passed in the array
-            if ($PSBoundParameters.ContainsKey('Members'))
+            if ($Members)
             {
                 # If the topology is not manual, check the connections are configured
                 switch ($Topology)
