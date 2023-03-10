@@ -52,6 +52,7 @@ Configuration DFSReplicationGroupMember_Simple_Config
         {
             GroupName = 'Public'
             Description = 'Public files for use by all departments'
+            # NB Members parameter must NOT be defined to allow DFSReplicationGroupMember to be used elsewhere - avoid configuration flapping
             Ensure = 'Present'
             Folders = 'Software'
             PSDSCRunAsCredential = $Credential
@@ -109,7 +110,7 @@ Configuration DFSReplicationGroupMember_Simple_Config
             DependsOn = '[DFSReplicationGroupMember]RGPublicMemberFS2', '[DFSReplicationGroupFolder]RGSoftwareFolder'
         } # End of RGPublicSoftwareFS2 Resource
 
-        DFSReplicationGroupConnection "RGPublicConnectionFS1"
+        DFSReplicationGroupConnection RGPublicConnectionFS1
         {
             GroupName = 'Public'
             Ensure = 'Present'

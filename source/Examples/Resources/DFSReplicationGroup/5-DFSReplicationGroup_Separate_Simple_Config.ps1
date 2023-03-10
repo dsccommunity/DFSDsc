@@ -110,7 +110,7 @@ Configuration DFSReplicationGroup_Separate_Simple_Config
             DependsOn = '[DFSReplicationGroupMember]RGPublicMemberFS2', '[DFSReplicationGroupFolder]RGSoftwareFolder'
         } # End of RGPublicSoftwareFS2 Resource
 
-        DFSReplicationGroupConnection "RGPublicConnectionFS1"
+        DFSReplicationGroupConnection RGPublicConnectionFS1
         {
             GroupName = 'Public'
             Ensure = 'Present'
