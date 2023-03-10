@@ -119,7 +119,7 @@ Configuration DFSNamespaceRoot_Domain_MultipleTarget_Config
             Path                 = '\\contoso.com\software\it'
             TargetPath           = '\\ny-fileserver02\it'
             Ensure               = 'Present'
-            TargetState          = 'Online'
+            TargetState          = 'Offline'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceFolder Resource
