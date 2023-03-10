@@ -117,9 +117,11 @@ function Get-TargetResource
     .PARAMETER Members
     A list of computers that are members of this Replication Group.
     These can be specified using either the ComputerName or FQDN name
-    for each member. These may also be defined separately through the
-    DFSReplicationGroupMember resource. If an FQDN name is used and
-    the DomainName parameter is set, the FQDN domain name must match.
+    for each member. These may alternatively be defined separately
+    through the DFSReplicationGroupMember resource - NB do NOT use both
+    methods in the same configuration to avoid config flapping. If an
+    FQDN name is used and the DomainName parameter is set, the FQDN
+    domain name must match.
 
     .PARAMETER Folders
     A list of folders that are replicated in this Replication Group.
@@ -259,7 +261,7 @@ function Set-TargetResource
         $replicationGroupParameters.Remove('Description')
 
         # Set the members (if any were passed in the array)
-        if ($Members)
+        if ($PSBoundParameters.ContainsKey('Members'))
         {
             # Create an array of FQDN Members from the Members Array
             $replicationGroupParameters += @{
@@ -404,7 +406,7 @@ function Set-TargetResource
         } # if
 
         # If any members were passed in the array
-        if ($Members)
+        if ($PSBoundParameters.ContainsKey('Members'))
         {
             # If the topology is not manual, automatically configure the connections
             switch ($Topology)
@@ -506,9 +508,11 @@ function Set-TargetResource
     .PARAMETER Members
     A list of computers that are members of this Replication Group.
     These can be specified using either the ComputerName or FQDN name
-    for each member. These may also be defined separately through the
-    DFSReplicationGroupMember resource. If an FQDN name is used and
-    the DomainName parameter is set, the FQDN domain name must match.
+    for each member. These may alternatively be defined separately
+    through the DFSReplicationGroupMember resource - NB do NOT use both
+    methods in the same configuration to avoid config flapping. If an
+    FQDN name is used and the DomainName parameter is set, the FQDN
+    domain name must match.
 
     .PARAMETER Folders
     A list of folders that are replicated in this Replication Group.
@@ -618,7 +622,7 @@ function Test-TargetResource
             } # if
 
             # Get the members (if any were passed in the array)
-            if ($Members)
+            if ($PSBoundParameters.ContainsKey('Members'))
             {
                 # Create an array of FQDN Members from the Members Array
                 $replicationGroupParameters += @{
@@ -752,7 +756,7 @@ function Test-TargetResource
             } # if
 
             # If any members were passed in the array
-            if ($Members)
+            if ($PSBoundParameters.ContainsKey('Members'))
             {
                 # If the topology is not manual, check the connections are configured
                 switch ($Topology)
