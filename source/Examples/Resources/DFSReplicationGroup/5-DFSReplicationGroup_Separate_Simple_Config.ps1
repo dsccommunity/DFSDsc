@@ -52,6 +52,7 @@ Configuration DFSReplicationGroup_Separate_Simple_Config
         {
             GroupName = 'Public'
             Description = 'Public files for use by all departments'
+            # NB Members parameter must NOT be defined to allow DFSReplicationGroupMember to be used elsewhere - avoid configuration flapping
             Ensure = 'Present'
             Folders = 'Software'
             PSDSCRunAsCredential = $Credential
