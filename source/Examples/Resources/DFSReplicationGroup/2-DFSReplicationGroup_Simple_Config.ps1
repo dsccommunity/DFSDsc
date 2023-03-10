@@ -12,7 +12,7 @@
 .REQUIREDSCRIPTS
 .EXTERNALSCRIPTDEPENDENCIES
 .RELEASENOTES First version.
-.PRIVATEDATA 2016-Datacenter,2016-Datacenter-Server-Core
+.PRIVATEDATA 2019-Datacenter,2019-Datacenter-Server-Core
 #>
 
 #Requires -module DfsDsc
