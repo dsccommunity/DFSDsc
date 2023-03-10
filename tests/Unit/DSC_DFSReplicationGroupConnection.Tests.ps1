@@ -53,7 +53,7 @@ try
     Describe 'Environment' {
         Context 'Windows Features' {
             It 'Should have the DFS Replication Feature Installed' {
-                $featureInstalled | Should -Be $true
+                $featureInstalled | Should -BeTrue
             }
         }
     }
@@ -416,7 +416,7 @@ try
 
                 It 'Should return false' {
                     $splat = $replicationGroupConnections[0].Clone()
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -429,7 +429,7 @@ try
 
                 It 'Should return false' {
                     $splat = $replicationGroupConnections[0].Clone()
-                    Test-TargetResource @splat | Should -Be $True
+                    Test-TargetResource @splat | Should -BeTrue
                 }
 
                 It 'Should call expected Mocks' {
@@ -444,7 +444,7 @@ try
                     $splat = $replicationGroupConnections[0].Clone()
                     $splat.SourceComputerName = "$($splat.SourceComputerName).$($splat.DomainName)"
                     $splat.DestinationComputerName = "$($splat.DestinationComputerName).$($splat.DomainName)"
-                    Test-TargetResource @splat | Should -Be $True
+                    Test-TargetResource @splat | Should -BeTrue
                 }
 
                 It 'Should call expected Mocks' {
@@ -458,7 +458,7 @@ try
                 It 'Should return false' {
                     $splat = $replicationGroupConnections[0].Clone()
                     $splat.Description = 'Changed'
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -472,7 +472,7 @@ try
                 It 'Should return false' {
                     $splat = $replicationGroupConnections[0].Clone()
                     $splat.EnsureEnabled = 'Disabled'
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -486,7 +486,7 @@ try
                 It 'Should return false' {
                     $splat = $replicationGroupConnections[0].Clone()
                     $splat.EnsureRDCEnabled = 'Disabled'
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -500,7 +500,7 @@ try
                 It 'Should return false' {
                     $splat = $replicationGroupConnections[0].Clone()
                     $splat.EnsureCrossFileRDCEnabled = 'Disabled'
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -514,7 +514,7 @@ try
                 It 'Should return false' {
                     $splat = $replicationGroupConnections[0].Clone()
                     $splat.MinimumRDCFileSizeInKB++
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -528,7 +528,7 @@ try
                 It 'Should return false' {
                     $splat = $replicationGroupConnections[0].Clone()
                     $splat.Ensure = 'Absent'
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -541,7 +541,7 @@ try
 
                 It 'Should return true' {
                     $splat = $replicationGroupConnections[0].Clone()
-                    Test-TargetResource @splat | Should -Be $True
+                    Test-TargetResource @splat | Should -BeTrue
                 }
 
                 It 'Should call expected Mocks' {

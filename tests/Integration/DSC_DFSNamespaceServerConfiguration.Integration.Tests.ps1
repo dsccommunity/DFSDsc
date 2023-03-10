@@ -44,7 +44,7 @@ try
     Describe 'Environment' {
         Context 'Windows Features' {
             It 'Should have the DFS Namespace Feature Installed' {
-                $featureInstalled | Should -Be $true
+                $featureInstalled | Should -BeTrue
             }
         }
     }

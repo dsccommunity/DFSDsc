@@ -53,7 +53,7 @@ try
     Describe 'Environment' {
         Context 'Windows Features' {
             It 'Should have the DFS Replication Feature Installed' {
-                $featureInstalled | Should -Be $true
+                $featureInstalled | Should -BeTrue
             }
         }
     }
@@ -395,7 +395,7 @@ try
                 It 'Should return true' {
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
-                    Test-TargetResource @splat | Should -Be $True
+                    Test-TargetResource @splat | Should -BeTrue
                 }
 
                 It 'Should call expected Mocks' {
@@ -410,7 +410,7 @@ try
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.ComputerName = "$($splat.ComputerName).$($splat.DomainName)"
-                    Test-TargetResource @splat | Should -Be $True
+                    Test-TargetResource @splat | Should -BeTrue
                 }
 
                 It 'Should call expected Mocks' {
@@ -425,7 +425,7 @@ try
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.EnsureEnabled = 'Disabled'
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -440,7 +440,7 @@ try
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.ContentPath = 'Different'
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -455,7 +455,7 @@ try
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.StagingPath = 'Different'
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -470,7 +470,7 @@ try
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.StagingPathQuotaInMB++
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -485,7 +485,7 @@ try
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.MinimumFileStagingSize = 'Size512KB'
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -500,7 +500,7 @@ try
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.ConflictAndDeletedQuotaInMB++
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -515,7 +515,7 @@ try
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.ReadOnly = (-not $splat.ReadOnly)
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -530,7 +530,7 @@ try
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.RemoveDeletedFiles = (-not $splat.RemoveDeletedFiles)
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -545,7 +545,7 @@ try
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.PrimaryMember = (-not $splat.PrimaryMember)
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -560,7 +560,7 @@ try
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.DfsnPath = 'Different'
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
