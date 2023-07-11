@@ -360,7 +360,7 @@ function Set-TargetResource
         } # foreach
 
         # Set the content paths (if any were passed in the array)
-        if ($ContentPaths)
+        if ($PSBoundParameters.ContainsKey('ContentPaths'))
         {
             # Get the current memberships for this rep group
             $memberships = Get-DfsrMembership @replicationGroupParameters `
@@ -718,7 +718,7 @@ function Test-TargetResource
                 } # if
             }
             # Get the content paths (if any were passed in the array)
-            if ($ContentPaths)
+            if ($PSBoundParameters.ContainsKey('ContentPaths'))
             {
                 # Get the current memberships for this rep group
                 $memberships = Get-DfsrMembership @replicationGroupParameters `
