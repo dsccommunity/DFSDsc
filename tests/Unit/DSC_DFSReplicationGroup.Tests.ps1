@@ -104,12 +104,11 @@ try
             DomainName = 'contoso.com'
         }
 
-        $replicationGroupNullFolders = [PSObject]@{
+        $replicationGroupNoFolders = [PSObject]@{
             GroupName = 'Test Group'
             Ensure = 'Present'
             Description = 'Test Description'
             Members = @('FileServer1.contoso.com','FileServer2')
-            Folders = $Null
             Topology = 'Manual'
             DomainName = 'contoso.com'
         }
@@ -1123,7 +1122,7 @@ try
                 Mock Get-DfsReplicatedFolder -MockWith { return $mockReplicationGroupFolder }
 
                 It 'Should return false' {
-                    $splat = $replicationGroupNullFolders.Clone()
+                    $splat = $replicationGroupNoFolders.Clone()
                     Test-TargetResource @splat | Should -BeFalse
                 }
 
@@ -1140,7 +1139,7 @@ try
                 Mock Get-DfsReplicatedFolder -MockWith { return $null }
 
                 It 'Should return true' {
-                    $splat = $replicationGroupNullFolders.Clone()
+                    $splat = $replicationGroupNoFolders.Clone()
                     Test-TargetResource @splat | Should -BeTrue
                 }
 
