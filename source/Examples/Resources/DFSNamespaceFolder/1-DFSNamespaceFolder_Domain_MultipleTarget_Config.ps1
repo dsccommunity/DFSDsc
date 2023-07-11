@@ -20,7 +20,7 @@
 <#
     .DESCRIPTION
         Create an AD Domain V2 based DFS namespace called software in the domain contoso.com with
-        a four targets on the servers ca-fileserver, ma-fileserver, ny-fileserver01 and ny-filerserver02. It also
+        four targets on the servers ca-fileserver, ma-fileserver, ny-fileserver01 and ny-filerserver02. It also
         creates a IT folder in each namespace. The ny-fileserver02 IT folder target's state is configured to be offline.
 
 #>
