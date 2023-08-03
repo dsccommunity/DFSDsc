@@ -18,6 +18,9 @@ $script:localizedData = Get-LocalizedData -DefaultUICulture 'en-US'
 
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
+
+    .PARAMETER TargetState
+    Specifies the state of the DFS namespace folder target.
 #>
 function Get-TargetResource
 {
@@ -33,10 +36,15 @@ function Get-TargetResource
         [System.String]
         $TargetPath,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure
+        $Ensure = 'Present',
+
+        [Parameter()]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $TargetState = 'Online'
     )
 
     Write-Verbose -Message ( @(
@@ -96,6 +104,7 @@ function Get-TargetResource
         $returnValue += @{
             ReferralPriorityClass        = $targetFolder.ReferralPriorityClass
             ReferralPriorityRank         = $targetFolder.ReferralPriorityRank
+            TargetState                  = $targetFolder.State
         }
 
         Write-Verbose -Message ( @(
@@ -130,6 +139,9 @@ function Get-TargetResource
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
 
+    .PARAMETER TargetState
+    Specifies the state of the DFS namespace folder target.
+
     .PARAMETER Description
     The description of the DFS Namespace.
 
@@ -161,10 +173,15 @@ function Set-TargetResource
         [System.String]
         $TargetPath,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure,
+        $Ensure = 'Present',
+
+        [Parameter()]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $TargetState = 'Online',
 
         [Parameter()]
         [System.String]
@@ -212,7 +229,7 @@ function Set-TargetResource
 
             # The Folder properties that will be updated
             $folderProperties = @{
-                State = 'online'
+                State = 'Online'
             }
 
             if (($Description) `
@@ -280,6 +297,15 @@ function Set-TargetResource
             $targetProperties = @{}
 
             # Check the target properties
+            if (($TargetState) `
+                -and ($targetFolder.State -ne $TargetState))
+            {
+                $targetProperties += @{
+                    State = $TargetState
+                }
+                $targetChange = $true
+            }
+
             if (($ReferralPriorityClass) `
                 -and ($targetFolder.ReferralPriorityClass -ne $ReferralPriorityClass))
             {
@@ -399,6 +425,9 @@ function Set-TargetResource
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
 
+    .PARAMETER TargetState
+    Specifies the state of the DFS namespace folder target.
+
     .PARAMETER Description
     The description of the DFS Namespace.
 
@@ -431,10 +460,15 @@ function Test-TargetResource
         [System.String]
         $TargetPath,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure,
+        $Ensure = 'Present',
+
+        [Parameter()]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $TargetState = 'Online',
 
         [Parameter()]
         [System.String]
@@ -533,6 +567,17 @@ function Test-TargetResource
 
             if ($targetFolder)
             {
+                if (($TargetState) `
+                    -and ($targetFolder.State -ne $TargetState))
+                {
+                    Write-Verbose -Message ( @(
+                        "$($MyInvocation.MyCommand): "
+                        $($LocalizedData.NamespaceFolderTargetParameterNeedsUpdateMessage) `
+                            -f $Path,$TargetPath,'TargetState'
+                        ) -join '' )
+                    $desiredConfigurationMatch = $false
+                }
+
                 if (($ReferralPriorityClass) `
                     -and ($targetFolder.ReferralPriorityClass -ne $ReferralPriorityClass))
                 {

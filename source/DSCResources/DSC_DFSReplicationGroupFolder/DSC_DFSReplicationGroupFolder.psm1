@@ -86,9 +86,11 @@ function Get-TargetResource
     else
     {
         # The Rep Group folder doesn't exist
-        New-InvalidOperationException `
-            -Message ($($script:localizedData.ReplicationGroupFolderMissingError) `
-                -f $GroupName,$FolderName)
+        Write-Verbose -Message ( @(
+            "$($MyInvocation.MyCommand): "
+            $($script:localizedData.ReplicationGroupFolderDoesNotExistMessage) `
+                -f $GroupName,$FolderName
+            ) -join '' )
     }
 
     return $returnValue
@@ -324,9 +326,13 @@ function Test-TargetResource
     else
     {
         # The Rep Group folder doesn't exist
-        New-InvalidOperationException `
-            -Message ($($script:localizedData.ReplicationGroupFolderMissingError) `
-                -f $GroupName,$FolderName)
+        Write-Verbose -Message ( @(
+            "$($MyInvocation.MyCommand): "
+            $($script:localizedData.ReplicationGroupFolderDoesNotExistMessage) `
+                -f $GroupName,$FolderName
+            ) -join '' )
+
+            $desiredConfigurationMatch = $false
     } # if
 
     return $desiredConfigurationMatch

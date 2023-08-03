@@ -12,7 +12,7 @@
 .REQUIREDSCRIPTS
 .EXTERNALSCRIPTDEPENDENCIES
 .RELEASENOTES First version.
-.PRIVATEDATA 2016-Datacenter,2016-Datacenter-Server-Core
+.PRIVATEDATA 2019-Datacenter,2019-Datacenter-Server-Core
 #>
 
 #Requires -module DfsDsc
@@ -20,8 +20,9 @@
 <#
     .DESCRIPTION
         Create an AD Domain V2 based DFS namespace called software in the domain contoso.com with
-        a three targets on the servers ca-fileserver, ma-fileserver and ny-fileserver. It also
-        creates a IT folder in each namespace.
+        four targets on the servers ca-fileserver, ma-fileserver, ny-fileserver01 and ny-filerserver02. It also
+        creates a IT folder in each namespace. The ny-fileserver02 IT folder target's state is configured to be offline.
+
 #>
 Configuration DFSNamespaceFolder_Domain_MultipleTarget_Config
 {
@@ -73,10 +74,21 @@ Configuration DFSNamespaceFolder_Domain_MultipleTarget_Config
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceRoot Resource
 
-        DFSNamespaceRoot DFSNamespaceRoot_Domain_Software_NY
+        DFSNamespaceRoot DFSNamespaceRoot_Domain_Software_NY_01
         {
             Path                 = '\\contoso.com\software'
-            TargetPath           = '\\ny-fileserver\software'
+            TargetPath           = '\\ny-fileserver01\software'
+            Ensure               = 'Present'
+            Type                 = 'DomainV2'
+            Description          = 'AD Domain based DFS namespace for storing software installers'
+            PsDscRunAsCredential = $Credential
+        } # End of DFSNamespaceRoot Resource
+
+        DFSNamespaceRoot DFSNamespaceRoot_Domain_Software_NY_02
+        {
+            Path                 = '\\contoso.com\software'
+            TargetPath           = '\\ny-fileserver02\software'
+            TargetState          = 'Offline'
             Ensure               = 'Present'
             Type                 = 'DomainV2'
             Description          = 'AD Domain based DFS namespace for storing software installers'
@@ -102,11 +114,21 @@ Configuration DFSNamespaceFolder_Domain_MultipleTarget_Config
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceFolder Resource
 
-        DFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_NY
+        DFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_NY_01
         {
             Path                 = '\\contoso.com\software\it'
-            TargetPath           = '\\ny-fileserver\it'
+            TargetPath           = '\\ny-fileserver01\it'
             Ensure               = 'Present'
+            Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
+            PsDscRunAsCredential = $Credential
+        } # End of DFSNamespaceFolder Resource
+
+        DFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_NY_02
+        {
+            Path                 = '\\contoso.com\software\it'
+            TargetPath           = '\\ny-fileserver02\it'
+            Ensure               = 'Present'
+            TargetState          = 'Offline'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
             PsDscRunAsCredential = $Credential
         } # End of DFSNamespaceFolder Resource

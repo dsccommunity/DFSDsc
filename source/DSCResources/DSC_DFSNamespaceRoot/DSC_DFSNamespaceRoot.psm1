@@ -19,6 +19,9 @@ $script:localizedData = Get-LocalizedData -DefaultUICulture 'en-US'
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
 
+    .PARAMETER TargetState
+    Specifies the state of the DFS namespace root target.
+
     .PARAMETER Type
     Specifies the type of a DFS namespace as a Type object.
 #>
@@ -36,10 +39,15 @@ function Get-TargetResource
         [System.String]
         $TargetPath,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure,
+        $Ensure = 'Present',
+
+        [Parameter()]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $TargetState = 'Online',
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]
@@ -108,6 +116,7 @@ function Get-TargetResource
         $returnValue += @{
             ReferralPriorityClass        = $target.ReferralPriorityClass
             ReferralPriorityRank         = $target.ReferralPriorityRank
+            TargetState                  = $target.State
         }
 
         Write-Verbose -Message ( @(
@@ -141,6 +150,9 @@ function Get-TargetResource
 
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
+
+    .PARAMETER TargetState
+    Specifies the state of the DFS namespace root target.
 
     .PARAMETER Type
     Specifies the type of a DFS namespace as a Type object.
@@ -185,10 +197,15 @@ function Set-TargetResource
         [System.String]
         $TargetPath,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure,
+        $Ensure = 'Present',
+
+        [Parameter()]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $TargetState = 'Online',
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]
@@ -253,7 +270,7 @@ function Set-TargetResource
 
             # The root properties that will be updated
             $rootProperties = @{
-                State = 'online'
+                State = 'Online'
             }
 
             if (($Description) `
@@ -348,6 +365,15 @@ function Set-TargetResource
             $targetProperties = @{}
 
             # Check the target properties
+            if (($TargetState) `
+                -and ($target.State -ne $TargetState))
+            {
+                $targetProperties += @{
+                    State = $TargetState
+                }
+                $targetChange = $true
+            } # if
+
             if (($ReferralPriorityClass) `
                 -and ($target.ReferralPriorityClass -ne $ReferralPriorityClass))
             {
@@ -468,6 +494,9 @@ function Set-TargetResource
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
 
+    .PARAMETER TargetState
+    Specifies the state of the DFS namespace root target.
+
     .PARAMETER Type
     Specifies the type of a DFS namespace as a Type object.
 
@@ -512,10 +541,15 @@ function Test-TargetResource
         [System.String]
         $TargetPath,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter()]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure,
+        $Ensure = 'Present',
+
+        [Parameter()]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $TargetState = 'Online',
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]
@@ -681,6 +715,17 @@ function Test-TargetResource
 
             if ($target)
             {
+                if (($TargetState) `
+                    -and ($target.State -ne $TargetState))
+                {
+                    Write-Verbose -Message ( @(
+                        "$($MyInvocation.MyCommand): "
+                        $($LocalizedData.NamespaceRootTargetParameterNeedsUpdateMessage) `
+                            -f $Type,$Path,$TargetPath,'TargetState'
+                        ) -join '' )
+                    $desiredConfigurationMatch = $false
+                } # if
+
                 if (($ReferralPriorityClass) `
                     -and ($target.ReferralPriorityClass -ne $ReferralPriorityClass))
                 {

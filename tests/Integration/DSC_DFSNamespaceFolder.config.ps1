@@ -6,6 +6,7 @@ Configuration DSC_DFSNamespaceFolder_Config {
             Path                         = $Node.Path
             TargetPath                   = $Node.TargetPath
             Ensure                       = $Node.Ensure
+            TargetState                  = $Node.TargetState
             Description                  = $Node.Description
             EnableInsiteReferrals        = $Node.EnableInsiteReferrals
             EnableTargetFailback         = $Node.EnableTargetFailback

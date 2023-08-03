@@ -77,12 +77,12 @@ try
         break
     }
 
-    $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Namespace).Installed
+    $featureInstalled = (Get-WindowsFeature -Name FS-DFS-Replication).Installed
 
     Describe 'Environment' {
         Context 'Windows Features' {
-            It 'Should have the DFS Namespace Feature Installed' {
-                $featureInstalled | Should -Be $true
+            It 'Should have the DFS Replication Feature Installed' {
+                $featureInstalled | Should -BeTrue
             }
         }
     }

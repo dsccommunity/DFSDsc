@@ -1,6 +1,6 @@
 <#PSScriptInfo
 .VERSION 1.0.0
-.GUID 6fb9b69c-b611-47db-b33c-7cf4acacb409
+.GUID 53b67a3b-2508-490f-94e5-844d4be558f6
 .AUTHOR DSC Community
 .COMPANYNAME DSC Community
 .COPYRIGHT Copyright the DSC Community contributors. All rights reserved.
@@ -19,13 +19,12 @@
 
 <#
     .DESCRIPTION
-        Create a DFS Replication Group called Public containing two members, FileServer1 and
-        FileServer2. The Replication Group contains a single folder called Software. A description
-        will be set on the Software folder and it will be set to exclude the directory Temp from
-        replication. The resource group topology is left set to 'Manual' so that the replication
-        group connections can be defined.
+        Create a DFS Replication Group called Public containing members defined separately,
+        FileServer1 and FileServer2. The Replication Group contains a single folder called Software.
+        A description will be set on the Software folder and it will be set to exclude the directory Temp
+        from replication. Create a two-way connection between the two nodes.
 #>
-Configuration DFSReplicationGroupFolder_Complete_Config
+Configuration DFSReplicationGroup_Separate_Simple_Config
 {
     param
     (
@@ -53,30 +52,30 @@ Configuration DFSReplicationGroupFolder_Complete_Config
         {
             GroupName = 'Public'
             Description = 'Public files for use by all departments'
+            # NB Members parameter must NOT be defined to allow DFSReplicationGroupMember to be used elsewhere - avoid configuration flapping
             Ensure = 'Present'
-            Members = 'FileServer1.contoso.com','FileServer2.contoso.com'
             Folders = 'Software'
             PSDSCRunAsCredential = $Credential
             DependsOn = '[WindowsFeature]RSATDFSMgmtConInstall'
         } # End of RGPublic Resource
 
-        DFSReplicationGroupConnection RGPublicC1
+        DFSReplicationGroupMember RGPublicMemberFS1
         {
             GroupName = 'Public'
+            ComputerName = 'FileServer1'
             Ensure = 'Present'
-            SourceComputerName = 'FileServer1.contoso.com'
-            DestinationComputerName = 'FileServer2.contoso.com'
             PSDSCRunAsCredential = $Credential
-        } # End of DFSReplicationGroupConnection Resource
+            DependsOn = '[DFSReplicationGroup]RGPublic'
+        } # End of RGPublicMemberFS1 Resource
 
-        DFSReplicationGroupConnection RGPublicC2
+        DFSReplicationGroupMember RGPublicMemberFS2
         {
             GroupName = 'Public'
+            ComputerName = 'FileServer2'
             Ensure = 'Present'
-            SourceComputerName = 'FileServer2.contoso.com'
-            DestinationComputerName = 'FileServer1.contoso.com'
             PSDSCRunAsCredential = $Credential
-        } # End of DFSReplicationGroupConnection Resource
+            DependsOn = '[DFSReplicationGroup]RGPublic'
+        } # End of RGPublicMemberFS2 Resource
 
         DFSReplicationGroupFolder RGSoftwareFolder
         {
@@ -92,21 +91,33 @@ Configuration DFSReplicationGroupFolder_Complete_Config
         {
             GroupName = 'Public'
             FolderName = 'Software'
-            ComputerName = 'FileServer1.contoso.com'
+            ComputerName = 'FileServer1'
             ContentPath = 'd:\Public\Software'
+            StagingPathQuotaInMB = 4096
             PrimaryMember = $true
             PSDSCRunAsCredential = $Credential
-            DependsOn = '[DFSReplicationGroupFolder]RGSoftwareFolder'
+            DependsOn = '[DFSReplicationGroupMember]RGPublicMemberFS1', '[DFSReplicationGroupFolder]RGSoftwareFolder'
         } # End of RGPublicSoftwareFS1 Resource
 
         DFSReplicationGroupMembership RGPublicSoftwareFS2
         {
             GroupName = 'Public'
             FolderName = 'Software'
-            ComputerName = 'FileServer2.contoso.com'
+            ComputerName = 'FileServer2'
             ContentPath = 'e:\Data\Public\Software'
+            StagingPathQuotaInMB = 4096
+            PSDSCRunAsCredential = $Credential
+            DependsOn = '[DFSReplicationGroupMember]RGPublicMemberFS2', '[DFSReplicationGroupFolder]RGSoftwareFolder'
+        } # End of RGPublicSoftwareFS2 Resource
+
+        DFSReplicationGroupConnection RGPublicConnectionFS1
+        {
+            GroupName = 'Public'
+            Ensure = 'Present'
+            SourceComputerName = 'FileServer1'
+            DestinationComputerName = 'FileServer2'
             PSDSCRunAsCredential = $Credential
             DependsOn = '[DFSReplicationGroupFolder]RGSoftwareFolder'
-        } # End of RGPublicSoftwareFS2 Resource
+        } # End of RGPublicConnectionFS1 Resource
     } # End of Node
 } # End of Configuration

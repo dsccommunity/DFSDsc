@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- DFSNamespaceRoot
+  - Added support for setting target referral status (TargetState) - fixes [Issue #96](https://github.com/dsccommunity/DFSDsc/issues/96).
+  - Converted 'Ensure' parameters to default to 'Present' - fixes [Issue #29](https://github.com/dsccommunity/DFSDsc/issues/29).
+- DFSNamespaceFolder
+  - Added support for setting target referral status (TargetState) - fixes [Issue #96](https://github.com/dsccommunity/DFSDsc/issues/96).
+  - Converted 'Ensure' parameters to default to 'Present' - fixes [Issue #29](https://github.com/dsccommunity/DFSDsc/issues/29).
+- DFSReplicationGroup
+  - Converted 'Ensure' parameters to default to 'Present' - fixes [Issue #29](https://github.com/dsccommunity/DFSDsc/issues/29).
+- DFSReplicationGroupMember
+  - New module allowing replication group members to be separately defined outside of DFSReplicationGroup.
+    This allows situations where new memberships may be added separately on individual servers, instead of a single server.
+- DFSReplicationGroupConnection
+  - Add support for setting CrossFileRDCEnabled and MinimumRDCFileSizeInKB.
+  - Converted 'Ensure' parameters to default to 'Present' - fixes [Issue #29](https://github.com/dsccommunity/DFSDsc/issues/29).
+- DFSReplicationGroupFolder
+  - Allow Get-TargetResource and Test-TargetResource to run if group does not exist - fixes [Issue #125](https://github.com/dsccommunity/DFSDsc/issues/125).
+- DFSReplicationGroupMembership
+  - Add support for setting EnsureEnabled, MinimumFileStagingSize, ConflictAndDeletedQuotaInMB, RemoveDeletedFiles and DfsnPath.
+  - Allow Get-TargetResource and Test-TargetResource to run if group does not exist - fixes [Issue #125](https://github.com/dsccommunity/DFSDsc/issues/125).
 - BREAKING CHANGE: Changed resource prefix from MSFT to DSC.
 - Updated to use continuous delivery pattern using Azure DevOps - fixes
   [Issue #41](https://github.com/dsccommunity/DFSDsc/issues/98).
@@ -39,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   images - Fixes [Issue #122](https://github.com/dsccommunity/DFSDsc/issues/122).
 - Updated pipeline unit tests and integration tests to use Windows Server 2019 and
   Windows Server 2022 images - Fixes [Issue #122](https://github.com/dsccommunity/DFSDsc/issues/122).
+- Temporarily pinned build image to Ubuntu 20.04 - Fixes [Issue #127](https://github.com/dsccommunity/DFSDsc/issues/127).
 
 ### Fixed
 

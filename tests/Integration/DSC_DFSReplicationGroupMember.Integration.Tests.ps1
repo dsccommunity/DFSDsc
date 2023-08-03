@@ -7,7 +7,7 @@
     to create a DFS Replication Group.
 
     If the above are available then to allow these tests to be run a
-    DSC_DFSReplicationGroupConnection.config.json file must be created in the same folder as
+    DSC_DFSReplicationGroupMember.config.json file must be created in the same folder as
     this file. The content should be a customized version of the following:
     {
         "Username":  "contoso.com\\Administrator",
@@ -32,7 +32,7 @@
 param ()
 
 $script:dscModuleName = 'DFSDsc'
-$script:dscResourceName = 'DSC_DFSReplicationGroupConnection'
+$script:dscResourceName = 'DSC_DFSReplicationGroupMember'
 
 # Test to see if the JSON config file is available.
 $script:configJson = [System.IO.Path]::ChangeExtension($MyInvocation.MyCommand.Path,'json')
@@ -94,7 +94,7 @@ try
     . $configFile
 
     Describe "$($script:dscResourceName)_Integration" {
-        Context 'When the creating a DFS Replication Group connection' {
+        Context 'When the creating a DFS Replication Group Member' {
             BeforeAll {
                 # If there is a .config.json file for these tests, read the test parameters from it.
                 if (Test-Path -Path $script:configJson)
@@ -107,7 +107,7 @@ try
                     $script:testConfig = @{
                         Username = 'contoso.com\Administrator'
                         Password = 'MyP@ssw0rd!1'
-                        Members = @('Server1','Server1')
+                        ComputerName = 'Server1'
                         Folders = @('TestFolder1','TestFolder2')
                         ContentPaths = @("$(ENV:Temp)TestFolder1","$(ENV:Temp)TestFolder2")
                     }
@@ -118,31 +118,23 @@ try
                     -TypeName System.Management.Automation.PSCredential `
                     -ArgumentList ($script:testConfig.Username, $script:testPassword)
 
-                $script:replicationGroupConnection = @{
+                $script:replicationGroupMember = @{
                     GroupName               = 'IntegrationTestReplicationGroup'
+                    Description             = 'Integration Test Replication Group Member'
+                    ComputerName            = $script:testConfig.ComputerName
                     Folders                 = $script:testConfig.Folders
-                    Members                 = $script:testConfig.Members
                     Ensure                  = 'Present'
-                    SourceComputerName      = $script:testConfig.Members[0]
-                    DestinationComputerName = $script:testConfig.Members[1]
                     PSDSCRunAsCredential    = $script:PSDscRunAsCredential
                 }
 
                 # Create the Replication group to work with
                 New-DFSReplicationGroup `
-                    -GroupName $script:replicationGroupConnection.GroupName
+                    -GroupName $script:replicationGroupMember.GroupName
 
-                foreach ($member in $script:replicationGroupConnection.Members)
-                {
-                    Add-DFSRMember `
-                        -GroupName $script:replicationGroupConnection.GroupName `
-                        -ComputerName $member
-                }
-
-                foreach ($folder in $script:replicationGroupConnection.Folders)
+                foreach ($folder in $script:replicationGroupMember.Folders)
                 {
                     New-DFSReplicatedFolder `
-                        -GroupName $script:replicationGroupConnection.GroupName `
+                        -GroupName $script:replicationGroupMember.GroupName `
                         -FolderName $folder
                 }
             }
@@ -153,11 +145,11 @@ try
                         AllNodes = @(
                             @{
                                 NodeName                    = 'localhost'
-                                GroupName                   = $script:replicationGroupConnection.GroupName
-                                Ensure                      = $script:replicationGroupConnection.Ensure
-                                SourceComputerName          = $script:replicationGroupConnection.SourceComputerName
-                                DestinationComputerName     = $script:replicationGroupConnection.DestinationComputerName
-                                PSDSCRunAsCredential        = $script:replicationGroupConnection.PSDSCRunAsCredential
+                                GroupName                   = $script:replicationGroupMember.GroupName
+                                ComputerName                = $script:replicationGroupMember.ComputerName
+                                Description                 = $script:replicationGroupMember.Description
+                                Ensure                      = $script:replicationGroupMember.Ensure
+                                PSDSCRunAsCredential        = $script:replicationGroupMember.PSDSCRunAsCredential
                                 PSDscAllowPlainTextPassword = $true
                             }
                         )
@@ -182,20 +174,19 @@ try
             }
 
             It 'Should have set the resource and all the parameters should match' {
-                $replicationGroupConnectionNew = Get-DfsrConnection `
-                    -GroupName $script:replicationGroupConnection.GroupName `
-                    -SourceComputerName $script:replicationGroupConnection.SourceComputerName `
-                    -DestinationComputerName $script:replicationGroupConnection.DestinationComputerName `
+                $replicationGroupMemberNew = Get-DfsrMember `
+                    -GroupName $script:replicationGroupMember.GroupName `
+                    -ComputerName $script:replicationGroupMember.ComputerName `
                     -ErrorAction Stop
-                $replicationGroupConnectionNew.GroupName               | Should -Be $script:replicationGroupConnection.GroupName
-                $replicationGroupConnectionNew.SourceComputerName      | Should -Be $script:replicationGroupConnection.SourceComputerName
-                $replicationGroupConnectionNew.DestinationComputerName | Should -Be $script:replicationGroupConnection.DestinationComputerName
+                $replicationGroupMemberNew.GroupName               | Should -Be $script:replicationGroupMember.GroupName
+                $replicationGroupMemberNew.ComputerName            | Should -Be $script:replicationGroupMember.ComputerName
+                $replicationGroupMemberNew.Description             | Should -Be $script:replicationGroupMember.Description
             }
 
             AfterAll {
                 # Clean up
                 Remove-DFSReplicationGroup `
-                    -GroupName $script:replicationGroupConnection.GroupName `
+                -GroupName $script:replicationGroupMember.GroupName `
                     -RemoveReplicatedFolders `
                     -Force `
                     -Confirm:$false

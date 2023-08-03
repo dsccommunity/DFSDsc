@@ -53,7 +53,7 @@ try
     Describe 'Environment' {
         Context 'Windows Features' {
             It 'Should have the DFS Namespace Feature Installed' {
-                $featureInstalled | Should -Be $true
+                $featureInstalled | Should -BeTrue
             }
         }
     }
@@ -165,7 +165,7 @@ try
             Context 'Namespace Server Configuration all parameters are the same' {
                 It 'Should return true' {
                     $splat = $namespaceServerConfigurationSplat.Clone()
-                    Test-TargetResource @splat | Should -Be $True
+                    Test-TargetResource @splat | Should -BeTrue
                 }
 
                 It 'Should call expected Mocks' {
@@ -177,7 +177,7 @@ try
                 It 'Should return false' {
                     $splat = $namespaceServerConfigurationSplat.Clone()
                     $splat.LdapTimeoutSec = $splat.LdapTimeoutSec + 1
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -189,7 +189,7 @@ try
                 It 'Should return false' {
                     $splat = $namespaceServerConfigurationSplat.Clone()
                     $splat.SyncIntervalSec = $splat.SyncIntervalSec + 1
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -201,7 +201,7 @@ try
                 It 'Should return false' {
                     $splat = $namespaceServerConfigurationSplat.Clone()
                     $splat.UseFQDN = -not $splat.UseFQDN
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {

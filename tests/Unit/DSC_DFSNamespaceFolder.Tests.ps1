@@ -53,7 +53,7 @@ try
     Describe 'Environment' {
         Context 'Windows Features' {
             It 'Should have the DFS Namespace Feature Installed' {
-                $featureInstalled | Should -Be $true
+                $featureInstalled | Should -BeTrue
             }
         }
     }
@@ -69,6 +69,7 @@ try
             Path                         = '\\contoso.com\UnitTestNamespace\Folder'
             TargetPath                   = '\\server1\UnitTestNamespace\Folder'
             Ensure                       = 'Present'
+            TargetState                  = 'Online'
             Description                  = 'Unit Test Namespace Description'
             TimeToLiveSec                = 500
             EnableInsiteReferrals        = $true
@@ -132,8 +133,9 @@ try
                     $result.Description                  | Should -Be $namespaceFolder.Description
                     $result.EnableInsiteReferrals        | Should -Be ($namespaceFolder.Flags -contains 'Insite Referrals')
                     $result.EnableTargetFailback         | Should -Be ($namespaceFolder.Flags -contains 'Target Failback')
-                    $result.ReferralPriorityClass        | Should -Be $null
-                    $result.ReferralPriorityRank         | Should -Be $null
+                    $result.ReferralPriorityClass        | Should -BeNullOrEmpty
+                    $result.ReferralPriorityRank         | Should -BeNullOrEmpty
+                    $result.TargetState                  | Should -BeNullOrEmpty
                 }
 
                 It 'Should call the expected mocks' {
@@ -158,6 +160,7 @@ try
                     $result.EnableTargetFailback         | Should -Be ($namespaceFolder.Flags -contains 'Target Failback')
                     $result.ReferralPriorityClass        | Should -Be $namespaceTarget.ReferralPriorityClass
                     $result.ReferralPriorityRank         | Should -Be $namespaceTarget.ReferralPriorityRank
+                    $result.TargetState                  | Should -Be $namespaceTarget.State
                 }
 
                 It 'Should call the expected mocks' {
@@ -378,6 +381,29 @@ try
                 }
             }
 
+            Context 'Namespace Folder and Target exists and should but has different TargetState' {
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
+                Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
+
+                It 'Should not throw error' {
+                    {
+                        $splat = $namespace.Clone()
+                        $splat.TargetState = 'Offline'
+                        Set-TargetResource @splat
+                    } | Should -Not -Throw
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
+                }
+            }
+
             Context 'Namespace Folder and Target exists but should not' {
                 Mock Get-DFSNFolder -MockWith { $namespaceFolder }
                 Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
@@ -432,7 +458,7 @@ try
 
                 It 'Should return false' {
                     $splat = $namespace.Clone()
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -447,7 +473,7 @@ try
 
                 It 'Should return false' {
                     $splat = $namespace.Clone()
-                    Test-TargetResource @splat | Should -Be $false
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -463,7 +489,7 @@ try
                 It 'Should return false' {
                     $splat = $namespace.Clone()
                     $splat.Description = 'A new description'
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -479,7 +505,7 @@ try
                 It 'Should return false' {
                     $splat = $namespace.Clone()
                     $splat.TimeToLiveSec = $splat.TimeToLiveSec + 1
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -495,7 +521,7 @@ try
                 It 'Should return false' {
                     $splat = $namespace.Clone()
                     $splat.EnableInsiteReferrals = $False
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -511,7 +537,7 @@ try
                 It 'Should return false' {
                     $splat = $namespace.Clone()
                     $splat.EnableTargetFailback = $False
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -527,7 +553,7 @@ try
                 It 'Should return false' {
                     $splat = $namespace.Clone()
                     $splat.ReferralPriorityClass = 'SiteCost-Normal'
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -543,7 +569,23 @@ try
                 It 'Should return false' {
                     $splat = $namespace.Clone()
                     $splat.ReferralPriorityRank++
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                }
+            }
+
+            Context 'Namespace Folder exists and should but has a different TargetState' {
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
+                Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
+
+                It 'Should return false' {
+                    $splat = $namespace.Clone()
+                    $splat.TargetState = 'Offline'
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -558,7 +600,7 @@ try
 
                 It 'Should return true' {
                     $splat = $namespace.Clone()
-                    Test-TargetResource @splat | Should -Be $True
+                    Test-TargetResource @splat | Should -BeTrue
                 }
 
                 It 'Should call expected Mocks' {
@@ -574,7 +616,7 @@ try
                 It 'Should return false' {
                     $splat = $namespace.Clone()
                     $splat.Ensure = 'Absent'
-                    Test-TargetResource @splat | Should -Be $False
+                    Test-TargetResource @splat | Should -BeFalse
                 }
 
                 It 'Should call expected Mocks' {
@@ -590,7 +632,7 @@ try
                 It 'Should return true' {
                     $splat = $namespace.Clone()
                     $splat.Ensure = 'Absent'
-                    Test-TargetResource @splat | Should -Be $True
+                    Test-TargetResource @splat | Should -BeTrue
                 }
 
                 It 'Should call expected Mocks' {
@@ -617,7 +659,7 @@ try
 
                     $result = Get-Folder `
                         -Path $namespaceFolder.Path
-                    $result | Should -Be $null
+                    $result | Should -BeNullOrEmpty
                 }
 
                 It 'Should call expected Mocks' {
@@ -659,7 +701,7 @@ try
                     $result = Get-FolderTarget `
                         -Path $namespaceTarget.Path `
                         -TargetPath $namespaceTarget.TargetPath
-                    $result | Should -Be $null
+                    $result | Should -BeNullOrEmpty
                 }
 
                 It 'Should call expected Mocks' {

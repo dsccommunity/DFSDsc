@@ -44,7 +44,7 @@ try
     Describe 'Environment' {
         Context 'Windows Features' {
             It 'Should have the DFS Namespace Feature Installed' {
-                $featureInstalled | Should -Be $true
+                $featureInstalled | Should -BeTrue
             }
         }
     }
@@ -65,6 +65,7 @@ try
                     Path                         = "\\$($env:COMPUTERNAME)\$script:namespaceRootName"
                     TargetPath                   = "\\$($env:COMPUTERNAME)\$script:namespaceRootName"
                     Ensure                       = 'Present'
+                    TargetState                  = 'Online'
                     Type                         = 'Standalone'
                     Description                  = 'Integration test namespace'
                     TimeToLiveSec                = 500
@@ -100,6 +101,7 @@ try
                                 Path                         = $script:namespaceRoot.Path
                                 TargetPath                   = $script:namespaceRoot.TargetPath
                                 Ensure                       = $script:namespaceRoot.Ensure
+                                TargetState                  = $script:namespaceRoot.TargetState
                                 Type                         = $script:namespaceRoot.Type
                                 Description                  = $script:namespaceRoot.Description
                                 TimeToLiveSec                = $script:namespaceRoot.TimeToLiveSec
@@ -151,6 +153,7 @@ try
                 $namespaceRootTargetNew.Path                  | Should -Be $script:namespaceRoot.Path
                 $namespaceRootTargetNew.NamespacePath         | Should -Be $script:namespaceRoot.Path
                 $namespaceRootTargetNew.TargetPath            | Should -Be $script:namespaceRoot.TargetPath
+                $namespaceRootTargetNew.State                 | Should -Be $script:namespaceRoot.TargetState
                 $namespaceRootTargetNew.ReferralPriorityClass | Should -Be $script:namespaceRoot.ReferralPriorityClass
                 $namespaceRootTargetNew.ReferralPriorityRank  | Should -Be $script:namespaceRoot.ReferralPriorityRank
             }
