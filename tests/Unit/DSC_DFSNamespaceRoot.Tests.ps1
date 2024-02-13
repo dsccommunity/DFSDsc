@@ -80,6 +80,7 @@ try
             EnableTargetFailback         = $true
             ReferralPriorityClass        = 'Global-Low'
             ReferralPriorityRank         = 10
+            State                        = 'Online'
         }
 
         $namespaceSplat = [PSObject]@{
@@ -384,6 +385,29 @@ try
                     {
                         $splat = $namespace.Clone()
                         $splat.EnableTargetFailback = $False
+                        Set-TargetResource @splat
+                    } | Should -Not -Throw
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNRoot -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DfsnRootTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DfsnRootTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DfsnRootTarget -Exactly -Times 0
+                }
+            }
+
+            Context 'Namespace Root exists and should but has a different State' {
+                Mock Get-DFSNRoot -MockWith { $namespaceRoot }
+                Mock Get-DFSNRootTarget
+
+                It 'Should not throw error' {
+                    {
+                        $splat = $namespace.Clone()
+                        $splat.State = 'Offline'
                         Set-TargetResource @splat
                     } | Should -Not -Throw
                 }
@@ -739,6 +763,22 @@ try
                 It 'Should return false' {
                     $splat = $namespace.Clone()
                     $splat.TargetState = 'Offline'
+                    Test-TargetResource @splat | Should -BeFalse
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNRoot -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNRootTarget -Exactly -Times 1
+                }
+            }
+
+            Context 'Namespace Root exists and should but has a different State' {
+                Mock Get-DFSNRoot -MockWith { $namespaceRoot }
+                Mock Get-DFSNRootTarget
+
+                It 'Should return false' {
+                    $splat = $namespace.Clone()
+                    $splat.State = 'Offline'
                     Test-TargetResource @splat | Should -BeFalse
                 }
 

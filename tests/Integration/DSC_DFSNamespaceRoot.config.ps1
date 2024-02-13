@@ -18,6 +18,7 @@ Configuration DSC_DFSNamespaceRoot_Config {
             EnableTargetFailback         = $Node.EnableTargetFailback
             ReferralPriorityClass        = $Node.ReferralPriorityClass
             ReferralPriorityRank         = $Node.ReferralPriorityRank
+            State                        = $Node.State
         }
     }
 }

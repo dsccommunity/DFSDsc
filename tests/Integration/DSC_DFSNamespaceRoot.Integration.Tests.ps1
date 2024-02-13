@@ -76,6 +76,7 @@ try
                     EnableTargetFailback         = $true
                     ReferralPriorityClass        = 'Global-Low'
                     ReferralPriorityRank         = 10
+                    State                        = 'Online'
                 }
 
                 # Create a SMB share for the Namespace
@@ -112,6 +113,7 @@ try
                                 EnableTargetFailback         = $script:namespaceRoot.EnableTargetFailback
                                 ReferralPriorityClass        = $script:namespaceRoot.ReferralPriorityClass
                                 ReferralPriorityRank         = $script:namespaceRoot.ReferralPriorityRank
+                                State                        = $script:namespaceRoot.State
                             }
                         )
                     }
@@ -140,7 +142,7 @@ try
                 $namespaceRootNew.Path          | Should -Be $script:namespaceRoot.Path
                 $namespaceRootNew.Type          | Should -Be $script:namespaceRoot.Type
                 $namespaceRootNew.TimeToLiveSec | Should -Be $script:namespaceRoot.TimeToLiveSec
-                $namespaceRootNew.State         | Should -Be 'Online'
+                $namespaceRootNew.State         | Should -Be $script:namespaceRoot.State
                 $namespaceRootNew.Description   | Should -Be $script:namespaceRoot.Description
                 $namespaceRootNew.NamespacePath | Should -Be $script:namespaceRoot.Path
                 $namespaceRootNew.Flags         | Should -Be @('Target Failback','Site Costing','Insite Referrals','AccessBased Enumeration')
