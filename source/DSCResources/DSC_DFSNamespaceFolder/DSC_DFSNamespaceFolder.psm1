@@ -21,6 +21,9 @@ $script:localizedData = Get-LocalizedData -DefaultUICulture 'en-US'
 
     .PARAMETER TargetState
     Specifies the state of the DFS namespace folder target.
+
+    .PARAMETER State
+    Specifies the state of the DFS namespace folder.
 #>
 function Get-TargetResource
 {
@@ -44,7 +47,12 @@ function Get-TargetResource
         [Parameter()]
         [ValidateSet('Offline','Online')]
         [System.String]
-        $TargetState = 'Online'
+        $TargetState = 'Online',
+
+        [Parameter()]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $State = 'Online'
     )
 
     Write-Verbose -Message ( @(
@@ -159,6 +167,9 @@ function Get-TargetResource
 
     .PARAMETER ReferralPriorityRank
     Specifies the priority rank, as an integer, for a root target of the DFS namespace.
+
+    .PARAMETER State
+    Specifies the state of the DFS namespace folder.
 #>
 function Set-TargetResource
 {
@@ -206,7 +217,12 @@ function Set-TargetResource
 
         [Parameter()]
         [System.UInt32]
-        $ReferralPriorityRank
+        $ReferralPriorityRank,
+
+        [Parameter()]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $State = 'Online'
     )
 
     Write-Verbose -Message ( @(
@@ -228,8 +244,16 @@ function Set-TargetResource
             [System.Boolean] $folderChange = $false
 
             # The Folder properties that will be updated
-            $folderProperties = @{
-                State = 'Online'
+            $folderProperties = @{}
+
+            # Check the target properties
+            if (($State) `
+                -and ($folder.State -ne $State))
+            {
+                $folderProperties += @{
+                    State = $State
+                }
+                $folderChange = $true
             }
 
             if (($Description) `
@@ -445,6 +469,9 @@ function Set-TargetResource
 
     .PARAMETER ReferralPriorityRank
     Specifies the priority rank, as an integer, for a root target of the DFS namespace.
+
+    .PARAMETER State
+    Specifies the state of the DFS namespace folder.
 #>
 function Test-TargetResource
 {
@@ -493,7 +520,12 @@ function Test-TargetResource
 
         [Parameter()]
         [System.UInt32]
-        $ReferralPriorityRank
+        $ReferralPriorityRank,
+
+        [Parameter()]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $State = 'Online'
     )
 
     Write-Verbose -Message ( @(
@@ -517,6 +549,17 @@ function Test-TargetResource
             # The Namespace Folder exists and should
 
             # Check the Namespace parameters
+            if (($State) `
+                -and ($folder.State -ne $State))
+            {
+                Write-Verbose -Message ( @(
+                    "$($MyInvocation.MyCommand): "
+                    $($script:localizedData.NamespaceFolderParameterNeedsUpdateMessage) `
+                            -f $Path,'State'
+                    ) -join '' )
+                $desiredConfigurationMatch = $false
+            }
+
             if (($Description) `
                 -and ($folder.Description -ne $Description))
             {

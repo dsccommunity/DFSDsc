@@ -76,6 +76,7 @@ try
                     EnableTargetFailback         = $true
                     ReferralPriorityClass        = 'Global-Low'
                     ReferralPriorityRank         = 10
+                    State                        = 'Online'
                 }
 
                 # Create a SMB share for the Namespace
@@ -124,6 +125,7 @@ try
                                 EnableTargetFailback         = $script:namespaceFolder.EnableTargetFailback
                                 ReferralPriorityClass        = $script:namespaceFolder.ReferralPriorityClass
                                 ReferralPriorityRank         = $script:namespaceFolder.ReferralPriorityRank
+                                State                        = $script:namespaceFolder.State
                             }
                         )
                     }
@@ -150,7 +152,7 @@ try
                 $namespaceFolderNew = Get-DfsnFolder -Path $script:namespaceFolder.Path
                 $namespaceFolderNew.Path                          | Should -Be $script:namespaceFolder.Path
                 $namespaceFolderNew.TimeToLiveSec                 | Should -Be 300
-                $namespaceFolderNew.State                         | Should -Be 'Online'
+                $namespaceFolderNew.State                         | Should -Be $script:namespaceFolder.State
                 $namespaceFolderNew.Description                   | Should -Be $script:namespaceFolder.Description
                 $namespaceFolderNew.NamespacePath                 | Should -Be $script:namespaceFolder.Path
                 $namespaceFolderNew.Flags                         | Should -Be @('Target Failback','Insite Referrals')
