@@ -6,9 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - DFSNamespaceRoot
-  - Added support for setting the state of the namespace root (Status)
+  - Added support for setting the state of the namespace root (State)
 - DFSNamespaceFolder
-  - Added support for setting the state of the namespace folder (Status)
+  - Added support for setting the state of the namespace folder (State)
 
 ## [5.0.1] - 2023-09-07
 
