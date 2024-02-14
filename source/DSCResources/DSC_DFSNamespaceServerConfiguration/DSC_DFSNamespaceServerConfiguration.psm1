@@ -33,6 +33,7 @@ data parameterList
         @{
             Name = 'PreferLogonDC'
             Type = 'Boolean'
+            Restart = $True
         },
         @{
             Name = 'UseFQDN'
