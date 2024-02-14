@@ -66,7 +66,6 @@ try
             $script:namespaceServerConfiguration = @{
                 LdapTimeoutSec               = 45
                 SyncIntervalSec              = 5000
-                EnableSiteCostedReferrals    = $False
                 PreferLogonDC                = $True
                 UseFQDN                      = $True
             }
@@ -80,7 +79,6 @@ try
                             NodeName                 = 'localhost'
                             LdapTimeoutSec           = $script:namespaceServerConfiguration.LdapTimeoutSec
                             SyncIntervalSec          = $script:namespaceServerConfiguration.SyncIntervalSec
-                            EnableSiteCostedReferral = $script:namespaceServerConfiguration.EnableSiteCostedReferral
                             PreferLogonDC            = $script:namespaceServerConfiguration.PreferLogonDC
                             UseFQDN                  = $script:namespaceServerConfiguration.UseFQDN
                         }
@@ -110,16 +108,11 @@ try
             $namespaceServerConfigurationNew = Get-DfsnServerConfiguration -ComputerName $env:COMPUTERNAME
             $namespaceServerConfigurationNew.LdapTimeoutSec            = $script:namespaceServerConfiguration.LdapTimeoutSec
             $namespaceServerConfigurationNew.SyncIntervalSec           = $script:namespaceServerConfiguration.SyncIntervalSec
-            $namespaceServerConfigurationNew.EnableSiteCostedReferrals = $script:namespaceServerConfiguration.EnableSiteCostedReferrals
             $namespaceServerConfigurationNew.PreferLogonDC             = $script:namespaceServerConfiguration.PreferLogonDC
             $namespaceServerConfigurationNew.UseFQDN                   = $script:namespaceServerConfiguration.UseFQDN
         }
 
         AfterAll {
-            if (-not $script:serverConfigurationBackup.EnableSiteCostedReferrals)
-            {
-                $script:serverConfigurationBackup.EnableSiteCostedReferrals = $true
-            }
             if (-not $script:serverConfigurationBackup.PreferLogonDC)
             {
                 $script:serverConfigurationBackup.PreferLogonDC = $false
@@ -134,7 +127,6 @@ try
                 -ComputerName $env:COMPUTERNAME `
                 -LdapTimeoutSec $script:serverConfigurationBackup.LdapTimeoutSec `
                 -SyncIntervalSec $script:serverConfigurationBackup.SyncIntervalSec `
-                -EnableSiteCostedReferrals $script:serverConfigurationBackup.EnableSiteCostedReferrals `
                 -PreferLogonDC $script:serverConfigurationBackup.PreferLogonDC `
                 -UseFQDN $script:serverConfigurationBackup.UseFQDN
         }
