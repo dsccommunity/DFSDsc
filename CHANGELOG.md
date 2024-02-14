@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [5.0.1] - 2023-09-07
 
+### Fixed
+
 - DFSDsc
   - Removed the pipeline files `build.psd1` as it is no longer needed.
 
