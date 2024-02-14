@@ -68,6 +68,9 @@ try
         $namespaceServerConfiguration = [PSObject]@{
             LdapTimeoutSec               = 45
             SyncIntervalSec              = 5000
+            EnableSiteCostedReferrals    = $False
+            EnableInsiteReferrals        = $True
+            PreferLogonDC                = $True
             UseFQDN                      = $True
         }
 
@@ -75,6 +78,9 @@ try
             IsSingleInstance             = 'Yes'
             LdapTimeoutSec               = $namespaceServerConfiguration.LdapTimeoutSec
             SyncIntervalSec              = $namespaceServerConfiguration.SyncIntervalSec
+            EnableSiteCostedReferrals    = $namespaceServerConfiguration.EnableSiteCostedReferrals
+            EnableInsiteReferrals        = $namespaceServerConfiguration.EnableInsiteReferrals
+            PreferLogonDC                = $namespaceServerConfiguration.PreferLogonDC
             UseFQDN                      = $namespaceServerConfiguration.UseFQDN
         }
 
@@ -86,6 +92,9 @@ try
                     $result = Get-TargetResource -IsSingleInstance 'Yes'
                     $result.LdapTimeoutSec            | Should -Be $namespaceServerConfiguration.LdapTimeoutSec
                     $result.SyncIntervalSec           | Should -Be $namespaceServerConfiguration.SyncIntervalSec
+                    $result.EnableSiteCostedReferrals | Should -Be $namespaceServerConfiguration.EnableSiteCostedReferrals
+                    $result.EnableInsiteReferrals     | Should -Be $namespaceServerConfiguration.EnableInsiteReferrals
+                    $result.PreferLogonDC             | Should -Be $namespaceServerConfiguration.PreferLogonDC
                     $result.UseFQDN                   | Should -Be $namespaceServerConfiguration.UseFQDN
                 }
 
@@ -143,6 +152,51 @@ try
                 }
             }
 
+            Context 'Namespace Server Configuration EnableSiteCostedReferrals is different' {
+                It 'Should not throw error' {
+                    {
+                        $splat = $namespaceServerConfigurationSplat.Clone()
+                        $splat.EnableSiteCostedReferrals = -not $splat.EnableSiteCostedReferrals
+                        Set-TargetResource @splat
+                    } | Should -Not -Throw
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DFSNServerConfiguration -Exactly -Times 1
+                }
+            }
+
+            Context 'Namespace Server Configuration EnableInsiteReferrals is different' {
+                It 'Should not throw error' {
+                    {
+                        $splat = $namespaceServerConfigurationSplat.Clone()
+                        $splat.EnableInsiteReferrals = -not $splat.EnableInsiteReferrals
+                        Set-TargetResource @splat
+                    } | Should -Not -Throw
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DFSNServerConfiguration -Exactly -Times 1
+                }
+            }
+
+            Context 'Namespace Server Configuration PreferLogonDC is different' {
+                It 'Should not throw error' {
+                    {
+                        $splat = $namespaceServerConfigurationSplat.Clone()
+                        $splat.PreferLogonDC = -not $splat.PreferLogonDC
+                        Set-TargetResource @splat
+                    } | Should -Not -Throw
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DFSNServerConfiguration -Exactly -Times 1
+                }
+            }
+
             Context 'Namespace Server Configuration UseFQDN is different' {
                 It 'Should not throw error' {
                     {
@@ -189,6 +243,42 @@ try
                 It 'Should return false' {
                     $splat = $namespaceServerConfigurationSplat.Clone()
                     $splat.SyncIntervalSec = $splat.SyncIntervalSec + 1
+                    Test-TargetResource @splat | Should -BeFalse
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly -Times 1
+                }
+            }
+
+            Context 'Namespace Server Configuration EnableSiteCostedReferrals is different' {
+                It 'Should return false' {
+                    $splat = $namespaceServerConfigurationSplat.Clone()
+                    $splat.EnableSiteCostedReferrals = -not $splat.EnableSiteCostedReferrals
+                    Test-TargetResource @splat | Should -BeFalse
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly -Times 1
+                }
+            }
+
+            Context 'Namespace Server Configuration EnableInsiteReferrals is different' {
+                It 'Should return false' {
+                    $splat = $namespaceServerConfigurationSplat.Clone()
+                    $splat.EnableInsiteReferrals = -not $splat.EnableInsiteReferrals
+                    Test-TargetResource @splat | Should -BeFalse
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNServerConfiguration -Exactly -Times 1
+                }
+            }
+
+            Context 'Namespace Server Configuration PreferLogonDC is different' {
+                It 'Should return false' {
+                    $splat = $namespaceServerConfigurationSplat.Clone()
+                    $splat.PreferLogonDC = -not $splat.PreferLogonDC
                     Test-TargetResource @splat | Should -BeFalse
                 }
 

@@ -5,13 +5,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- DFSNamespaceServerConfiguration
+  - Added support for setting EnableSiteCostedReferrals, EnableInsiteReferrals and PreferLogonDC on a DFS namespace server
+ 
+### Fixed
+
 - Updated out of date README.MD.
 
 ## [5.0.1] - 2023-09-07
 
+### Fixed
+
 - DFSDsc
   - Removed the pipeline files `build.psd1` as it is no longer needed.
-  
+
 ## [5.0.0] - 2023-09-01
 
 ### Changed
