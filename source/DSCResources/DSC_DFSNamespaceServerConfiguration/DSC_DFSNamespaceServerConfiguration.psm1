@@ -23,8 +23,20 @@ data parameterList
             Type = 'String'
         },
         @{
+            Name = 'EnableSiteCostedReferrals'
+            Type = 'Boolean'
+        },
+        @{
+            Name = 'EnableInsiteReferrals'
+            Type = 'Boolean'
+        },
+        @{
+            Name = 'PreferLogonDC'
+            Type = 'Boolean'
+        },
+        @{
             Name = 'UseFQDN'
-            Type = 'Uint32'
+            Type = 'Boolean'
             Restart = $True
         }
     )
@@ -90,6 +102,15 @@ function Get-TargetResource
     servers and domain controllers connect to the PDC emulator to get
     updates of DFS namespace metadata.
 
+    .PARAMETER EnableSiteCostedReferrals
+    Indicates whether the server can use cost-based selection.
+
+    .PARAMETER EnableInsiteReferrals
+    Indicates whether this server provides only in-site referrals.
+
+    .PARAMETER PreferLogonDC
+    Indicates whether to prefer the logon domain controller in referrals.
+
     .PARAMETER UseFQDN
     Indicates whether a DFS namespace server uses FQDNs in referrals.
 #>
@@ -110,6 +131,18 @@ function Set-TargetResource
         [Parameter()]
         [System.UInt32]
         $SyncIntervalSec,
+
+        [Parameter()]
+        [System.Boolean]
+        $EnableSiteCostedReferrals,
+
+        [Parameter()]
+        [System.Boolean]
+        $EnableInsiteReferrals,
+
+        [Parameter()]
+        [System.Boolean]
+        $PreferLogonDC,
 
         [Parameter()]
         [System.Boolean]
@@ -199,6 +232,15 @@ function Set-TargetResource
     servers and domain controllers connect to the PDC emulator to get
     updates of DFS namespace metadata.
 
+    .PARAMETER EnableSiteCostedReferrals
+    Indicates whether the server can use cost-based selection.
+
+    .PARAMETER EnableInsiteReferrals
+    Indicates whether this server provides only in-site referrals.
+
+    .PARAMETER PreferLogonDC
+    Indicates whether to prefer the logon domain controller in referrals.
+
     .PARAMETER UseFQDN
     Indicates whether a DFS namespace server uses FQDNs in referrals.
 #>
@@ -220,6 +262,18 @@ function Test-TargetResource
         [Parameter()]
         [System.UInt32]
         $SyncIntervalSec,
+
+        [Parameter()]
+        [System.Boolean]
+        $EnableSiteCostedReferrals,
+
+        [Parameter()]
+        [System.Boolean]
+        $EnableInsiteReferrals,
+
+        [Parameter()]
+        [System.Boolean]
+        $PreferLogonDC,
 
         [Parameter()]
         [System.Boolean]
