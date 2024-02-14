@@ -68,7 +68,7 @@ try
         $namespaceServerConfiguration = [PSObject]@{
             LdapTimeoutSec               = 45
             SyncIntervalSec              = 5000
-            EnableSiteCostedReferrals    = $True
+            EnableSiteCostedReferrals    = $False
             EnableInsiteReferrals        = $True
             PreferLogonDC                = $True
             UseFQDN                      = $True

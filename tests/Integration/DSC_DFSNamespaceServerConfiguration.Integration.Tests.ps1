@@ -66,7 +66,7 @@ try
             $script:namespaceServerConfiguration = @{
                 LdapTimeoutSec               = 45
                 SyncIntervalSec              = 5000
-                EnableSiteCostedReferrals    = $True
+                EnableSiteCostedReferrals    = $False
                 EnableInsiteReferrals        = $True
                 PreferLogonDC                = $True
                 UseFQDN                      = $True
@@ -119,6 +119,18 @@ try
         }
 
         AfterAll {
+            if (-not $script:serverConfigurationBackup.EnableSiteCostedReferrals)
+            {
+                $script:serverConfigurationBackup.EnableSiteCostedReferrals = $true
+            }
+            if (-not $script:serverConfigurationBackup.EnableInsiteReferrals)
+            {
+                $script:serverConfigurationBackup.EnableInsiteReferrals = $false
+            }
+            if (-not $script:serverConfigurationBackup.PreferLogonDC)
+            {
+                $script:serverConfigurationBackup.PreferLogonDC = $false
+            }
             if (-not $script:serverConfigurationBackup.UseFQDN)
             {
                 $script:serverConfigurationBackup.UseFQDN = $false
