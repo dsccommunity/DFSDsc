@@ -75,10 +75,10 @@ try
                 $configData = @{
                     AllNodes = @(
                         @{
-                            NodeName                 = 'localhost'
-                            LdapTimeoutSec           = $script:namespaceServerConfiguration.LdapTimeoutSec
-                            SyncIntervalSec          = $script:namespaceServerConfiguration.SyncIntervalSec
-                            UseFQDN                  = $script:namespaceServerConfiguration.UseFQDN
+                            NodeName        = 'localhost'
+                            LdapTimeoutSec  = $script:namespaceServerConfiguration.LdapTimeoutSec
+                            SyncIntervalSec = $script:namespaceServerConfiguration.SyncIntervalSec
+                            UseFQDN         = $script:namespaceServerConfiguration.UseFQDN
                         }
                     )
                 }
