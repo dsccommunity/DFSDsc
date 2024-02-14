@@ -66,7 +66,6 @@ try
             $script:namespaceServerConfiguration = @{
                 LdapTimeoutSec               = 45
                 SyncIntervalSec              = 5000
-                PreferLogonDC                = $True
                 UseFQDN                      = $True
             }
         }
@@ -79,7 +78,6 @@ try
                             NodeName                 = 'localhost'
                             LdapTimeoutSec           = $script:namespaceServerConfiguration.LdapTimeoutSec
                             SyncIntervalSec          = $script:namespaceServerConfiguration.SyncIntervalSec
-                            PreferLogonDC            = $script:namespaceServerConfiguration.PreferLogonDC
                             UseFQDN                  = $script:namespaceServerConfiguration.UseFQDN
                         }
                     )
@@ -108,15 +106,10 @@ try
             $namespaceServerConfigurationNew = Get-DfsnServerConfiguration -ComputerName $env:COMPUTERNAME
             $namespaceServerConfigurationNew.LdapTimeoutSec            = $script:namespaceServerConfiguration.LdapTimeoutSec
             $namespaceServerConfigurationNew.SyncIntervalSec           = $script:namespaceServerConfiguration.SyncIntervalSec
-            $namespaceServerConfigurationNew.PreferLogonDC             = $script:namespaceServerConfiguration.PreferLogonDC
             $namespaceServerConfigurationNew.UseFQDN                   = $script:namespaceServerConfiguration.UseFQDN
         }
 
         AfterAll {
-            if (-not $script:serverConfigurationBackup.PreferLogonDC)
-            {
-                $script:serverConfigurationBackup.PreferLogonDC = $false
-            }
             if (-not $script:serverConfigurationBackup.UseFQDN)
             {
                 $script:serverConfigurationBackup.UseFQDN = $false
@@ -127,7 +120,6 @@ try
                 -ComputerName $env:COMPUTERNAME `
                 -LdapTimeoutSec $script:serverConfigurationBackup.LdapTimeoutSec `
                 -SyncIntervalSec $script:serverConfigurationBackup.SyncIntervalSec `
-                -PreferLogonDC $script:serverConfigurationBackup.PreferLogonDC `
                 -UseFQDN $script:serverConfigurationBackup.UseFQDN
         }
     }

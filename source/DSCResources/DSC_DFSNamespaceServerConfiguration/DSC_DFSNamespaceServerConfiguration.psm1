@@ -103,13 +103,16 @@ function Get-TargetResource
     updates of DFS namespace metadata.
 
     .PARAMETER EnableSiteCostedReferrals
-    Indicates whether the server can use cost-based selection.
+    Indicates whether the server can use cost-based selection. Only
+    supported for domain-based DFS namespace servers.
 
     .PARAMETER EnableInsiteReferrals
-    Indicates whether this server provides only in-site referrals.
+    Indicates whether this server provides only in-site referrals. Only
+    supported for domain-based DFS namespace servers.
 
     .PARAMETER PreferLogonDC
     Indicates whether to prefer the logon domain controller in referrals.
+    Only supported for domain-based DFS namespace servers.
 
     .PARAMETER UseFQDN
     Indicates whether a DFS namespace server uses FQDNs in referrals.
@@ -233,13 +236,16 @@ function Set-TargetResource
     updates of DFS namespace metadata.
 
     .PARAMETER EnableSiteCostedReferrals
-    Indicates whether the server can use cost-based selection.
+    Indicates whether the server can use cost-based selection. Only
+    supported for domain-based DFS namespace servers.
 
     .PARAMETER EnableInsiteReferrals
-    Indicates whether this server provides only in-site referrals.
+    Indicates whether this server provides only in-site referrals. Only
+    supported for domain-based DFS namespace servers.
 
     .PARAMETER PreferLogonDC
     Indicates whether to prefer the logon domain controller in referrals.
+    Only supported for domain-based DFS namespace servers.
 
     .PARAMETER UseFQDN
     Indicates whether a DFS namespace server uses FQDNs in referrals.
