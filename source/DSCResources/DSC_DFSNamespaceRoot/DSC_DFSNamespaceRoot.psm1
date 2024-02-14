@@ -286,8 +286,6 @@ function Set-TargetResource
 
             # The root properties that will be updated
             $rootProperties = @{}
-                State = 'Online'
-            }
 
             # Check the target properties
             if (($State) `
