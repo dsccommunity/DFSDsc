@@ -7,7 +7,6 @@ Configuration DSC_DFSNamespaceServerConfiguration_Config {
             LdapTimeoutSec               = $Node.LdapTimeoutSec
             SyncIntervalSec              = $Node.SyncIntervalSec
             EnableSiteCostedReferrals    = $Node.EnableSiteCostedReferrals
-            EnableInsiteReferrals        = $Node.EnableInsiteReferrals
             PreferLogonDC                = $Node.PreferLogonDC
             UseFQDN                      = $Node.UseFQDN
         }

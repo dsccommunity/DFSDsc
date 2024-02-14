@@ -67,7 +67,6 @@ try
                 LdapTimeoutSec               = 45
                 SyncIntervalSec              = 5000
                 EnableSiteCostedReferrals    = $False
-                EnableInsiteReferrals        = $True
                 PreferLogonDC                = $True
                 UseFQDN                      = $True
             }
@@ -82,7 +81,6 @@ try
                             LdapTimeoutSec           = $script:namespaceServerConfiguration.LdapTimeoutSec
                             SyncIntervalSec          = $script:namespaceServerConfiguration.SyncIntervalSec
                             EnableSiteCostedReferral = $script:namespaceServerConfiguration.EnableSiteCostedReferral
-                            EnableInsiteReferrals    = $script:namespaceServerConfiguration.EnableInsiteReferrals
                             PreferLogonDC            = $script:namespaceServerConfiguration.PreferLogonDC
                             UseFQDN                  = $script:namespaceServerConfiguration.UseFQDN
                         }
@@ -113,7 +111,6 @@ try
             $namespaceServerConfigurationNew.LdapTimeoutSec            = $script:namespaceServerConfiguration.LdapTimeoutSec
             $namespaceServerConfigurationNew.SyncIntervalSec           = $script:namespaceServerConfiguration.SyncIntervalSec
             $namespaceServerConfigurationNew.EnableSiteCostedReferrals = $script:namespaceServerConfiguration.EnableSiteCostedReferrals
-            $namespaceServerConfigurationNew.EnableInsiteReferrals     = $script:namespaceServerConfiguration.EnableInsiteReferrals
             $namespaceServerConfigurationNew.PreferLogonDC             = $script:namespaceServerConfiguration.PreferLogonDC
             $namespaceServerConfigurationNew.UseFQDN                   = $script:namespaceServerConfiguration.UseFQDN
         }
@@ -122,10 +119,6 @@ try
             if (-not $script:serverConfigurationBackup.EnableSiteCostedReferrals)
             {
                 $script:serverConfigurationBackup.EnableSiteCostedReferrals = $true
-            }
-            if (-not $script:serverConfigurationBackup.EnableInsiteReferrals)
-            {
-                $script:serverConfigurationBackup.EnableInsiteReferrals = $false
             }
             if (-not $script:serverConfigurationBackup.PreferLogonDC)
             {
@@ -142,7 +135,6 @@ try
                 -LdapTimeoutSec $script:serverConfigurationBackup.LdapTimeoutSec `
                 -SyncIntervalSec $script:serverConfigurationBackup.SyncIntervalSec `
                 -EnableSiteCostedReferrals $script:serverConfigurationBackup.EnableSiteCostedReferrals `
-                -EnableInsiteReferrals $script:serverConfigurationBackup.EnableInsiteReferrals `
                 -PreferLogonDC $script:serverConfigurationBackup.PreferLogonDC `
                 -UseFQDN $script:serverConfigurationBackup.UseFQDN
         }
