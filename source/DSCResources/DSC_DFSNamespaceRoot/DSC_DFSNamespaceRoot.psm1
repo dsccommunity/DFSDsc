@@ -19,9 +19,6 @@ $script:localizedData = Get-LocalizedData -DefaultUICulture 'en-US'
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
 
-    .PARAMETER TargetState
-    Specifies the state of the DFS namespace root target.
-
     .PARAMETER Type
     Specifies the type of a DFS namespace as a Type object.
 #>
@@ -43,11 +40,6 @@ function Get-TargetResource
         [ValidateSet('Present','Absent')]
         [System.String]
         $Ensure = 'Present',
-
-        [Parameter()]
-        [ValidateSet('Offline','Online')]
-        [System.String]
-        $TargetState = 'Online',
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]
@@ -183,6 +175,9 @@ function Get-TargetResource
 
     .PARAMETER ReferralPriorityRank
     Specifies the priority rank, as an integer, for a root target of the DFS namespace.
+
+    .PARAMETER State
+    Specifies the state of the DFS namespace root.
 #>
 function Set-TargetResource
 {
@@ -205,7 +200,7 @@ function Set-TargetResource
         [Parameter()]
         [ValidateSet('Offline','Online')]
         [System.String]
-        $TargetState = 'Online',
+        $TargetState,
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]
@@ -247,7 +242,12 @@ function Set-TargetResource
 
         [Parameter()]
         [System.UInt32]
-        $ReferralPriorityRank
+        $ReferralPriorityRank,
+
+        [Parameter()]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $State
     )
 
     Write-Verbose -Message ( @(
@@ -269,9 +269,17 @@ function Set-TargetResource
             [System.Boolean] $rootChange = $false
 
             # The root properties that will be updated
-            $rootProperties = @{
-                State = 'Online'
-            }
+            $rootProperties = @{}
+
+            # Check the target properties
+            if (($State) `
+                -and ($root.State -ne $State))
+            {
+                $rootProperties += @{
+                    State = $State
+                }
+                $rootChange = $true
+            } # if
 
             if (($Description) `
                 -and ($root.Description -ne $Description))
@@ -526,6 +534,9 @@ function Set-TargetResource
 
     .PARAMETER ReferralPriorityRank
     Specifies the priority rank, as an integer, for a root target of the DFS namespace.
+
+    .PARAMETER State
+    Specifies the state of the DFS namespace root.
 #>
 function Test-TargetResource
 {
@@ -549,7 +560,7 @@ function Test-TargetResource
         [Parameter()]
         [ValidateSet('Offline','Online')]
         [System.String]
-        $TargetState = 'Online',
+        $TargetState,
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Standalone','DomainV1','DomainV2')]
@@ -591,7 +602,12 @@ function Test-TargetResource
 
         [Parameter()]
         [System.UInt32]
-        $ReferralPriorityRank
+        $ReferralPriorityRank,
+
+        [Parameter()]
+        [ValidateSet('Offline','Online')]
+        [System.String]
+        $State
     )
 
     Write-Verbose -Message ( @(
@@ -625,6 +641,18 @@ function Test-TargetResource
             } # if
 
             # Check the Namespace parameters
+            if (($State) `
+                -and ($root.State -ne $State))
+            {
+                Write-Verbose -Message ( @(
+                    "$($MyInvocation.MyCommand): "
+                    $($script:localizedData.NamespaceRootParameterNeedsUpdateMessage) `
+                        -f $Type,$Path,'State'
+                    ) -join '' )
+
+                $desiredConfigurationMatch = $false
+            } # if
+
             if (($Description) `
                 -and ($root.Description -ne $Description))
             {

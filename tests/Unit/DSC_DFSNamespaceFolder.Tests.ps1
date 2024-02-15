@@ -76,6 +76,7 @@ try
             EnableTargetFailback         = $true
             ReferralPriorityClass        = 'Global-Low'
             ReferralPriorityRank         = 10
+            State                        = 'Online'
         }
 
         $namespaceSplat = [PSObject]@{
@@ -298,6 +299,29 @@ try
                     {
                         $splat = $namespace.Clone()
                         $splat.EnableTargetFailback = $False
+                        Set-TargetResource @splat
+                    } | Should -Not -Throw
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolder -Exactly -Times 0
+                    Assert-MockCalled -commandName Set-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName New-DFSNFolderTarget -Exactly -Times 1
+                    Assert-MockCalled -commandName Set-DFSNFolderTarget -Exactly -Times 0
+                    Assert-MockCalled -commandName Remove-DFSNFolderTarget -Exactly -Times 0
+                }
+            }
+
+            Context 'Namespace Folder exists and should but has a different State' {
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
+                Mock Get-DFSNFolderTarget
+
+                It 'Should not throw error' {
+                    {
+                        $splat = $namespace.Clone()
+                        $splat.State = 'Offline'
                         Set-TargetResource @splat
                     } | Should -Not -Throw
                 }
@@ -585,6 +609,22 @@ try
                 It 'Should return false' {
                     $splat = $namespace.Clone()
                     $splat.TargetState = 'Offline'
+                    Test-TargetResource @splat | Should -BeFalse
+                }
+
+                It 'Should call expected Mocks' {
+                    Assert-MockCalled -commandName Get-DFSNFolder -Exactly -Times 1
+                    Assert-MockCalled -commandName Get-DFSNFolderTarget -Exactly -Times 1
+                }
+            }
+
+            Context 'Namespace Folder exists and should but has a different State' {
+                Mock Get-DFSNFolder -MockWith { $namespaceFolder }
+                Mock Get-DFSNFolderTarget -MockWith { $namespaceTarget }
+
+                It 'Should return false' {
+                    $splat = $namespace.Clone()
+                    $splat.State = 'Offline'
                     Test-TargetResource @splat | Should -BeFalse
                 }
 

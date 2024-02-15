@@ -7,11 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- DFSNamespaceRoot
+  - Added support for setting the state of the namespace root (State).
+- DFSNamespaceFolder
+  - Added support for setting the state of the namespace folder (State).
 - DFSNamespaceServerConfiguration
-  - Added support for setting EnableSiteCostedReferrals, EnableInsiteReferrals and PreferLogonDC on a DFS namespace server
- 
+  - Added support for setting EnableSiteCostedReferrals, EnableInsiteReferrals and PreferLogonDC on a DFS namespace server.
+
 ### Fixed
 
+- DFSNamespaceRoot
+  - State and TargetState are only set to 'Online' when specifically passed in the configuration.
+- DFSNamespaceFolder
+  - State and TargetState are only set to 'Online' when specifically passed in the configuration.
 - Updated out of date README.MD.
 
 ## [5.0.1] - 2023-09-07

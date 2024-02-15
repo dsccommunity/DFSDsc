@@ -57,6 +57,7 @@ Configuration DFSNamespaceFolder_Domain_MultipleTarget_Config
         DFSNamespaceRoot DFSNamespaceRoot_Domain_Software_CA
         {
             Path                 = '\\contoso.com\software'
+            State                = 'Online'
             TargetPath           = '\\ca-fileserver\software'
             Ensure               = 'Present'
             Type                 = 'DomainV2'
@@ -67,6 +68,7 @@ Configuration DFSNamespaceFolder_Domain_MultipleTarget_Config
         DFSNamespaceRoot DFSNamespaceRoot_Domain_Software_MA
         {
             Path                 = '\\contoso.com\software'
+            State                = 'Online'
             TargetPath           = '\\ma-fileserver\software'
             Ensure               = 'Present'
             Type                 = 'DomainV2'
@@ -77,6 +79,7 @@ Configuration DFSNamespaceFolder_Domain_MultipleTarget_Config
         DFSNamespaceRoot DFSNamespaceRoot_Domain_Software_NY_01
         {
             Path                 = '\\contoso.com\software'
+            State                = 'Online'
             TargetPath           = '\\ny-fileserver01\software'
             Ensure               = 'Present'
             Type                 = 'DomainV2'
@@ -87,6 +90,7 @@ Configuration DFSNamespaceFolder_Domain_MultipleTarget_Config
         DFSNamespaceRoot DFSNamespaceRoot_Domain_Software_NY_02
         {
             Path                 = '\\contoso.com\software'
+            State                = 'Online'
             TargetPath           = '\\ny-fileserver02\software'
             TargetState          = 'Offline'
             Ensure               = 'Present'
@@ -99,6 +103,7 @@ Configuration DFSNamespaceFolder_Domain_MultipleTarget_Config
         DFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_CA
         {
             Path                 = '\\contoso.com\software\it'
+            State                = 'Online'
             TargetPath           = '\\ca-fileserver\it'
             Ensure               = 'Present'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
@@ -108,6 +113,7 @@ Configuration DFSNamespaceFolder_Domain_MultipleTarget_Config
         DFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_MA
         {
             Path                 = '\\contoso.com\software\it'
+            State                = 'Online'
             TargetPath           = '\\ma-fileserver\it'
             Ensure               = 'Present'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
@@ -117,6 +123,7 @@ Configuration DFSNamespaceFolder_Domain_MultipleTarget_Config
         DFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_NY_01
         {
             Path                 = '\\contoso.com\software\it'
+            State                = 'Online'
             TargetPath           = '\\ny-fileserver01\it'
             Ensure               = 'Present'
             Description          = 'AD Domain based DFS namespace for storing IT specific software installers'
@@ -126,6 +133,7 @@ Configuration DFSNamespaceFolder_Domain_MultipleTarget_Config
         DFSNamespaceFolder DFSNamespaceFolder_Domain_SoftwareIT_NY_02
         {
             Path                 = '\\contoso.com\software\it'
+            State                = 'Online'
             TargetPath           = '\\ny-fileserver02\it'
             Ensure               = 'Present'
             TargetState          = 'Offline'
