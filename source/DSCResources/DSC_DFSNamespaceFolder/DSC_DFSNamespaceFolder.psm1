@@ -18,12 +18,6 @@ $script:localizedData = Get-LocalizedData -DefaultUICulture 'en-US'
 
     .PARAMETER Ensure
     Specifies if the DFS Namespace root should exist.
-
-    .PARAMETER TargetState
-    Specifies the state of the DFS namespace folder target.
-
-    .PARAMETER State
-    Specifies the state of the DFS namespace folder.
 #>
 function Get-TargetResource
 {
@@ -42,17 +36,7 @@ function Get-TargetResource
         [Parameter()]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure = 'Present',
-
-        [Parameter()]
-        [ValidateSet('Offline','Online')]
-        [System.String]
-        $TargetState = 'Online',
-
-        [Parameter()]
-        [ValidateSet('Offline','Online')]
-        [System.String]
-        $State = 'Online'
+        $Ensure = 'Present'
     )
 
     Write-Verbose -Message ( @(
