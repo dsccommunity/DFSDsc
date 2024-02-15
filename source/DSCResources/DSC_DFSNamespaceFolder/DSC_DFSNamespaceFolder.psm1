@@ -176,7 +176,7 @@ function Set-TargetResource
         [Parameter()]
         [ValidateSet('Offline','Online')]
         [System.String]
-        $TargetState = 'Online',
+        $TargetState,
 
         [Parameter()]
         [System.String]
@@ -206,7 +206,7 @@ function Set-TargetResource
         [Parameter()]
         [ValidateSet('Offline','Online')]
         [System.String]
-        $State = 'Online'
+        $State
     )
 
     Write-Verbose -Message ( @(
@@ -479,7 +479,7 @@ function Test-TargetResource
         [Parameter()]
         [ValidateSet('Offline','Online')]
         [System.String]
-        $TargetState = 'Online',
+        $TargetState,
 
         [Parameter()]
         [System.String]
@@ -509,7 +509,7 @@ function Test-TargetResource
         [Parameter()]
         [ValidateSet('Offline','Online')]
         [System.String]
-        $State = 'Online'
+        $State
     )
 
     Write-Verbose -Message ( @(
