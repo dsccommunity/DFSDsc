@@ -29,8 +29,7 @@ A full list of changes in each version can be found in the [change log](CHANGELO
 ## Resources
 
 The **DFSDsc** module contains DSC resources for configuring Distributed File
-System Replication and Namespaces. Currently in this version only Replication
-folders are supported. Namespaces will be supported in a future release.
+System Replication and Namespaces.
 
 The **DFSDsc** module contains the following resources:
 
@@ -72,9 +71,9 @@ Management Framework 5.0 or above.
 
 ### DFSR Module
 
-This DSC Resource requires that the DFSR PowerShell module is installed onto
-any computer this resource will be used on. This module is installed as part of
-RSAT tools or RSAT-DFS-Mgmt-Con Windows Feature in Windows Server 2012 R2.
+This DSC Resource requires that the DFSN and DFSR PowerShell modules are installed onto
+any computer this resource will be used on. These modules are installed as part of
+RSAT tools or RSAT-DFS-Mgmt-Con Windows Feature in Windows Server.
 However, this will automatically convert a Server Core installation into one
 containing the management tools, which may not be ideal because it is no longer
 strictly a Server Core installation.

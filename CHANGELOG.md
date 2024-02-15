@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added support for setting the state of the namespace root (State)
 - DFSNamespaceFolder
   - Added support for setting the state of the namespace folder (State)
+- DFSNamespaceServerConfiguration
+  - Added support for setting EnableSiteCostedReferrals, EnableInsiteReferrals and PreferLogonDC on a DFS namespace server
  
 ### Fixed
 
