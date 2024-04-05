@@ -13,6 +13,6 @@ ConvertFrom-StringData @'
     ReplicationGroupMembershipConflictAndDeletedMismatchMessage = DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect ConflictAndDeletedQuotaInMB. Change required.
     ReplicationGroupMembershipReadOnlyMismatchMessage           = DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect ReadOnly. Change required.
     ReplicationGroupMembershipRemoveDeletedFilesMismatchMessage = DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect RemoveDeletedFiles. Change required.
-    ReplicationGroupMembershipPrimaryMemberMismatchMessage      = DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect PrimaryMember. Change required.
+    ReplicationGroupMembershipPrimaryMemberMismatchMessage      = DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect PrimaryMember. Ignoring as flag clears after initial sync.
     ReplicationGroupMembershipDfsnPathMismatchMessage           = DFS Replication Group "{0}" folder "{1}" on "{2}" has incorrect DfsnPath. Change required.
 '@
