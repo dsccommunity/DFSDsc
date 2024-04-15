@@ -534,8 +534,8 @@ function Test-TargetResource
                     -f $GroupName,$FolderName,$ComputerName
                 ) -join '' )
 
-            # See https://techcommunity.microsoft.com/t5/storage-at-microsoft/the-primary-member-in-dfs-replication/ba-p/423127
-            # Do not flag as a change required as flag is cleared after initial sync
+            <# See https://techcommunity.microsoft.com/t5/storage-at-microsoft/the-primary-member-in-dfs-replication/ba-p/423127
+            Do not flag as a change required as flag is cleared after initial sync #>
         } # if
 
         # Check the DfsnPath
