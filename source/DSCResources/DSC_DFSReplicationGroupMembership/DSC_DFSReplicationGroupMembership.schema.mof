@@ -13,7 +13,7 @@ class DSC_DFSReplicationGroupMembership : OMI_BaseResource
     [Write, Description("The local conflict and deleted path quota size in MB.")] UInt32 ConflictAndDeletedQuotaInMB;
     [Write, Description("Specify if this content path should be read only.")] Boolean ReadOnly;
     [Write, Description("Specify if a member computer deletes files and folders immediately following inbound replication.")] Boolean RemoveDeletedFiles;
-    [Write, Description("Used to configure this as the Primary Member. Every folder must have at least one primary member for initial replication to take place.")] Boolean PrimaryMember;
+    [Write, Description("Used to configure this as the Primary Member. Every folder must have at least one primary member for initial replication to take place. Only set during initial creation of membership.")] Boolean PrimaryMember;
     [Write, Description("Specify the DFS Namespace folder path of the membership. This value does not affect replication.")] String DfsnPath;
     [Write, Description("The name of the AD Domain the DFS Replication Group this replication group is in.")] String DomainName;
 };

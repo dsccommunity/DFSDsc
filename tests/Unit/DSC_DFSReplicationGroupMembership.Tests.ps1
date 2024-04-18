@@ -541,11 +541,12 @@ try
             Context 'Replication group membership exists but has different PrimaryMember' {
                 Mock Get-DfsrMembership -MockWith { return @($mockReplicationGroupMembership) }
 
-                It 'Should return false' {
+                # Return *true* - should not flag as changed required as cleared after initial sync
+                It 'Should return true' {
                     $splat = $replicationGroupMemberships[0].Clone()
                     $splat.Remove('ConflictAndDeletedPath')
                     $splat.PrimaryMember = (-not $splat.PrimaryMember)
-                    Test-TargetResource @splat | Should -BeFalse
+                    Test-TargetResource @splat | Should -BeTrue
                 }
 
                 It 'Should call expected Mocks' {

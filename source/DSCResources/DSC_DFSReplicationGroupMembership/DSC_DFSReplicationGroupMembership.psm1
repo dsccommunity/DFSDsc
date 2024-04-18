@@ -167,7 +167,7 @@ function Get-TargetResource
     .PARAMETER PrimaryMember
     Used to configure this as the Primary Member. Every folder must
     have at least one primary member for initial replication to take
-    place.
+    place. Only set during initial creation of membership.
 
     .PARAMETER DfsnPath
     Specify the DFS Namespace folder path of the membership. This value does not affect replication.
@@ -307,7 +307,7 @@ function Set-TargetResource
     .PARAMETER PrimaryMember
     Used to configure this as the Primary Member. Every folder must
     have at least one primary member for initial replication to take
-    place.
+    place. Only set during initial creation of membership.
 
     .PARAMETER DfsnPath
     Specify the DFS Namespace folder path of the membership. This value does not affect replication.
@@ -534,7 +534,10 @@ function Test-TargetResource
                     -f $GroupName,$FolderName,$ComputerName
                 ) -join '' )
 
-            $desiredConfigurationMatch = $false
+            <#
+            See https://techcommunity.microsoft.com/t5/storage-at-microsoft/the-primary-member-in-dfs-replication/ba-p/423127
+            Do not flag as a change required as flag is cleared after initial sync
+            #>
         } # if
 
         # Check the DfsnPath
