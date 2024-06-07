@@ -73,16 +73,6 @@ TaskHeader: |
   ""
 
 ####################################################
-#     Dependent Modules Configuration (Sampler)    #
-####################################################
-NestedModule:
-  DscResource.Common:
-    CopyOnly: true
-    Path: ./output/RequiredModules/DscResource.Common
-    AddToManifest: false
-    Exclude: PSGetModuleInfo.xml
-
-####################################################
 #          Pester Configuration (Sampler)          #
 ####################################################
 
