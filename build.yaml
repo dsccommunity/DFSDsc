@@ -10,6 +10,7 @@ BuildWorkflow:
   build:
     - Clean
     - Build_Module_ModuleBuilder
+    - Build_NestedModules_ModuleBuilder
     - Create_Changelog_Release_Output
 
   docs:
@@ -43,7 +44,6 @@ BuildWorkflow:
 CopyPaths:
   - en-US
   - DSCResources
-  - Modules
 Prefix: prefix.ps1
 Suffix: suffix.ps1
 Encoding: UTF8
@@ -70,6 +70,16 @@ TaskHeader: |
   Write-Build DarkGray "  $Path"
   Write-Build DarkGray "  $($Task.InvocationInfo.ScriptName):$($Task.InvocationInfo.ScriptLineNumber)"
   ""
+
+####################################################
+#     Dependent Modules Configuration (Sampler)    #
+####################################################
+NestedModule:
+  DscResource.Common:
+    CopyOnly: true
+    Path: ./output/RequiredModules/DscResource.Common
+    AddToManifest: false
+    Exclude: PSGetModuleInfo.xml
 
 ####################################################
 #          Pester Configuration (Sampler)          #
