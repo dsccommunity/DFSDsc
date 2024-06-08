@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - DFSReplicationGroupMembership
    - Make PrimaryMember write-only when testing resources - fixes [Issue #58](https://github.com/dsccommunity/DFSDsc/issues/58).
 
+### Changed
+
+- CI Pipeline
+  - Updated pipeline files to match current DSC Community patterns - fixes [Issue #141](https://github.com/dsccommunity/DFSDsc/issues/141).
+  - Updated HQRM and build steps to use windows-latest image.
+
 ## [5.1.0] - 2024-03-02
 
 ### Added
