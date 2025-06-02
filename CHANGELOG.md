@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI Pipeline
   - Updated pipeline files to match current DSC Community patterns - fixes [Issue #141](https://github.com/dsccommunity/DFSDsc/issues/141).
   - Updated HQRM and build steps to use windows-latest image.
+- `azure-pipelines.yml`
+  - Remove `windows-2019` images fixes [#146](https://github.com/dsccommunity/DFSDsc/issues/146).
 
 ## [5.1.0] - 2024-03-02
 
