@@ -7,15 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
- - All resources
-   - Added Assert-Module to verify DFSN and DFSR PowerShell modules are available.
+- All resources
+  - Added Assert-Module to verify DFSN and DFSR PowerShell modules are available.
 
 ## [5.1.1] - 2024-04-24
 
 ### Fixed
 
- - DFSReplicationGroupMembership
-   - Make PrimaryMember write-only when testing resources - fixes [Issue #58](https://github.com/dsccommunity/DFSDsc/issues/58).
+- DFSReplicationGroupMembership
+  - Make PrimaryMember write-only when testing resources - fixes [Issue #58](https://github.com/dsccommunity/DFSDsc/issues/58).
 
 ### Changed
 
