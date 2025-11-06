@@ -62,6 +62,8 @@ function Get-TargetResource
         $IsSingleInstance
     )
 
+    Assert-Module -ModuleName DFSN
+
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($script:localizedData.GettingNamespaceServerConfigurationMessage)
@@ -152,6 +154,8 @@ function Set-TargetResource
         [System.Boolean]
         $UseFQDN
     )
+
+    Assert-Module -ModuleName DFSN
 
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
@@ -286,6 +290,8 @@ function Test-TargetResource
         [System.Boolean]
         $UseFQDN
     )
+
+    Assert-Module -ModuleName DFSN
 
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
