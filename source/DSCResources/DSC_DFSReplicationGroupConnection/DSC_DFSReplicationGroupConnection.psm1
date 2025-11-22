@@ -58,6 +58,8 @@ function Get-TargetResource
         $DomainName
     )
 
+    Assert-Module -ModuleName DFSR
+
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
         $($script:localizedData.GettingReplicationGroupConnectionMessage) `
@@ -235,6 +237,8 @@ function Set-TargetResource
         [System.String]
         $DomainName
     )
+
+    Assert-Module -ModuleName DFSR
 
     Write-Verbose -Message ( @(
         "$($MyInvocation.MyCommand): "
@@ -426,6 +430,8 @@ function Test-TargetResource
         [System.String]
         $DomainName
     )
+
+    Assert-Module -ModuleName DFSR
 
     # Flag to signal whether settings are correct
     [System.Boolean] $desiredConfigurationMatch = $true

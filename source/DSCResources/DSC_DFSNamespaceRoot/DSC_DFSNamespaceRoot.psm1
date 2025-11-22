@@ -47,6 +47,8 @@ function Get-TargetResource
         $Type
     )
 
+    Assert-Module -ModuleName DFSN
+
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
             $($script:localizedData.GettingNamespaceRootMessage) `
@@ -249,6 +251,8 @@ function Set-TargetResource
         [System.String]
         $State
     )
+
+    Assert-Module -ModuleName DFSN
 
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
@@ -609,6 +613,8 @@ function Test-TargetResource
         [System.String]
         $State
     )
+
+    Assert-Module -ModuleName DFSN
 
     Write-Verbose -Message ( @(
             "$($MyInvocation.MyCommand): "
